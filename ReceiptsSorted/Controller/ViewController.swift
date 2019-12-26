@@ -13,15 +13,45 @@ enum ImageSource {
     case camera
 }
 
+enum CardState {
+    case Expanded, Collapsed
+}
+
 class ViewController: UIViewController, UINavigationControllerDelegate  {
 
     @IBOutlet var imageTake: UIImageView!
     
     var imagePicker: UIImagePickerController!
-
     @IBOutlet weak var plusButton: UIButton!
     
     var imageCmd = ImageCommands()
+    
+    
+    
+    var cardViewController : CardViewController!
+    var visualEffectView : UIVisualEffectView!  //For blur
+    
+    var cardHeight: CGFloat = 0
+    
+    var cardVisible = false
+    var nextState: CardState {
+        return cardVisible ? .Collapsed : .Expanded
+    }
+    
+    var runningAnimations = [UIViewPropertyAnimator]()
+    var animationProgressWhenInterrupted: CGFloat = 0
+    
+    
+    var cardStartPointY: CGFloat = 0
+    
+    //set Status Bar icons to white
+    override var preferredStatusBarStyle: UIStatusBarStyle { return .lightContent }
+    
+    
+    
+    
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,78 +59,171 @@ class ViewController: UIViewController, UINavigationControllerDelegate  {
         imageCmd.mainView = self
         
         plusButton.layer.cornerRadius = plusButton.frame.height / 2
+        
+        
+        cardStartPointY = self.view.frame.size.height * 2/3
+        cardHeight = self.view.frame.size.height * 9/10
+        
+        setupCard()
+        cardViewController.view.layer.cornerRadius = 30
     }
 
     
     
-    //MARK: - Select image from library
- 
-//    func selectImageFrom(_ source: ImageSource) {
-//        imagePicker =  UIImagePickerController()
-//        imagePicker.delegate = self
-//        switch source {
-//            case .camera:
-//                imagePicker.sourceType = .camera
-//            case .photoLibrary:
-//                imagePicker.sourceType = .photoLibrary
-//        }
-//        present(imagePicker, animated: true, completion: nil)
-//    }
+    //MARK: - Card Setup
+    
+    func setupCard() {
+        visualEffectView = UIVisualEffectView()
+        visualEffectView.frame = self.view.frame
+        visualEffectView.isUserInteractionEnabled = false
+        self.view.addSubview(visualEffectView)
+        
+        
+        cardViewController = CardViewController(nibName: "CardViewController", bundle: nil)
+        self.addChild(cardViewController)
+        self.view.addSubview(cardViewController.view)
+        
+        cardViewController.view.frame = CGRect(x: 0, y: cardStartPointY , width: self.view.bounds.width, height: cardHeight)
+        
+        cardViewController.view.clipsToBounds = true
+        
+        // Create gesture recognisers
+        let tapGestureRecogniser = UITapGestureRecognizer(target: self, action: #selector(ViewController.handleCardTap(recogniser:)))
+        let panGestureRecogniser = UIPanGestureRecognizer(target: self, action: #selector(ViewController.handleCardPan(recogniser:)))
+        
+        // Add gestures for Handle Area in the CardViewController.xib
+        cardViewController.handleArea.addGestureRecognizer(tapGestureRecogniser)
+        cardViewController.handleArea.addGestureRecognizer(panGestureRecogniser)
+    }
+    
+    
+    //MARK: - Handling Gestures
+        
+        @objc func handleCardTap(recogniser: UITapGestureRecognizer) {
+            animateTransitionIfNeeded(with: nextState, for: 0.7)
+        }
+        
+        
+        @objc func handleCardPan (recogniser: UIPanGestureRecognizer) {
+            
+            switch recogniser.state{
+            case .began:
+                startInteractiveTransition(forState: nextState, duration: 0.7)
+                //previousFraction = 0
+            
+            case .changed:
+                let translation = recogniser.translation(in: self.cardViewController.handleArea)
+                var fractionComplete = translation.y / (cardStartPointY - self.view.frame.size.height + cardHeight)
+                fractionComplete = cardVisible ? fractionComplete : -fractionComplete
+                
+    //            checkIfDirectionWasChanged(checkFor: fractionComplete)
+                
+                updateInteractiveTransition(fractionCompleted: fractionComplete)
+                
+            case .ended:
+                continueInteractiveTransition()
+                
+            default:
+                break
+            }
+            
+        }
+    
+    
+    
+    //MARK: - Interactions and Animations
+       
+       func animateTransitionIfNeeded (with state: CardState, for duration: TimeInterval) {
+           
+           /* Size animation*/
+           let frameAnimator = UIViewPropertyAnimator(duration: duration, dampingRatio: 1) {
+               
+               switch state {
+               case .Expanded:
+                   self.cardViewController.view.frame.origin.y = self.view.frame.height - self.cardHeight
+                   
+               case .Collapsed:
+                   self.cardViewController.view.frame.origin.y = self.cardStartPointY
+               }
+           }
+           
+           frameAnimator.addCompletion { _ in
+               self.cardVisible = !self.cardVisible
+               self.runningAnimations.removeAll()
+           }
+           
+           frameAnimator.startAnimation()
+           runningAnimations.append(frameAnimator)
+           
+           
+           /* Blur animation*/
+           let blurAnimator = UIViewPropertyAnimator(duration: duration, dampingRatio: 1) {
+               switch state {
+               case .Expanded:
+                   self.visualEffectView.effect = UIBlurEffect(style: .dark)
+               case .Collapsed:
+                   self.visualEffectView.effect = nil
+               }
+           }
+           
+           blurAnimator.startAnimation()
+           runningAnimations.append(blurAnimator)
+       }
+       
+       
+       
+       
+       /**
+       Starts an interactive transition
+
+       - Parameter state: The card state which is either "Expanded" or "Collapsed".
+       - Parameter duration: Duration of the animation.
+       */
+       func startInteractiveTransition (forState state: CardState, duration: TimeInterval) {
+           
+           if runningAnimations.isEmpty {
+               animateTransitionIfNeeded(with: state, for: duration)
+           }
+           
+           for animator in runningAnimations {
+               animator.pauseAnimation()
+               animationProgressWhenInterrupted = animator.fractionComplete
+           }
+       }
+       
+       
+       
+       func updateInteractiveTransition (fractionCompleted: CGFloat) {
+           for animator in runningAnimations {
+               animator.fractionComplete = fractionCompleted + animationProgressWhenInterrupted
+           }
+       }
+       
+       
+       
+       func continueInteractiveTransition() {
+           for animator in runningAnimations {
+               animator.continueAnimation(withTimingParameters: nil, durationFactor: 0)
+           }
+       }
     
     
     
     
-    //MARK: - Take a picture on camera
+    
+    
+    
+    
+    
+
+    
     @IBAction func addNewReceipt(_ sender: UIButton) {
    
         imageCmd.handleAddButton()
     }
+   
     
     
-//    func handleAddButton(my : ViewController) {
-//        let actionSheet = UIAlertController( title: nil, message: nil, preferredStyle: .actionSheet)
-//
-//        actionSheet.addAction(UIAlertAction(title: "Take a photo", style: .default , handler:{ (UIAlertAction) in
-//            print("User Take Photo button")
-//            self.getImage(using: .camera)
-//
-//        }))
-//
-//        actionSheet.addAction(UIAlertAction(title: "Choose from Gallery", style: .default , handler:{ (UIAlertAction) in
-//            print("User Choose from Gallery button")
-//            self.getImage(using: .photoLibrary)
-//        }))
-//
-//        actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler:{ (UIAlertAction) in
-//            print("User click Cancel button")
-//        }))
-//
-//        self.present(actionSheet, animated: true, completion: {
-//            print("completion block")
-//        })
-//    }
-    
-    
-    
-//    func getImage(using imageSource: ImageSource) {
-//        if (imageSource == .camera) {
-//            guard UIImagePickerController.isSourceTypeAvailable(.camera) else {
-//                self.showAlertWith(title: "Camera is unavailable!", message: "You did not allow access to your camera or the camera is broken")
-//                return
-//            }
-//        } else {
-//            guard UIImagePickerController.isSourceTypeAvailable(.photoLibrary) else {
-//                self.showAlertWith(title: "Photo Library is unavailable!", message: "You did not allow access to your photo library")
-//                return
-//            }
-//        }
-//
-//        self.selectImageFrom(imageSource)
-//    }
-    
-    
-    //MARK: - Saving Image to Gallery
-
     @IBAction func saveImageToGallery(_ sender: UIButton) {
         
         //imageCmd.saveImageToGallery()
@@ -124,15 +247,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate  {
 //    }
 
     
-    
-//    func showAlertWith(title: String, message: String){
-//        let ac = UIAlertController(title: title, message: message, preferredStyle: .alert)
-//        ac.addAction(UIAlertAction(title: "OK", style: .default))
-//        present(ac, animated: true)
-//    }
- }
-
-
+}
 
 
 
