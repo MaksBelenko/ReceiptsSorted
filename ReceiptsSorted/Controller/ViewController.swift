@@ -17,6 +17,11 @@ enum CardState {
     case Expanded, Collapsed
 }
 
+var cardHeight: CGFloat = 0
+
+
+
+
 class ViewController: UIViewController, UINavigationControllerDelegate  {
 
     @IBOutlet var imageTake: UIImageView!
@@ -31,7 +36,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate  {
     var cardViewController : CardViewController!
     var visualEffectView : UIVisualEffectView!  //For blur
     
-    var cardHeight: CGFloat = 0
+    //var cardHeight: CGFloat = 0
     
     var cardVisible = false
     var nextState: CardState {
@@ -94,119 +99,129 @@ class ViewController: UIViewController, UINavigationControllerDelegate  {
         // Add gestures for Handle Area in the CardViewController.xib
         cardViewController.handleArea.addGestureRecognizer(tapGestureRecogniser)
         cardViewController.handleArea.addGestureRecognizer(panGestureRecogniser)
+        
     }
     
     
     //MARK: - Handling Gestures
-        
-        @objc func handleCardTap(recogniser: UITapGestureRecognizer) {
-            animateTransitionIfNeeded(with: nextState, for: 0.7)
-        }
-        
-        
-        @objc func handleCardPan (recogniser: UIPanGestureRecognizer) {
-            
-            switch recogniser.state{
-            case .began:
-                startInteractiveTransition(forState: nextState, duration: 0.7)
-                //previousFraction = 0
-            
-            case .changed:
-                let translation = recogniser.translation(in: self.cardViewController.handleArea)
-                var fractionComplete = translation.y / (cardStartPointY - self.view.frame.size.height + cardHeight)
-                fractionComplete = cardVisible ? fractionComplete : -fractionComplete
-                
-    //            checkIfDirectionWasChanged(checkFor: fractionComplete)
-                
-                updateInteractiveTransition(fractionCompleted: fractionComplete)
-                
-            case .ended:
-                continueInteractiveTransition()
-                
-            default:
-                break
-            }
-            
-        }
-    
-    
-    
-    //MARK: - Interactions and Animations
-       
-       func animateTransitionIfNeeded (with state: CardState, for duration: TimeInterval) {
-           
-           /* Size animation*/
-           let frameAnimator = UIViewPropertyAnimator(duration: duration, dampingRatio: 1) {
-               
-               switch state {
-               case .Expanded:
-                   self.cardViewController.view.frame.origin.y = self.view.frame.height - self.cardHeight
-                   
-               case .Collapsed:
-                   self.cardViewController.view.frame.origin.y = self.cardStartPointY
-               }
-           }
-           
-           frameAnimator.addCompletion { _ in
-               self.cardVisible = !self.cardVisible
-               self.runningAnimations.removeAll()
-           }
-           
-           frameAnimator.startAnimation()
-           runningAnimations.append(frameAnimator)
-           
-           
-           /* Blur animation*/
-           let blurAnimator = UIViewPropertyAnimator(duration: duration, dampingRatio: 1) {
-               switch state {
-               case .Expanded:
-                   self.visualEffectView.effect = UIBlurEffect(style: .dark)
-               case .Collapsed:
-                   self.visualEffectView.effect = nil
-               }
-           }
-           
-           blurAnimator.startAnimation()
-           runningAnimations.append(blurAnimator)
-       }
-       
-       
-       
-       
-       /**
-       Starts an interactive transition
 
-       - Parameter state: The card state which is either "Expanded" or "Collapsed".
-       - Parameter duration: Duration of the animation.
-       */
-       func startInteractiveTransition (forState state: CardState, duration: TimeInterval) {
-           
-           if runningAnimations.isEmpty {
-               animateTransitionIfNeeded(with: state, for: duration)
-           }
-           
-           for animator in runningAnimations {
-               animator.pauseAnimation()
-               animationProgressWhenInterrupted = animator.fractionComplete
-           }
-       }
-       
-       
-       
-       func updateInteractiveTransition (fractionCompleted: CGFloat) {
-           for animator in runningAnimations {
-               animator.fractionComplete = fractionCompleted + animationProgressWhenInterrupted
-           }
-       }
-       
-       
-       
-       func continueInteractiveTransition() {
-           for animator in runningAnimations {
-               animator.continueAnimation(withTimingParameters: nil, durationFactor: 0)
-           }
-       }
+    @objc func handleCardTap(recogniser: UITapGestureRecognizer) {
+        animateTransitionIfNeeded(with: nextState, for: 0.5)
+    }
+
+
+    @objc func handleCardPan (recogniser: UIPanGestureRecognizer) {
+
+        switch recogniser.state{
+        case .began:
+            startInteractiveTransition(forState: nextState, duration: 0.5)
+
+        case .changed:
+            let translation = recogniser.translation(in: self.cardViewController.handleArea)
+            var fractionComplete = translation.y / (cardStartPointY - self.view.frame.size.height + cardHeight)
+            fractionComplete = cardVisible ? fractionComplete : -fractionComplete
+            
+            updateInteractiveTransition(fractionCompleted: fractionComplete)
+
+        case .ended:
+            continueInteractiveTransition()
+            //cardViewController.tableView.isUserInteractionEnabled = true
+
+        default:
+            break
+        }
+
+    }
     
+
+
+    //MARK: - Interactions and Animations
+
+    /**
+    Starts an interactive Card transition
+
+    - Parameter state: The card state which is either "Expanded" or "Collapsed".
+    - Parameter duration: Duration of the animation.
+    */
+    func startInteractiveTransition (forState state: CardState, duration: TimeInterval) {
+
+       if runningAnimations.isEmpty {
+           animateTransitionIfNeeded(with: state, for: duration)
+       }
+
+       for animator in runningAnimations {
+           animator.pauseAnimation()
+           animationProgressWhenInterrupted = animator.fractionComplete
+       }
+    }
+
+
+    /**
+    Updates animators' fraction of the animation that is completed
+
+    - Parameter fractionCompleted: fraction of the animation calculated beforehand.
+    */
+    func updateInteractiveTransition (fractionCompleted: CGFloat) {
+       for animator in runningAnimations {
+           animator.fractionComplete = fractionCompleted + animationProgressWhenInterrupted
+       }
+    }
+
+
+    /**
+    Continues all the remaining animations
+    */
+    func continueInteractiveTransition() {
+       for animator in runningAnimations {
+           animator.continueAnimation(withTimingParameters: nil, durationFactor: 0)
+       }
+    }
+
+    
+    
+    /**
+    Creates array of animations and starts them
+
+    - Parameter state: The card state which is either "Expanded" or "Collapsed".
+    - Parameter duration: Duration of the animation.
+    */
+    func animateTransitionIfNeeded (with state: CardState, for duration: TimeInterval) {
+
+        /* Size animation*/
+        let frameAnimator = UIViewPropertyAnimator(duration: duration, dampingRatio: 1) {
+
+            switch state {
+            case .Expanded:
+                self.cardViewController.view.frame.origin.y = self.view.frame.height - cardHeight
+
+            case .Collapsed:
+                self.cardViewController.view.frame.origin.y = self.cardStartPointY
+            }
+        }
+
+        frameAnimator.addCompletion { _ in
+            self.cardVisible = !self.cardVisible
+            self.runningAnimations.removeAll()
+        }
+
+        frameAnimator.startAnimation()
+        runningAnimations.append(frameAnimator)
+
+
+        /* Blur animation*/
+        let blurAnimator = UIViewPropertyAnimator(duration: duration, dampingRatio: 1) {
+            switch state {
+            case .Expanded:
+                self.visualEffectView.effect = UIBlurEffect(style: .dark)
+            case .Collapsed:
+                self.visualEffectView.effect = nil
+            }
+        }
+
+        blurAnimator.startAnimation()
+        runningAnimations.append(blurAnimator)
+    }
+
     
     
     

@@ -17,6 +17,9 @@
 		B59E3E2023B43FE50017D474 /* ImageCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59E3E1F23B43FE50017D474 /* ImageCommands.swift */; };
 		B59E3E2323B44DE80017D474 /* CardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59E3E2123B44DE80017D474 /* CardViewController.swift */; };
 		B59E3E2423B44DE80017D474 /* CardViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B59E3E2223B44DE80017D474 /* CardViewController.xib */; };
+		B59E3E2723B50D9F0017D474 /* PaymentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59E3E2523B50D9F0017D474 /* PaymentTableViewCell.swift */; };
+		B59E3E2823B50D9F0017D474 /* PaymentTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B59E3E2623B50D9F0017D474 /* PaymentTableViewCell.xib */; };
+		B59E3E2A23B51B030017D474 /* testModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59E3E2923B51B030017D474 /* testModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +35,9 @@
 		B59E3E1F23B43FE50017D474 /* ImageCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCommands.swift; sourceTree = "<group>"; };
 		B59E3E2123B44DE80017D474 /* CardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardViewController.swift; sourceTree = "<group>"; };
 		B59E3E2223B44DE80017D474 /* CardViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CardViewController.xib; sourceTree = "<group>"; };
+		B59E3E2523B50D9F0017D474 /* PaymentTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentTableViewCell.swift; sourceTree = "<group>"; };
+		B59E3E2623B50D9F0017D474 /* PaymentTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PaymentTableViewCell.xib; sourceTree = "<group>"; };
+		B59E3E2923B51B030017D474 /* testModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = testModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,6 +86,7 @@
 			isa = PBXGroup;
 			children = (
 				B59E3E1F23B43FE50017D474 /* ImageCommands.swift */,
+				B59E3E2923B51B030017D474 /* testModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -99,6 +106,8 @@
 				B5377C0323A82E280010B144 /* ViewController.swift */,
 				B59E3E2123B44DE80017D474 /* CardViewController.swift */,
 				B59E3E2223B44DE80017D474 /* CardViewController.xib */,
+				B59E3E2523B50D9F0017D474 /* PaymentTableViewCell.swift */,
+				B59E3E2623B50D9F0017D474 /* PaymentTableViewCell.xib */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -161,6 +170,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B59E3E2823B50D9F0017D474 /* PaymentTableViewCell.xib in Resources */,
 				B5377C0C23A82E2A0010B144 /* LaunchScreen.storyboard in Resources */,
 				B5377C0923A82E2A0010B144 /* Assets.xcassets in Resources */,
 				B59E3E1C23B42E070017D474 /* Default-568h@2x.png in Resources */,
@@ -178,6 +188,8 @@
 			files = (
 				B5377C0423A82E280010B144 /* ViewController.swift in Sources */,
 				B59E3E2023B43FE50017D474 /* ImageCommands.swift in Sources */,
+				B59E3E2A23B51B030017D474 /* testModel.swift in Sources */,
+				B59E3E2723B50D9F0017D474 /* PaymentTableViewCell.swift in Sources */,
 				B5377C0023A82E280010B144 /* AppDelegate.swift in Sources */,
 				B59E3E2323B44DE80017D474 /* CardViewController.swift in Sources */,
 				B5377C0223A82E280010B144 /* SceneDelegate.swift in Sources */,
