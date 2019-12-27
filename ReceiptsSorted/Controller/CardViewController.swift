@@ -21,28 +21,28 @@ class CardViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     typealias Payment = (Float, String)
     var payments: [Payment] = [(13,"Paid on 20th of August 2019"),
-                               (22,"Paid on 20th of August 2019"),
-                               (21,"Paid on 20th of August 2019"),
-                               (24,"Paid on 20th of August 2019"),
-                               (22,"Paid on 19th of August 2019"),
+                               (14,"Paid on 20th of August 2019"),
+                               (15,"Paid on 20th of August 2019"),
+                               (16,"Paid on 20th of August 2019"),
+                               (17,"Paid on 19th of August 2019"),
+                               (18,"Paid on 19th of August 2019"),
+                               (19,"Paid on 19th of August 2019"),
+                               (20,"Paid on 19th of August 2019"),
                                (21,"Paid on 19th of August 2019"),
-                               (24,"Paid on 19th of August 2019"),
-                               (24,"Paid on 19th of August 2019"),
-                               (25,"Paid on 19th of August 2019"),
-                               (25,"Paid on 19th of August 2019"),
+                               (22,"Paid on 19th of August 2019"),
                                (23,"Paid on 19th of August 2019"),
-                               (22,"Paid on 19th of August 2019"),
-                               (21,"Paid on 19th of August 2019"),
-                               (24,"Paid on 19th of August 2019"),
                                (24,"Paid on 19th of August 2019"),
                                (25,"Paid on 19th of August 2019"),
-                               (25,"Paid on 19th of August 2019"),
-                               (22,"Paid on 19th of August 2019"),
-                               (21,"Paid on 19th of August 2019"),
-                               (24,"Paid on 19th of August 2019"),
-                               (24,"Paid on 19th of August 2019"),
-                               (25,"Paid on 19th of August 2019"),
-                               (25,"Paid on 19th of August 2019")]
+                               (26,"Paid on 19th of August 2019"),
+                               (27,"Paid on 19th of August 2019"),
+                               (28,"Paid on 19th of August 2019"),
+                               (29,"Paid on 19th of August 2019"),
+                               (30,"Paid on 19th of August 2019"),
+                               (31,"Paid on 19th of August 2019"),
+                               (32,"Paid on 19th of August 2019"),
+                               (33,"Paid on 19th of August 2019"),
+                               (34,"Paid on 19th of August 2019"),
+                               (35,"Paid on 19th of August 2019")]
     
     
     
@@ -51,15 +51,23 @@ class CardViewController: UIViewController, UITableViewDataSource, UITableViewDe
     override func viewDidLoad() {
         super.viewDidLoad()
     
+        //Removes uneeded separator lines at the end of TableView
+        tblView.tableFooterView = UIView()
+        
         //tableView.isUserInteractionEnabled = false
         tblView.dataSource = self
         tblView.delegate = self
         tblView.register(UINib(nibName: "PaymentTableViewCell", bundle: nil), forCellReuseIdentifier: "paymentCell")
+        
+        // Used to make separators lines full width
+        tblView.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        
         //self.tableView.rowHeight = 150
         
         // Set TableView height
-        tblView.frame.size.height = cardHeight - handleImageView.frame.size.height
+        tblView.frame.size.height = cardHeight * 4/5
         
+        tblView.isScrollEnabled = false
     }
 
     
@@ -76,8 +84,16 @@ class CardViewController: UIViewController, UITableViewDataSource, UITableViewDe
         cell.amountPaidText.text = "£\(payments[indexPath.row].0)"
         cell.dateText.text = payments[indexPath.row].1
         
+        // Set to make separator lines to be of full width
+        cell.preservesSuperviewLayoutMargins = false
+        cell.layoutMargins = UIEdgeInsets.zero
+        cell.separatorInset = UIEdgeInsets.zero
+        
+        
+        print("\(cell.amountPaidText.text!)  \(cell.dateText.text!)")
         return cell
     }
+    
     
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -87,15 +103,41 @@ class CardViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+
+        print("row selected at \(indexPath.row)")
+        tableView.deselectRow(at: indexPath, animated: true)
+            
+    }
+    
+    
+    
     
     //MARK: - Table Scroll Methods
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        //tableView.isUserInteractionEnabled = false
+        //print("scroll")
+
+        let scrollViewHeight = scrollView.frame.size.height;
+        let scrollContentSizeHeight = scrollView.contentSize.height;
+        let scrollOffset = scrollView.contentOffset.y;
+
+        if (scrollOffset == 0)
+        {
+            // then we are at the top
+            print("at the top")
+        }
+        else if (scrollOffset + scrollViewHeight == scrollContentSizeHeight)
+        {
+            // then we are at the end
+            print("at the bottom")
+        }
+        
     }
     
     func scrollViewDidScrollToTop(_ scrollView: UIScrollView) {
-        //tableView.isUserInteractionEnabled = false
+        print("reached top")
+        //tblView.isUserInteractionEnabled = false
     }
     
     

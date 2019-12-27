@@ -16,21 +16,29 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Paid Amount" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uWM-yr-gwx">
-                        <rect key="frame" x="16" y="7" width="244" height="21"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Paid Amount" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uWM-yr-gwx">
+                        <rect key="frame" x="16" y="7" width="288" height="21"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Date paid" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zRv-MX-Haz">
-                        <rect key="frame" x="16" y="33" width="253" height="17"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date paid" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zRv-MX-Haz">
+                        <rect key="frame" x="16" y="33" width="288" height="17"/>
                         <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="14"/>
                         <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
+                <constraints>
+                    <constraint firstAttribute="bottom" secondItem="zRv-MX-Haz" secondAttribute="bottom" constant="10" id="8Bj-UW-rvH"/>
+                    <constraint firstItem="uWM-yr-gwx" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="Khj-Le-HLU"/>
+                    <constraint firstItem="zRv-MX-Haz" firstAttribute="top" secondItem="uWM-yr-gwx" secondAttribute="bottom" constant="5" id="QnR-9r-YlL"/>
+                    <constraint firstAttribute="trailing" secondItem="uWM-yr-gwx" secondAttribute="trailing" constant="16" id="VCF-XS-yQW"/>
+                    <constraint firstItem="uWM-yr-gwx" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="7" id="kQR-4c-5ob"/>
+                    <constraint firstAttribute="trailing" secondItem="zRv-MX-Haz" secondAttribute="trailing" constant="16" id="krJ-pi-Uv3"/>
+                    <constraint firstItem="zRv-MX-Haz" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="ulj-AE-yZO"/>
+                    <constraint firstItem="zRv-MX-Haz" firstAttribute="top" secondItem="uWM-yr-gwx" secondAttribute="bottom" constant="5" id="xA9-ae-irl"/>
+                </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>

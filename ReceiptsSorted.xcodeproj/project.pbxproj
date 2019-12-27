@@ -20,6 +20,7 @@
 		B59E3E2723B50D9F0017D474 /* PaymentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59E3E2523B50D9F0017D474 /* PaymentTableViewCell.swift */; };
 		B59E3E2823B50D9F0017D474 /* PaymentTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B59E3E2623B50D9F0017D474 /* PaymentTableViewCell.xib */; };
 		B59E3E2A23B51B030017D474 /* testModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59E3E2923B51B030017D474 /* testModel.swift */; };
+		B59E3E2C23B53FEF0017D474 /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59E3E2B23B53FEF0017D474 /* Enums.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +39,7 @@
 		B59E3E2523B50D9F0017D474 /* PaymentTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentTableViewCell.swift; sourceTree = "<group>"; };
 		B59E3E2623B50D9F0017D474 /* PaymentTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PaymentTableViewCell.xib; sourceTree = "<group>"; };
 		B59E3E2923B51B030017D474 /* testModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = testModel.swift; sourceTree = "<group>"; };
+		B59E3E2B23B53FEF0017D474 /* Enums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,6 +89,7 @@
 			children = (
 				B59E3E1F23B43FE50017D474 /* ImageCommands.swift */,
 				B59E3E2923B51B030017D474 /* testModel.swift */,
+				B59E3E2B23B53FEF0017D474 /* Enums.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -192,6 +195,7 @@
 				B59E3E2723B50D9F0017D474 /* PaymentTableViewCell.swift in Sources */,
 				B5377C0023A82E280010B144 /* AppDelegate.swift in Sources */,
 				B59E3E2323B44DE80017D474 /* CardViewController.swift in Sources */,
+				B59E3E2C23B53FEF0017D474 /* Enums.swift in Sources */,
 				B5377C0223A82E280010B144 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
