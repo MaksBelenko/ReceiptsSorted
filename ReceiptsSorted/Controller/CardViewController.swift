@@ -68,8 +68,8 @@ class CardViewController: UIViewController, UITableViewDataSource, UITableViewDe
         tblView.frame.size.height = cardHeight * 4/5
         
         
-        
-//        tblView.isScrollEnabled = false
+        //tblView.showsVerticalScrollIndicator = false
+        //tblView.isScrollEnabled = false
     }
 
     
@@ -127,12 +127,12 @@ class CardViewController: UIViewController, UITableViewDataSource, UITableViewDe
         if (scrollOffset == 0)
         {
             // then we are at the top
-            print("at the top")
+//            print("at the top")
         }
         else if (scrollOffset + scrollViewHeight == scrollContentSizeHeight)
         {
             // then we are at the end
-            print("at the bottom")
+//            print("at the bottom")
         }
         
     }

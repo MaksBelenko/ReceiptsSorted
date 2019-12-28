@@ -38,8 +38,10 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
     var runningAnimations = [UIViewPropertyAnimator]()
     var animationProgressWhenInterrupted: CGFloat = 0
     
-    
     var cardStartPointY: CGFloat = 0
+    
+    var lastFraction: CGFloat = 0
+    
     
     //set Status Bar icons to white
     override var preferredStatusBarStyle: UIStatusBarStyle { return .lightContent }
@@ -68,6 +70,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
     }
 
     
+    
+    
     func setupButtons() {
         plusButton.layer.cornerRadius = plusButton.frame.height / 2
         emailView.layer.cornerRadius = emailView.frame.height / 2
@@ -75,6 +79,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
         //emailButton.layer.cornerRadius = emailButton.frame.height / 2
         calendarButton.layer.cornerRadius = calendarButton.frame.height / 2
     }
+    
     
     
     //MARK: - Card Setup
@@ -102,7 +107,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
         
         // Add gestures for Handle Area in the CardViewController.xib
         cardViewController.handleArea.addGestureRecognizer(tapGestureRecogniser)
-        cardViewController.handleArea.addGestureRecognizer(panGestureRecogniser)
+        //cardViewController.handleArea.addGestureRecognizer(panGestureRecogniser)
         
         cardViewController.tblView.addGestureRecognizer(panGestureRecogniser)
         
@@ -129,17 +134,22 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
     
 
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer,
-             shouldRequireFailureOf otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+                           shouldRequireFailureOf otherGestureRecognizer: UIGestureRecognizer) -> Bool {
 
 //        print("gesture = \(gestureRecognizer)")
 //        print("otherGesture = \(otherGestureRecognizer)")
         
     
-        if (gestureRecognizer is UIPanGestureRecognizer ) {
+        if (gestureRecognizer is UIPanGestureRecognizer || otherGestureRecognizer is UIPanGestureRecognizer) {
             
-            print(cardViewController.tblView.contentOffset.y)
-            if (cardViewController.tblView.contentOffset.y <= 0) {
-                
+//            return false
+//            print(cardViewController.tblView.contentOffset.y)
+//            print("cardVisible = \(cardVisible)")
+//            if (cardVisible == false) {
+//                return false
+//            }
+//
+            if (cardViewController.tblView.contentOffset.y <= 5) {
                 return false
             }
             else {
@@ -154,22 +164,12 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
     }
     
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-//        if (gestureRecognizer is UIPanGestureRecognizer || gestureRecognizer is UISwipeGestureRecognizer) {
-//            return true
-//        } else {
-//            return false
-//        }
-        
         return true
     }
     
     
     @objc func handleCardTap(recogniser: UITapGestureRecognizer) {
-        animateTransitionIfNeeded(with: nextState, for: 0.7)
-        
-        // Enable/Disable scroll depending on the cardVisible state
-        //cardViewController.tblView.isScrollEnabled = (cardVisible == false) ? true : false
-        
+        animateTransitionIfNeeded(with: nextState, for: 0.7, withDampingRatio: 0.8)
     }
 
 
@@ -183,14 +183,31 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
             let translation = recogniser.translation(in: self.cardViewController.handleArea)
             var fractionComplete = translation.y / (cardStartPointY - self.view.frame.size.height + cardHeight)
             fractionComplete = cardVisible ? fractionComplete : -fractionComplete
+
+            if (fractionComplete > 0) {
+                updateInteractiveTransition(fractionCompleted: fractionComplete)
+            }
+            // Keep TableView at 0 on Y axis
+            //print("fractionComplete = \(fractionComplete)")
+            if (fractionComplete > 0 && fractionComplete < 1 ) {
+                cardViewController.tblView.contentOffset.y = 0
+            }
             
-            updateInteractiveTransition(fractionCompleted: fractionComplete)
-
+            lastFraction = fractionComplete
+//            print("lastFraction = \(lastFraction)")
+            
         case .ended:
+            
             continueInteractiveTransition()
-            // Enable/Disable scroll depending on the cardVisible state
-            //cardViewController.tblView.isScrollEnabled = (cardVisible == false) ? true : false
 
+            cardViewController.tblView.isUserInteractionEnabled = false
+            
+            if (lastFraction < 1) {
+                cardViewController.tblView.scrollToRow(at: IndexPath(row: 0, section: 0), at: UITableView.ScrollPosition.top, animated: false)
+            }
+            
+            
+            
         default:
             break
         }
@@ -208,15 +225,14 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
     - Parameter duration: Duration of the animation.
     */
     func startInteractiveTransition (forState state: CardState, duration: TimeInterval) {
+        if runningAnimations.isEmpty {
+            animateTransitionIfNeeded(with: state, for: duration, withDampingRatio: 0.8)
+        }
 
-       if runningAnimations.isEmpty {
-           animateTransitionIfNeeded(with: state, for: duration)
-       }
-
-       for animator in runningAnimations {
-           animator.pauseAnimation()
-           animationProgressWhenInterrupted = animator.fractionComplete
-       }
+        for animator in runningAnimations {
+            animator.pauseAnimation()
+            animationProgressWhenInterrupted = animator.fractionComplete
+        }
     }
 
 
@@ -229,37 +245,41 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
        for animator in runningAnimations {
            animator.fractionComplete = fractionCompleted + animationProgressWhenInterrupted
        }
-
-        //print("animator.fractionComplete = \(runningAnimations[0].fractionComplete) and cardVisible =\(cardVisible)")
         
-        // Enable/Disable scroll depending on the cardVisible state
-//        if (runningAnimations[0].fractionComplete == 1) {
-//            cardViewController.tblView.isScrollEnabled = (cardVisible == false) ? true : false
-//        }
     }
 
 
     /**
-    Continues all the remaining animations
+    Continues all remaining animations
     */
     func continueInteractiveTransition() {
-       for animator in runningAnimations {
-           animator.continueAnimation(withTimingParameters: nil, durationFactor: 0)
-       }
+        for animator in runningAnimations {
+            animator.continueAnimation(withTimingParameters: nil, durationFactor: 0)
+        }
     }
 
+    /**
+    Stops all animations
+    */
+    func stopInteractiveTransition() {
+//        for animator in runningAnimations {
+//            animator.stopAnimation(true)
+//        cardVisible = !self.cardVisible
+//        runningAnimations.removeAll()
+    }
+    
     
     
     /**
     Creates array of animations and starts them
 
-    - Parameter state: The card state which is either "Expanded" or "Collapsed".
+    - Parameter state: The card state which is either ".Expanded" or ".Collapsed".
     - Parameter duration: Duration of the animation.
     */
-    func animateTransitionIfNeeded (with state: CardState, for duration: TimeInterval) {
+    func animateTransitionIfNeeded (with state: CardState, for duration: TimeInterval, withDampingRatio dumpingRatio: CGFloat) {
 
         /* Size animation*/
-        let frameAnimator = UIViewPropertyAnimator(duration: duration, dampingRatio: 1) {
+        let frameAnimator = UIViewPropertyAnimator(duration: duration, dampingRatio: dumpingRatio) {
 
             switch state {
             case .Expanded:
@@ -273,6 +293,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
         frameAnimator.addCompletion { _ in
             self.cardVisible = !self.cardVisible
             self.runningAnimations.removeAll()
+            self.cardViewController.tblView.isUserInteractionEnabled = true
         }
 
         frameAnimator.startAnimation()
@@ -280,7 +301,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
 
 
         /* Blur animation*/
-        let blurAnimator = UIViewPropertyAnimator(duration: duration, dampingRatio: 1) {
+        let blurAnimator = UIViewPropertyAnimator(duration: duration, dampingRatio: dumpingRatio) {
             switch state {
             case .Expanded:
                 self.visualEffectView.effect = UIBlurEffect(style: .dark)
