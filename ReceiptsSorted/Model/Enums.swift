@@ -17,3 +17,4 @@ enum ImageSource {
 enum CardState {
     case Expanded, Collapsed
 }
+

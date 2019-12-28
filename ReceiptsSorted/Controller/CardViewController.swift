@@ -67,7 +67,9 @@ class CardViewController: UIViewController, UITableViewDataSource, UITableViewDe
         // Set TableView height
         tblView.frame.size.height = cardHeight * 4/5
         
-        tblView.isScrollEnabled = false
+        
+        
+//        tblView.isScrollEnabled = false
     }
 
     
@@ -90,7 +92,7 @@ class CardViewController: UIViewController, UITableViewDataSource, UITableViewDe
         cell.separatorInset = UIEdgeInsets.zero
         
         
-        print("\(cell.amountPaidText.text!)  \(cell.dateText.text!)")
+        //print("\(cell.amountPaidText.text!)  \(cell.dateText.text!)")
         return cell
     }
     
@@ -148,16 +150,16 @@ class CardViewController: UIViewController, UITableViewDataSource, UITableViewDe
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
-    
+
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        
+
         if (editingStyle == .delete) {
             payments.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .automatic)
         }
     }
-    
-    
+
+
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let contextItem = UIContextualAction(style: .destructive, title: "✓") {  (contextualAction, view, boolValue) in
             self.tblView.dataSource?.tableView!(self.tblView, commit: .delete, forRowAt: indexPath)

@@ -12,7 +12,7 @@ var cardHeight: CGFloat = 0
 
 
 
-class ViewController: UIViewController, UINavigationControllerDelegate  {
+class ViewController: UIViewController, UINavigationControllerDelegate, UIGestureRecognizerDelegate  {
 
     @IBOutlet var imageTake: UIImageView!
     
@@ -24,8 +24,6 @@ class ViewController: UIViewController, UINavigationControllerDelegate  {
     @IBOutlet weak var emailView: UIView!
     
     var imageCmd = ImageCommands()
-    
-    
     
     var cardViewController : CardViewController!
     var visualEffectView : UIVisualEffectView!  //For blur
@@ -55,6 +53,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate  {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
+        
         imageCmd.mainView = self
         
         setupButtons()
@@ -71,11 +71,9 @@ class ViewController: UIViewController, UINavigationControllerDelegate  {
     func setupButtons() {
         plusButton.layer.cornerRadius = plusButton.frame.height / 2
         emailView.layer.cornerRadius = emailView.frame.height / 2
+        
         //emailButton.layer.cornerRadius = emailButton.frame.height / 2
         calendarButton.layer.cornerRadius = calendarButton.frame.height / 2
-        
-        //emailButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: -20)
-        emailButton.imageView?.contentScaleFactor = 2.0
     }
     
     
@@ -100,77 +98,102 @@ class ViewController: UIViewController, UINavigationControllerDelegate  {
         let tapGestureRecogniser = UITapGestureRecognizer(target: self, action: #selector(ViewController.handleCardTap(recogniser:)))
         let panGestureRecogniser = UIPanGestureRecognizer(target: self, action: #selector(ViewController.handleCardPan(recogniser:)))
         
+        panGestureRecogniser.delegate = self
+        
         // Add gestures for Handle Area in the CardViewController.xib
         cardViewController.handleArea.addGestureRecognizer(tapGestureRecogniser)
         cardViewController.handleArea.addGestureRecognizer(panGestureRecogniser)
         
-        
-        
-//        let swipeUp = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipeGesture))
-//        swipeUp.direction = .up
-//        cardViewController.tblView.addGestureRecognizer(swipeUp)
-//
-//        let swipeDown = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipeGesture))
-//        swipeDown.direction = .down
-//        cardViewController.tblView.addGestureRecognizer(swipeDown)
+        cardViewController.tblView.addGestureRecognizer(panGestureRecogniser)
         
     }
     
     
     //MARK: - Handling Gestures
 
+    //Deactivates PanGesture for TableView if the movement is horizontal
+    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        if let panGestureRecognizer = gestureRecognizer as? UIPanGestureRecognizer {
+            let translation = panGestureRecognizer.translation(in: self.cardViewController.tblView)
+            
+            //print("x = \(translation.x)      y = \(translation.y)")
+            if abs(translation.x) < abs(translation.y) {
+                return true
+            }
+            return false
+        }
+        return false
+    }
     
     
-//    @objc func handleSwipeGesture(gesture: UISwipeGestureRecognizer) {
-//        if gesture.direction == .up {
-//             print("Swipe Up")
+    
+
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer,
+             shouldRequireFailureOf otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+
+//        print("gesture = \(gestureRecognizer)")
+//        print("otherGesture = \(otherGestureRecognizer)")
+        
+    
+        if (gestureRecognizer is UIPanGestureRecognizer ) {
+            
+            print(cardViewController.tblView.contentOffset.y)
+            if (cardViewController.tblView.contentOffset.y <= 0) {
+                
+                return false
+            }
+            else {
+                //print("true")
+                return true
+            }
+        }
+
+        
+        //print("OUTSIDE false")
+       return false
+    }
+    
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+//        if (gestureRecognizer is UIPanGestureRecognizer || gestureRecognizer is UISwipeGestureRecognizer) {
+//            return true
+//        } else {
+//            return false
 //        }
-//
-//        if gesture.direction == .down {
-//             print("Swipe Down")
-//        }
-//    }
-    
+        
+        return true
+    }
     
     
     @objc func handleCardTap(recogniser: UITapGestureRecognizer) {
-        animateTransitionIfNeeded(with: nextState, for: 1)
+        animateTransitionIfNeeded(with: nextState, for: 0.7)
         
         // Enable/Disable scroll depending on the cardVisible state
-        cardViewController.tblView.isScrollEnabled = (cardVisible == false) ? true : false
+        //cardViewController.tblView.isScrollEnabled = (cardVisible == false) ? true : false
         
     }
 
 
     @objc func handleCardPan (recogniser: UIPanGestureRecognizer) {
+        
+        switch recogniser.state{
+        case .began:
+            startInteractiveTransition(forState: nextState, duration: 0.7)
 
-//        let velocityX = recogniser.velocity(in: self.view).x
-//        let velocityY = recogniser.velocity(in: self.view).y
-//
-//
-//
-//        print("x = \(abs(velocityX))     y = \(abs(velocityY))")
-//        if (abs(velocityY) > abs(velocityX)) {
-//
-            switch recogniser.state{
-            case .began:
-                startInteractiveTransition(forState: nextState, duration: 1)
+        case .changed:
+            let translation = recogniser.translation(in: self.cardViewController.handleArea)
+            var fractionComplete = translation.y / (cardStartPointY - self.view.frame.size.height + cardHeight)
+            fractionComplete = cardVisible ? fractionComplete : -fractionComplete
+            
+            updateInteractiveTransition(fractionCompleted: fractionComplete)
 
-            case .changed:
-                let translation = recogniser.translation(in: self.cardViewController.handleArea)
-                var fractionComplete = translation.y / (cardStartPointY - self.view.frame.size.height + cardHeight)
-                fractionComplete = cardVisible ? fractionComplete : -fractionComplete
-                
-                updateInteractiveTransition(fractionCompleted: fractionComplete)
+        case .ended:
+            continueInteractiveTransition()
+            // Enable/Disable scroll depending on the cardVisible state
+            //cardViewController.tblView.isScrollEnabled = (cardVisible == false) ? true : false
 
-            case .ended:
-                continueInteractiveTransition()
-                //cardViewController.tableView.isUserInteractionEnabled = true
-
-            default:
-                break
-            }
-//        }
+        default:
+            break
+        }
 
     }
     
@@ -207,12 +230,12 @@ class ViewController: UIViewController, UINavigationControllerDelegate  {
            animator.fractionComplete = fractionCompleted + animationProgressWhenInterrupted
        }
 
-        print("animator.fractionComplete = \(runningAnimations[0].fractionComplete)")
+        //print("animator.fractionComplete = \(runningAnimations[0].fractionComplete) and cardVisible =\(cardVisible)")
         
         // Enable/Disable scroll depending on the cardVisible state
-        if (runningAnimations[0].fractionComplete == 1) {
-            cardViewController.tblView.isScrollEnabled = (cardVisible == false) ? true : false
-        }
+//        if (runningAnimations[0].fractionComplete == 1) {
+//            cardViewController.tblView.isScrollEnabled = (cardVisible == false) ? true : false
+//        }
     }
 
 
@@ -223,9 +246,6 @@ class ViewController: UIViewController, UINavigationControllerDelegate  {
        for animator in runningAnimations {
            animator.continueAnimation(withTimingParameters: nil, durationFactor: 0)
        }
-        
-        // Enable/Disable scroll depending on the cardVisible state
-        cardViewController.tblView.isScrollEnabled = (cardVisible == false) ? true : false
     }
 
     
