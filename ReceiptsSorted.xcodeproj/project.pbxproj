@@ -101,6 +101,8 @@
 			children = (
 				B5377C0523A82E280010B144 /* Main.storyboard */,
 				B5377C0A23A82E2A0010B144 /* LaunchScreen.storyboard */,
+				B59E3E2223B44DE80017D474 /* CardViewController.xib */,
+				B59E3E2623B50D9F0017D474 /* PaymentTableViewCell.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -110,9 +112,7 @@
 			children = (
 				B5377C0323A82E280010B144 /* ViewController.swift */,
 				B59E3E2123B44DE80017D474 /* CardViewController.swift */,
-				B59E3E2223B44DE80017D474 /* CardViewController.xib */,
 				B59E3E2523B50D9F0017D474 /* PaymentTableViewCell.swift */,
-				B59E3E2623B50D9F0017D474 /* PaymentTableViewCell.xib */,
 				B573FA9923B81EC8005473D2 /* PaymentViewController.swift */,
 			);
 			path = Controller;

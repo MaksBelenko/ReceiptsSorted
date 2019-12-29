@@ -18,11 +18,6 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
     
     var imagePicker: UIImagePickerController!
     
-    @IBOutlet weak var plusButton: UIButton!
-    //@IBOutlet weak var emailButton: UIButton!
-    //@IBOutlet weak var calendarButton: UIButton!
-    //@IBOutlet weak var emailView: UIView!
-    
     var imageCmd = ImageCommands()
     
     var cardViewController : CardViewController!
@@ -61,7 +56,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
         
         
         setupCard()
-        setupAddButton(withSize: 90)
+        setupAddButton(withSize: self.view.frame.size.width / 4.5)
 
     }
 
@@ -69,8 +64,6 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
     
     //MARK: - Setup Button
     func setupAddButton(withSize buttonSize: CGFloat) {
-        plusButton.layer.cornerRadius = plusButton.frame.height / 2
-        
         
         let addButton = UIButton(type: .system)
         
@@ -80,20 +73,20 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
         addButton.backgroundColor = UIColor(rgb: 0xEDB200)
         
         addButton.setTitle("+", for: .normal)
-        addButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 80)
+        addButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 70)
         addButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 7, right: 0)
         addButton.setTitleColor(.white, for: .normal)
         
         addButton.addTarget(self, action: #selector(ViewController.handleAddButton), for: UIControl.Event.touchUpInside)
         self.view.addSubview(addButton)
         
-        addButton.layer.applyShadow(color: .black, alpha: 0.2, x: 5, y: 10, blur: 10)
+        addButton.layer.applyShadow(color: .black, alpha: 0.25, x: 5, y: 10, blur: 10)
         addButton.layer.cornerRadius = buttonSize/2
     }
     
     
     @objc func handleAddButton () {
-        print("Hi")
+        imageCmd.handleAddButton()
     }
     
     
@@ -341,13 +334,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
     
     
     
-    
 
-    
-    @IBAction func addNewReceipt(_ sender: UIButton) {
-   
-        imageCmd.handleAddButton()
-    }
    
     
     
