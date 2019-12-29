@@ -10,6 +10,8 @@ import UIKit
 
 class PaymentViewController: UIViewController {
 
+    var passedImage: UIImage? = nil
+    
     @IBOutlet weak var receiptImageView: UIImageView!
     @IBOutlet weak var amountPaidTextField: UITextField!
     @IBOutlet weak var placeOfPurchaseTextField: UITextField!
@@ -19,11 +21,16 @@ class PaymentViewController: UIViewController {
     let wetAsphaltCGColor = UIColor(red:0.20, green:0.29, blue:0.37, alpha:1.0)
     
     
+    //set Status Bar icons to white
+    override var preferredStatusBarStyle: UIStatusBarStyle { return .darkContent }
+    
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        receiptImageView.image = passedImage
+        
         setupTextFields()
         setupAddButton()
         
@@ -32,7 +39,7 @@ class PaymentViewController: UIViewController {
 
     func setupAddButton() {
         addButton.layer.cornerRadius = addButton.frame.size.height/2
-        addButton.layer.applyShadow(color: .black, alpha: 0.3, x: 5, y: 10, blur: 15)
+        addButton.layer.applyShadow(color: .black, alpha: 0.25, x: 5, y: 10, blur: 10)
     }
     
     
@@ -40,6 +47,9 @@ class PaymentViewController: UIViewController {
         drawBottomLine(for: amountPaidTextField)
         drawBottomLine(for: placeOfPurchaseTextField)
         drawBottomLine(for: dateTextField)
+        
+        //Disable keyboard
+        dateTextField.inputView = UIView()
     }
     
     
@@ -52,14 +62,45 @@ class PaymentViewController: UIViewController {
     }
     
     
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    
+    //MARK: - Fields actions
+    
+    @IBAction func startedEditingAmountPaid(_ sender: UITextField) {
+        showTextPopup()
     }
-    */
+    
+    
+    
+    @IBAction func startedEditingPlace(_ sender: UITextField) {
+        showTextPopup()
+    }
+    
+    
+    func showTextPopup() {
+        if let textPopupVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "TextPopupViewController") as? TextPopupViewController
+        {
+            textPopupVC.modalPresentationStyle = .overCurrentContext
+            self.present(textPopupVC, animated: true, completion: nil)
+        }
+    }
+    
+    
+    
+    @IBAction func startedEditingDate(_ sender: Any) {
+        if let datePopupVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DatePopupViewController") as?  DatePopupViewController
+        {
+            datePopupVC.modalPresentationStyle = .overCurrentContext
+            self.present(datePopupVC, animated: true, completion: nil)
+        }
+    }
+    
+    
+    
+    //MARK: - Add Button actions
+    
+    @IBAction func pressedAddButton(_ sender: UIButton) {
+        self.dismiss(animated: true, completion: nil)
+    }
+    
 
 }

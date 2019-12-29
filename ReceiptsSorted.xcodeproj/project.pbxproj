@@ -14,7 +14,8 @@
 		B5377C0923A82E2A0010B144 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B5377C0823A82E2A0010B144 /* Assets.xcassets */; };
 		B5377C0C23A82E2A0010B144 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B5377C0A23A82E2A0010B144 /* LaunchScreen.storyboard */; };
 		B573FA9A23B81EC8005473D2 /* PaymentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B573FA9923B81EC8005473D2 /* PaymentViewController.swift */; };
-		B59E3E1C23B42E070017D474 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B59E3E1B23B42E070017D474 /* Default-568h@2x.png */; };
+		B573FA9C23B9334A005473D2 /* DatePopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B573FA9B23B9334A005473D2 /* DatePopupViewController.swift */; };
+		B573FAA223B94BB2005473D2 /* TextPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B573FAA123B94BB2005473D2 /* TextPopupViewController.swift */; };
 		B59E3E2023B43FE50017D474 /* ImageCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59E3E1F23B43FE50017D474 /* ImageCommands.swift */; };
 		B59E3E2323B44DE80017D474 /* CardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59E3E2123B44DE80017D474 /* CardViewController.swift */; };
 		B59E3E2423B44DE80017D474 /* CardViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B59E3E2223B44DE80017D474 /* CardViewController.xib */; };
@@ -34,7 +35,8 @@
 		B5377C0B23A82E2A0010B144 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B5377C0D23A82E2A0010B144 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B573FA9923B81EC8005473D2 /* PaymentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentViewController.swift; sourceTree = "<group>"; };
-		B59E3E1B23B42E070017D474 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		B573FA9B23B9334A005473D2 /* DatePopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePopupViewController.swift; sourceTree = "<group>"; };
+		B573FAA123B94BB2005473D2 /* TextPopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextPopupViewController.swift; sourceTree = "<group>"; };
 		B59E3E1F23B43FE50017D474 /* ImageCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCommands.swift; sourceTree = "<group>"; };
 		B59E3E2123B44DE80017D474 /* CardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardViewController.swift; sourceTree = "<group>"; };
 		B59E3E2223B44DE80017D474 /* CardViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CardViewController.xib; sourceTree = "<group>"; };
@@ -58,7 +60,6 @@
 		B5377BF323A82E280010B144 = {
 			isa = PBXGroup;
 			children = (
-				B59E3E1B23B42E070017D474 /* Default-568h@2x.png */,
 				B5377BFE23A82E280010B144 /* ReceiptsSorted */,
 				B5377BFD23A82E280010B144 /* Products */,
 			);
@@ -114,6 +115,8 @@
 				B59E3E2123B44DE80017D474 /* CardViewController.swift */,
 				B59E3E2523B50D9F0017D474 /* PaymentTableViewCell.swift */,
 				B573FA9923B81EC8005473D2 /* PaymentViewController.swift */,
+				B573FA9B23B9334A005473D2 /* DatePopupViewController.swift */,
+				B573FAA123B94BB2005473D2 /* TextPopupViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -179,7 +182,6 @@
 				B59E3E2823B50D9F0017D474 /* PaymentTableViewCell.xib in Resources */,
 				B5377C0C23A82E2A0010B144 /* LaunchScreen.storyboard in Resources */,
 				B5377C0923A82E2A0010B144 /* Assets.xcassets in Resources */,
-				B59E3E1C23B42E070017D474 /* Default-568h@2x.png in Resources */,
 				B59E3E2423B44DE80017D474 /* CardViewController.xib in Resources */,
 				B5377C0723A82E280010B144 /* Main.storyboard in Resources */,
 			);
@@ -194,6 +196,7 @@
 			files = (
 				B5377C0423A82E280010B144 /* ViewController.swift in Sources */,
 				B59E3E2023B43FE50017D474 /* ImageCommands.swift in Sources */,
+				B573FAA223B94BB2005473D2 /* TextPopupViewController.swift in Sources */,
 				B59E3E2A23B51B030017D474 /* testModel.swift in Sources */,
 				B59E3E2723B50D9F0017D474 /* PaymentTableViewCell.swift in Sources */,
 				B5377C0023A82E280010B144 /* AppDelegate.swift in Sources */,
@@ -201,6 +204,7 @@
 				B59E3E2C23B53FEF0017D474 /* Enums.swift in Sources */,
 				B573FA9A23B81EC8005473D2 /* PaymentViewController.swift in Sources */,
 				B5377C0223A82E280010B144 /* SceneDelegate.swift in Sources */,
+				B573FA9C23B9334A005473D2 /* DatePopupViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -14,10 +14,6 @@ class ImageCommands {
     var imagePicker: UIImagePickerController!
     
     
-//    init(mainView: ViewController) {
-//        self.mainView = mainView
-//    }
-    
     
     func handleAddButton() {
         self.getImage(using: .camera)
@@ -76,13 +72,42 @@ class ImageCommands {
                 imagePicker.sourceType = .photoLibrary
         }
         mainView.imagePicker = imagePicker //set imagePicker for ViewController
+        //mainView.present(imagePicker, animated: true, completion: nil)
         mainView.present(imagePicker, animated: true, completion: nil)
     }
     
     
     
     
+    //MARK: - Show Payment ViewController
     
+    func actionsOnFinishPickingMedia(imagePicker: UIImagePickerController, info: [UIImagePickerController.InfoKey : Any]) {
+
+        imagePicker.dismiss(animated: false, completion: nil)
+        guard let selectedImage = info[.originalImage] as? UIImage else {
+            print("Image not found!")
+            return
+        }
+
+        showPaymentVC(withImage: selectedImage)
+    }
+       
+       
+    func showPaymentVC(withImage image: UIImage) {
+
+        if let paymentVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "PaymentDetails") as? PaymentViewController
+        {
+            paymentVC.passedImage = image
+            paymentVC.modalPresentationStyle = .fullScreen
+            mainView.present(paymentVC, animated: false, completion: nil)
+        }
+    }
+    
+    
+    
+    
+    
+    //MARK: - Show Alert method
     func showAlertWith(title: String, message: String){
         let ac = UIAlertController(title: title, message: message, preferredStyle: .alert)
         ac.addAction(UIAlertAction(title: "OK", style: .default))

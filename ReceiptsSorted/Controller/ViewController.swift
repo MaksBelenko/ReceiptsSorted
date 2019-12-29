@@ -372,13 +372,9 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
  extension ViewController: UIImagePickerControllerDelegate{
 
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]){
-        imagePicker.dismiss(animated: true, completion: nil)
-        guard let selectedImage = info[.originalImage] as? UIImage else {
-            print("Image not found!")
-            return
-        }
-        imageTake.image = selectedImage
+        imageCmd.actionsOnFinishPickingMedia(imagePicker: imagePicker, info: info)
     }
+    
 }
 
 
