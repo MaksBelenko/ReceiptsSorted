@@ -49,7 +49,7 @@ class PaymentViewController: UIViewController {
         drawBottomLine(for: dateTextField)
         
         //Disable keyboard
-        dateTextField.inputView = UIView()
+        //dateTextField.inputView = UIView()
     }
     
     
@@ -66,22 +66,23 @@ class PaymentViewController: UIViewController {
     //MARK: - Fields actions
     
     @IBAction func startedEditingAmountPaid(_ sender: UITextField) {
-        showTextPopup(label: "Amount paid:", numericText: amountPaidTextField.text ?? "")
+        showTextPopup(popupType: .AmountPaid, numericText: amountPaidTextField.text ?? "")
     }
     
     
     
     @IBAction func startedEditingPlace(_ sender: UITextField) {
-        showTextPopup(label: "Place of purchase:", numericText: placeOfPurchaseTextField.text ?? "")
+        showTextPopup(popupType: .Place, numericText: placeOfPurchaseTextField.text ?? "")
     }
     
     
-    func showTextPopup(label: String, numericText: String) {
+    func showTextPopup(popupType: PopupType, numericText: String) {
         if let textPopupVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "TextPopupViewController") as? TextPopupViewController
         {
-            textPopupVC.passedLabel = label
+            textPopupVC.popupType = popupType
             textPopupVC.passedNumericText = numericText
             
+            textPopupVC.delegate = self
             textPopupVC.modalPresentationStyle = .overCurrentContext
             self.present(textPopupVC, animated: true, completion: nil)
         }
@@ -90,8 +91,11 @@ class PaymentViewController: UIViewController {
     
     
     @IBAction func startedEditingDate(_ sender: Any) {
+        dateTextField.resignFirstResponder()
+        
         if let datePopupVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DatePopupViewController") as?  DatePopupViewController
         {
+            datePopupVC.delegate = self
             datePopupVC.modalPresentationStyle = .overCurrentContext
             self.present(datePopupVC, animated: true, completion: nil)
         }
@@ -106,4 +110,23 @@ class PaymentViewController: UIViewController {
     }
     
 
+}
+
+
+
+
+
+//MARK:- Extensions
+extension PaymentViewController: PopupDelegate {
+    
+    func setAmountPaidValue(value: String) {
+        amountPaidTextField.text = value
+    }
+    func setPlaceValue(value: String) {
+        placeOfPurchaseTextField.text = value
+    }
+    func setDatepopupValue(value: String) {
+        dateTextField.text = value
+    }
+    
 }

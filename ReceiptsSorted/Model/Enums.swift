@@ -18,3 +18,6 @@ enum CardState {
     case Expanded, Collapsed
 }
 
+enum PopupType {
+    case AmountPaid, Place
+}

@@ -8,28 +8,35 @@
 
 import UIKit
 
-class TextPopupViewController: UIViewController {
+
+class TextPopupViewController: UIViewController, UITextFieldDelegate {
 
     var passedLabel: String = ""
     var passedNumericText: String = ""
+    var popupType: PopupType?
     
     @IBOutlet weak var topLabel: UILabel!
     @IBOutlet weak var numericTextField: UITextField!
     @IBOutlet weak var insertButton: UIButton!
     @IBOutlet weak var popupView: UIView!
     
+    var delegate: PopupDelegate?
     
+    
+    //"Amount paid:"
+    //"Place of purchase:"
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        setupPopupLook()
+        topLabel.text = (popupType! == .AmountPaid) ? "Amount paid:" : "Place of purchase:"
         
-        topLabel.text = passedLabel
+        numericTextField.delegate = self
         numericTextField.text = passedNumericText
-        
         // Force start editing text
         numericTextField.becomeFirstResponder()
+        
+        setupPopupLook()
     }
     
     
@@ -42,12 +49,27 @@ class TextPopupViewController: UIViewController {
     
     
     @IBAction func pressedInsertButton(_ sender: UIButton) {
-        dismiss(animated: true, completion: onSavePressed)
+        onDismissVC()
     }
     
     
-    func onSavePressed() {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        onDismissVC()
+        return false
+    }
+    
+    
+    func onDismissVC() {
         
+        if (popupType! == .AmountPaid) {
+            delegate?.setAmountPaidValue(value: numericTextField.text!)
+        } else {
+            delegate?.setPlaceValue(value: numericTextField.text!)
+        }
+        
+        dismiss(animated: true, completion: nil)
+        self.view.endEditing(true)
     }
+    
 
 }

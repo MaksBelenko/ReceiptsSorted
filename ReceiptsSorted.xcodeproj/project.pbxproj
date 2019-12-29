@@ -16,6 +16,8 @@
 		B573FA9A23B81EC8005473D2 /* PaymentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B573FA9923B81EC8005473D2 /* PaymentViewController.swift */; };
 		B573FA9C23B9334A005473D2 /* DatePopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B573FA9B23B9334A005473D2 /* DatePopupViewController.swift */; };
 		B573FAA223B94BB2005473D2 /* TextPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B573FAA123B94BB2005473D2 /* TextPopupViewController.swift */; };
+		B573FAA423B95F57005473D2 /* PopupDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B573FAA323B95F57005473D2 /* PopupDelegate.swift */; };
+		B573FAA623B96157005473D2 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B573FAA523B96157005473D2 /* Extensions.swift */; };
 		B59E3E2023B43FE50017D474 /* ImageCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59E3E1F23B43FE50017D474 /* ImageCommands.swift */; };
 		B59E3E2323B44DE80017D474 /* CardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59E3E2123B44DE80017D474 /* CardViewController.swift */; };
 		B59E3E2423B44DE80017D474 /* CardViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B59E3E2223B44DE80017D474 /* CardViewController.xib */; };
@@ -37,6 +39,8 @@
 		B573FA9923B81EC8005473D2 /* PaymentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentViewController.swift; sourceTree = "<group>"; };
 		B573FA9B23B9334A005473D2 /* DatePopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePopupViewController.swift; sourceTree = "<group>"; };
 		B573FAA123B94BB2005473D2 /* TextPopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextPopupViewController.swift; sourceTree = "<group>"; };
+		B573FAA323B95F57005473D2 /* PopupDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupDelegate.swift; sourceTree = "<group>"; };
+		B573FAA523B96157005473D2 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		B59E3E1F23B43FE50017D474 /* ImageCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCommands.swift; sourceTree = "<group>"; };
 		B59E3E2123B44DE80017D474 /* CardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardViewController.swift; sourceTree = "<group>"; };
 		B59E3E2223B44DE80017D474 /* CardViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CardViewController.xib; sourceTree = "<group>"; };
@@ -93,6 +97,8 @@
 				B59E3E1F23B43FE50017D474 /* ImageCommands.swift */,
 				B59E3E2923B51B030017D474 /* testModel.swift */,
 				B59E3E2B23B53FEF0017D474 /* Enums.swift */,
+				B573FAA323B95F57005473D2 /* PopupDelegate.swift */,
+				B573FAA523B96157005473D2 /* Extensions.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -199,8 +205,10 @@
 				B573FAA223B94BB2005473D2 /* TextPopupViewController.swift in Sources */,
 				B59E3E2A23B51B030017D474 /* testModel.swift in Sources */,
 				B59E3E2723B50D9F0017D474 /* PaymentTableViewCell.swift in Sources */,
+				B573FAA423B95F57005473D2 /* PopupDelegate.swift in Sources */,
 				B5377C0023A82E280010B144 /* AppDelegate.swift in Sources */,
 				B59E3E2323B44DE80017D474 /* CardViewController.swift in Sources */,
+				B573FAA623B96157005473D2 /* Extensions.swift in Sources */,
 				B59E3E2C23B53FEF0017D474 /* Enums.swift in Sources */,
 				B573FA9A23B81EC8005473D2 /* PaymentViewController.swift in Sources */,
 				B5377C0223A82E280010B144 /* SceneDelegate.swift in Sources */,
