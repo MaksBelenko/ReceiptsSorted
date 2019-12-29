@@ -66,19 +66,22 @@ class PaymentViewController: UIViewController {
     //MARK: - Fields actions
     
     @IBAction func startedEditingAmountPaid(_ sender: UITextField) {
-        showTextPopup()
+        showTextPopup(label: "Amount paid:", numericText: amountPaidTextField.text ?? "")
     }
     
     
     
     @IBAction func startedEditingPlace(_ sender: UITextField) {
-        showTextPopup()
+        showTextPopup(label: "Place of purchase:", numericText: placeOfPurchaseTextField.text ?? "")
     }
     
     
-    func showTextPopup() {
+    func showTextPopup(label: String, numericText: String) {
         if let textPopupVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "TextPopupViewController") as? TextPopupViewController
         {
+            textPopupVC.passedLabel = label
+            textPopupVC.passedNumericText = numericText
+            
             textPopupVC.modalPresentationStyle = .overCurrentContext
             self.present(textPopupVC, animated: true, completion: nil)
         }
