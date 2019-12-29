@@ -19,9 +19,9 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
     var imagePicker: UIImagePickerController!
     
     @IBOutlet weak var plusButton: UIButton!
-    @IBOutlet weak var emailButton: UIButton!
-    @IBOutlet weak var calendarButton: UIButton!
-    @IBOutlet weak var emailView: UIView!
+    //@IBOutlet weak var emailButton: UIButton!
+    //@IBOutlet weak var calendarButton: UIButton!
+    //@IBOutlet weak var emailView: UIView!
     
     var imageCmd = ImageCommands()
     
@@ -56,35 +56,54 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
         super.viewDidLoad()
         
         
-        
         imageCmd.mainView = self
         
-        setupButtons()
         
-        
-        cardStartPointY = self.view.frame.size.height * 2/3
-        cardHeight = self.view.frame.size.height * 9/10
         
         setupCard()
-        cardViewController.view.layer.cornerRadius = 30
+        setupAddButton(withSize: 90)
+
     }
 
     
     
-    
-    func setupButtons() {
+    //MARK: - Setup Button
+    func setupAddButton(withSize buttonSize: CGFloat) {
         plusButton.layer.cornerRadius = plusButton.frame.height / 2
-        emailView.layer.cornerRadius = emailView.frame.height / 2
         
-        //emailButton.layer.cornerRadius = emailButton.frame.height / 2
-        calendarButton.layer.cornerRadius = calendarButton.frame.height / 2
+        
+        let addButton = UIButton(type: .system)
+        
+        let buttonPositionX = self.view.frame.size.width - buttonSize - self.view.frame.size.width/20
+        let buttonPositionY = self.view.frame.size.height - buttonSize - self.view.frame.size.height/18
+        addButton.frame = CGRect(x: buttonPositionX, y: buttonPositionY, width: buttonSize, height: buttonSize)
+        addButton.backgroundColor = UIColor(rgb: 0xEDB200)
+        
+        addButton.setTitle("+", for: .normal)
+        addButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 80)
+        addButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 7, right: 0)
+        addButton.setTitleColor(.white, for: .normal)
+        
+        addButton.addTarget(self, action: #selector(ViewController.handleAddButton), for: UIControl.Event.touchUpInside)
+        self.view.addSubview(addButton)
+        
+        addButton.layer.applyShadow(color: .black, alpha: 0.2, x: 5, y: 10, blur: 10)
+        addButton.layer.cornerRadius = buttonSize/2
     }
     
+    
+    @objc func handleAddButton () {
+        print("Hi")
+    }
     
     
     //MARK: - Card Setup
     
     func setupCard() {
+        cardStartPointY = self.view.frame.size.height * 1/2
+        cardHeight = self.view.frame.size.height * 19/20
+        
+        
         visualEffectView = UIVisualEffectView()
         visualEffectView.frame = self.view.frame
         visualEffectView.isUserInteractionEnabled = false
@@ -98,6 +117,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
         cardViewController.view.frame = CGRect(x: 0, y: cardStartPointY , width: self.view.bounds.width, height: cardHeight)
         
         cardViewController.view.clipsToBounds = true
+        cardViewController.view.layer.cornerRadius = 30
         
         // Create gesture recognisers
         let tapGestureRecogniser = UITapGestureRecognizer(target: self, action: #selector(ViewController.handleCardTap(recogniser:)))
@@ -373,5 +393,20 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
         imageTake.image = selectedImage
     }
 }
+
+
+
+extension CALayer {
+  func applyShadow(color: UIColor = .black, alpha: Float = 0.5, x: CGFloat = 0, y: CGFloat = 2, blur: CGFloat = 4) {
+    shadowColor = color.cgColor
+    shadowOpacity = alpha
+    shadowOffset = CGSize(width: x, height: y)
+    shadowRadius = blur / 2.0
+
+  }
+}
+
+
+
 
 

@@ -14,29 +14,34 @@ class ImageCommands {
     var imagePicker: UIImagePickerController!
     
     
+//    init(mainView: ViewController) {
+//        self.mainView = mainView
+//    }
     
     
     func handleAddButton() {
-        let actionSheet = UIAlertController( title: nil, message: nil, preferredStyle: .actionSheet)
-
-        actionSheet.addAction(UIAlertAction(title: "Take a photo", style: .default , handler:{ (UIAlertAction) in
-            print("User Take Photo button")
-            self.getImage(using: .camera)
-            
-        }))
-
-        actionSheet.addAction(UIAlertAction(title: "Choose from Gallery", style: .default , handler:{ (UIAlertAction) in
-            print("User Choose from Gallery button")
-            self.getImage(using: .photoLibrary)
-        }))
-
-        actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler:{ (UIAlertAction) in
-            print("User click Cancel button")
-        }))
-
-        mainView.present(actionSheet, animated: true, completion: {
-            print("completion block")
-        })
+        self.getImage(using: .camera)
+        
+//        let actionSheet = UIAlertController( title: nil, message: nil, preferredStyle: .actionSheet)
+//
+//        actionSheet.addAction(UIAlertAction(title: "Take a photo", style: .default , handler:{ (UIAlertAction) in
+//            print("User Take Photo button")
+//            self.getImage(using: .camera)
+//
+//        }))
+//
+//        actionSheet.addAction(UIAlertAction(title: "Choose from Gallery", style: .default , handler:{ (UIAlertAction) in
+//            print("User Choose from Gallery button")
+//            self.getImage(using: .photoLibrary)
+//        }))
+//
+//        actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler:{ (UIAlertAction) in
+//            print("User click Cancel button")
+//        }))
+//
+//        mainView.present(actionSheet, animated: true, completion: {
+//            print("completion block")
+//        })
     }
     
     

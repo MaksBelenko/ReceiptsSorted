@@ -29,8 +29,8 @@
                     <rect key="frame" x="0.0" y="0.0" width="414" height="29"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES" flexibleMaxY="YES"/>
                     <subviews>
-                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="chevron.compact.down" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="yRr-3K-Ve6">
-                            <rect key="frame" x="185" y="7" width="43" height="15"/>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="chevron.compact.up" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="yRr-3K-Ve6">
+                            <rect key="frame" x="181" y="4" width="52" height="22"/>
                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </imageView>
@@ -45,6 +45,6 @@
         </view>
     </objects>
     <resources>
-        <image name="chevron.compact.down" catalog="system" width="64" height="20"/>
+        <image name="chevron.compact.up" catalog="system" width="64" height="20"/>
     </resources>
 </document>
