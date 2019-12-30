@@ -93,6 +93,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
         cameraVC.transitioningDelegate = self
         cameraVC.modalPresentationStyle = .custom
         
+        cameraVC.controllerFrame = self.view.frame
         
         self.present(cameraVC, animated: true, completion: nil)
         

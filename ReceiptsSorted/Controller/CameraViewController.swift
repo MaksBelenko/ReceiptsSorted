@@ -11,6 +11,8 @@ import AVFoundation
 
 class CameraViewController: UIViewController {
 
+    var controllerFrame: CGRect?
+    
     var captureSession = AVCaptureSession()
     var backCamera: AVCaptureDevice?
     var frontCamera: AVCaptureDevice?
@@ -18,6 +20,11 @@ class CameraViewController: UIViewController {
     
     var photoOutput: AVCapturePhotoOutput?
     var cameraPreviewLayer: AVCaptureVideoPreviewLayer?
+    var image: UIImage?
+    
+    @IBOutlet weak var takePhotoButton: UIButton!
+    
+    
     
     
     
@@ -25,13 +32,16 @@ class CameraViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        self.view.frame = controllerFrame ?? CGRect(x: 0, y: 0, width: 100, height: 100)
+        
         setupCaptureSession()
         setupDevice()
         setupInputOutput()
         setupPreviewLayer()
         startRunningCaptureSession()
         
-        setupButton(withSize: 100)
+        //setupButton(withSize: 100)
+        takePhotoButton.layer.cornerRadius = takePhotoButton.frame.size.height/2
     }
     
     
@@ -63,7 +73,9 @@ class CameraViewController: UIViewController {
         do {
             let captureDeviceInput = try AVCaptureDeviceInput(device: currentCamera!)
             captureSession.addInput(captureDeviceInput)
+            photoOutput = AVCapturePhotoOutput()
             photoOutput?.setPreparedPhotoSettingsArray([AVCapturePhotoSettings(format: [AVVideoCodecKey: AVVideoCodecType.jpeg])], completionHandler: nil)
+            captureSession.addOutput(photoOutput!)
         } catch {
             print(error)
         }
@@ -75,7 +87,7 @@ class CameraViewController: UIViewController {
         cameraPreviewLayer?.videoGravity = AVLayerVideoGravity.resizeAspectFill
         cameraPreviewLayer?.connection?.videoOrientation = AVCaptureVideoOrientation.portrait
         cameraPreviewLayer?.frame = self.view.frame
-        self.view.layer.addSublayer(cameraPreviewLayer!)
+        self.view.layer.insertSublayer(cameraPreviewLayer!, at: 0)
     }
     
     
@@ -87,31 +99,12 @@ class CameraViewController: UIViewController {
     
     
     
-    func setupButton(withSize buttonSize: CGFloat) {
-        let addButton = UIButton(type: .system)
-        
-        let buttonPositionX = self.view.frame.size.width/2 - buttonSize/2
-        let buttonPositionY = self.view.frame.size.height/2
-        addButton.frame = CGRect(x: buttonPositionX, y: buttonPositionY, width: buttonSize, height: buttonSize)
-        addButton.backgroundColor = UIColor(rgb: 0xEDB200)
-        
-        addButton.setTitle("+", for: .normal)
-        addButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 70)
-        addButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 7, right: 0)
-        addButton.setTitleColor(.white, for: .normal)
-        
-        addButton.addTarget(self, action: #selector(ViewController.handleAddButton), for: UIControl.Event.touchUpInside)
-        self.view.addSubview(addButton)
-        
-        addButton.layer.applyShadow(color: .black, alpha: 0.25, x: 5, y: 10, blur: 10)
-        addButton.layer.cornerRadius = buttonSize/2
-        
+    
+    @IBAction func pressedTakePhotoButton(_ sender: UIButton) {
+        let settings = AVCapturePhotoSettings()
+        photoOutput?.capturePhoto(with: settings, delegate: self)
     }
     
-    @objc func handleAddButton () {
-        showPaymentVC(withImage: UIImage())
-        //dismiss(animated: true, completion: nil)
-    }
     
     func showPaymentVC(withImage image: UIImage) {
 
@@ -123,4 +116,22 @@ class CameraViewController: UIViewController {
         }
     }
 
+    
+}
+
+
+
+
+//MARK: - Extension for photo capture methods
+extension CameraViewController: AVCapturePhotoCaptureDelegate {
+    
+    func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
+        
+        if let imageData = photo.fileDataRepresentation() {
+            image = UIImage(data: imageData)
+            
+            showPaymentVC(withImage: image!)
+        }
+        
+    }
 }
