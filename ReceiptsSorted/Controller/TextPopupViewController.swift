@@ -60,7 +60,6 @@ class TextPopupViewController: UIViewController, UITextFieldDelegate {
     
     
     func onDismissVC() {
-        
         if (popupType! == .AmountPaid) {
             delegate?.setAmountPaidValue(value: numericTextField.text!)
         } else {

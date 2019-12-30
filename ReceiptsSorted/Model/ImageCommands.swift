@@ -7,37 +7,89 @@
 //
 
 import UIKit
+import AVFoundation
 
 class ImageCommands {
     
     var mainView: ViewController!
     var imagePicker: UIImagePickerController!
     
+    var captureSession = AVCaptureSession()
+    var backCamera: AVCaptureDevice?
+    var frontCamera: AVCaptureDevice?
+    var currentCamera: AVCaptureDevice?
+    
+    var photoOutput: AVCapturePhotoOutput?
+    var cameraPreviewLayer: AVCaptureVideoPreviewLayer?
+    
+    
+    
+    func setupCustomCamera() {
+        setupCaptureSession()
+        setupDevice()
+        setupInputOutput()
+        setupPreviewLayer()
+        startRunningCaptureSession()
+    }
+    
+    
+    func setupCaptureSession() {
+        //Specify high-resolution photo quality
+        captureSession.sessionPreset = AVCaptureSession.Preset.photo
+    }
+    
+    func setupDevice() {
+        let deviceDiscoverySession = AVCaptureDevice.DiscoverySession(deviceTypes: [AVCaptureDevice.DeviceType.builtInWideAngleCamera], mediaType: AVMediaType.video, position: AVCaptureDevice.Position.unspecified)
+        
+        let devices = deviceDiscoverySession.devices
+        
+        for device in devices {
+            if (device.position == AVCaptureDevice.Position.back) {
+                backCamera = device
+            } else if (device.position == AVCaptureDevice.Position.front) {
+                frontCamera = device
+            }
+            
+            currentCamera = backCamera
+        }
+    }
+    
+    
+    func setupInputOutput() {
+        do {
+            let captureDeviceInput = try AVCaptureDeviceInput(device: currentCamera!)
+            captureSession.addInput(captureDeviceInput)
+            photoOutput?.setPreparedPhotoSettingsArray([AVCapturePhotoSettings(format: [AVVideoCodecKey: AVVideoCodecType.jpeg])], completionHandler: nil)
+        } catch {
+            print(error)
+        }
+    }
+    
+    
+    func setupPreviewLayer() {
+        cameraPreviewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
+        cameraPreviewLayer?.videoGravity = AVLayerVideoGravity.resizeAspectFill
+        cameraPreviewLayer?.connection?.videoOrientation = AVCaptureVideoOrientation.portrait
+        cameraPreviewLayer?.frame = mainView.view.frame
+        mainView.view.layer.addSublayer(cameraPreviewLayer!)
+    }
+    
+    func startRunningCaptureSession() {
+        captureSession.startRunning()
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     
     func handleAddButton() {
-        self.getImage(using: .camera)
-        
-//        let actionSheet = UIAlertController( title: nil, message: nil, preferredStyle: .actionSheet)
-//
-//        actionSheet.addAction(UIAlertAction(title: "Take a photo", style: .default , handler:{ (UIAlertAction) in
-//            print("User Take Photo button")
-//            self.getImage(using: .camera)
-//
-//        }))
-//
-//        actionSheet.addAction(UIAlertAction(title: "Choose from Gallery", style: .default , handler:{ (UIAlertAction) in
-//            print("User Choose from Gallery button")
-//            self.getImage(using: .photoLibrary)
-//        }))
-//
-//        actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler:{ (UIAlertAction) in
-//            print("User click Cancel button")
-//        }))
-//
-//        mainView.present(actionSheet, animated: true, completion: {
-//            print("completion block")
-//        })
+        getImage(using: .camera)
     }
     
     
@@ -88,7 +140,7 @@ class ImageCommands {
             print("Image not found!")
             return
         }
-
+        
         showPaymentVC(withImage: selectedImage)
     }
        
@@ -113,6 +165,11 @@ class ImageCommands {
         ac.addAction(UIAlertAction(title: "OK", style: .default))
         mainView.present(ac, animated: true)
     }
+    
+    
+    
+    
+    
     
     
     

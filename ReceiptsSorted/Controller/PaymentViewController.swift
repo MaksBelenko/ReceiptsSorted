@@ -43,14 +43,13 @@ class PaymentViewController: UIViewController {
     }
     
     
+    
     func setupTextFields() {
         drawBottomLine(for: amountPaidTextField)
         drawBottomLine(for: placeOfPurchaseTextField)
         drawBottomLine(for: dateTextField)
-        
-        //Disable keyboard
-        //dateTextField.inputView = UIView()
     }
+    
     
     
     func drawBottomLine(for textField: UITextField) {

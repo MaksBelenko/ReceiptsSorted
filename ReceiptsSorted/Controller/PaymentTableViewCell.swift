@@ -16,7 +16,6 @@ class PaymentTableViewCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
         
         self.accessoryType = .disclosureIndicator
     }

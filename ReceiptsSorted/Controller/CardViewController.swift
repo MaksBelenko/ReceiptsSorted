@@ -62,14 +62,12 @@ class CardViewController: UIViewController, UITableViewDataSource, UITableViewDe
         // Used to make separators lines full width
         tblView.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         
-        //self.tableView.rowHeight = 150
-        
         // Set TableView height
         tblView.frame.size.height = cardHeight * 4/5
         
         
-        //tblView.showsVerticalScrollIndicator = false
-        //tblView.isScrollEnabled = false
+//        tblView.showsVerticalScrollIndicator = false
+//        tblView.isScrollEnabled = false
     }
 
     

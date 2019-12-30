@@ -16,27 +16,23 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
 
     @IBOutlet var imageTake: UIImageView!
     
-    var imagePicker: UIImagePickerController!
-    
     var imageCmd = ImageCommands()
     
+    var imagePicker: UIImagePickerController!
     var cardViewController : CardViewController!
     var visualEffectView : UIVisualEffectView!  //For blur
-    
-    //var cardHeight: CGFloat = 0
+    var runningAnimations = [UIViewPropertyAnimator]()
+    var animationProgressWhenInterrupted: CGFloat = 0
     
     var cardVisible = false
     var nextState: CardState {
         return cardVisible ? .Collapsed : .Expanded
     }
     
-    var runningAnimations = [UIViewPropertyAnimator]()
-    var animationProgressWhenInterrupted: CGFloat = 0
-    
     var cardStartPointY: CGFloat = 0
-    
     var lastFraction: CGFloat = 0
     
+    let circularTransition = CircularTransition()
     
     //set Status Bar icons to white
     override var preferredStatusBarStyle: UIStatusBarStyle { return .lightContent }
@@ -50,10 +46,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
         imageCmd.mainView = self
-        
-        
         
         setupCard()
         setupAddButton(withSize: self.view.frame.size.width / 4.5)
@@ -85,8 +78,13 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
     }
     
     
+    
     @objc func handleAddButton () {
-        imageCmd.handleAddButton()
+        
+        
+        
+        //imageCmd.setupCustomCamera()
+        //imageCmd.handleAddButton()
     }
     
     
@@ -152,33 +150,25 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
 //        print("gesture = \(gestureRecognizer)")
 //        print("otherGesture = \(otherGestureRecognizer)")
         
-    
         if (gestureRecognizer is UIPanGestureRecognizer || otherGestureRecognizer is UIPanGestureRecognizer) {
             
-//            return false
-//            print(cardViewController.tblView.contentOffset.y)
-//            print("cardVisible = \(cardVisible)")
-//            if (cardVisible == false) {
-//                return false
-//            }
-//
             if (cardViewController.tblView.contentOffset.y <= 5) {
                 return false
-            }
-            else {
-                //print("true")
+            } else {
                 return true
             }
         }
 
-        
         //print("OUTSIDE false")
        return false
     }
     
+    
+    // Enable multiple gesture recognition
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
     }
+    
     
     
     @objc func handleCardTap(recogniser: UITapGestureRecognizer) {
