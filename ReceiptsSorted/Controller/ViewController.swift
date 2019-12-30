@@ -12,7 +12,8 @@ var cardHeight: CGFloat = 0
 
 
 
-class ViewController: UIViewController, UINavigationControllerDelegate, UIGestureRecognizerDelegate  {
+class ViewController: UIViewController, UINavigationControllerDelegate, UIGestureRecognizerDelegate, UIViewControllerTransitioningDelegate  {
+    
 
     @IBOutlet var imageTake: UIImageView!
     
@@ -33,6 +34,9 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
     var lastFraction: CGFloat = 0
     
     let circularTransition = CircularTransition()
+    var cameraViewController: CameraViewController!
+    
+    var addButton: UIButton!
     
     //set Status Bar icons to white
     override var preferredStatusBarStyle: UIStatusBarStyle { return .lightContent }
@@ -51,14 +55,18 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
         setupCard()
         setupAddButton(withSize: self.view.frame.size.width / 4.5)
 
+        
+//        cameraViewController = CameraViewController(nibName: "CameraViewController", bundle: nil)
+//        cameraViewController.delegate = self as CameraViewDelegate
     }
 
+    
     
     
     //MARK: - Setup Button
     func setupAddButton(withSize buttonSize: CGFloat) {
         
-        let addButton = UIButton(type: .system)
+        addButton = UIButton(type: .system)
         
         let buttonPositionX = self.view.frame.size.width - buttonSize - self.view.frame.size.width/20
         let buttonPositionY = self.view.frame.size.height - buttonSize - self.view.frame.size.height/18
@@ -81,12 +89,35 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
     
     @objc func handleAddButton () {
         
+        let cameraVC = CameraViewController(nibName: "CameraViewController", bundle: nil)
+        cameraVC.transitioningDelegate = self
+        cameraVC.modalPresentationStyle = .custom
         
+        
+        self.present(cameraVC, animated: true, completion: nil)
         
         //imageCmd.setupCustomCamera()
         //imageCmd.handleAddButton()
     }
     
+    
+    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        
+        circularTransition.transitionMode = .present
+        circularTransition.startingPoint = addButton.center
+        circularTransition.circleColor = addButton.backgroundColor!
+                
+        return circularTransition
+    }
+    
+    
+    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        circularTransition.transitionMode = .dismiss
+        circularTransition.startingPoint = addButton.center
+        circularTransition.circleColor = addButton.backgroundColor!
+        
+        return circularTransition
+    }
     
     //MARK: - Card Setup
     

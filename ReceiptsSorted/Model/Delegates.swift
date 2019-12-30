@@ -14,3 +14,8 @@ protocol PopupDelegate {
     func setPlaceValue(value: String)
     func setDatepopupValue(value: String)
 }
+
+
+//protocol CameraViewDelegate: class {
+//    func openCameraScene()
+//}
