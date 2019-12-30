@@ -21,6 +21,7 @@
 		B573FAA823B98061005473D2 /* CircularTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = B573FAA723B98061005473D2 /* CircularTransition.swift */; };
 		B573FAAB23B98285005473D2 /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B573FAA923B98285005473D2 /* CameraViewController.swift */; };
 		B573FAAC23B98285005473D2 /* CameraViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B573FAAA23B98285005473D2 /* CameraViewController.xib */; };
+		B573FAAE23BA815F005473D2 /* cameraSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = B573FAAD23BA815F005473D2 /* cameraSession.swift */; };
 		B59E3E2023B43FE50017D474 /* ImageCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59E3E1F23B43FE50017D474 /* ImageCommands.swift */; };
 		B59E3E2323B44DE80017D474 /* CardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59E3E2123B44DE80017D474 /* CardViewController.swift */; };
 		B59E3E2423B44DE80017D474 /* CardViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B59E3E2223B44DE80017D474 /* CardViewController.xib */; };
@@ -46,6 +47,7 @@
 		B573FAA723B98061005473D2 /* CircularTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularTransition.swift; sourceTree = "<group>"; };
 		B573FAA923B98285005473D2 /* CameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
 		B573FAAA23B98285005473D2 /* CameraViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CameraViewController.xib; sourceTree = "<group>"; };
+		B573FAAD23BA815F005473D2 /* cameraSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = cameraSession.swift; sourceTree = "<group>"; };
 		B59E3E1F23B43FE50017D474 /* ImageCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCommands.swift; sourceTree = "<group>"; };
 		B59E3E2123B44DE80017D474 /* CardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardViewController.swift; sourceTree = "<group>"; };
 		B59E3E2223B44DE80017D474 /* CardViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CardViewController.xib; sourceTree = "<group>"; };
@@ -99,6 +101,7 @@
 			isa = PBXGroup;
 			children = (
 				B59E3E1F23B43FE50017D474 /* ImageCommands.swift */,
+				B573FAAD23BA815F005473D2 /* cameraSession.swift */,
 				B573FAA723B98061005473D2 /* CircularTransition.swift */,
 				B573FAA323B95F57005473D2 /* Delegates.swift */,
 				B59E3E2B23B53FEF0017D474 /* Enums.swift */,
@@ -213,6 +216,7 @@
 				B573FAA223B94BB2005473D2 /* TextPopupViewController.swift in Sources */,
 				B59E3E2723B50D9F0017D474 /* PaymentTableViewCell.swift in Sources */,
 				B573FAA423B95F57005473D2 /* Delegates.swift in Sources */,
+				B573FAAE23BA815F005473D2 /* cameraSession.swift in Sources */,
 				B5377C0023A82E280010B144 /* AppDelegate.swift in Sources */,
 				B59E3E2323B44DE80017D474 /* CardViewController.swift in Sources */,
 				B573FAA623B96157005473D2 /* Extensions.swift in Sources */,

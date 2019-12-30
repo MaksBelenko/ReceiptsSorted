@@ -38,6 +38,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
     
     var addButton: UIButton!
     
+    var cameraSession = CameraSession()  //Initialised
+    
     //set Status Bar icons to white
     override var preferredStatusBarStyle: UIStatusBarStyle { return .lightContent }
     
@@ -51,6 +53,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
         super.viewDidLoad()
         
         imageCmd.mainView = self
+        
         
         setupCard()
         setupAddButton(withSize: self.view.frame.size.width / 4.5)
@@ -94,6 +97,9 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
         cameraVC.modalPresentationStyle = .custom
         
         cameraVC.controllerFrame = self.view.frame
+        cameraVC.captureSession = cameraSession.captureSession
+        cameraVC.photoOutput = cameraSession.photoOutput
+        cameraVC.cameraPreviewLayer = cameraSession.cameraPreviewLayer
         
         self.present(cameraVC, animated: true, completion: nil)
         
@@ -119,6 +125,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
         
         return circularTransition
     }
+    
     
     //MARK: - Card Setup
     
