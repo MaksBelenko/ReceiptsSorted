@@ -74,6 +74,7 @@ class CameraViewController: UIViewController {
     
     
     @IBAction func pressedCloseCamera(_ sender: UIButton) {
+        captureSession!.stopRunning()
         dismiss(animated: true, completion: nil)
     }
     

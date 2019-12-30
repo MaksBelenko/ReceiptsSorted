@@ -8,7 +8,7 @@
 
 import UIKit
 
-var cardHeight: CGFloat = 0
+//var cardHeight: CGFloat = 0
 
 
 
@@ -30,6 +30,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
         return cardVisible ? .Collapsed : .Expanded
     }
     
+    var cardHeight: CGFloat = 0
     var cardStartPointY: CGFloat = 0
     var lastFraction: CGFloat = 0
     
@@ -141,6 +142,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
         
         
         cardViewController = CardViewController(nibName: "CardViewController", bundle: nil)
+        cardViewController.cardHeight = cardHeight
+        
         self.addChild(cardViewController)
         self.view.addSubview(cardViewController.view)
         
@@ -325,7 +328,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
 
             switch state {
             case .Expanded:
-                self.cardViewController.view.frame.origin.y = self.view.frame.height - cardHeight
+                self.cardViewController.view.frame.origin.y = self.view.frame.height - self.cardHeight
 
             case .Collapsed:
                 self.cardViewController.view.frame.origin.y = self.cardStartPointY

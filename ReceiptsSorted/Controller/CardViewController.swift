@@ -16,6 +16,7 @@ class CardViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     @IBOutlet weak var tblView: UITableView!
     
+    var cardHeight: CGFloat = 0
     var tableRowsHeight: CGFloat = 60
 
     
