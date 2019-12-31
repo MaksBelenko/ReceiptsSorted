@@ -95,6 +95,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
         cameraVC.photoOutput = cameraSession.photoOutput
         cameraVC.cameraPreviewLayer = cameraSession.cameraPreviewLayer
         
+        cameraVC.mainView = self
+        
         self.present(cameraVC, animated: true, completion: nil)
         
     }
@@ -200,7 +202,15 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
     
     // Enable multiple gesture recognition
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        return true
+        
+        print("gesture = \(gestureRecognizer)")
+        print("otherGesture = \(otherGestureRecognizer)")
+        
+        if (gestureRecognizer is UIPanGestureRecognizer) {
+            return true
+        } else {
+            return false
+        }
     }
     
     
@@ -251,6 +261,10 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
                 if (fractionComplete > 0 && fractionComplete < 1 ) {
                     cardViewController.tblView.contentOffset.y = 0
                 }
+            }
+            
+            if (cardVisible == false && cardViewController.tblView.contentOffset.y >= 0) {
+                cardViewController.tblView.contentOffset.y = 0
             }
             
             
@@ -376,41 +390,25 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
         runningAnimations.append(buttonOpacityAnimator)
     }
 
-    
-    
-    
-    
-    
-    
-    
-
-   
-    
-    
-    @IBAction func saveImageToGallery(_ sender: UIButton) {
-        
-        //imageCmd.saveImageToGallery()
-        
-//        guard let selectedImage = imageTake.image else {
-//                print("Image not found!")
-//                showAlertWith(title: "No image selected!", message: "")
-//                return
-//            }
-//
-//            UIImageWriteToSavedPhotosAlbum(selectedImage, self, #selector(image(_:didFinishSavingWithError:contextInfo:)), nil)
-    }
-    
-
-//    @objc func image(_ image: UIImage, didFinishSavingWithError error: Error?, contextInfo: UnsafeRawPointer) {
-//        if let error = error {
-//            showAlertWith(title: "Save error", message: error.localizedDescription)
-//        } else {
-//            showAlertWith(title: "Saved!", message: "Your image has been saved to your photos.")
-//        }
-//    }
-
-    
 }
 
 
 
+
+
+
+
+extension ViewController: PaymentDelegate {
+    
+    func passData(amountPaid: String, place: String, date: String, receiptImage: UIImage) {
+        
+        //cardViewController.payments.append(CardViewController.Payment(amountPaid, date))
+        cardViewController.payments.insert(CardViewController.Payment(amountPaid, date), at: 0)
+        
+        cardViewController.tblView.beginUpdates()
+        cardViewController.tblView.insertRows(at: [IndexPath.init(row: 0, section: 0)], with: .left)
+        cardViewController.tblView.endUpdates()
+    }
+    
+    
+}

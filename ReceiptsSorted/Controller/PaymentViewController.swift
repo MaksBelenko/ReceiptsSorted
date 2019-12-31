@@ -20,6 +20,8 @@ class PaymentViewController: UIViewController {
     
     let wetAsphaltCGColor = UIColor(red:0.20, green:0.29, blue:0.37, alpha:1.0)
     
+    var paymentDelegate: PaymentDelegate?
+    
     
     //set Status Bar icons to white
     override var preferredStatusBarStyle: UIStatusBarStyle { return .darkContent }
@@ -106,6 +108,9 @@ class PaymentViewController: UIViewController {
     
     @IBAction func pressedAddButton(_ sender: UIButton) {
 //        self.dismiss(animated: true, completion: nil)
+        
+        paymentDelegate?.passData(amountPaid: amountPaidTextField.text!, place: placeOfPurchaseTextField.text!, date: dateTextField.text!, receiptImage: receiptImageView.image!)
+        
         self.view.window!.rootViewController?.dismiss(animated: true, completion: nil)
     }
     

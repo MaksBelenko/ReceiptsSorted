@@ -32,12 +32,9 @@
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES"/>
                     <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <state key="normal" backgroundImage="photo" catalog="system"/>
-                </button>
-                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jkf-TF-aJZ">
-                    <rect key="frame" x="311" y="784" width="61" height="46"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMinY="YES" heightSizable="YES"/>
-                    <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <state key="normal" backgroundImage="camera.rotate" catalog="system"/>
+                    <connections>
+                        <action selector="pressedPickFromGalleryButton:" destination="-1" eventType="touchUpInside" id="xuh-JO-rFl"/>
+                    </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gXZ-Dz-QGX">
                     <rect key="frame" x="348" y="46" width="46" height="40"/>
@@ -56,7 +53,6 @@
     </objects>
     <resources>
         <image name="camera.circle.fill" catalog="system" width="64" height="60"/>
-        <image name="camera.rotate" catalog="system" width="64" height="48"/>
         <image name="photo" catalog="system" width="64" height="46"/>
         <image name="xmark" catalog="system" width="64" height="56"/>
     </resources>

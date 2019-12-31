@@ -20,30 +20,30 @@ class CardViewController: UIViewController, UITableViewDataSource, UITableViewDe
     var tableRowsHeight: CGFloat = 60
 
     
-    typealias Payment = (Float, String)
-    var payments: [Payment] = [(13,"Paid on 20th of August 2019"),
-                               (14,"Paid on 20th of August 2019"),
-                               (15,"Paid on 20th of August 2019"),
-                               (16,"Paid on 20th of August 2019"),
-                               (17,"Paid on 19th of August 2019"),
-                               (18,"Paid on 19th of August 2019"),
-                               (19,"Paid on 19th of August 2019"),
-                               (20,"Paid on 19th of August 2019"),
-                               (21,"Paid on 19th of August 2019"),
-                               (22,"Paid on 19th of August 2019"),
-                               (23,"Paid on 19th of August 2019"),
-                               (24,"Paid on 19th of August 2019"),
-                               (25,"Paid on 19th of August 2019"),
-                               (26,"Paid on 19th of August 2019"),
-                               (27,"Paid on 19th of August 2019"),
-                               (28,"Paid on 19th of August 2019"),
-                               (29,"Paid on 19th of August 2019"),
-                               (30,"Paid on 19th of August 2019"),
-                               (31,"Paid on 19th of August 2019"),
-                               (32,"Paid on 19th of August 2019"),
-                               (33,"Paid on 19th of August 2019"),
-                               (34,"Paid on 19th of August 2019"),
-                               (35,"Paid on 19th of August 2019")]
+    typealias Payment = (String, String)
+    var payments: [Payment] = [("13","Paid on 20th of August 2019"),
+                               ("14","Paid on 20th of August 2019"),
+                               ("15","Paid on 20th of August 2019"),
+                               ("16","Paid on 20th of August 2019"),
+                               ("17","Paid on 19th of August 2019"),
+                               ("18","Paid on 19th of August 2019"),
+                               ("19","Paid on 19th of August 2019"),
+                               ("20","Paid on 19th of August 2019"),
+                               ("21","Paid on 19th of August 2019"),
+                               ("22","Paid on 19th of August 2019"),
+                               ("23","Paid on 19th of August 2019"),
+                               ("24","Paid on 19th of August 2019"),
+                               ("25","Paid on 19th of August 2019"),
+                               ("26","Paid on 19th of August 2019"),
+                               ("27","Paid on 19th of August 2019"),
+                               ("28","Paid on 19th of August 2019"),
+                               ("29","Paid on 19th of August 2019"),
+                               ("30","Paid on 19th of August 2019"),
+                               ("31","Paid on 19th of August 2019"),
+                               ("32","Paid on 19th of August 2019"),
+                               ("33","Paid on 19th of August 2019"),
+                               ("34","Paid on 19th of August 2019"),
+                               ("35","Paid on 19th of August 2019")]
     
     
     
@@ -82,7 +82,7 @@ class CardViewController: UIViewController, UITableViewDataSource, UITableViewDe
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "paymentCell", for: indexPath) as! PaymentTableViewCell
 
-        cell.amountPaidText.text = "£\(payments[indexPath.row].0)"
+        cell.amountPaidText.text = payments[indexPath.row].0
         cell.dateText.text = payments[indexPath.row].1
         
         // Set to make separator lines to be of full width

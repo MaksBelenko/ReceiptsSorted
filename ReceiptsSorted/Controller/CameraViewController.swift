@@ -9,15 +9,11 @@
 import UIKit
 import AVFoundation
 
-class CameraViewController: UIViewController {
+class CameraViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
     var controllerFrame: CGRect?
     
     var captureSession: AVCaptureSession?
-//    var backCamera: AVCaptureDevice?
-//    var frontCamera: AVCaptureDevice?
-//    var currentCamera: AVCaptureDevice?
-//
     var photoOutput: AVCapturePhotoOutput?
     var cameraPreviewLayer: AVCaptureVideoPreviewLayer?
     
@@ -25,6 +21,11 @@ class CameraViewController: UIViewController {
     
     @IBOutlet weak var takePhotoButton: UIButton!
     
+
+    let imagePicker = UIImagePickerController()
+    
+    
+    var mainView: ViewController?
     
     
     
@@ -33,6 +34,9 @@ class CameraViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        imagePicker.delegate = self
+        
+        
         self.view.frame = controllerFrame ?? CGRect(x: 0, y: 0, width: 100, height: 100)
         
         setAndStartRunningCaptureSession()
@@ -57,6 +61,7 @@ class CameraViewController: UIViewController {
         if let paymentVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "PaymentDetails") as? PaymentViewController
         {
             paymentVC.passedImage = image
+            paymentVC.paymentDelegate = mainView
             paymentVC.modalPresentationStyle = .fullScreen
             self.present(paymentVC, animated: true, completion: nil)
         }
@@ -72,10 +77,35 @@ class CameraViewController: UIViewController {
     
     
     @IBAction func pressedCloseCamera(_ sender: UIButton) {
+        
         captureSession!.stopRunning()
         dismiss(animated: true, completion: nil)
     }
     
+    
+    
+    
+    
+    //MARK: - Choosing picture from gallery
+    @IBAction func pressedPickFromGalleryButton(_ sender: Any) {
+        imagePicker.allowsEditing = false
+        imagePicker.sourceType = .photoLibrary
+        
+        present(imagePicker, animated: true, completion: nil)
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        dismiss(animated: true, completion: nil)
+        if let pickedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
+            showPaymentVC(withImage: pickedImage)
+        }
+     
+        
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        dismiss(animated: true, completion: nil)
+    }
 }
 
 

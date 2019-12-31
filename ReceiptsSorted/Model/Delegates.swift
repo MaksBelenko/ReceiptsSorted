@@ -6,7 +6,7 @@
 //  Copyright © 2019 Maksim. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 
 protocol PopupDelegate {
@@ -15,3 +15,7 @@ protocol PopupDelegate {
     func setDatepopupValue(value: String)
 }
 
+
+protocol PaymentDelegate {
+    func passData(amountPaid: String, place: String, date: String, receiptImage: UIImage)
+}
