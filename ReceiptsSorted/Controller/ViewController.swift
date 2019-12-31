@@ -17,8 +17,6 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
 
     @IBOutlet var imageTake: UIImageView!
     
-    var imageCmd = ImageCommands()
-    
     var imagePicker: UIImagePickerController!
     var cardViewController : CardViewController!
     var visualEffectView : UIVisualEffectView!  //For blur
@@ -55,15 +53,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        imageCmd.mainView = self
-        
-        
         setupCard()
         setupAddButton(withSize: self.view.frame.size.width / 4.5)
-
-        
-//        cameraViewController = CameraViewController(nibName: "CameraViewController", bundle: nil)
-//        cameraViewController.delegate = self as CameraViewDelegate
     }
 
     
@@ -128,6 +119,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
     }
     
     
+    
+    
     //MARK: - Card Setup
     
     func setupCard() {
@@ -173,7 +166,6 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
     func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
         if let panGestureRecognizer = gestureRecognizer as? UIPanGestureRecognizer {
             let translation = panGestureRecognizer.translation(in: self.cardViewController.tblView)
-            
             //print("x = \(translation.x)      y = \(translation.y)")
             if abs(translation.x) < abs(translation.y) {
                 return true
@@ -324,17 +316,6 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
             animator.continueAnimation(withTimingParameters: nil, durationFactor: 0)
         }
     }
-
-    /**
-    Stops all animations
-    */
-    func stopInteractiveTransition() {
-//        for animator in runningAnimations {
-//            animator.stopAnimation(true)
-//        cardVisible = !self.cardVisible
-//        runningAnimations.removeAll()
-    }
-    
     
     
     /**
@@ -379,6 +360,20 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
 
         blurAnimator.startAnimation()
         runningAnimations.append(blurAnimator)
+        
+        
+        /* Add Button Opacity animation*/
+        let buttonOpacityAnimator = UIViewPropertyAnimator(duration: duration, curve: .easeIn) {
+            switch state {
+            case .Expanded:
+                self.addButton.alpha = 0
+            case .Collapsed:
+                self.addButton.alpha = 1
+            }
+        }
+        
+        buttonOpacityAnimator.startAnimation()
+        runningAnimations.append(buttonOpacityAnimator)
     }
 
     
@@ -418,16 +413,4 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
 }
 
 
-
-
-
-
-//MARK: - EXTENSION for ImagerPicker
- extension ViewController: UIImagePickerControllerDelegate{
-
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]){
-        imageCmd.actionsOnFinishPickingMedia(imagePicker: imagePicker, info: info)
-    }
-    
-}
 
