@@ -39,6 +39,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
     
     var addButton: UIButton!
     
+    var ignoreGesture: Bool = false
+    
     var cameraSession = CameraSession()  //Initialised
     
     //set Status Bar icons to white
@@ -104,8 +106,6 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
         
         self.present(cameraVC, animated: true, completion: nil)
         
-        //imageCmd.setupCustomCamera()
-        //imageCmd.handleAddButton()
     }
     
     
@@ -186,24 +186,24 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
     
     
 
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer,
-                           shouldRequireFailureOf otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-
-//        print("gesture = \(gestureRecognizer)")
-//        print("otherGesture = \(otherGestureRecognizer)")
-        
-        if (gestureRecognizer is UIPanGestureRecognizer || otherGestureRecognizer is UIPanGestureRecognizer) {
-            
-            if (cardViewController.tblView.contentOffset.y <= 5) {
-                return false
-            } else {
-                return true
-            }
-        }
-
-        //print("OUTSIDE false")
-       return false
-    }
+//    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer,
+//                           shouldRequireFailureOf otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+//
+////        print("gesture = \(gestureRecognizer)")
+////        print("otherGesture = \(otherGestureRecognizer)")
+//
+//        if (gestureRecognizer is UIPanGestureRecognizer || otherGestureRecognizer is UIPanGestureRecognizer) {
+//
+//            if (cardViewController.tblView.contentOffset.y <= 5) {
+//                return false
+//            } else {
+//                return true
+//            }
+//        }
+//
+//        //print("OUTSIDE false")
+//       return false
+//    }
     
     
     // Enable multiple gesture recognition
@@ -218,37 +218,59 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
     }
 
 
+    
     @objc func handleCardPan (recogniser: UIPanGestureRecognizer) {
         
         switch recogniser.state{
         case .began:
-            startInteractiveTransition(forState: nextState, duration: 0.7)
+//            print(cardVisible)
+//            print("velocity = \(recogniser.velocity(in: self.view).y)")
+            
+            let logicExpanded = cardVisible == true && (recogniser.velocity(in: self.view).y < 0 || cardViewController.tblView.contentOffset.y > 0 )
+            let logicCollapsed = cardVisible == false && (recogniser.velocity(in: self.view).y > 0)
+            
+            
+            if (logicExpanded || logicCollapsed) {
+                ignoreGesture = true
+            } else {
+                ignoreGesture = false
+                startInteractiveTransition(forState: nextState, duration: 0.6)
+            }
+            
 
         case .changed:
-            let translation = recogniser.translation(in: self.cardViewController.handleArea)
-            var fractionComplete = translation.y / (cardStartPointY - self.view.frame.size.height + cardHeight)
-            fractionComplete = cardVisible ? fractionComplete : -fractionComplete
+            if (ignoreGesture == false) {
+                let translation = recogniser.translation(in: self.cardViewController.tblView)
+                var fractionComplete = translation.y / (cardStartPointY - self.view.frame.size.height + cardHeight)
+                fractionComplete = cardVisible ? fractionComplete : -fractionComplete
 
-            if (fractionComplete > 0) {
+                
+                lastFraction = fractionComplete
+                //print("lastFraction = \(lastFraction)")
+                if (fractionComplete <= 0) {
+                    return
+                }
+                
                 updateInteractiveTransition(fractionCompleted: fractionComplete)
-            }
-            // Keep TableView at 0 on Y axis
-            //print("fractionComplete = \(fractionComplete)")
-            if (fractionComplete > 0 && fractionComplete < 1 ) {
-                cardViewController.tblView.contentOffset.y = 0
+                
+                
+                // Keep TableView at 0 on Y axis
+                //print("fractionComplete = \(fractionComplete)")
+                if (fractionComplete > 0 && fractionComplete < 1 ) {
+                    cardViewController.tblView.contentOffset.y = 0
+                }
             }
             
-            lastFraction = fractionComplete
-//            print("lastFraction = \(lastFraction)")
             
         case .ended:
-            
-            continueInteractiveTransition()
-
-            cardViewController.tblView.isUserInteractionEnabled = false
-            
-            if (lastFraction < 1) {
-                cardViewController.tblView.scrollToRow(at: IndexPath(row: 0, section: 0), at: UITableView.ScrollPosition.top, animated: false)
+            if (ignoreGesture == false) {
+                continueInteractiveTransition()
+                
+                cardViewController.tblView.isUserInteractionEnabled = false
+                
+                if (lastFraction > 0 && lastFraction < 1) {
+                    cardViewController.tblView.scrollToRow(at: IndexPath(row: 0, section: 0), at: UITableView.ScrollPosition.top, animated: false)
+                }
             }
             
             

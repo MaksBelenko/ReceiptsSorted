@@ -35,19 +35,17 @@ class CameraViewController: UIViewController {
 
         self.view.frame = controllerFrame ?? CGRect(x: 0, y: 0, width: 100, height: 100)
         
-        setupPreviewLayer()
-        startRunningCaptureSession()
+        setAndStartRunningCaptureSession()
         
         takePhotoButton.layer.cornerRadius = takePhotoButton.frame.size.height/2
     }
     
-    func setupPreviewLayer() {
+    
+    
+    func setAndStartRunningCaptureSession() {
         cameraPreviewLayer?.frame = self.view.frame
         self.view.layer.insertSublayer(cameraPreviewLayer!, at: 0)
-    }
-    
-    
-    func startRunningCaptureSession() {
+        
         captureSession!.startRunning()
     }
     
@@ -60,7 +58,7 @@ class CameraViewController: UIViewController {
         {
             paymentVC.passedImage = image
             paymentVC.modalPresentationStyle = .fullScreen
-            self.present(paymentVC, animated: false, completion: nil)
+            self.present(paymentVC, animated: true, completion: nil)
         }
     }
 
@@ -77,8 +75,6 @@ class CameraViewController: UIViewController {
         captureSession!.stopRunning()
         dismiss(animated: true, completion: nil)
     }
-    
-
     
 }
 

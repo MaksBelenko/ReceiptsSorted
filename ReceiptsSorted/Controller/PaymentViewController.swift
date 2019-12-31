@@ -105,7 +105,8 @@ class PaymentViewController: UIViewController {
     //MARK: - Add Button actions
     
     @IBAction func pressedAddButton(_ sender: UIButton) {
-        self.dismiss(animated: true, completion: nil)
+//        self.dismiss(animated: true, completion: nil)
+        self.view.window!.rootViewController?.dismiss(animated: true, completion: nil)
     }
     
 
