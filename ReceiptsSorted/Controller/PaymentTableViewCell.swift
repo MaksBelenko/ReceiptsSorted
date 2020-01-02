@@ -12,6 +12,7 @@ class PaymentTableViewCell: UITableViewCell {
     
     @IBOutlet weak var amountPaidText: UILabel!
     @IBOutlet weak var dateText: UILabel!
+    @IBOutlet weak var receiptImageView: UIImageView!
     
     
     override func awakeFromNib() {

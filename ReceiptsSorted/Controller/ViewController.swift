@@ -145,7 +145,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
         cardViewController.view.frame = CGRect(x: 0, y: cardStartPointY , width: self.view.bounds.width, height: cardHeight)
         
         cardViewController.view.clipsToBounds = true
-        cardViewController.view.layer.cornerRadius = 30
+        cardViewController.view.roundCorners(corners: [.topLeft, .topRight], radius: 30)
+        //cardViewController.view.layer.cornerRadius = 30
         
         // Create gesture recognisers
         let tapGestureRecogniser = UITapGestureRecognizer(target: self, action: #selector(ViewController.handleCardTap(recogniser:)))
@@ -203,8 +204,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
     // Enable multiple gesture recognition
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         
-        print("gesture = \(gestureRecognizer)")
-        print("otherGesture = \(otherGestureRecognizer)")
+        //print("gesture = \(gestureRecognizer)")
+        //print("otherGesture = \(otherGestureRecognizer)")
         
         if (gestureRecognizer is UIPanGestureRecognizer) {
             return true
@@ -403,7 +404,7 @@ extension ViewController: PaymentDelegate {
     func passData(amountPaid: String, place: String, date: String, receiptImage: UIImage) {
         
         //cardViewController.payments.append(CardViewController.Payment(amountPaid, date))
-        cardViewController.payments.insert(CardViewController.Payment(amountPaid, date), at: 0)
+        cardViewController.payments.insert(CardViewController.Payment(amountPaid, place, date, receiptImage), at: 0)
         
         cardViewController.tblView.beginUpdates()
         cardViewController.tblView.insertRows(at: [IndexPath.init(row: 0, section: 0)], with: .left)

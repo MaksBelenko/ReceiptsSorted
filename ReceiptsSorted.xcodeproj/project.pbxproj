@@ -27,6 +27,7 @@
 		B59E3E2723B50D9F0017D474 /* PaymentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59E3E2523B50D9F0017D474 /* PaymentTableViewCell.swift */; };
 		B59E3E2823B50D9F0017D474 /* PaymentTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B59E3E2623B50D9F0017D474 /* PaymentTableViewCell.xib */; };
 		B59E3E2C23B53FEF0017D474 /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59E3E2B23B53FEF0017D474 /* Enums.swift */; };
+		B5DB922323BE929F0081E8D7 /* PaymentsData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B5DB922123BE929F0081E8D7 /* PaymentsData.xcdatamodeld */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -52,6 +53,7 @@
 		B59E3E2523B50D9F0017D474 /* PaymentTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentTableViewCell.swift; sourceTree = "<group>"; };
 		B59E3E2623B50D9F0017D474 /* PaymentTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PaymentTableViewCell.xib; sourceTree = "<group>"; };
 		B59E3E2B23B53FEF0017D474 /* Enums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
+		B5DB922223BE929F0081E8D7 /* PaymentsData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = PaymentsData.xcdatamodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,6 +105,7 @@
 				B573FAA323B95F57005473D2 /* Delegates.swift */,
 				B59E3E2B23B53FEF0017D474 /* Enums.swift */,
 				B573FAA523B96157005473D2 /* Extensions.swift */,
+				B5DB922123BE929F0081E8D7 /* PaymentsData.xcdatamodeld */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -220,6 +223,7 @@
 				B573FA9A23B81EC8005473D2 /* PaymentViewController.swift in Sources */,
 				B573FAAB23B98285005473D2 /* CameraViewController.swift in Sources */,
 				B5377C0223A82E280010B144 /* SceneDelegate.swift in Sources */,
+				B5DB922323BE929F0081E8D7 /* PaymentsData.xcdatamodeld in Sources */,
 				B573FA9C23B9334A005473D2 /* DatePopupViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -418,6 +422,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		B5DB922123BE929F0081E8D7 /* PaymentsData.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				B5DB922223BE929F0081E8D7 /* PaymentsData.xcdatamodel */,
+			);
+			currentVersion = B5DB922223BE929F0081E8D7 /* PaymentsData.xcdatamodel */;
+			path = PaymentsData.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = B5377BF423A82E280010B144 /* Project object */;
 }
