@@ -37,7 +37,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
     
     var ignoreGesture: Bool = false
     
-    //var cameraSession = CameraSession()  //Initialised
+    var cameraSession = CameraSession()  //Initialised
     
     
     
@@ -86,11 +86,11 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
         let cameraVC = CameraViewController(nibName: "CameraViewController", bundle: nil)
         cameraVC.transitioningDelegate = self
         cameraVC.modalPresentationStyle = .custom
-        
         cameraVC.controllerFrame = self.view.frame
-//        cameraVC.captureSession = cameraSession.captureSession
-//        cameraVC.photoOutput = cameraSession.photoOutput
-//        cameraVC.cameraPreviewLayer = cameraSession.cameraPreviewLayer
+        
+        cameraVC.captureSession = cameraSession.captureSession
+        cameraVC.photoOutput = cameraSession.photoOutput
+        cameraVC.cameraPreviewLayer = cameraSession.cameraPreviewLayer
         
         cameraVC.mainView = self
         
@@ -303,7 +303,6 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
 
         /* Size animation*/
         let frameAnimator = UIViewPropertyAnimator(duration: duration, dampingRatio: dumpingRatio) {
-
             switch state {
             case .Expanded:
                 self.cardViewController.view.frame.origin.y = self.view.frame.height - self.cardHeight

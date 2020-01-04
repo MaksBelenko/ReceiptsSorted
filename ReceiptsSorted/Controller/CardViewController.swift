@@ -30,7 +30,7 @@ class CardViewController: UIViewController, UITableViewDataSource, UITableViewDe
     override func viewDidLoad() {
         super.viewDidLoad()
     
-        print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
+        //print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
         
         payments = database.loadPayments()
         
@@ -93,7 +93,7 @@ class CardViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
-        print("row selected at \(indexPath.row)")
+//        print("row selected at \(indexPath.row)")
         tableView.deselectRow(at: indexPath, animated: true)
         
         
@@ -106,6 +106,7 @@ class CardViewController: UIViewController, UITableViewDataSource, UITableViewDe
             paymentVC.amountPaid = selectedPayment.amountPaid!
             paymentVC.place = selectedPayment.place!
             paymentVC.date = selectedPayment.date!
+            paymentVC.pageType = .UpdatePayment
             
             paymentVC.paymentDelegate = self
             

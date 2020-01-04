@@ -108,6 +108,14 @@
                                 <rect key="frame" x="0.0" y="44" width="414" height="422"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES" flexibleMaxY="YES"/>
                             </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iKy-Ko-sxT">
+                                <rect key="frame" x="318" y="474" width="79" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Detect Text"/>
+                                <connections>
+                                    <action selector="pressedDetectTextButton:" destination="gk0-yM-Syz" eventType="touchUpInside" id="Urw-Uz-Wq1"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="fcv-ZL-Uft"/>
