@@ -7,76 +7,25 @@
 //
 
 import UIKit
+import CoreData
 
 class CardViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
 
     @IBOutlet weak var handleImageView: UIImageView!
     @IBOutlet weak var handleArea: UIView!
-    
     @IBOutlet weak var tblView: UITableView!
     
     var cardHeight: CGFloat = 0
     var tableRowsHeight: CGFloat = 60
 
-    
     typealias Payment = (String, String, String, UIImage)
-    var payments: [Payment] = [("£13.00", "Dominos","Paid on 20 August 2019", UIImage(named: "Receipt-Test")!),
-                               ("£35.25", "Champneys","Paid on 19 August 2019", UIImage(named: "Receipt-Test")!),
-                               ("£13.00", "Dominos","Paid on 20 August 2019", UIImage(named: "Receipt-Test")!),
-                               ("£35.25", "Champneys","Paid on 19 August 2019", UIImage(named: "Receipt-Test")!),
-                               ("£13.00", "Dominos","Paid on 20 August 2019", UIImage(named: "Receipt-Test")!),
-                               ("£35.25", "Champneys","Paid on 19 August 2019", UIImage(named: "Receipt-Test")!),
-                               ("£13.00", "Dominos","Paid on 20 August 2019", UIImage(named: "Receipt-Test")!),
-                               ("£35.25", "Champneys","Paid on 19 August 2019", UIImage(named: "Receipt-Test")!),
-                               ("£13.00", "Dominos","Paid on 20 August 2019", UIImage(named: "Receipt-Test")!),
-                               ("£35.25", "Champneys","Paid on 19 August 2019", UIImage(named: "Receipt-Test")!),
-                                ("£13.00", "Dominos","Paid on 20 August 2019", UIImage(named: "Receipt-Test")!),
-                                ("£35.25", "Champneys","Paid on 19 August 2019", UIImage(named: "Receipt-Test")!),
-                                ("£13.00", "Dominos","Paid on 20 August 2019", UIImage(named: "Receipt-Test")!),
-                                ("£35.25", "Champneys","Paid on 19 August 2019", UIImage(named: "Receipt-Test")!),
-                                ("£13.00", "Dominos","Paid on 20 August 2019", UIImage(named: "Receipt-Test")!),
-                                ("£35.25", "Champneys","Paid on 19 August 2019", UIImage(named: "Receipt-Test")!),
-                                ("£13.00", "Dominos","Paid on 20 August 2019", UIImage(named: "Receipt-Test")!),
-                                ("£35.25", "Champneys","Paid on 19 August 2019", UIImage(named: "Receipt-Test")!),
-                                ("£13.00", "Dominos","Paid on 20 August 2019", UIImage(named: "Receipt-Test")!),
-                                ("£13.00", "Dominos","Paid on 20 August 2019", UIImage(named: "Receipt-Test")!),
-                                ("£35.25", "Champneys","Paid on 19 August 2019", UIImage(named: "Receipt-Test")!),
-                                ("£13.00", "Dominos","Paid on 20 August 2019", UIImage(named: "Receipt-Test")!),
-                                ("£35.25", "Champneys","Paid on 19 August 2019", UIImage(named: "Receipt-Test")!),
-                                ("£13.00", "Dominos","Paid on 20 August 2019", UIImage(named: "Receipt-Test")!),
-                                ("£35.25", "Champneys","Paid on 19 August 2019", UIImage(named: "Receipt-Test")!),
-                                ("£13.00", "Dominos","Paid on 20 August 2019", UIImage(named: "Receipt-Test")!),
-                                ("£35.25", "Champneys","Paid on 19 August 2019", UIImage(named: "Receipt-Test")!),
-                                ("£13.00", "Dominos","Paid on 20 August 2019", UIImage(named: "Receipt-Test")!),
-                                ("£13.00", "Dominos","Paid on 20 August 2019", UIImage(named: "Receipt-Test")!),
-                                ("£35.25", "Champneys","Paid on 19 August 2019", UIImage(named: "Receipt-Test")!),
-                                ("£13.00", "Dominos","Paid on 20 August 2019", UIImage(named: "Receipt-Test")!),
-                                ("£35.25", "Champneys","Paid on 19 August 2019", UIImage(named: "Receipt-Test")!),
-                                ("£13.00", "Dominos","Paid on 20 August 2019", UIImage(named: "Receipt-Test")!),
-                                ("£35.25", "Champneys","Paid on 19 August 2019", UIImage(named: "Receipt-Test")!),
-                                ("£13.00", "Dominos","Paid on 20 August 2019", UIImage(named: "Receipt-Test")!),
-                                ("£35.25", "Champneys","Paid on 19 August 2019", UIImage(named: "Receipt-Test")!),
-                                ("£13.00", "Dominos","Paid on 20 August 2019", UIImage(named: "Receipt-Test")!),
-                                ("£35.25", "Champneys","Paid on 19 August 2019", UIImage(named: "Receipt-Test")!),
-                                 ("£13.00", "Dominos","Paid on 20 August 2019", UIImage(named: "Receipt-Test")!),
-                                 ("£35.25", "Champneys","Paid on 19 August 2019", UIImage(named: "Receipt-Test")!),
-                                 ("£13.00", "Dominos","Paid on 20 August 2019", UIImage(named: "Receipt-Test")!),
-                                 ("£35.25", "Champneys","Paid on 19 August 2019", UIImage(named: "Receipt-Test")!),
-                                 ("£13.00", "Dominos","Paid on 20 August 2019", UIImage(named: "Receipt-Test")!),
-                                 ("£35.25", "Champneys","Paid on 19 August 2019", UIImage(named: "Receipt-Test")!),
-                                 ("£13.00", "Dominos","Paid on 20 August 2019", UIImage(named: "Receipt-Test")!),
-                                 ("£35.25", "Champneys","Paid on 19 August 2019", UIImage(named: "Receipt-Test")!),
-                                 ("£13.00", "Dominos","Paid on 20 August 2019", UIImage(named: "Receipt-Test")!),
-                                 ("£13.00", "Dominos","Paid on 20 August 2019", UIImage(named: "Receipt-Test")!),
-                                 ("£35.25", "Champneys","Paid on 19 August 2019", UIImage(named: "Receipt-Test")!),
-                                 ("£13.00", "Dominos","Paid on 20 August 2019", UIImage(named: "Receipt-Test")!),
-                                 ("£35.25", "Champneys","Paid on 19 August 2019", UIImage(named: "Receipt-Test")!),
-                                 ("£13.00", "Dominos","Paid on 20 August 2019", UIImage(named: "Receipt-Test")!),
-                                 ("£35.25", "Champneys","Paid on 19 August 2019", UIImage(named: "Receipt-Test")!),
-                                 ("£13.00", "Dominos","Paid on 20 August 2019", UIImage(named: "Receipt-Test")!),
-                                 ("£35.25", "Champneys","Paid on 19 August 2019", UIImage(named: "Receipt-Test")!),]
+    var payments: [Payments] = []
+    //var payments: [Payment] = [("£13.00", "Dominos","Paid on 20 August 2019", UIImage(named: "Receipt-Test")!),
+//                               ("£35.25", "Champneys","Paid on 19 August 2019", UIImage(named: "Receipt-Test")!)]
     
+    
+    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
     
     
@@ -84,6 +33,8 @@ class CardViewController: UIViewController, UITableViewDataSource, UITableViewDe
     override func viewDidLoad() {
         super.viewDidLoad()
     
+        print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
+        
         //Removes uneeded separator lines at the end of TableView
         tblView.tableFooterView = UIView()
         
@@ -114,9 +65,15 @@ class CardViewController: UIViewController, UITableViewDataSource, UITableViewDe
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "paymentCell", for: indexPath) as! PaymentTableViewCell
 
-        cell.amountPaidText.text = payments[indexPath.row].0 + " (" + payments[indexPath.row].1 + ")"
-        cell.dateText.text = payments[indexPath.row].2
-        cell.receiptImageView.image = payments[indexPath.row].3
+        let p = payments[indexPath.row]
+        
+        cell.amountPaidText.text = p.amountPaid! + "  (" + p.place! + ")"
+        cell.dateText.text = p.date!
+//        cell.receiptImageView.image =
+        
+//        cell.amountPaidText.text = payments[indexPath.row].0 + " (" + payments[indexPath.row].1 + ")"
+//        cell.dateText.text = payments[indexPath.row].2
+//        cell.receiptImageView.image = payments[indexPath.row].3
         
         // Set to make separator lines to be of full width
         cell.preservesSuperviewLayoutMargins = false
@@ -208,6 +165,17 @@ class CardViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     
     
+    
+    
+    
+    
+    func saveContext() {
+        do {
+            try context.save()
+        } catch {
+            print("Error found: \(error)")
+        }
+    }
     
 }
 

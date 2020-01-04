@@ -100,12 +100,12 @@
 		B59E3E1323B3BF4E0017D474 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				B5DB922123BE929F0081E8D7 /* PaymentsData.xcdatamodeld */,
 				B573FAAD23BA815F005473D2 /* cameraSession.swift */,
 				B573FAA723B98061005473D2 /* CircularTransition.swift */,
 				B573FAA323B95F57005473D2 /* Delegates.swift */,
 				B59E3E2B23B53FEF0017D474 /* Enums.swift */,
 				B573FAA523B96157005473D2 /* Extensions.swift */,
-				B5DB922123BE929F0081E8D7 /* PaymentsData.xcdatamodeld */,
 			);
 			path = Model;
 			sourceTree = "<group>";

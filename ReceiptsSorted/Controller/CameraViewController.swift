@@ -39,7 +39,7 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
         
         self.view.frame = controllerFrame ?? CGRect(x: 0, y: 0, width: 100, height: 100)
         
-        setAndStartRunningCaptureSession()
+        //setAndStartRunningCaptureSession()
         
         takePhotoButton.layer.cornerRadius = takePhotoButton.frame.size.height/2
     }

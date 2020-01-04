@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 //var cardHeight: CGFloat = 0
 
@@ -14,38 +15,34 @@ import UIKit
 
 class ViewController: UIViewController, UINavigationControllerDelegate, UIGestureRecognizerDelegate, UIViewControllerTransitioningDelegate  {
     
-
+    
     @IBOutlet var imageTake: UIImageView!
     
-    var imagePicker: UIImagePickerController!
-    var cardViewController : CardViewController!
     var visualEffectView : UIVisualEffectView!  //For blur
     var runningAnimations = [UIViewPropertyAnimator]()
     var animationProgressWhenInterrupted: CGFloat = 0
     
+    var cardViewController : CardViewController!
     var cardVisible = false
     var nextState: CardState {
         return cardVisible ? .Collapsed : .Expanded
     }
-    
     var cardHeight: CGFloat = 0
     var cardStartPointY: CGFloat = 0
     var lastFraction: CGFloat = 0
     
     let circularTransition = CircularTransition()
     var cameraViewController: CameraViewController!
-    
     var addButton: UIButton!
     
     var ignoreGesture: Bool = false
     
-    var cameraSession = CameraSession()  //Initialised
+    //var cameraSession = CameraSession()  //Initialised
+    
+    
     
     //set Status Bar icons to white
     override var preferredStatusBarStyle: UIStatusBarStyle { return .lightContent }
-    
-    
-    
     
     
     
@@ -68,7 +65,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
         let buttonPositionX = self.view.frame.size.width - buttonSize - self.view.frame.size.width/20
         let buttonPositionY = self.view.frame.size.height - buttonSize - self.view.frame.size.height/18
         addButton.frame = CGRect(x: buttonPositionX, y: buttonPositionY, width: buttonSize, height: buttonSize)
-        addButton.backgroundColor = UIColor(rgb: 0xEDB200)
+        addButton.backgroundColor = UIColor(rgb: 0xEDB200)  //orange Flat UI
         
         addButton.setTitle("+", for: .normal)
         addButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 70)
@@ -91,14 +88,13 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
         cameraVC.modalPresentationStyle = .custom
         
         cameraVC.controllerFrame = self.view.frame
-        cameraVC.captureSession = cameraSession.captureSession
-        cameraVC.photoOutput = cameraSession.photoOutput
-        cameraVC.cameraPreviewLayer = cameraSession.cameraPreviewLayer
+//        cameraVC.captureSession = cameraSession.captureSession
+//        cameraVC.photoOutput = cameraSession.photoOutput
+//        cameraVC.cameraPreviewLayer = cameraSession.cameraPreviewLayer
         
         cameraVC.mainView = self
         
         self.present(cameraVC, animated: true, completion: nil)
-        
     }
     
     
@@ -110,7 +106,6 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
                 
         return circularTransition
     }
-    
     
     func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         circularTransition.transitionMode = .dismiss
@@ -129,12 +124,10 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
         cardStartPointY = self.view.frame.size.height * 1/2
         cardHeight = self.view.frame.size.height * 19/20
         
-        
         visualEffectView = UIVisualEffectView()
         visualEffectView.frame = self.view.frame
         visualEffectView.isUserInteractionEnabled = false
         self.view.addSubview(visualEffectView)
-        
         
         cardViewController = CardViewController(nibName: "CardViewController", bundle: nil)
         cardViewController.cardHeight = cardHeight
@@ -146,7 +139,6 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
         
         cardViewController.view.clipsToBounds = true
         cardViewController.view.roundCorners(corners: [.topLeft, .topRight], radius: 30)
-        //cardViewController.view.layer.cornerRadius = 30
         
         // Create gesture recognisers
         let tapGestureRecogniser = UITapGestureRecognizer(target: self, action: #selector(ViewController.handleCardTap(recogniser:)))
@@ -170,48 +162,16 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
         if let panGestureRecognizer = gestureRecognizer as? UIPanGestureRecognizer {
             let translation = panGestureRecognizer.translation(in: self.cardViewController.tblView)
             //print("x = \(translation.x)      y = \(translation.y)")
-            if abs(translation.x) < abs(translation.y) {
-                return true
-            }
-            return false
+            if (abs(translation.x) < abs(translation.y)) { return true }
         }
         return false
     }
     
     
-    
-
-//    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer,
-//                           shouldRequireFailureOf otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-//
-////        print("gesture = \(gestureRecognizer)")
-////        print("otherGesture = \(otherGestureRecognizer)")
-//
-//        if (gestureRecognizer is UIPanGestureRecognizer || otherGestureRecognizer is UIPanGestureRecognizer) {
-//
-//            if (cardViewController.tblView.contentOffset.y <= 5) {
-//                return false
-//            } else {
-//                return true
-//            }
-//        }
-//
-//        //print("OUTSIDE false")
-//       return false
-//    }
-    
-    
     // Enable multiple gesture recognition
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         
-        //print("gesture = \(gestureRecognizer)")
-        //print("otherGesture = \(otherGestureRecognizer)")
-        
-        if (gestureRecognizer is UIPanGestureRecognizer) {
-            return true
-        } else {
-            return false
-        }
+        return (gestureRecognizer is UIPanGestureRecognizer) ? true : false
     }
     
     
@@ -362,7 +322,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
         frameAnimator.startAnimation()
         runningAnimations.append(frameAnimator)
 
-
+        
         /* Blur animation*/
         let blurAnimator = UIViewPropertyAnimator(duration: duration, dampingRatio: dumpingRatio) {
             switch state {
@@ -386,10 +346,33 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
                 self.addButton.alpha = 1
             }
         }
-        
+
         buttonOpacityAnimator.startAnimation()
         runningAnimations.append(buttonOpacityAnimator)
+        
     }
+    
+    
+//    func addAnimation(for state: CardState,
+//                      duration: TimeInterval,
+//                      dampingRatio: CGFloat,
+//                      whenExpanded funcExpanded: @escaping () -> (),
+//                      whenCollapsed funcCollapsed: @escaping () -> (),
+//                      _ completion: @escaping (UIViewAnimatingPosition) -> Void)
+//    {
+//        let animator = UIViewPropertyAnimator(duration: duration, dampingRatio: dampingRatio) {
+//            switch state {
+//            case .Expanded:
+//                funcExpanded()
+//            case .Collapsed:
+//                funcCollapsed()
+//            }
+//        }
+//
+//        animator.addCompletion(completion)
+//        animator.startAnimation()
+//        runningAnimations.append(animator)
+//    }
 
 }
 
@@ -403,12 +386,23 @@ extension ViewController: PaymentDelegate {
     
     func passData(amountPaid: String, place: String, date: String, receiptImage: UIImage) {
         
-        //cardViewController.payments.append(CardViewController.Payment(amountPaid, date))
-        cardViewController.payments.insert(CardViewController.Payment(amountPaid, place, date, receiptImage), at: 0)
         
-        cardViewController.tblView.beginUpdates()
-        cardViewController.tblView.insertRows(at: [IndexPath.init(row: 0, section: 0)], with: .left)
-        cardViewController.tblView.endUpdates()
+//        cardViewController.payments.insert(CardViewController.Payment(amountPaid, place, date, receiptImage), at: 0)
+        
+        
+        let newPayment = Payments(context: cardViewController.context)
+        newPayment.amountPaid = amountPaid
+        newPayment.place = place
+        newPayment.date = date
+        
+        cardViewController.payments.insert(newPayment, at: 0)
+        
+//        cardViewController.tblView.beginUpdates()
+//        cardViewController.tblView.insertRows(at: [IndexPath.init(row: 0, section: 0)], with: .left)
+//        cardViewController.tblView.endUpdates()
+        
+        cardViewController.saveContext()
+        cardViewController.tblView.reloadData()
     }
     
     
