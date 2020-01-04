@@ -386,23 +386,19 @@ extension ViewController: PaymentDelegate {
     
     func passData(amountPaid: String, place: String, date: String, receiptImage: UIImage) {
         
-        
-//        cardViewController.payments.insert(CardViewController.Payment(amountPaid, place, date, receiptImage), at: 0)
-        
-        
-        let newPayment = Payments(context: cardViewController.context)
+        let newPayment = Payments(context: cardViewController.database.context)
         newPayment.amountPaid = amountPaid
         newPayment.place = place
         newPayment.date = date
         
         cardViewController.payments.insert(newPayment, at: 0)
         
-//        cardViewController.tblView.beginUpdates()
-//        cardViewController.tblView.insertRows(at: [IndexPath.init(row: 0, section: 0)], with: .left)
-//        cardViewController.tblView.endUpdates()
+        cardViewController.database.saveContext()
         
-        cardViewController.saveContext()
-        cardViewController.tblView.reloadData()
+//        cardViewController.tblView.reloadData()
+        cardViewController.tblView.beginUpdates()
+        cardViewController.tblView.insertRows(at: [IndexPath.init(row: 0, section: 0)], with: .left)
+        cardViewController.tblView.endUpdates()
     }
     
     

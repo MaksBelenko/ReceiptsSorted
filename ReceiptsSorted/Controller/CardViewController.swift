@@ -11,7 +11,7 @@ import CoreData
 
 class CardViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
-
+    
     @IBOutlet weak var handleImageView: UIImageView!
     @IBOutlet weak var handleArea: UIView!
     @IBOutlet weak var tblView: UITableView!
@@ -19,14 +19,9 @@ class CardViewController: UIViewController, UITableViewDataSource, UITableViewDe
     var cardHeight: CGFloat = 0
     var tableRowsHeight: CGFloat = 60
 
-    typealias Payment = (String, String, String, UIImage)
     var payments: [Payments] = []
-    //var payments: [Payment] = [("£13.00", "Dominos","Paid on 20 August 2019", UIImage(named: "Receipt-Test")!),
-//                               ("£35.25", "Champneys","Paid on 19 August 2019", UIImage(named: "Receipt-Test")!)]
-    
-    
-    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-    
+    var database = Database()
+
     
     
     
@@ -35,10 +30,13 @@ class CardViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
         print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
         
+        payments = database.loadPayments()
+        
+        
+        
         //Removes uneeded separator lines at the end of TableView
         tblView.tableFooterView = UIView()
         
-        //tableView.isUserInteractionEnabled = false
         tblView.dataSource = self
         tblView.delegate = self
         tblView.register(UINib(nibName: "PaymentTableViewCell", bundle: nil), forCellReuseIdentifier: "paymentCell")
@@ -71,9 +69,6 @@ class CardViewController: UIViewController, UITableViewDataSource, UITableViewDe
         cell.dateText.text = p.date!
 //        cell.receiptImageView.image =
         
-//        cell.amountPaidText.text = payments[indexPath.row].0 + " (" + payments[indexPath.row].1 + ")"
-//        cell.dateText.text = payments[indexPath.row].2
-//        cell.receiptImageView.image = payments[indexPath.row].3
         
         // Set to make separator lines to be of full width
         cell.preservesSuperviewLayoutMargins = false
@@ -100,37 +95,6 @@ class CardViewController: UIViewController, UITableViewDataSource, UITableViewDe
         tableView.deselectRow(at: indexPath, animated: true)
             
     }
-    
-    
-    
-    
-    //MARK: - Table Scroll Methods
-    
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        //print("scroll")
-
-        let scrollViewHeight = scrollView.frame.size.height;
-        let scrollContentSizeHeight = scrollView.contentSize.height;
-        let scrollOffset = scrollView.contentOffset.y;
-
-        if (scrollOffset == 0)
-        {
-            // then we are at the top
-//            print("at the top")
-        }
-        else if (scrollOffset + scrollViewHeight == scrollContentSizeHeight)
-        {
-            // then we are at the end
-//            print("at the bottom")
-        }
-        
-    }
-    
-    func scrollViewDidScrollToTop(_ scrollView: UIScrollView) {
-        print("reached top")
-        //tblView.isUserInteractionEnabled = false
-    }
-    
     
     
     
@@ -161,21 +125,7 @@ class CardViewController: UIViewController, UITableViewDataSource, UITableViewDe
         return swipeActions
     }
     
-    
-    
-    
-    
-    
-    
-    
-    
-    func saveContext() {
-        do {
-            try context.save()
-        } catch {
-            print("Error found: \(error)")
-        }
-    }
+
     
 }
 
