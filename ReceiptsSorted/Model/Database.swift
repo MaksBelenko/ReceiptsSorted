@@ -33,4 +33,10 @@ class Database {
             return []
         }
     }
+    
+    
+    func delete(item: NSManagedObject) {
+        context.delete(item)
+        saveContext()
+    }
 }

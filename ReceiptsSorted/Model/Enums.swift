@@ -21,3 +21,7 @@ enum CardState {
 enum PopupType {
     case AmountPaid, Place
 }
+
+enum ShowPaymentAs {
+    case AddPayment, UpdatePayment
+}

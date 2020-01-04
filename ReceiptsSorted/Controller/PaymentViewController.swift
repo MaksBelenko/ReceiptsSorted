@@ -10,7 +10,12 @@ import UIKit
 
 class PaymentViewController: UIViewController {
 
+    var pageType: ShowPaymentAs = .AddPayment
+    
     var passedImage: UIImage? = nil
+    var amountPaid: String = ""
+    var place: String = ""
+    var date: String = ""
     
     @IBOutlet weak var receiptImageView: UIImageView!
     @IBOutlet weak var amountPaidTextField: UITextField!
@@ -22,16 +27,26 @@ class PaymentViewController: UIViewController {
     
     var paymentDelegate: PaymentDelegate?
     
+    var formattedDateToday: String {
+        get {
+            let formatter = DateFormatter()
+            formatter.dateStyle = .long
+            return formatter.string(from: Date())
+        }
+    }
     
-    //set Status Bar icons to white
+    
+    //set Status Bar icons to black
     override var preferredStatusBarStyle: UIStatusBarStyle { return .darkContent }
+    
+    
     
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        receiptImageView.image = passedImage
+        setTextFields()
         
         setupTextFields()
         setupAddButton()
@@ -39,6 +54,25 @@ class PaymentViewController: UIViewController {
     }
     
 
+    
+    func setTextFields() {
+        receiptImageView.image = passedImage
+        placeOfPurchaseTextField.text = place
+        
+        if (pageType == .UpdatePayment) {
+            amountPaidTextField.text = amountPaid
+            dateTextField.text = date
+        }
+        
+        if (pageType == .AddPayment) {
+            amountPaidTextField.text = "£0.00"
+            dateTextField.text = formattedDateToday
+        }
+    }
+    
+    
+    
+    
     func setupAddButton() {
         addButton.layer.cornerRadius = addButton.frame.size.height/2
         addButton.layer.applyShadow(color: .black, alpha: 0.25, x: 5, y: 10, blur: 10)

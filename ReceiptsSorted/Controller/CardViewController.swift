@@ -22,6 +22,8 @@ class CardViewController: UIViewController, UITableViewDataSource, UITableViewDe
     var payments: [Payments] = []
     var database = Database()
 
+    var paymentUpdateIndex = 0
+    
     
     
     
@@ -93,6 +95,23 @@ class CardViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
         print("row selected at \(indexPath.row)")
         tableView.deselectRow(at: indexPath, animated: true)
+        
+        
+        let selectedPayment = payments[indexPath.row]
+        paymentUpdateIndex = indexPath.row
+        
+        if let paymentVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "PaymentDetails") as? PaymentViewController
+        {
+            paymentVC.passedImage = UIImage()
+            paymentVC.amountPaid = selectedPayment.amountPaid!
+            paymentVC.place = selectedPayment.place!
+            paymentVC.date = selectedPayment.date!
+            
+            paymentVC.paymentDelegate = self
+            
+            paymentVC.modalPresentationStyle = .fullScreen
+            self.present(paymentVC, animated: true, completion: nil)
+        }
             
     }
     
@@ -107,6 +126,9 @@ class CardViewController: UIViewController, UITableViewDataSource, UITableViewDe
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
 
         if (editingStyle == .delete) {
+            
+            database.delete(item: payments[indexPath.row])
+            
             payments.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .automatic)
         }
@@ -129,3 +151,18 @@ class CardViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
 }
 
+
+
+extension CardViewController: PaymentDelegate {
+    
+    func passData(amountPaid: String, place: String, date: String, receiptImage: UIImage) {
+        
+//        payments[paymentUpdateIndex].image = receiptImage
+        payments[paymentUpdateIndex].amountPaid = amountPaid
+        payments[paymentUpdateIndex].place = place
+        payments[paymentUpdateIndex].date = date
+        
+        database.saveContext()
+        tblView.reloadData()
+    }
+}
