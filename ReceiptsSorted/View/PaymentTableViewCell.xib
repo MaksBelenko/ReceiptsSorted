@@ -16,44 +16,43 @@
                 <rect key="frame" x="0.0" y="0.0" width="405" height="60"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date paid" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zRv-MX-Haz">
-                        <rect key="frame" x="16" y="33" width="311" height="17"/>
-                        <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="14"/>
-                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <nil key="highlightedColor"/>
-                    </label>
-                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="iud-G4-1aN">
-                        <rect key="frame" x="335" y="3" width="57" height="54"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="57" id="lnI-MK-F9U"/>
-                        </constraints>
-                    </imageView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Paid Amount" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uWM-yr-gwx">
-                        <rect key="frame" x="16" y="7" width="311" height="21"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Place of Purchase" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sOq-Hv-o8H">
+                        <rect key="frame" x="53" y="9" width="248" height="21"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" heightSizable="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Date paid" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zRv-MX-Haz">
+                        <rect key="frame" x="53" y="32" width="241" height="17"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="£13.50" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uWM-yr-gwx">
+                        <rect key="frame" x="292" y="18" width="107" height="24"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="✓" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="35V-nN-LEd">
+                        <rect key="frame" x="15" y="17" width="25" height="25"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" systemColor="systemGreenColor" red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
-                <constraints>
-                    <constraint firstItem="zRv-MX-Haz" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="5eI-Sz-OKH"/>
-                    <constraint firstItem="uWM-yr-gwx" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="7" id="BHg-bE-kXe"/>
-                    <constraint firstItem="zRv-MX-Haz" firstAttribute="top" secondItem="uWM-yr-gwx" secondAttribute="bottom" constant="5" id="KDE-LT-I8v"/>
-                    <constraint firstItem="iud-G4-1aN" firstAttribute="leading" secondItem="uWM-yr-gwx" secondAttribute="trailing" constant="8" id="KYF-3M-h6V"/>
-                    <constraint firstItem="zRv-MX-Haz" firstAttribute="top" secondItem="uWM-yr-gwx" secondAttribute="bottom" constant="5" id="Rp3-Fr-X4J"/>
-                    <constraint firstItem="iud-G4-1aN" firstAttribute="leading" secondItem="zRv-MX-Haz" secondAttribute="trailing" constant="8" id="XQx-MW-I0R"/>
-                    <constraint firstAttribute="bottom" secondItem="iud-G4-1aN" secondAttribute="bottom" constant="3" id="YVW-I1-ICc"/>
-                    <constraint firstAttribute="trailing" secondItem="iud-G4-1aN" secondAttribute="trailing" constant="13" id="ciE-OV-4eU"/>
-                    <constraint firstAttribute="bottom" secondItem="zRv-MX-Haz" secondAttribute="bottom" constant="10" id="eGf-GB-Vs5"/>
-                    <constraint firstItem="uWM-yr-gwx" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="vB0-fY-AOk"/>
-                    <constraint firstItem="iud-G4-1aN" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="3" id="vfb-n7-5PI"/>
-                </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
                 <outlet property="amountPaidText" destination="uWM-yr-gwx" id="ZeL-h2-8h3"/>
                 <outlet property="dateText" destination="zRv-MX-Haz" id="eKc-Vs-J9u"/>
-                <outlet property="receiptImageView" destination="iud-G4-1aN" id="EpG-Zy-XXz"/>
+                <outlet property="placeText" destination="sOq-Hv-o8H" id="xeZ-6H-L3t"/>
+                <outlet property="tickLabel" destination="35V-nN-LEd" id="ozJ-rz-8IM"/>
             </connections>
             <point key="canvasLocation" x="100.72463768115942" y="105.80357142857143"/>
         </tableViewCell>

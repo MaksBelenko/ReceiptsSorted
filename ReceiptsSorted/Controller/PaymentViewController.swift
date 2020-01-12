@@ -172,7 +172,6 @@ class PaymentViewController: UIViewController {
 
         //DispatchQueue.global(qos: .userInitiated).async {
             
-//            guard let img = UIImage(named: "Receipt-Test")?.cgImage else {
             guard let img = self.passedImage?.cgImage else {
                 fatalError("Missing image to scan")
             }

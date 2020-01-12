@@ -21,7 +21,6 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
     
     @IBOutlet weak var takePhotoButton: UIButton!
     
-
     let imagePicker = UIImagePickerController()
     
     

@@ -30,10 +30,8 @@ class CardViewController: UIViewController, UITableViewDataSource, UITableViewDe
     override func viewDidLoad() {
         super.viewDidLoad()
     
-        //print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
-        
+        print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
         payments = database.loadPayments()
-        
         
         
         //Removes uneeded separator lines at the end of TableView
@@ -49,13 +47,13 @@ class CardViewController: UIViewController, UITableViewDataSource, UITableViewDe
         // Set TableView height
         tblView.frame.size.height = cardHeight * 4/5
         
-        
 //        tblView.showsVerticalScrollIndicator = false
 //        tblView.isScrollEnabled = false
     }
 
     
     
+    //MARK: - TableView Methods for cells
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return payments.count
     }
@@ -67,7 +65,8 @@ class CardViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
         let p = payments[indexPath.row]
         
-        cell.amountPaidText.text = p.amountPaid! + "  (" + p.place! + ")"
+        cell.amountPaidText.text = p.amountPaid!
+        cell.placeText.text = p.place!
         cell.dateText.text = p.date!
 //        cell.receiptImageView.image =
         
@@ -88,14 +87,8 @@ class CardViewController: UIViewController, UITableViewDataSource, UITableViewDe
         return tableRowsHeight
     }
     
-    
-    
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-
-//        print("row selected at \(indexPath.row)")
         tableView.deselectRow(at: indexPath, animated: true)
-        
         
         let selectedPayment = payments[indexPath.row]
         paymentUpdateIndex = indexPath.row
@@ -150,10 +143,31 @@ class CardViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
 
     
+    
+    
+    //MARK: - TableVew Scrolling
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+//        print("Begin Dragging")
+        //print(scrollView.panGestureRecognizer.velocity(in: self.view))
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+//        print("Did scroll")
+//        print(scrollView.panGestureRecognizer.velocity(in: self.tblView).y)
+//        print(fractionComplete)
+        if (fractionComplete > 0 && fractionComplete < 1) {
+            tblView.contentOffset.y = 0
+        }
+    }
+    
 }
 
 
 
+
+
+
+//MARK: - Extension for PaymentDelegate
 extension CardViewController: PaymentDelegate {
     
     func passData(amountPaid: String, place: String, date: String, receiptImage: UIImage) {

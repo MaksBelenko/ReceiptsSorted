@@ -9,8 +9,11 @@
 import UIKit
 import CoreData
 
-//var cardHeight: CGFloat = 0
-
+var cardVisible = false
+var nextState: CardState {
+    return cardVisible ? .Collapsed : .Expanded
+}
+var fractionComplete: CGFloat = 0.0
 
 
 class ViewController: UIViewController, UINavigationControllerDelegate, UIGestureRecognizerDelegate, UIViewControllerTransitioningDelegate  {
@@ -23,10 +26,10 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
     var animationProgressWhenInterrupted: CGFloat = 0
     
     var cardViewController : CardViewController!
-    var cardVisible = false
-    var nextState: CardState {
-        return cardVisible ? .Collapsed : .Expanded
-    }
+//    var cardVisible = false
+//    var nextState: CardState {
+//        return cardVisible ? .Collapsed : .Expanded
+//    }
     var cardHeight: CGFloat = 0
     var cardStartPointY: CGFloat = 0
     var lastFraction: CGFloat = 0
@@ -161,8 +164,20 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
     func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
         if let panGestureRecognizer = gestureRecognizer as? UIPanGestureRecognizer {
             let translation = panGestureRecognizer.translation(in: self.cardViewController.tblView)
-            //print("x = \(translation.x)      y = \(translation.y)")
-            if (abs(translation.x) < abs(translation.y)) { return true }
+//            print("x = \(translation.x)      y = \(translation.y)")
+            if (abs(translation.x) < abs(translation.y)) {
+                return true
+            }
+        }
+        return false
+    }
+    
+    
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRequireFailureOf otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        if gestureRecognizer is UIPanGestureRecognizer {
+            if cardViewController.tblView.contentOffset.y > 3 && nextState == .Collapsed {
+                return true
+            }
         }
         return false
     }
@@ -170,9 +185,9 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
     
     // Enable multiple gesture recognition
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        
         return (gestureRecognizer is UIPanGestureRecognizer) ? true : false
     }
+    
     
     
     
@@ -180,73 +195,34 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
         animateTransitionIfNeeded(with: nextState, for: 0.7, withDampingRatio: 0.8)
     }
 
-
     
-    @objc func handleCardPan (recogniser: UIPanGestureRecognizer) {
-        
-        switch recogniser.state{
-        case .began:
-//            print(cardVisible)
-//            print("velocity = \(recogniser.velocity(in: self.view).y)")
+     @objc func handleCardPan (recogniser: UIPanGestureRecognizer) {
             
-            let logicExpanded = cardVisible == true && (recogniser.velocity(in: self.view).y < 0 || cardViewController.tblView.contentOffset.y > 0 )
-            let logicCollapsed = cardVisible == false && (recogniser.velocity(in: self.view).y > 0)
-            
-            
-            if (logicExpanded || logicCollapsed) {
-                ignoreGesture = true
-            } else {
-                ignoreGesture = false
+            switch recogniser.state{
+            case .began:
                 startInteractiveTransition(forState: nextState, duration: 0.6)
-            }
-            
-
-        case .changed:
-            if (ignoreGesture == false) {
+                
+            case .changed:
                 let translation = recogniser.translation(in: self.cardViewController.tblView)
-                var fractionComplete = translation.y / (cardStartPointY - self.view.frame.size.height + cardHeight)
+                fractionComplete = translation.y / (cardStartPointY - self.view.frame.size.height + cardHeight)
                 fractionComplete = cardVisible ? fractionComplete : -fractionComplete
 
-                
                 lastFraction = fractionComplete
-                //print("lastFraction = \(lastFraction)")
-                if (fractionComplete <= 0) {
-                    return
-                }
-                
                 updateInteractiveTransition(fractionCompleted: fractionComplete)
                 
                 
-                // Keep TableView at 0 on Y axis
-                //print("fractionComplete = \(fractionComplete)")
-                if (fractionComplete > 0 && fractionComplete < 1 ) {
-                    cardViewController.tblView.contentOffset.y = 0
+            case .ended:
+                if (lastFraction < 0.1) {
+                    stopAndGoToStartPositionInteractiveTransition()
+                } else {
+                    continueInteractiveTransition()
                 }
-            }
-            
-            if (cardVisible == false && cardViewController.tblView.contentOffset.y >= 0) {
-                cardViewController.tblView.contentOffset.y = 0
-            }
-            
-            
-        case .ended:
-            if (ignoreGesture == false) {
-                continueInteractiveTransition()
                 
-                cardViewController.tblView.isUserInteractionEnabled = false
-                
-                if (lastFraction > 0 && lastFraction < 1) {
-                    cardViewController.tblView.scrollToRow(at: IndexPath(row: 0, section: 0), at: UITableView.ScrollPosition.top, animated: false)
-                }
+            default:
+                break
             }
-            
-            
-            
-        default:
-            break
-        }
 
-    }
+        }
     
 
 
@@ -292,6 +268,20 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
         }
     }
     
+    /**
+    Stops animation and goes to start of the animation
+    */
+    func stopAndGoToStartPositionInteractiveTransition() {
+        for animator in runningAnimations {
+            animator.stopAnimation(false)
+            animator.finishAnimation(at: .start)
+        }
+        self.runningAnimations.removeAll()
+        
+        cardVisible = !cardVisible
+    }
+    
+    
     
     /**
     Creates array of animations and starts them
@@ -313,9 +303,9 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
         }
 
         frameAnimator.addCompletion { _ in
-            self.cardVisible = !self.cardVisible
+            cardVisible = !cardVisible
             self.runningAnimations.removeAll()
-            self.cardViewController.tblView.isUserInteractionEnabled = true
+            //self.cardViewController.tblView.isUserInteractionEnabled = true
         }
 
         frameAnimator.startAnimation()
@@ -337,7 +327,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
         
         
         /* Add Button Opacity animation*/
-        let buttonOpacityAnimator = UIViewPropertyAnimator(duration: duration, curve: .easeIn) {
+        let buttonOpacityAnimator = UIViewPropertyAnimator(duration: duration, dampingRatio: dumpingRatio) {
             switch state {
             case .Expanded:
                 self.addButton.alpha = 0
