@@ -95,7 +95,7 @@ class CardViewController: UIViewController, UITableViewDataSource, UITableViewDe
         
         if let paymentVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "PaymentDetails") as? PaymentViewController
         {
-            paymentVC.passedImage = UIImage()
+            paymentVC.passedImage = UIImage(data: selectedPayment.receiptPhoto!)
             paymentVC.amountPaid = selectedPayment.amountPaid!
             paymentVC.place = selectedPayment.place!
             paymentVC.date = selectedPayment.date!
@@ -148,14 +148,13 @@ class CardViewController: UIViewController, UITableViewDataSource, UITableViewDe
     //MARK: - TableVew Scrolling
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
 //        print("Begin Dragging")
-        //print(scrollView.panGestureRecognizer.velocity(in: self.view))
+//        print(scrollView.panGestureRecognizer.velocity(in: self.view))
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-//        print("Did scroll")
-//        print(scrollView.panGestureRecognizer.velocity(in: self.tblView).y)
-//        print(fractionComplete)
-        if (fractionComplete > 0 && fractionComplete < 1) {
+//        print("fr = \(fractionComplete)")
+//        print("vel = \(scrollView.panGestureRecognizer.velocity(in: self.tblView).y)")
+        if ((fractionComplete > 0 && fractionComplete < 1) || (nextState == .Expanded && fractionComplete < 1)) {
             tblView.contentOffset.y = 0
         }
     }
@@ -172,7 +171,7 @@ extension CardViewController: PaymentDelegate {
     
     func passData(amountPaid: String, place: String, date: String, receiptImage: UIImage) {
         
-//        payments[paymentUpdateIndex].image = receiptImage
+//        payments[paymentUpdateIndex].rece = receiptImage
         payments[paymentUpdateIndex].amountPaid = amountPaid
         payments[paymentUpdateIndex].place = place
         payments[paymentUpdateIndex].date = date

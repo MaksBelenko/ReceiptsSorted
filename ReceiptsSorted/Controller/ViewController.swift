@@ -175,7 +175,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
     
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRequireFailureOf otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         if gestureRecognizer is UIPanGestureRecognizer {
-            if cardViewController.tblView.contentOffset.y > 3 && nextState == .Collapsed {
+            if cardViewController.tblView.contentOffset.y > 1 && nextState == .Collapsed {
                 return true
             }
         }
@@ -379,6 +379,15 @@ extension ViewController: PaymentDelegate {
         newPayment.amountPaid = amountPaid
         newPayment.place = place
         newPayment.date = date
+        if let imageData = receiptImage.jpegData(compressionQuality: 1.0) {
+             let bytes = imageData.count
+            print("size in kB = \(Double(bytes) / 1000.0)")
+        }
+        if let imageData = receiptImage.jpegData(compressionQuality: 0.1) {
+             let bytes = imageData.count
+            print("size COMPRESSED in kB = \(Double(bytes) / 1000.0)")
+        }
+        newPayment.receiptPhoto = receiptImage.jpegData(compressionQuality: 0.1)
         
         cardViewController.payments.insert(newPayment, at: 0)
         

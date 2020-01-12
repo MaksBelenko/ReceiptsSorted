@@ -47,6 +47,7 @@ class PaymentViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        receiptImageView.image = passedImage
         setTextFields()
         
         setupTextFields()
@@ -57,7 +58,6 @@ class PaymentViewController: UIViewController {
 
     
     func setTextFields() {
-        receiptImageView.image = passedImage
         placeOfPurchaseTextField.text = place
         
         if (pageType == .UpdatePayment) {
@@ -166,7 +166,7 @@ class PaymentViewController: UIViewController {
         let request = VNRecognizeTextRequest(completionHandler: self.handleDetectedText)
         request.recognitionLevel = .accurate
         //request.recognitionLanguages = ["en_GB"]
-        request.customWords = ["£", "Amount","Total"]
+        request.customWords = ["£"]
         
         let requests = [request]
 
