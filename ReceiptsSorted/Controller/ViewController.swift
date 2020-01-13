@@ -40,7 +40,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
     
     var ignoreGesture: Bool = false
     
-    var cameraSession = CameraSession()  //Initialised
+    //var cameraSession = CameraSession()  //Initialised
     
     
     
@@ -52,6 +52,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        initialiseCircle()
         
         setupCard()
         setupAddButton(withSize: self.view.frame.size.width / 4.5)
@@ -91,9 +93,9 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
         cameraVC.modalPresentationStyle = .custom
         cameraVC.controllerFrame = self.view.frame
         
-        cameraVC.captureSession = cameraSession.captureSession
-        cameraVC.photoOutput = cameraSession.photoOutput
-        cameraVC.cameraPreviewLayer = cameraSession.cameraPreviewLayer
+//        cameraVC.captureSession = cameraSession.captureSession
+//        cameraVC.photoOutput = cameraSession.photoOutput
+//        cameraVC.cameraPreviewLayer = cameraSession.cameraPreviewLayer
         
         cameraVC.mainView = self
         
@@ -363,14 +365,94 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
 //        runningAnimations.append(animator)
 //    }
 
+    
+    
+    func initialiseCircle() {
+        
+        addCircleLine(from: CGFloat.pi*3/4, to: CGFloat.pi*1/4, ofColor: UIColor.white.cgColor)
+        addCircleLine(from: CGFloat.pi*3/4, to: CGFloat.pi, ofColor: UIColor(rgb: 0xC24D35).cgColor) //red circular bar
+        
+        addEmptySpaces(amount: 55)
+        
+        
+        addHorizontalBar(percentage: 1, color: UIColor(rgb: 0xC0CEB7)) //green layer
+        addHorizontalBar(percentage: 0.7, color: UIColor(rgb: 0xCA8D8B)) //red layer
+    }
+    
+    
+    func addHorizontalBar(percentage: CGFloat, color: UIColor) {
+        let barLayer = CALayer()
+        let barwidth = 18/20*view.frame.size.width * percentage
+        barLayer.frame = CGRect(x: view.frame.size.width/20, y: 14/30*view.frame.height, width: barwidth, height: 14)
+        barLayer.cornerRadius = 7
+        barLayer.backgroundColor = color.cgColor
+        view.layer.addSublayer(barLayer)
+    }
+    
+    
+    func addCircleLine(from startAngle: CGFloat, to endAngle: CGFloat, ofColor color: CGColor) {
+        let shapeLayer = CAShapeLayer()
+        
+        let circleCenter = CGPoint(x: view.center.x, y: view.frame.height/4)
+        let circleRadius = view.frame.width * 4/11
+        
+        let circularPath = UIBezierPath(arcCenter: circleCenter, radius: circleRadius, startAngle: startAngle, endAngle: endAngle, clockwise: true)
+        shapeLayer.path = circularPath.cgPath
+        
+        shapeLayer.fillColor = UIColor.clear.cgColor
+        
+        shapeLayer.strokeColor = color
+        shapeLayer.lineWidth = 30
+        //shapeLayer.lineCap = CAShapeLayerLineCap.round
+        
+        view.layer.addSublayer(shapeLayer)
+    }
+    
+    
+    func addEmptySpaces(amount: Int) {
+        for i in 1...amount*2 {
+            if (i%2 == 0) {
+                let shapeLayer = CAShapeLayer()
+                
+                let circleCenter = CGPoint(x: view.center.x, y: view.frame.height/4)
+                let circleRadius = view.frame.width * 4/11
+                
+                let size = (3/2 * CGFloat.pi)/CGFloat(2*amount+1)
+                let startPoint = 3/4 * CGFloat.pi + size*CGFloat(i-1)
+                let endPoint = startPoint + size
+                
+                let circularPath = UIBezierPath(arcCenter: circleCenter, radius: circleRadius, startAngle: startPoint, endAngle: endPoint, clockwise: true)
+                shapeLayer.path = circularPath.cgPath
+                
+                shapeLayer.fillColor = UIColor.clear.cgColor
+                
+                shapeLayer.strokeColor = UIColor(rgb: 0x34475A).cgColor
+                shapeLayer.lineWidth = 30
+                //shapeLayer.lineCap = CAShapeLayerLineCap.round
+                
+                view.layer.addSublayer(shapeLayer)
+            }
+        }
+    }
+    
+}
+
+
+
+extension UIColor {
+    static var random: UIColor {
+        return UIColor(red: .random(in: 0...1),
+                       green: .random(in: 0...1),
+                       blue: .random(in: 0...1),
+                       alpha: 1.0)
+    }
 }
 
 
 
 
 
-
-
+//MARK: - Extension for PaymentDelegate
 extension ViewController: PaymentDelegate {
     
     func passData(amountPaid: String, place: String, date: String, receiptImage: UIImage) {
