@@ -71,12 +71,6 @@ class CardViewController: UIViewController, UITableViewDataSource, UITableViewDe
 //        cell.receiptImageView.image =
         
         
-        // Set to make separator lines to be of full width
-        cell.preservesSuperviewLayoutMargins = false
-        cell.layoutMargins = UIEdgeInsets.zero
-        cell.separatorInset = UIEdgeInsets.zero
-        
-        
         //print("\(cell.amountPaidText.text!)  \(cell.dateText.text!)")
         return cell
     }
@@ -95,7 +89,7 @@ class CardViewController: UIViewController, UITableViewDataSource, UITableViewDe
         
         if let paymentVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "PaymentDetails") as? PaymentViewController
         {
-            paymentVC.passedImage = UIImage(data: selectedPayment.receiptPhoto!)
+            paymentVC.passedImage = UIImage(data: selectedPayment.receiptPhoto ?? Data())
             paymentVC.amountPaid = selectedPayment.amountPaid!
             paymentVC.place = selectedPayment.place!
             paymentVC.date = selectedPayment.date!
@@ -146,14 +140,10 @@ class CardViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     
     //MARK: - TableVew Scrolling
-    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-//        print("Begin Dragging")
-//        print(scrollView.panGestureRecognizer.velocity(in: self.view))
-    }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
 //        print("fr = \(fractionComplete)")
-//        print("vel = \(scrollView.panGestureRecognizer.velocity(in: self.tblView).y)")
+        print("vel = \(scrollView.panGestureRecognizer.velocity(in: self.tblView).y)")
         if ((fractionComplete > 0 && fractionComplete < 1) || (nextState == .Expanded && fractionComplete < 1)) {
             tblView.contentOffset.y = 0
         }
@@ -163,15 +153,12 @@ class CardViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
 
 
-
-
-
 //MARK: - Extension for PaymentDelegate
 extension CardViewController: PaymentDelegate {
     
     func passData(amountPaid: String, place: String, date: String, receiptImage: UIImage) {
         
-//        payments[paymentUpdateIndex].rece = receiptImage
+//        payments[paymentUpdateIndex].receiptPhoto = receiptImage.jpegData(compressionQuality: 1)
         payments[paymentUpdateIndex].amountPaid = amountPaid
         payments[paymentUpdateIndex].place = place
         payments[paymentUpdateIndex].date = date

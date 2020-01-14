@@ -27,10 +27,12 @@ class CameraSession  {
     
     
     func setupCamera() {
-        setupCaptureSession()
-        setupDevice()
-        setupInputOutput()
-        setupPreviewLayer()
+        DispatchQueue.global(qos: .background).async {
+            self.setupCaptureSession()
+            self.setupDevice()
+            self.setupInputOutput()
+            self.setupPreviewLayer()
+        }
         
     }
     

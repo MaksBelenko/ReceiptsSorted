@@ -145,7 +145,7 @@ class PaymentViewController: UIViewController {
     
     @IBAction func pressedAddButton(_ sender: UIButton) {
         
-        paymentDelegate?.passData(amountPaid: amountPaidTextField.text!, place: placeOfPurchaseTextField.text!, date: dateTextField.text!, receiptImage: receiptImageView.image!)
+        paymentDelegate?.passData(amountPaid: amountPaidTextField.text!, place: placeOfPurchaseTextField.text!, date: dateTextField.text!, receiptImage: receiptImageView.image ?? UIImage())
         
         if (pageType == .AddPayment) {
             self.view.window!.rootViewController?.dismiss(animated: true, completion: nil)

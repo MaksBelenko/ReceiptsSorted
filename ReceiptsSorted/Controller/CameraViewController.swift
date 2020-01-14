@@ -34,8 +34,6 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
         super.viewDidLoad()
 
         imagePicker.delegate = self
-        
-        
         self.view.frame = controllerFrame ?? CGRect(x: 0, y: 0, width: 100, height: 100)
         
         setAndStartRunningCaptureSession()
@@ -46,10 +44,13 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
     
     
     func setAndStartRunningCaptureSession() {
-        cameraPreviewLayer?.frame = self.view.frame
-        self.view.layer.insertSublayer(cameraPreviewLayer!, at: 0)
         
-        captureSession!.startRunning()
+        self.cameraPreviewLayer?.frame = view.frame
+        self.view.layer.insertSublayer(self.cameraPreviewLayer!, at: 0)
+        
+        DispatchQueue.global(qos: .background).async {
+            self.captureSession!.startRunning()
+        }
     }
     
     

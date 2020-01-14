@@ -26,10 +26,6 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
     var animationProgressWhenInterrupted: CGFloat = 0
     
     var cardViewController : CardViewController!
-//    var cardVisible = false
-//    var nextState: CardState {
-//        return cardVisible ? .Collapsed : .Expanded
-//    }
     var cardHeight: CGFloat = 0
     var cardStartPointY: CGFloat = 0
     var lastFraction: CGFloat = 0
@@ -40,7 +36,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
     
     var ignoreGesture: Bool = false
     
-    //var cameraSession = CameraSession()  //Initialised
+    var cameraSession = CameraSession()  //Initialised
     
     
     
@@ -93,14 +89,16 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
         cameraVC.modalPresentationStyle = .custom
         cameraVC.controllerFrame = self.view.frame
         
-//        cameraVC.captureSession = cameraSession.captureSession
-//        cameraVC.photoOutput = cameraSession.photoOutput
-//        cameraVC.cameraPreviewLayer = cameraSession.cameraPreviewLayer
+        cameraVC.captureSession = cameraSession.captureSession
+        cameraVC.photoOutput = cameraSession.photoOutput
+        cameraVC.cameraPreviewLayer = cameraSession.cameraPreviewLayer
         
         cameraVC.mainView = self
         
         self.present(cameraVC, animated: true, completion: nil)
     }
+    
+    
     
     
     func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
@@ -147,16 +145,25 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
         
         // Create gesture recognisers
         let tapGestureRecogniser = UITapGestureRecognizer(target: self, action: #selector(ViewController.handleCardTap(recogniser:)))
-        let panGestureRecogniser = UIPanGestureRecognizer(target: self, action: #selector(ViewController.handleCardPan(recogniser:)))
-        
-        panGestureRecogniser.delegate = self
         
         // Add gestures for Handle Area in the CardViewController.xib
         cardViewController.handleArea.addGestureRecognizer(tapGestureRecogniser)
-        //cardViewController.handleArea.addGestureRecognizer(panGestureRecogniser)
+        cardViewController.handleArea.addGestureRecognizer(setGestureRecognizer())
         
-        cardViewController.tblView.addGestureRecognizer(panGestureRecogniser)
+        // Add gestures for TableView in the CardViewController.xib
+        cardViewController.tblView.addGestureRecognizer(setGestureRecognizer())
         
+    }
+    
+    
+    // For multiple views to have the same PanGesture
+    func setGestureRecognizer() -> UIPanGestureRecognizer {
+        let panGestureRecogniser = UIPanGestureRecognizer (target: self, action: #selector(ViewController.handleCardPan(recogniser:)))
+        panGestureRecogniser.delegate = self
+
+        panGestureRecogniser.minimumNumberOfTouches = 1
+        panGestureRecogniser.maximumNumberOfTouches = 4
+        return panGestureRecogniser
     }
     
     
@@ -367,6 +374,9 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
 
     
     
+    
+    
+    //MARK: - Initialisation of Top graphics
     func initialiseCircle() {
         
         addCircleLine(from: CGFloat.pi*3/4, to: CGFloat.pi*1/4, ofColor: UIColor.white.cgColor)
@@ -427,7 +437,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
                 shapeLayer.fillColor = UIColor.clear.cgColor
                 
                 shapeLayer.strokeColor = UIColor(rgb: 0x34475A).cgColor
-                shapeLayer.lineWidth = 30
+                shapeLayer.lineWidth = 31
                 //shapeLayer.lineCap = CAShapeLayerLineCap.round
                 
                 view.layer.addSublayer(shapeLayer)
@@ -438,15 +448,6 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
 }
 
 
-
-extension UIColor {
-    static var random: UIColor {
-        return UIColor(red: .random(in: 0...1),
-                       green: .random(in: 0...1),
-                       blue: .random(in: 0...1),
-                       alpha: 1.0)
-    }
-}
 
 
 
