@@ -8,8 +8,9 @@
 
 import UIKit
 import AVFoundation
+import CropViewController
 
-class CameraViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class CameraViewController: UIViewController, CropViewControllerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
     var controllerFrame: CGRect?
     
@@ -60,7 +61,7 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
         
         //let imageManipulator = ImageManipulator()
         //let newImage = imageManipulator.croppedInRect(image: image)
-        
+
         if let paymentVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "PaymentDetails") as? PaymentViewController
         {
             paymentVC.passedImage = image
@@ -70,6 +71,46 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
         }
     }
 
+    
+    
+    //MARK: - CropViewController Pod implementation
+    
+    func presentCropViewController(withImage image: UIImage) {
+
+        let cropViewController = CropViewController(image: image)
+        cropViewController.delegate = self
+
+        present(cropViewController, animated: true, completion: nil)
+    }
+
+    
+    func cropViewController(_ cropViewController: CropViewController, didCropToImage image: UIImage, withRect cropRect: CGRect, angle: Int) {
+            // 'image' is the newly cropped version of the original image
+        
+        let viewController = cropViewController.children.first!
+        viewController.modalTransitionStyle = .coverVertical
+        viewController.presentingViewController?.dismiss(animated: false, completion: nil)
+        
+        
+        showPaymentVC(withImage: image)
+        
+    }
+    
+    
+    func cropViewController(_ cropViewController: CropViewController, didFinishCancelled cancelled: Bool) {
+        
+        //Start camera seesion if "Cancel" was pressed
+        DispatchQueue.global(qos: .background).async {
+            self.captureSession!.startRunning()
+        }
+        
+        let viewController = cropViewController.children.first!
+        viewController.modalTransitionStyle = .coverVertical
+        viewController.presentingViewController?.dismiss(animated: true, completion: nil)
+        
+    }
+    
+    
     
     
     
@@ -124,7 +165,7 @@ extension CameraViewController: AVCapturePhotoCaptureDelegate {
             
             captureSession!.stopRunning()
             
-            showPaymentVC(withImage: image!)
+            presentCropViewController(withImage: image!)
             
         }
         
