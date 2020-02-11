@@ -58,6 +58,9 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
     
     func showPaymentVC(withImage image: UIImage) {
         
+        //let imageManipulator = ImageManipulator()
+        //let newImage = imageManipulator.croppedInRect(image: image)
+        
         if let paymentVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "PaymentDetails") as? PaymentViewController
         {
             paymentVC.passedImage = image

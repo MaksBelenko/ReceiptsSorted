@@ -6,8 +6,6 @@
 //  Copyright © 2019 Maksim. All rights reserved.
 //
 
-import UIKit
-
 
 enum ImageSource {
     case photoLibrary
@@ -24,4 +22,8 @@ enum PopupType {
 
 enum ShowPaymentAs {
     case AddPayment, UpdatePayment
+}
+
+enum CircularTransitionMode:Int {
+    case present, dismiss, pop
 }

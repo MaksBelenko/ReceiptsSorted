@@ -162,64 +162,12 @@ class PaymentViewController: UIViewController {
     //MARK: - Text detection
     
     @IBAction func pressedDetectTextButton(_ sender: UIButton) {
-        
-        let request = VNRecognizeTextRequest(completionHandler: self.handleDetectedText)
-        request.recognitionLevel = .accurate
-        //request.recognitionLanguages = ["en_GB"]
-        request.customWords = ["£"]
-        
-        let requests = [request]
-
-        //DispatchQueue.global(qos: .userInitiated).async {
-            
-            guard let img = self.passedImage?.cgImage else {
-                fatalError("Missing image to scan")
-            }
-
-            let handler = VNImageRequestHandler(cgImage: img, options: [:])
-            try? handler.perform(requests)
-        //}
+     
+        let textRecogniser = TextRecogniser()
+        let text = textRecogniser.findReceiptDetails(for: passedImage!)
+        amountPaidTextField.text = text
     }
-    
-    
-    
-    func handleDetectedText(request: VNRequest?, error: Error?) {
-        if let error = error {
-            print("ERROR: \(error)")
-            return
-        }
-        guard let results = request?.results, results.count > 0 else {
-            print("No text found")
-            return
-        }
-
-        var allWords: [String] = []
         
-        for result in results {
-            if let observation = result as? VNRecognizedTextObservation {
-                for text in observation.topCandidates(1) {
-                    print(text.string)
-                    print(text.confidence)
-                    print(observation.boundingBox)
-                    print("\n")
-                    
-                    allWords.append(text.string)
-                }
-            }
-        }
-        
-        for word in allWords {
-            if word.hasPrefix("£") {
-                print("FOUND: \(word) ")
-                amountPaidTextField.text = word
-            }
-            
-            
-        }
-        
-    }
-    
-    
 
 }
 

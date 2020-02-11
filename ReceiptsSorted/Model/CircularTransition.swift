@@ -11,22 +11,15 @@ import UIKit
 class CircularTransition: NSObject {
 
     var circle = UIView()
+    var circleColor = UIColor.white
+    var duration: TimeInterval = 0.3
+    var transitionMode: CircularTransitionMode = .present
     
     var startingPoint = CGPoint.zero {
         didSet {
             circle.center = startingPoint
         }
     }
-    
-    var circleColor = UIColor.white
-    
-    var duration: TimeInterval = 0.3
-    
-    enum CircularTransitionMode:Int {
-        case present, dismiss, pop
-    }
-    
-    var transitionMode: CircularTransitionMode = .present
     
 }
 

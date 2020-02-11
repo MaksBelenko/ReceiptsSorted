@@ -27,6 +27,8 @@
 		B59E3E2723B50D9F0017D474 /* PaymentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59E3E2523B50D9F0017D474 /* PaymentTableViewCell.swift */; };
 		B59E3E2823B50D9F0017D474 /* PaymentTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B59E3E2623B50D9F0017D474 /* PaymentTableViewCell.xib */; };
 		B59E3E2C23B53FEF0017D474 /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59E3E2B23B53FEF0017D474 /* Enums.swift */; };
+		B5B6758023CF70F400291D31 /* TextRecogniser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B6757F23CF70F400291D31 /* TextRecogniser.swift */; };
+		B5B6758223CF724000291D31 /* ImageManipulator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B6758123CF724000291D31 /* ImageManipulator.swift */; };
 		B5DB922323BE929F0081E8D7 /* PaymentsData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B5DB922123BE929F0081E8D7 /* PaymentsData.xcdatamodeld */; };
 		B5E5E5C923C106E7006A14EE /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E5E5C823C106E7006A14EE /* Database.swift */; };
 /* End PBXBuildFile section */
@@ -54,6 +56,8 @@
 		B59E3E2523B50D9F0017D474 /* PaymentTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentTableViewCell.swift; sourceTree = "<group>"; };
 		B59E3E2623B50D9F0017D474 /* PaymentTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PaymentTableViewCell.xib; sourceTree = "<group>"; };
 		B59E3E2B23B53FEF0017D474 /* Enums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
+		B5B6757F23CF70F400291D31 /* TextRecogniser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextRecogniser.swift; sourceTree = "<group>"; };
+		B5B6758123CF724000291D31 /* ImageManipulator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageManipulator.swift; sourceTree = "<group>"; };
 		B5DB922223BE929F0081E8D7 /* PaymentsData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = PaymentsData.xcdatamodel; sourceTree = "<group>"; };
 		B5E5E5C823C106E7006A14EE /* Database.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Database.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -104,6 +108,8 @@
 			children = (
 				B5DB922123BE929F0081E8D7 /* PaymentsData.xcdatamodeld */,
 				B5E5E5C823C106E7006A14EE /* Database.swift */,
+				B5B6758123CF724000291D31 /* ImageManipulator.swift */,
+				B5B6757F23CF70F400291D31 /* TextRecogniser.swift */,
 				B573FAAD23BA815F005473D2 /* cameraSession.swift */,
 				B573FAA723B98061005473D2 /* CircularTransition.swift */,
 				B573FAA323B95F57005473D2 /* Delegates.swift */,
@@ -227,7 +233,9 @@
 				B573FAAB23B98285005473D2 /* CameraViewController.swift in Sources */,
 				B5377C0223A82E280010B144 /* SceneDelegate.swift in Sources */,
 				B5DB922323BE929F0081E8D7 /* PaymentsData.xcdatamodeld in Sources */,
+				B5B6758023CF70F400291D31 /* TextRecogniser.swift in Sources */,
 				B5E5E5C923C106E7006A14EE /* Database.swift in Sources */,
+				B5B6758223CF724000291D31 /* ImageManipulator.swift in Sources */,
 				B573FA9C23B9334A005473D2 /* DatePopupViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
