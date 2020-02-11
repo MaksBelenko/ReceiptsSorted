@@ -8,6 +8,7 @@
 
 import UIKit
 import Vision
+import CropViewController
 
 class PaymentViewController: UIViewController {
 
@@ -91,7 +92,6 @@ class PaymentViewController: UIViewController {
     }
     
     
-    
     func drawBottomLine(for textField: UITextField) {
         let bottomLine = CALayer()
         bottomLine.frame = CGRect(x: 0.0, y: textField.frame.height - 1, width: textField.frame.width, height: 1.0)
@@ -155,7 +155,14 @@ class PaymentViewController: UIViewController {
     }
     
     
+    @IBAction func editButtonPressed(_ sender: UIButton) {
+        presentCropViewController(withImage: receiptImageView.image!)
+    }
     
+    
+    @IBAction func returnToCameraButtonPressed(_ sender: UIButton) {
+        dismiss(animated: true, completion: nil)
+    }
     
     
     
@@ -167,8 +174,7 @@ class PaymentViewController: UIViewController {
         let text = textRecogniser.findReceiptDetails(for: passedImage!)
         amountPaidTextField.text = text
     }
-        
-
+    
 }
 
 
@@ -188,4 +194,36 @@ extension PaymentViewController: PopupDelegate {
         dateTextField.text = value
     }
     
+}
+
+
+//MARK: - CropViewController Pod implementation
+extension PaymentViewController: CropViewControllerDelegate {
+    
+    func presentCropViewController(withImage image: UIImage) {
+
+        let cropViewController = CropViewController(image: image)
+        cropViewController.delegate = self
+        present(cropViewController, animated: true, completion: nil)
+    }
+
+
+    func cropViewController(_ cropViewController: CropViewController, didCropToImage image: UIImage, withRect cropRect: CGRect, angle: Int) {
+            // 'image' is the newly cropped version of the original image
+        
+        let viewController = cropViewController.children.first!
+        viewController.modalTransitionStyle = .coverVertical
+        viewController.presentingViewController?.dismiss(animated: true, completion: nil)
+        
+        receiptImageView.image = image
+    }
+
+
+    func cropViewController(_ cropViewController: CropViewController, didFinishCancelled cancelled: Bool) {
+
+        let viewController = cropViewController.children.first!
+        viewController.modalTransitionStyle = .coverVertical
+        viewController.presentingViewController?.dismiss(animated: true, completion: nil)
+        
+    }
 }

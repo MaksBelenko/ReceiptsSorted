@@ -68,10 +68,7 @@ class CardViewController: UIViewController, UITableViewDataSource, UITableViewDe
         cell.amountPaidText.text = p.amountPaid!
         cell.placeText.text = p.place!
         cell.dateText.text = p.date!
-//        cell.receiptImageView.image =
         
-        
-        //print("\(cell.amountPaidText.text!)  \(cell.dateText.text!)")
         return cell
     }
     
