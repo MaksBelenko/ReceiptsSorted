@@ -1,4 +1,4 @@
-framework module CropViewController {
+module CropViewController {
   umbrella header "CropViewController-umbrella.h"
 
   export *
