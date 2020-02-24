@@ -92,10 +92,6 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
         cameraVC.modalPresentationStyle = .custom
         cameraVC.controllerFrame = self.view.frame
         
-//        cameraVC.captureSession = cameraSession.captureSession
-//        cameraVC.photoOutput = cameraSession.photoOutput
-//        cameraVC.cameraPreviewLayer = cameraSession.cameraPreviewLayer
-        
         cameraVC.mainView = self
         
         self.present(cameraVC, animated: true, completion: nil)
@@ -359,11 +355,11 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
         
         let mainGraphics = MainGraphicsViewModel(frameWidth: view.frame.size.width, frameHeight: view.frame.size.height)
         
-        let whiteCircle = mainGraphics.createCircleLine(from: CGFloat.pi*3/4, to: CGFloat.pi*1/4, ofColor: UIColor.white.cgColor)
-        let redCircle = mainGraphics.createCircleLine(from: CGFloat.pi*3/4, to: CGFloat.pi, ofColor: UIColor(rgb: 0xC24D35).cgColor)
+        let whiteCircle = mainGraphics.createCircleLine(from: CGFloat.pi*3/4, to: CGFloat.pi*1/4, ofColour: UIColor.white.cgColor)
+        let redCircle = mainGraphics.createCircleLine(from: CGFloat.pi*3/4, to: CGFloat.pi, ofColour: UIColor(rgb: 0xC24D35).cgColor)
         
-        let lightGreenBar = mainGraphics.createHorizontalBar(percentage: 1, color: UIColor(rgb: 0xC0CEB7))
-        let lightRedBar = mainGraphics.createHorizontalBar(percentage: 0.7, color: UIColor(rgb: 0xCA8D8B))
+        let lightGreenBar = mainGraphics.createHorizontalBar(percentage: 1, colour: UIColor(rgb: 0xC0CEB7))
+        let lightRedBar = mainGraphics.createHorizontalBar(percentage: 0.7, colour: UIColor(rgb: 0xCA8D8B))
         
         view.layer.addSublayer(whiteCircle)
         view.layer.addSublayer(redCircle)

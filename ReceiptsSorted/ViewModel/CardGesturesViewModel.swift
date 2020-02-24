@@ -10,16 +10,17 @@ import UIKit
 
 class CardGestures {
     
+    var cardHeight: CGFloat = 0
+    var cardStartPointY: CGFloat = 0
     
     var visualEffectView : UIVisualEffectView!  //For blur
     var runningAnimations = [UIViewPropertyAnimator]()
     var animationProgressWhenInterrupted: CGFloat = 0
     
-    
-//    init(cardView:)
+
 //    
-//    
-//    
+//
+//
 //    /**
 //    Starts an interactive Card transition
 //
@@ -47,7 +48,7 @@ class CardGestures {
 //       for animator in runningAnimations {
 //           animator.fractionComplete = fractionCompleted + animationProgressWhenInterrupted
 //       }
-//        
+//
 //    }
 //
 //
@@ -59,7 +60,7 @@ class CardGestures {
 //            animator.continueAnimation(withTimingParameters: nil, durationFactor: 0)
 //        }
 //    }
-//    
+//
 //    /**
 //    Stops animation and goes to start of the animation
 //    */
@@ -69,12 +70,12 @@ class CardGestures {
 //            animator.finishAnimation(at: .start)
 //        }
 //        self.runningAnimations.removeAll()
-//        
+//
 //        cardVisible = !cardVisible
 //    }
-//    
-//    
-//    
+//
+//
+//
 //    /**
 //    Creates array of animations and starts them
 //
@@ -103,7 +104,7 @@ class CardGestures {
 //        frameAnimator.startAnimation()
 //        runningAnimations.append(frameAnimator)
 //
-//        
+//
 //        /* Blur animation*/
 //        let blurAnimator = UIViewPropertyAnimator(duration: duration, dampingRatio: dumpingRatio) {
 //            switch state {
@@ -116,8 +117,8 @@ class CardGestures {
 //
 //        blurAnimator.startAnimation()
 //        runningAnimations.append(blurAnimator)
-//        
-//        
+//
+//
 //        /* Add Button Opacity animation*/
 //        let buttonOpacityAnimator = UIViewPropertyAnimator(duration: duration, dampingRatio: dumpingRatio) {
 //            switch state {
@@ -130,8 +131,8 @@ class CardGestures {
 //
 //        buttonOpacityAnimator.startAnimation()
 //        runningAnimations.append(buttonOpacityAnimator)
-//        
+//
 //    }
-//    
+    
     
 }
