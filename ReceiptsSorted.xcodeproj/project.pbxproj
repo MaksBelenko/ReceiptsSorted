@@ -30,6 +30,7 @@
 		B59E3E2C23B53FEF0017D474 /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59E3E2B23B53FEF0017D474 /* Enums.swift */; };
 		B5B6758023CF70F400291D31 /* TextRecogniser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B6757F23CF70F400291D31 /* TextRecogniser.swift */; };
 		B5B6758223CF724000291D31 /* ImageManipulator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B6758123CF724000291D31 /* ImageManipulator.swift */; };
+		B5CCE49B2403195200CA0CB5 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CCE49A2403195200CA0CB5 /* Settings.swift */; };
 		B5DB922323BE929F0081E8D7 /* PaymentsData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B5DB922123BE929F0081E8D7 /* PaymentsData.xcdatamodeld */; };
 		B5E5E5C923C106E7006A14EE /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E5E5C823C106E7006A14EE /* Database.swift */; };
 /* End PBXBuildFile section */
@@ -61,6 +62,7 @@
 		B59E3E2B23B53FEF0017D474 /* Enums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
 		B5B6757F23CF70F400291D31 /* TextRecogniser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextRecogniser.swift; sourceTree = "<group>"; };
 		B5B6758123CF724000291D31 /* ImageManipulator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageManipulator.swift; sourceTree = "<group>"; };
+		B5CCE49A2403195200CA0CB5 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		B5DB922223BE929F0081E8D7 /* PaymentsData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = PaymentsData.xcdatamodel; sourceTree = "<group>"; };
 		B5E5E5C823C106E7006A14EE /* Database.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Database.swift; sourceTree = "<group>"; };
 		F881D179E0F0BF7791163B48 /* libPods-ReceiptsSorted.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ReceiptsSorted.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -139,6 +141,7 @@
 				B573FAA323B95F57005473D2 /* Delegates.swift */,
 				B59E3E2B23B53FEF0017D474 /* Enums.swift */,
 				B573FAA523B96157005473D2 /* Extensions.swift */,
+				B5CCE49A2403195200CA0CB5 /* Settings.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -305,6 +308,7 @@
 				B5E5E5C923C106E7006A14EE /* Database.swift in Sources */,
 				B5B6758223CF724000291D31 /* ImageManipulator.swift in Sources */,
 				B573FA9C23B9334A005473D2 /* DatePopupViewController.swift in Sources */,
+				B5CCE49B2403195200CA0CB5 /* Settings.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -10,11 +10,12 @@ import UIKit
 import Vision
 import CropViewController
 
-class PaymentViewController: UIViewController {
+class PaymentViewController: UIViewController, UIGestureRecognizerDelegate {
 
     var pageType: ShowPaymentAs = .AddPayment
     
     var passedImage: UIImage? = nil
+    var imageOrigin : CGPoint?
     var amountPaid: String = ""
     var place: String = ""
     var date: String = ""
@@ -24,6 +25,8 @@ class PaymentViewController: UIViewController {
     @IBOutlet weak var placeOfPurchaseTextField: UITextField!
     @IBOutlet weak var dateTextField: UITextField!
     @IBOutlet weak var addButton: UIButton!
+    
+    
     
     let wetAsphaltCGColor = UIColor(red:0.20, green:0.29, blue:0.37, alpha:1.0)
     
@@ -44,7 +47,7 @@ class PaymentViewController: UIViewController {
     
     
     
-    
+    //MARK: - ViewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -53,10 +56,74 @@ class PaymentViewController: UIViewController {
         
         setupTextFields()
         setupAddButton()
+        setupGestures()
+    }
+    
+    func setupGestures() {
+        receiptImageView.isUserInteractionEnabled = true
+        imageOrigin = receiptImageView.center
         
+        //Pinch Gesture
+        let pinchGesture = UIPinchGestureRecognizer(target: self, action: #selector(self.pinchGesture))
+        pinchGesture.delegate = self
+        receiptImageView.addGestureRecognizer(pinchGesture)
+        
+        //Pan Gesture
+        let panGestureRecogniser = UIPanGestureRecognizer (target: self, action: #selector(self.panGesture))
+        panGestureRecogniser.delegate = self
+        panGestureRecogniser.minimumNumberOfTouches = 2
+        receiptImageView.addGestureRecognizer(panGestureRecogniser)
+    }
+    
+    
+    
+    //MARK: - Gestures
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
+    }
+    
+    
+    @objc func panGesture(_ recogniser : UIPanGestureRecognizer) {
+        guard recogniser.view != nil else { return }
+
+        if (recogniser.state == .began || recogniser.state == .changed) {
+            let translation = recogniser.translation(in: recogniser.view)
+            recogniser.view!.center = CGPoint(x: recogniser.view!.center.x + translation.x, y: recogniser.view!.center.y + translation.y)
+            recogniser.setTranslation(CGPoint.zero, in: recogniser.view)
+            
+            print("Translation x=\(translation.x) + y=\(translation.y)")
+        }
+        
+        if (recogniser.state == .ended) {
+            UIView.animate(withDuration: 0.2) {
+                recogniser.view?.center = self.imageOrigin!
+            }
+        }
+    }
+    
+    
+    @objc func pinchGesture(_ recogniser : UIPinchGestureRecognizer) {
+        
+        guard recogniser.view != nil else { return }
+
+        if (recogniser.state == .began || recogniser.state == .changed) {
+            recogniser.view?.transform = (recogniser.view?.transform.scaledBy(x: recogniser.scale, y: recogniser.scale))!
+            recogniser.scale = 1
+        }
+        
+        
+        if (recogniser.state == .ended) {
+            UIView.animate(withDuration: 0.2) {
+                recogniser.view?.transform = CGAffineTransform.identity
+            }
+            
+        }
     }
     
 
+    
+
+    //MARK: - TextFields & Button
     
     func setTextFields() {
         placeOfPurchaseTextField.text = place

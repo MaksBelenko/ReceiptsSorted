@@ -205,10 +205,6 @@
                                     <action selector="pressedAddButton:" destination="gk0-yM-Syz" eventType="touchUpInside" id="uI8-Du-HgD"/>
                                 </connections>
                             </button>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Receipt-Test" translatesAutoresizingMaskIntoConstraints="NO" id="6yn-5r-fWK">
-                                <rect key="frame" x="0.0" y="87" width="375" height="380"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                            </imageView>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iKy-Ko-sxT">
                                 <rect key="frame" x="279" y="482" width="79" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
@@ -237,6 +233,10 @@
                                     <action selector="editPhotoButtonPressed:" destination="c4r-Yb-DGd" eventType="touchUpInside" id="jiE-Yo-p1S"/>
                                 </connections>
                             </button>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Receipt-Test" translatesAutoresizingMaskIntoConstraints="NO" id="6yn-5r-fWK">
+                                <rect key="frame" x="0.0" y="87" width="375" height="380"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="fcv-ZL-Uft"/>

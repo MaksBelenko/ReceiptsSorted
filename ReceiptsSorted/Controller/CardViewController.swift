@@ -140,7 +140,7 @@ class CardViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
 //        print("fr = \(fractionComplete)")
-        print("vel = \(scrollView.panGestureRecognizer.velocity(in: self.tblView).y)")
+//        print("vel = \(scrollView.panGestureRecognizer.velocity(in: self.tblView).y)")
         if ((fractionComplete > 0 && fractionComplete < 1) || (nextState == .Expanded && fractionComplete < 1)) {
             tblView.contentOffset.y = 0
         }

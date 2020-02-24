@@ -18,7 +18,7 @@ var fractionComplete: CGFloat = 0.0
 
 class ViewController: UIViewController, UINavigationControllerDelegate, UIGestureRecognizerDelegate, UIViewControllerTransitioningDelegate  {
     
-    
+    //MARK: - Fields
     @IBOutlet var imageTake: UIImageView!
     
     var visualEffectView : UIVisualEffectView!  //For blur
@@ -38,14 +38,17 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
     
     var cameraSession = CameraSession()  //Initialised
     
+    var settings = Settings()
     
+    
+    
+    //MARK: - Status Bar
     
     //set Status Bar icons to white
     override var preferredStatusBarStyle: UIStatusBarStyle { return .lightContent }
+
     
-    
-    
-    
+    //MARK: - ViewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -462,15 +465,29 @@ extension ViewController: PaymentDelegate {
         newPayment.amountPaid = amountPaid
         newPayment.place = place
         newPayment.date = date
-        if let imageData = receiptImage.jpegData(compressionQuality: 1.0) {
-             let bytes = imageData.count
-            print("size in kB = \(Double(bytes) / 1000.0)")
+        
+        let imageSizeinMB = Float(receiptImage.jpegData(compressionQuality: 1.0)!.count) / powf(10, 6)
+        print("size in MB = \(imageSizeinMB)")
+        
+        var compression : CGFloat = 1.0
+        if (imageSizeinMB > settings.compressedSizeInMB) {
+            compression = CGFloat(settings.compressedSizeInMB / imageSizeinMB)
+            newPayment.receiptPhoto = receiptImage.jpegData(compressionQuality: compression)
+            let newSize = Float(newPayment.receiptPhoto!.count) / powf(10, 6)
+            print("After Compression in MB = \(newSize) and ratio = \(compression)")
         }
-        if let imageData = receiptImage.jpegData(compressionQuality: 0.1) {
-             let bytes = imageData.count
-            print("size COMPRESSED in kB = \(Double(bytes) / 1000.0)")
-        }
-        newPayment.receiptPhoto = receiptImage.jpegData(compressionQuality: 0.1)
+        
+        newPayment.receiptPhoto = receiptImage.jpegData(compressionQuality: compression)
+        
+//        if let imageData = receiptImage.jpegData(compressionQuality: 1.0) {
+//             let bytes = imageData.count
+//            print("size in kB = \(Double(bytes) / 1000.0)")
+//        }
+//        if let imageData = receiptImage.jpegData(compressionQuality: 0.1) {
+//             let bytes = imageData.count
+//            print("size COMPRESSED in kB = \(Double(bytes) / 1000.0)")
+//        }
+//        newPayment.receiptPhoto = receiptImage.jpegData(compressionQuality: 0.1)
         
         cardViewController.payments.insert(newPayment, at: 0)
         
