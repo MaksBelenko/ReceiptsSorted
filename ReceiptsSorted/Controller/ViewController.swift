@@ -36,7 +36,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
     
     var ignoreGesture: Bool = false
     
-    var cameraSession = CameraSession()  //Initialised
+//    var cameraSession = CameraSession()  //Initialised
     
     var settings = Settings()
     
@@ -92,9 +92,9 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
         cameraVC.modalPresentationStyle = .custom
         cameraVC.controllerFrame = self.view.frame
         
-        cameraVC.captureSession = cameraSession.captureSession
-        cameraVC.photoOutput = cameraSession.photoOutput
-        cameraVC.cameraPreviewLayer = cameraSession.cameraPreviewLayer
+//        cameraVC.captureSession = cameraSession.captureSession
+//        cameraVC.photoOutput = cameraSession.photoOutput
+//        cameraVC.cameraPreviewLayer = cameraSession.cameraPreviewLayer
         
         cameraVC.mainView = self
         
@@ -215,7 +215,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
                 startInteractiveTransition(forState: nextState, duration: 0.6)
                 
             case .changed:
-                let translation = recogniser.translation(in: self.cardViewController.tblView)
+                let translation = recogniser.translation(in: recogniser.view)
                 fractionComplete = translation.y / (cardStartPointY - self.view.frame.size.height + cardHeight)
                 fractionComplete = cardVisible ? fractionComplete : -fractionComplete
 
@@ -303,7 +303,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
     */
     func animateTransitionIfNeeded (with state: CardState, for duration: TimeInterval, withDampingRatio dumpingRatio: CGFloat) {
 
-        /* Size animation*/
+        /* Size animation */
         let frameAnimator = UIViewPropertyAnimator(duration: duration, dampingRatio: dumpingRatio) {
             switch state {
             case .Expanded:
@@ -354,100 +354,25 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
     }
     
     
-//    func addAnimation(for state: CardState,
-//                      duration: TimeInterval,
-//                      dampingRatio: CGFloat,
-//                      whenExpanded funcExpanded: @escaping () -> (),
-//                      whenCollapsed funcCollapsed: @escaping () -> (),
-//                      _ completion: @escaping (UIViewAnimatingPosition) -> Void)
-//    {
-//        let animator = UIViewPropertyAnimator(duration: duration, dampingRatio: dampingRatio) {
-//            switch state {
-//            case .Expanded:
-//                funcExpanded()
-//            case .Collapsed:
-//                funcCollapsed()
-//            }
-//        }
-//
-//        animator.addCompletion(completion)
-//        animator.startAnimation()
-//        runningAnimations.append(animator)
-//    }
-
-    
-    
-    
-    
     //MARK: - Initialisation of Top graphics
     func initialiseCircle() {
         
-        addCircleLine(from: CGFloat.pi*3/4, to: CGFloat.pi*1/4, ofColor: UIColor.white.cgColor)
-        addCircleLine(from: CGFloat.pi*3/4, to: CGFloat.pi, ofColor: UIColor(rgb: 0xC24D35).cgColor) //red circular bar
+        let mainGraphics = MainGraphicsViewModel(frameWidth: view.frame.size.width, frameHeight: view.frame.size.height)
         
-        addEmptySpaces(amount: 55)
+        let whiteCircle = mainGraphics.createCircleLine(from: CGFloat.pi*3/4, to: CGFloat.pi*1/4, ofColor: UIColor.white.cgColor)
+        let redCircle = mainGraphics.createCircleLine(from: CGFloat.pi*3/4, to: CGFloat.pi, ofColor: UIColor(rgb: 0xC24D35).cgColor)
         
+        let lightGreenBar = mainGraphics.createHorizontalBar(percentage: 1, color: UIColor(rgb: 0xC0CEB7))
+        let lightRedBar = mainGraphics.createHorizontalBar(percentage: 0.7, color: UIColor(rgb: 0xCA8D8B))
         
-        addHorizontalBar(percentage: 1, color: UIColor(rgb: 0xC0CEB7)) //green layer
-        addHorizontalBar(percentage: 0.7, color: UIColor(rgb: 0xCA8D8B)) //red layer
-    }
-    
-    
-    func addHorizontalBar(percentage: CGFloat, color: UIColor) {
-        let barLayer = CALayer()
-        let barwidth = 18/20*view.frame.size.width * percentage
-        barLayer.frame = CGRect(x: view.frame.size.width/20, y: 14/30*view.frame.height, width: barwidth, height: 14)
-        barLayer.cornerRadius = 7
-        barLayer.backgroundColor = color.cgColor
-        view.layer.addSublayer(barLayer)
-    }
-    
-    
-    func addCircleLine(from startAngle: CGFloat, to endAngle: CGFloat, ofColor color: CGColor) {
-        let shapeLayer = CAShapeLayer()
-        
-        let circleCenter = CGPoint(x: view.center.x, y: view.frame.height/4)
-        let circleRadius = view.frame.width * 4/11
-        
-        let circularPath = UIBezierPath(arcCenter: circleCenter, radius: circleRadius, startAngle: startAngle, endAngle: endAngle, clockwise: true)
-        shapeLayer.path = circularPath.cgPath
-        
-        shapeLayer.fillColor = UIColor.clear.cgColor
-        
-        shapeLayer.strokeColor = color
-        shapeLayer.lineWidth = 30
-        //shapeLayer.lineCap = CAShapeLayerLineCap.round
-        
-        view.layer.addSublayer(shapeLayer)
-    }
-    
-    
-    func addEmptySpaces(amount: Int) {
-        for i in 1...amount*2 {
-            if (i%2 == 0) {
-                let shapeLayer = CAShapeLayer()
-                
-                let circleCenter = CGPoint(x: view.center.x, y: view.frame.height/4)
-                let circleRadius = view.frame.width * 4/11
-                
-                let size = (3/2 * CGFloat.pi)/CGFloat(2*amount+1)
-                let startPoint = 3/4 * CGFloat.pi + size*CGFloat(i-1)
-                let endPoint = startPoint + size
-                
-                let circularPath = UIBezierPath(arcCenter: circleCenter, radius: circleRadius, startAngle: startPoint, endAngle: endPoint, clockwise: true)
-                shapeLayer.path = circularPath.cgPath
-                
-                shapeLayer.fillColor = UIColor.clear.cgColor
-                
-                shapeLayer.strokeColor = UIColor(rgb: 0x34475A).cgColor
-                shapeLayer.lineWidth = 31
-                //shapeLayer.lineCap = CAShapeLayerLineCap.round
-                
-                view.layer.addSublayer(shapeLayer)
-            }
+        view.layer.addSublayer(whiteCircle)
+        view.layer.addSublayer(redCircle)
+        for layer in mainGraphics.createEmptySpaces(amount: 55) {
+            view.layer.addSublayer(layer)
         }
+        view.layer.addSublayer(lightGreenBar)
+        view.layer.addSublayer(lightRedBar)
     }
-    
 }
 
 

@@ -59,6 +59,8 @@ class PaymentViewController: UIViewController, UIGestureRecognizerDelegate {
         setupGestures()
     }
     
+    
+    //MARK: - Gestures
     func setupGestures() {
         receiptImageView.isUserInteractionEnabled = true
         imageOrigin = receiptImageView.center
@@ -77,7 +79,7 @@ class PaymentViewController: UIViewController, UIGestureRecognizerDelegate {
     
     
     
-    //MARK: - Gestures
+    
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
     }

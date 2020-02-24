@@ -12,37 +12,39 @@ import AVFoundation
 
 class CameraSession  {
     
-    var captureSession = AVCaptureSession()
-    var backCamera: AVCaptureDevice?
-    var frontCamera: AVCaptureDevice?
-    var currentCamera: AVCaptureDevice?
+    private var captureSession = AVCaptureSession()
+    private var backCamera: AVCaptureDevice?
+    private var frontCamera: AVCaptureDevice?
+    private var currentCamera: AVCaptureDevice?
     
-    var photoOutput: AVCapturePhotoOutput?
-    var cameraPreviewLayer: AVCaptureVideoPreviewLayer?
+    private var photoOutput: AVCapturePhotoOutput?
+    private var cameraPreviewLayer: AVCaptureVideoPreviewLayer?
     
+    private var view: UIView
     
-    init() {
+    init(forView view: UIView) {
+        self.view = view
         setupCamera()
-    }
-    
-    
-    func setupCamera() {
-        DispatchQueue.global(qos: .background).async {
-            self.setupCaptureSession()
-            self.setupDevice()
-            self.setupInputOutput()
-            self.setupPreviewLayer()
-        }
         
     }
     
     
-    func setupCaptureSession() {
+    private func setupCamera() {
+            self.setupCaptureSession()
+            self.setupDevice()
+            self.setupInputOutput()
+            self.setupPreviewLayer()
+            self.setupLayersCaptureSession()
+        
+    }
+    
+    
+    private func setupCaptureSession() {
         //Specify high-resolution photo quality
         captureSession.sessionPreset = AVCaptureSession.Preset.photo
     }
     
-    func setupDevice() {
+    private func setupDevice() {
         let deviceDiscoverySession = AVCaptureDevice.DiscoverySession(deviceTypes: [AVCaptureDevice.DeviceType.builtInWideAngleCamera], mediaType: AVMediaType.video, position: AVCaptureDevice.Position.unspecified)
         
         let devices = deviceDiscoverySession.devices
@@ -59,7 +61,7 @@ class CameraSession  {
     }
     
     
-    func setupInputOutput() {
+    private func setupInputOutput() {
         do {
             let captureDeviceInput = try AVCaptureDeviceInput(device: currentCamera!)
             captureSession.addInput(captureDeviceInput)
@@ -72,9 +74,36 @@ class CameraSession  {
     }
     
     
-    func setupPreviewLayer() {
+    private func setupPreviewLayer() {
         cameraPreviewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
         cameraPreviewLayer?.videoGravity = AVLayerVideoGravity.resizeAspectFill
         cameraPreviewLayer?.connection?.videoOrientation = AVCaptureVideoOrientation.portrait
+    }
+    
+    private func setupLayersCaptureSession() {
+        self.cameraPreviewLayer?.frame = view.frame
+        view.layer.insertSublayer(self.cameraPreviewLayer!, at: 0)
+        
+    }
+    
+    
+    
+    
+    
+    func startRunningCaptureSession() {
+        DispatchQueue.global(qos: .userInitiated).async {
+            self.captureSession.startRunning()
+        }
+    }
+    
+    func stopCaptureSession() {
+        DispatchQueue.global(qos: .background).async {
+            self.captureSession.stopRunning()
+        }
+    }
+    
+    func setCapturePhoto (delegate: AVCapturePhotoCaptureDelegate) {
+        let settings = AVCapturePhotoSettings()
+        photoOutput?.capturePhoto(with: settings, delegate: delegate)
     }
 }

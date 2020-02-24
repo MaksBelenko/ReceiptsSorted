@@ -11,18 +11,13 @@ import AVFoundation
 
 class CameraViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
-    var controllerFrame: CGRect?
-    
-    var captureSession: AVCaptureSession?
-    var photoOutput: AVCapturePhotoOutput?
-    var cameraPreviewLayer: AVCaptureVideoPreviewLayer?
-    
-    var image: UIImage?
-    
     @IBOutlet weak var takePhotoButton: UIButton!
     
+    var controllerFrame: CGRect?
+    var photoOutput: AVCapturePhotoOutput?
+    var cameraSession: CameraSession?
+    var image: UIImage?
     let imagePicker = UIImagePickerController()
-    
     
     var mainView: ViewController?
     
@@ -36,22 +31,12 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
         imagePicker.delegate = self
         self.view.frame = controllerFrame ?? CGRect(x: 0, y: 0, width: 100, height: 100)
         
-        setAndStartRunningCaptureSession()
+        cameraSession = CameraSession(forView: view)
+        cameraSession!.startRunningCaptureSession()
         
         takePhotoButton.layer.cornerRadius = takePhotoButton.frame.size.height/2
     }
     
-    
-    
-    func setAndStartRunningCaptureSession() {
-        
-        self.cameraPreviewLayer?.frame = view.frame
-        self.view.layer.insertSublayer(self.cameraPreviewLayer!, at: 0)
-        
-        DispatchQueue.global(qos: .background).async {
-            self.captureSession!.startRunning()
-        }
-    }
     
     
     
@@ -75,20 +60,15 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
     
     //MARK: - Buttons actions
     @IBAction func pressedTakePhotoButton(_ sender: UIButton) {
-        let settings = AVCapturePhotoSettings()
-        photoOutput?.capturePhoto(with: settings, delegate: self)
+        cameraSession?.setCapturePhoto(delegate: self)
     }
     
     
     @IBAction func pressedCloseCamera(_ sender: UIButton) {
-        
-        //Stop camera seesion
-        DispatchQueue.global(qos: .background).async {
-            self.captureSession!.stopRunning()
-        }
+        //Stop camera session
+        cameraSession!.stopCaptureSession()
         dismiss(animated: true, completion: nil)
     }
-    
     
     
     
@@ -106,8 +86,6 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
         if let pickedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
             showPaymentVC(withImage: pickedImage)
         }
-     
-        
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
@@ -125,12 +103,8 @@ extension CameraViewController: AVCapturePhotoCaptureDelegate {
         
         if let imageData = photo.fileDataRepresentation() {
             image = UIImage(data: imageData)
-            
             //Stop camera seesion
-            DispatchQueue.global(qos: .background).async {
-                self.captureSession!.stopRunning()
-            }
-            
+            cameraSession!.stopCaptureSession()
             showPaymentVC(withImage: image!)
         }
         
