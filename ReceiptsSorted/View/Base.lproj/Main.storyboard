@@ -215,10 +215,10 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yKI-ch-v1r">
-                                <rect key="frame" x="16" y="45" width="30" height="30"/>
+                                <rect key="frame" x="16" y="45" width="47" height="30"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <color key="tintColor" red="0.96459501979999995" green="0.75792801379999997" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <state key="normal" backgroundImage="return" catalog="system"/>
+                                <state key="normal" backgroundImage="arrow.left" catalog="system"/>
                                 <connections>
                                     <action selector="editPhotoButtonPressed:" destination="c4r-Yb-DGd" eventType="touchUpInside" id="f0U-RI-bxU"/>
                                     <action selector="returnToCameraButtonPressed:" destination="gk0-yM-Syz" eventType="touchUpInside" id="fFF-Cv-GKg"/>
@@ -252,7 +252,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KCc-YS-UoZ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="337" y="53"/>
+            <point key="canvasLocation" x="336.80000000000001" y="52.463054187192121"/>
         </scene>
         <!--Date Popup View Controller-->
         <scene sceneID="sJn-6l-lJS">
@@ -369,9 +369,9 @@
     <resources>
         <image name="PictureMain" width="566" height="567"/>
         <image name="Receipt-Test" width="340" height="453"/>
+        <image name="arrow.left" catalog="system" width="64" height="48"/>
         <image name="gear" catalog="system" width="64" height="58"/>
         <image name="pencil.circle.fill" catalog="system" width="64" height="60"/>
         <image name="person.crop.circle" catalog="system" width="64" height="60"/>
-        <image name="return" catalog="system" width="64" height="50"/>
     </resources>
 </document>
