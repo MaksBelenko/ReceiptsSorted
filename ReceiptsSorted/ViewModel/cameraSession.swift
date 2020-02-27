@@ -28,12 +28,16 @@ class CameraSession  {
     //MARK: - Initialiser
     init(forView view: UIView) {
         self.view = view
-        setupCamera()
+        if (ProcessInfo.processInfo.environment["SIMULATOR_DEVICE_NAME"] == nil) {
+            setupCamera()
+        }
     }
     
     
     //MARK: - Private methods
     private func setupCamera() {
+        
+        
         self.setupCaptureSession()
         self.setupDevice()
         self.setupInputOutput()
@@ -104,8 +108,10 @@ class CameraSession  {
      Starts configured Capture Session.
      */
     func startRunningCaptureSession() {
-        DispatchQueue.global(qos: .userInitiated).async {
-            self.captureSession.startRunning()
+        if (ProcessInfo.processInfo.environment["SIMULATOR_DEVICE_NAME"] == nil) {
+            DispatchQueue.global(qos: .userInitiated).async {
+                self.captureSession.startRunning()
+            }
         }
     }
     
@@ -113,8 +119,10 @@ class CameraSession  {
      Stop configured Capture Session.
      */
     func stopCaptureSession() {
-        DispatchQueue.global(qos: .background).async {
-            self.captureSession.stopRunning()
+        if (ProcessInfo.processInfo.environment["SIMULATOR_DEVICE_NAME"] == nil) {
+            DispatchQueue.global(qos: .background).async {
+                self.captureSession.stopRunning()
+            }
         }
     }
     
@@ -126,7 +134,9 @@ class CameraSession  {
                            to processing to delivery of finished images.
      */
     func setCapturePhoto (delegate: AVCapturePhotoCaptureDelegate) {
-        let settings = AVCapturePhotoSettings()
-        photoOutput?.capturePhoto(with: settings, delegate: delegate)
+        if (ProcessInfo.processInfo.environment["SIMULATOR_DEVICE_NAME"] == nil) {
+            let settings = AVCapturePhotoSettings()
+            photoOutput?.capturePhoto(with: settings, delegate: delegate)
+        }
     }
 }

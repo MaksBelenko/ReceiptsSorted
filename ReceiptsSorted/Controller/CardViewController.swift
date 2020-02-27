@@ -39,16 +39,14 @@ class CardViewController: UIViewController {
         print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
         payments = database.loadPayments()
         
-        
-        //Removes uneeded separator lines at the end of TableView
-        tblView.tableFooterView = UIView()
-        
         tblView.dataSource = self
         tblView.delegate = self
         tblView.register(UINib(nibName: "PaymentTableViewCell", bundle: nil), forCellReuseIdentifier: "paymentCell")
         
         // Used to make separators lines full width
         tblView.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        //Removes uneeded separator lines at the end of TableView
+        tblView.tableFooterView = UIView()
         
         // Set TableView height
         tblView.frame.size.height = cardHeight * 4/5
@@ -57,48 +55,9 @@ class CardViewController: UIViewController {
         searchBar.delegate = self
         searchBar.returnKeyType = UIReturnKeyType.done
 //        searchBar.showsCancelButton = true
-        
-//
-//        searchController.searchResultsUpdater = self
-//        self.definesPresentationContext = true
-//
-//        // Place the search bar in the table view's header.
-//        self.tblView.tableHeaderView = searchController.searchBar
-//
-//        // Set the content offset to the height of the search bar's height
-//        // to hide it when the view is first presented.
-//        self.tblView.contentOffset = CGPoint(x: 0, y: searchController.searchBar.frame.height)
-//
-//
-        
-        //searchBar.isHidden = false
-        
-
-//        tblView.showsVerticalScrollIndicator = false
-//        tblView.isScrollEnabled = false
+//        searchBar.isHidden = false
     }
 
-    
-//    func updateSearchResults(for searchController: UISearchController) {
-//        // If the search bar contains text, filter our data with the string
-//        if let searchText = searchController.searchBar.text {
-//            filterContent(for: searchText)
-//            // Reload the table view with the search result data.
-//            tblView.reloadData()
-//        }
-//    }
-//
-//
-//    func filterContent(for searchText: String) {
-//        // Update the searchResults array with matches
-//        // in our entries based on the title value.
-////        let search = payments.filter({ (name) -> Bool in
-//////            let match = name.range(of: searchText, options: .caseInsensitive)
-////            // Return the tuple if the range contains a match.
-//////            return match != nil
-////        })
-//    }
-    
     
     
     
@@ -111,8 +70,6 @@ class CardViewController: UIViewController {
             tblView.contentOffset.y = 0
         }
     }
-    
-    
 }
 
 

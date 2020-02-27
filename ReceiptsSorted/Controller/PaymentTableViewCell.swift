@@ -36,6 +36,14 @@ class PaymentTableViewCell: UITableViewCell {
             tickLabel.text = ""
         }
         
+//        surroundView.backgroundColor = UIColor.white
+//        surroundView.layer.borderColor = UIColor.black.cgColor
+//        surroundView.layer.borderWidth = 0.2
+//        surroundView.layer.cornerRadius = surroundView.frame.size.height/3
+//        surroundView.layer.masksToBounds = true
+//        
+//        surroundView.layer.applyShadow()
+
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

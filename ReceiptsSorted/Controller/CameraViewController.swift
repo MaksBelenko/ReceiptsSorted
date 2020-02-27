@@ -23,18 +23,24 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
     
     
     
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         imagePicker.delegate = self
         self.view.frame = controllerFrame ?? CGRect(x: 0, y: 0, width: 100, height: 100)
+        takePhotoButton.layer.cornerRadius = takePhotoButton.frame.size.height/2
         
         cameraSession = CameraSession(forView: view)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
         cameraSession!.startRunningCaptureSession()
-        
-        takePhotoButton.layer.cornerRadius = takePhotoButton.frame.size.height/2
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(true)
+        cameraSession!.stopCaptureSession()
     }
     
     
@@ -42,12 +48,6 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
     
     
     func showPaymentVC(withImage image: UIImage) {
-        
-        //let imageManipulator = ImageManipulator()
-        //let newImage = imageManipulator.croppedInRect(image: image)
-
-        cameraSession!.stopCaptureSession()
-        
         if let paymentVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "PaymentDetails") as? PaymentViewController
         {
             paymentVC.passedImage = image
@@ -68,7 +68,7 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
     
     @IBAction func pressedCloseCamera(_ sender: UIButton) {
         //Stop camera session
-        cameraSession!.stopCaptureSession()
+        //cameraSession!.stopCaptureSession()
         dismiss(animated: true, completion: nil)
     }
     
@@ -105,8 +105,7 @@ extension CameraViewController: AVCapturePhotoCaptureDelegate {
         
         if let imageData = photo.fileDataRepresentation() {
             image = UIImage(data: imageData)
-            //Stop camera seesion
-            cameraSession!.stopCaptureSession()
+            
             showPaymentVC(withImage: image!)
         }
         
