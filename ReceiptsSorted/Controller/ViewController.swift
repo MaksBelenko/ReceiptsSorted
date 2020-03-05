@@ -36,9 +36,9 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
     
     var ignoreGesture: Bool = false
     
-//    var cameraSession = CameraSession()  //Initialised
-    
-    var settings = Settings()
+    let addButtonAnimations = AddButtonAnimations()
+    let imageCompression = ImageCompression()
+    var cardAnimations: CardAnimations!
     
     
     
@@ -54,6 +54,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
         
         initialiseCircle()
         
+//        setupAddButton(withSize: self.view.frame.size.width / 4.5)
         setupCard()
         setupAddButton(withSize: self.view.frame.size.width / 4.5)
     }
@@ -76,7 +77,9 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
         addButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 7, right: 0)
         addButton.setTitleColor(.white, for: .normal)
         
-        addButton.addTarget(self, action: #selector(ViewController.handleAddButton), for: UIControl.Event.touchUpInside)
+        addButton.addTarget(self, action: #selector(ViewController.addButtonPressed), for: UIControl.Event.touchUpInside)
+        addButtonAnimations.startAnimatingPressActions(for: addButton)
+        
         self.view.addSubview(addButton)
         
         addButton.layer.applyShadow(color: .black, alpha: 0.25, x: 5, y: 10, blur: 10)
@@ -85,8 +88,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
     
     
     
-    @objc func handleAddButton () {
-        
+    @objc func addButtonPressed () {
         let cameraVC = CameraViewController(nibName: "CameraViewController", bundle: nil)
         cameraVC.transitioningDelegate = self
         cameraVC.modalPresentationStyle = .custom
@@ -123,7 +125,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
     //MARK: - Card Setup
     
     func setupCard() {
-        cardStartPointY = self.view.frame.size.height * 1/2
+        cardStartPointY = self.view.frame.size.height / 2
         cardHeight = self.view.frame.size.height * 19/20
         
         visualEffectView = UIVisualEffectView()
@@ -142,21 +144,26 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
         cardViewController.view.clipsToBounds = true
         cardViewController.view.roundCorners(corners: [.topLeft, .topRight], radius: 30)
         
+        
+//        cardAnimations = CardAnimations(mainViewHeight: self.view.frame.size.height, cardViewController: cardViewController, addButton: addButton, visualEffectView: visualEffectView)
+        
+        
+        
         // Create gesture recognisers
         let tapGestureRecogniser = UITapGestureRecognizer(target: self, action: #selector(ViewController.handleCardTap(recogniser:)))
         
         // Add gestures for Handle Area in the CardViewController.xib
         cardViewController.handleArea.addGestureRecognizer(tapGestureRecogniser)
-        cardViewController.handleArea.addGestureRecognizer(setGestureRecognizer())
+        cardViewController.handleArea.addGestureRecognizer(setPanGestureRecognizer())
         
         // Add gestures for TableView in the CardViewController.xib
-        cardViewController.tblView.addGestureRecognizer(setGestureRecognizer())
+        cardViewController.tblView.addGestureRecognizer(setPanGestureRecognizer())
         
     }
     
     
     // For multiple views to have the same PanGesture
-    func setGestureRecognizer() -> UIPanGestureRecognizer {
+    func setPanGestureRecognizer() -> UIPanGestureRecognizer {
         let panGestureRecogniser = UIPanGestureRecognizer (target: self, action: #selector(ViewController.handleCardPan(recogniser:)))
         panGestureRecogniser.delegate = self
 
@@ -203,13 +210,13 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
         animateTransitionIfNeeded(with: nextState, for: 0.7, withDampingRatio: 0.8)
     }
 
-    
+
      @objc func handleCardPan (recogniser: UIPanGestureRecognizer) {
-            
+
             switch recogniser.state{
             case .began:
                 startInteractiveTransition(forState: nextState, duration: 0.6)
-                
+
             case .changed:
                 let translation = recogniser.translation(in: recogniser.view)
                 fractionComplete = translation.y / (cardStartPointY - self.view.frame.size.height + cardHeight)
@@ -217,21 +224,21 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
 
                 lastFraction = fractionComplete
                 updateInteractiveTransition(fractionCompleted: fractionComplete)
-                
-                
+
+
             case .ended:
                 if (lastFraction < 0.1) {
                     stopAndGoToStartPositionInteractiveTransition()
                 } else {
                     continueInteractiveTransition()
                 }
-                
+
             default:
                 break
             }
 
         }
-    
+
 
 
     //MARK: - Interactions and Animations
@@ -263,7 +270,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
        for animator in runningAnimations {
            animator.fractionComplete = fractionCompleted + animationProgressWhenInterrupted
        }
-        
+
     }
 
 
@@ -275,7 +282,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
             animator.continueAnimation(withTimingParameters: nil, durationFactor: 0)
         }
     }
-    
+
     /**
     Stops animation and goes to start of the animation
     */
@@ -285,12 +292,12 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
             animator.finishAnimation(at: .start)
         }
         self.runningAnimations.removeAll()
-        
+
         cardVisible = !cardVisible
     }
-    
-    
-    
+
+
+
     /**
     Creates array of animations and starts them
 
@@ -313,13 +320,12 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
         frameAnimator.addCompletion { _ in
             cardVisible = !cardVisible
             self.runningAnimations.removeAll()
-            //self.cardViewController.tblView.isUserInteractionEnabled = true
         }
 
         frameAnimator.startAnimation()
         runningAnimations.append(frameAnimator)
 
-        
+
         /* Blur animation*/
         let blurAnimator = UIViewPropertyAnimator(duration: duration, dampingRatio: dumpingRatio) {
             switch state {
@@ -332,8 +338,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
 
         blurAnimator.startAnimation()
         runningAnimations.append(blurAnimator)
-        
-        
+
+
         /* Add Button Opacity animation*/
         let buttonOpacityAnimator = UIViewPropertyAnimator(duration: duration, dampingRatio: dumpingRatio) {
             switch state {
@@ -346,7 +352,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
 
         buttonOpacityAnimator.startAnimation()
         runningAnimations.append(buttonOpacityAnimator)
-        
+
     }
     
     
@@ -386,35 +392,13 @@ extension ViewController: PaymentDelegate {
         newPayment.amountPaid = amountPaid
         newPayment.place = place
         newPayment.date = date
+        newPayment.receiptPhoto = imageCompression.compressImage(for: receiptImage)
         
-        let imageSizeinMB = Float(receiptImage.jpegData(compressionQuality: 1.0)!.count) / powf(10, 6)
-        print("size in MB = \(imageSizeinMB)")
-        
-        var compression : CGFloat = 1.0
-        if (imageSizeinMB > settings.compressedSizeInMB) {
-            compression = CGFloat(settings.compressedSizeInMB / imageSizeinMB)
-            newPayment.receiptPhoto = receiptImage.jpegData(compressionQuality: compression)
-            let newSize = Float(newPayment.receiptPhoto!.count) / powf(10, 6)
-            print("After Compression in MB = \(newSize) and ratio = \(compression)")
-        }
-        
-        newPayment.receiptPhoto = receiptImage.jpegData(compressionQuality: compression)
-        
-//        if let imageData = receiptImage.jpegData(compressionQuality: 1.0) {
-//             let bytes = imageData.count
-//            print("size in kB = \(Double(bytes) / 1000.0)")
-//        }
-//        if let imageData = receiptImage.jpegData(compressionQuality: 0.1) {
-//             let bytes = imageData.count
-//            print("size COMPRESSED in kB = \(Double(bytes) / 1000.0)")
-//        }
-//        newPayment.receiptPhoto = receiptImage.jpegData(compressionQuality: 0.1)
         
         cardViewController.payments.insert(newPayment, at: 0)
         
         cardViewController.database.saveContext()
         
-//        cardViewController.tblView.reloadData()
         cardViewController.tblView.beginUpdates()
         cardViewController.tblView.insertRows(at: [IndexPath.init(row: 0, section: 0)], with: .left)
         cardViewController.tblView.endUpdates()

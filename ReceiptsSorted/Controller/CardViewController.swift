@@ -26,10 +26,6 @@ class CardViewController: UIViewController {
 
     var paymentUpdateIndex = 0
     
-    // An empty tuple that will be updated with search results.
-    var searchResults : [(title: String, image: String)] = []
-    let searchController = UISearchController(searchResultsController: nil)
-    
     
     
     
@@ -163,6 +159,7 @@ extension CardViewController: UITableViewDataSource, UITableViewDelegate {
 
 
         func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+            
             let contextItem = UIContextualAction(style: .destructive, title: "✓") {  (contextualAction, view, boolValue) in
                 self.tblView.dataSource?.tableView!(self.tblView, commit: .delete, forRowAt: indexPath)
                 return

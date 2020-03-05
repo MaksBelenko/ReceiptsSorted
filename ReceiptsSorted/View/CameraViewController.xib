@@ -37,12 +37,23 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gXZ-Dz-QGX">
-                    <rect key="frame" x="341" y="57" width="44" height="41"/>
+                    <rect key="frame" x="350" y="46" width="44" height="41"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" heightSizable="YES" flexibleMaxY="YES"/>
                     <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <state key="normal" backgroundImage="xmark" catalog="system"/>
                     <connections>
                         <action selector="pressedCloseCamera:" destination="-1" eventType="touchUpInside" id="Yc0-rw-JYM"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DHd-Jy-jG0">
+                    <rect key="frame" x="20" y="43" width="37" height="44"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                    <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <state key="normal" backgroundImage="bolt.badge.a.fill" catalog="system">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </state>
+                    <connections>
+                        <action selector="pressedFlashButton:" destination="-1" eventType="touchUpInside" id="tcp-I0-jdZ"/>
                     </connections>
                 </button>
             </subviews>
@@ -52,6 +63,7 @@
         </view>
     </objects>
     <resources>
+        <image name="bolt.badge.a.fill" catalog="system" width="56" height="64"/>
         <image name="camera.circle.fill" catalog="system" width="64" height="60"/>
         <image name="photo" catalog="system" width="64" height="46"/>
         <image name="xmark" catalog="system" width="64" height="56"/>

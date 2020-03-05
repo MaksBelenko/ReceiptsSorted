@@ -73,6 +73,11 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
     }
     
     
+    @IBAction func pressedFlashButton(_ sender: UIButton) {
+       let picName = cameraSession?.nextFlashMode()
+        sender.setBackgroundImage(UIImage(systemName: picName!), for: UIControl.State.normal)
+    }
+    
     
     
     //MARK: - Choosing picture from gallery

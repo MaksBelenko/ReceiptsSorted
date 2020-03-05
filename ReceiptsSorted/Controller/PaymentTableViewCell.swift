@@ -29,10 +29,10 @@ class PaymentTableViewCell: UITableViewCell {
         tickLabel.layer.masksToBounds = true
         
         if (receivedPayment == true) {
-            tickLabel.backgroundColor = UIColor.systemGreen.withAlphaComponent(1)
+            tickLabel.backgroundColor = UIColor(rgb: 0x3498db).withAlphaComponent(1)
             tickLabel.text = "✓"
         } else {
-            tickLabel.backgroundColor = UIColor.green.withAlphaComponent(0)
+            tickLabel.backgroundColor = UIColor(rgb: 0x3498db).withAlphaComponent(0)
             tickLabel.text = ""
         }
         

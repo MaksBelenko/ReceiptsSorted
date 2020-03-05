@@ -13,7 +13,7 @@ import AVFoundation
 class CameraSession  {
     
     //MARK: - Fields
-    private var captureSession = AVCaptureSession()
+    private lazy var captureSession = AVCaptureSession()
     private var backCamera: AVCaptureDevice?
     private var frontCamera: AVCaptureDevice?
     private var currentCamera: AVCaptureDevice?
@@ -22,6 +22,10 @@ class CameraSession  {
     
     private var view: UIView
     
+    enum FlashMode {
+        case Auto, Flash, NoFlash
+    }
+    var currentFlashMode = FlashMode.Auto
     
     
     
@@ -36,13 +40,12 @@ class CameraSession  {
     
     //MARK: - Private methods
     private func setupCamera() {
-        
-        
         self.setupCaptureSession()
         self.setupDevice()
         self.setupInputOutput()
         self.setupPreviewLayer()
         self.setupLayersCaptureSession()
+
     }
     
     
@@ -135,8 +138,48 @@ class CameraSession  {
      */
     func setCapturePhoto (delegate: AVCapturePhotoCaptureDelegate) {
         if (ProcessInfo.processInfo.environment["SIMULATOR_DEVICE_NAME"] == nil) {
-            let settings = AVCapturePhotoSettings()
-            photoOutput?.capturePhoto(with: settings, delegate: delegate)
+            photoOutput?.capturePhoto(with: createPhotoSettings(), delegate: delegate)
         }
+    }
+    
+    
+    /**
+     Creates AVCapturePhotoSettings for current Flash mode
+     */
+    private func createPhotoSettings() -> AVCapturePhotoSettings {
+        let settings = AVCapturePhotoSettings()
+        
+        if (currentFlashMode == .Auto) {
+            settings.flashMode = AVCaptureDevice.FlashMode.auto
+        }
+        if (currentFlashMode == .Flash) {
+            settings.flashMode = AVCaptureDevice.FlashMode.on
+        }
+        if (currentFlashMode == .NoFlash) {
+            settings.flashMode = AVCaptureDevice.FlashMode.off
+        }
+        
+        return settings
+    }
+    
+    
+    /**
+     Sets next mode for Flash (Auto, Flash, NoFlash) when picture is taken
+     and returns an image name to be shown as background of "flash" button
+     */
+    func nextFlashMode() -> String {
+        if (currentFlashMode == .Auto) {
+            currentFlashMode = .Flash
+            return "bolt.fill"
+        }
+        if (currentFlashMode == .Flash) {
+            currentFlashMode = .NoFlash
+            return "bolt.slash.fill"
+        }
+        if (currentFlashMode == .NoFlash) {
+            currentFlashMode = .Auto
+            return "bolt.badge.a.fill"
+        }
+        return "exclamationmark.triangle.fill"
     }
 }

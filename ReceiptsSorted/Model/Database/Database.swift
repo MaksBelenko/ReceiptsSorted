@@ -27,6 +27,7 @@ class Database {
     
     /**
      Get all payments from database
+     - Parameter request: NSFetchRequest that is used to fetch data from database
      */
     func loadPayments(with request: NSFetchRequest<Payments> = Payments.fetchRequest()) -> [Payments] {
         do {
@@ -39,7 +40,7 @@ class Database {
     
     /**
      Fetch all payments from database which contain the passed place name
-     - Parameter name: Place name that is used to filter and fetch data
+     - Parameter name: Place's name that is used to filter and fetch data
                        from database
      */
     func fetchData(forName name: String) -> [Payments]{
