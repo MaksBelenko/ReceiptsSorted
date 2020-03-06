@@ -28,22 +28,13 @@ class PaymentTableViewCell: UITableViewCell {
         tickLabel.layer.cornerRadius = tickLabel.frame.size.height/2
         tickLabel.layer.masksToBounds = true
         
-        if (receivedPayment == true) {
-            tickLabel.backgroundColor = UIColor(rgb: 0x3498db).withAlphaComponent(1)
-            tickLabel.text = "✓"
-        } else {
-            tickLabel.backgroundColor = UIColor(rgb: 0x3498db).withAlphaComponent(0)
-            tickLabel.text = ""
-        }
-        
-//        surroundView.backgroundColor = UIColor.white
-//        surroundView.layer.borderColor = UIColor.black.cgColor
-//        surroundView.layer.borderWidth = 0.2
-//        surroundView.layer.cornerRadius = surroundView.frame.size.height/3
-//        surroundView.layer.masksToBounds = true
-//        
-//        surroundView.layer.applyShadow()
-
+//        if (receivedPayment == true) {
+//            tickLabel.backgroundColor = UIColor(rgb: 0x3498db).withAlphaComponent(1)
+//            tickLabel.text = "✓"
+//        } else {
+//            tickLabel.backgroundColor = UIColor(rgb: 0x3498db).withAlphaComponent(0)
+//            tickLabel.text = ""
+//        }
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

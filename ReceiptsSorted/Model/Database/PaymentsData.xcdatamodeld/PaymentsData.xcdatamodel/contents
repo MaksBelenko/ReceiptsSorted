@@ -3,10 +3,11 @@
     <entity name="Payments" representedClassName=".Payments" syncable="YES" codeGenerationType="class">
         <attribute name="amountPaid" attributeType="String"/>
         <attribute name="date" attributeType="String"/>
+        <attribute name="paymentReceived" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="place" optional="YES" attributeType="String"/>
         <attribute name="receiptPhoto" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES"/>
     </entity>
     <elements>
-        <element name="Payments" positionX="-1531.578125" positionY="-2979.62890625" width="201.9765625" height="103"/>
+        <element name="Payments" positionX="-1531.578125" positionY="-2979.62890625" width="201.9765625" height="118"/>
     </elements>
 </model>

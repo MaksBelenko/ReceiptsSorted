@@ -40,7 +40,7 @@
                     <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                 </tableView>
                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uB3-D3-tJh">
-                    <rect key="frame" x="340" y="28" width="74" height="56"/>
+                    <rect key="frame" x="340" y="36" width="74" height="40"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                     <state key="normal" title="Place">
                         <color key="titleColor" red="0.8117555528" green="0.6373264622" blue="0.0065413103780000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -49,7 +49,7 @@
                         <action selector="sortButtonPressed:" destination="-1" eventType="touchUpInside" id="2E1-DG-7dM"/>
                     </connections>
                 </button>
-                <searchBar contentMode="redraw" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6Hk-WJ-MAr">
+                <searchBar contentMode="redraw" fixedFrame="YES" searchBarStyle="minimal" translatesAutoresizingMaskIntoConstraints="NO" id="6Hk-WJ-MAr">
                     <rect key="frame" x="0.0" y="28" width="340" height="56"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                     <textInputTraits key="textInputTraits"/>

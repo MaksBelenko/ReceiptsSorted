@@ -52,9 +52,6 @@ class CardViewController: UIViewController {
         
         searchBar.delegate = self
         searchBar.returnKeyType = UIReturnKeyType.done
-//        searchBar.showsCancelButton = true
-//        searchBar.isHidden = false
-        
     }
 
     
@@ -68,8 +65,6 @@ class CardViewController: UIViewController {
         if ((fractionComplete > 0 && fractionComplete < 1) || (nextState == .Expanded && fractionComplete < 1)) {
             tblView.contentOffset.y = 0
         }
-        
-//        searchBar.barStyle = UIBarStyle.black
     }
     
 }
@@ -129,6 +124,16 @@ extension CardViewController: UITableViewDataSource, UITableViewDelegate {
             cell.amountPaidText.text = p.amountPaid!
             cell.placeText.text = p.place!
             cell.dateText.text = p.date!
+            cell.receivedPayment = p.paymentReceived
+            
+            
+            if (p.paymentReceived == true) {
+                cell.tickLabel.backgroundColor = UIColor(rgb: 0x3498db).withAlphaComponent(1)
+                cell.tickLabel.text = "✓"
+            } else {
+                cell.tickLabel.backgroundColor = UIColor(rgb: 0x3498db).withAlphaComponent(0)
+                cell.tickLabel.text = ""
+            }
             
             return cell
         }
@@ -167,15 +172,26 @@ extension CardViewController: UITableViewDataSource, UITableViewDelegate {
         //MARK: - Slide and remove TableView Cell
         
         func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+            
+            if (payments[indexPath.row].paymentReceived == true) {
+                return false
+            }
+            
             return true
         }
 
         func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
 
             if (editingStyle == .delete) {
-                database.delete(item: payments[indexPath.row])
-                payments.remove(at: indexPath.row)
-                tableView.deleteRows(at: [indexPath], with: .automatic)
+                payments[indexPath.row].paymentReceived = true
+                database.saveContext()
+                //reload row and then data for animation
+                tableView.reloadRows(at: [indexPath], with: .none)
+                tableView.reloadData()
+    
+//                database.delete(item: payments[indexPath.row])
+//                payments.remove(at: indexPath.row)
+//                tableView.deleteRows(at: [indexPath], with: .automatic)
             }
         }
 

@@ -393,6 +393,7 @@ extension ViewController: PaymentDelegate {
         newPayment.place = place
         newPayment.date = date
         newPayment.receiptPhoto = imageCompression.compressImage(for: receiptImage)
+        newPayment.paymentReceived = false
         
         
         cardViewController.payments.insert(newPayment, at: 0)
