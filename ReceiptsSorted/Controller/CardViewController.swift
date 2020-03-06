@@ -10,7 +10,8 @@ import UIKit
 import CoreData
 
 class CardViewController: UIViewController {
-    
+
+    @IBOutlet weak var sortButton: UIButton!
     
     @IBOutlet weak var searchBar: UISearchBar!
     
@@ -25,6 +26,8 @@ class CardViewController: UIViewController {
     var database = Database()
 
     var paymentUpdateIndex = 0
+    
+    let dropDownMenu = SortingDropDownMenu()
     
     
     
@@ -47,11 +50,11 @@ class CardViewController: UIViewController {
         // Set TableView height
         tblView.frame.size.height = cardHeight * 4/5
         
-        
         searchBar.delegate = self
         searchBar.returnKeyType = UIReturnKeyType.done
 //        searchBar.showsCancelButton = true
 //        searchBar.isHidden = false
+        
     }
 
     
@@ -65,9 +68,28 @@ class CardViewController: UIViewController {
         if ((fractionComplete > 0 && fractionComplete < 1) || (nextState == .Expanded && fractionComplete < 1)) {
             tblView.contentOffset.y = 0
         }
+        
+//        searchBar.barStyle = UIBarStyle.black
     }
+    
 }
 
+
+extension CardViewController: UIPopoverPresentationControllerDelegate {
+    @IBAction func sortButtonPressed(_ sender: UIButton) {
+        
+        let popoverPresentationController = dropDownMenu.createDropDownMenu(for: sender, ofSize: CGSize(width: 90, height: 130))
+        popoverPresentationController?.delegate = self
+        
+        self.present(dropDownMenu.tableViewController, animated: true, completion: nil)
+    }
+    
+    
+    
+    func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
+        return .none
+    }
+}
 
 
 
