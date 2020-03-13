@@ -43,4 +43,25 @@ class PaymentTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
+    
+    
+    
+    func setCell(for payment: Payments) {
+        
+        let p = payment//payments[indexPath.row]
+        
+        self.amountPaidText.text = p.amountPaid!
+        self.placeText.text = p.place!
+        self.dateText.text = p.date!
+        self.receivedPayment = p.paymentReceived
+        
+        
+        if (p.paymentReceived == true) {
+            self.tickLabel.backgroundColor = UIColor(rgb: 0x3498db).withAlphaComponent(1)
+            self.tickLabel.text = "✓"
+        } else {
+            self.tickLabel.backgroundColor = UIColor(rgb: 0x3498db).withAlphaComponent(0)
+            self.tickLabel.text = ""
+        }
+    }
 }

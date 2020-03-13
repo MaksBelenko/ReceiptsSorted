@@ -19,7 +19,7 @@ class AddButtonAnimations {
     }
     
     @objc private func animateDown(sender: UIButton) {
-        animate(sender, transform: CGAffineTransform.identity.scaledBy(x: 0.9, y: 0.9))
+        animate(sender, transform: CGAffineTransform.identity.scaledBy(x: 0.85, y: 0.85))
     }
     
     @objc private func animateUp(sender: UIButton) {
@@ -27,7 +27,7 @@ class AddButtonAnimations {
     }
     
     private func animate(_ button: UIButton, transform: CGAffineTransform) {
-        UIView.animate(withDuration: 0.1, animations: {
+        UIView.animate(withDuration: 0.1,  animations: {
                             button.transform = transform
                         }, completion: nil)
     }

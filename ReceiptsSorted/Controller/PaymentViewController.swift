@@ -26,6 +26,8 @@ class PaymentViewController: UIViewController, UIGestureRecognizerDelegate {
     @IBOutlet weak var dateTextField: UITextField!
     @IBOutlet weak var addButton: UIButton!
     
+    let buttonAnimations = AddButtonAnimations()
+    
     
     
     let wetAsphaltCGColor = UIColor(red:0.20, green:0.29, blue:0.37, alpha:1.0)
@@ -150,6 +152,8 @@ class PaymentViewController: UIViewController, UIGestureRecognizerDelegate {
         
         let buttonTitle = (pageType == .AddPayment) ? "Add" : "Save"
         addButton.setTitle( buttonTitle, for: .normal)
+        
+        buttonAnimations.startAnimatingPressActions(for: addButton)
     }
     
     

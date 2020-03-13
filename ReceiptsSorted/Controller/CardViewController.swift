@@ -9,8 +9,13 @@
 import UIKit
 import CoreData
 
-class CardViewController: UIViewController {
+var searchTopAnchor: NSLayoutConstraint?
 
+class CardViewController: UIViewController {
+    
+    @IBOutlet weak var SortSegmentedControl: UISegmentedControl!
+    @IBOutlet weak var searchAndSortView: UIView!
+    
     @IBOutlet weak var sortButton: UIButton!
     
     @IBOutlet weak var searchBar: UISearchBar!
@@ -28,6 +33,11 @@ class CardViewController: UIViewController {
     var paymentUpdateIndex = 0
     
     let dropDownMenu = SortingDropDownMenu()
+    let swipeActions = SwipeActions()
+    
+    var sortByOption: SortBy = .DateTime
+    
+    var names: [String] = ["March", "April"]
     
     
     
@@ -48,10 +58,15 @@ class CardViewController: UIViewController {
         tblView.tableFooterView = UIView()
         
         // Set TableView height
-        tblView.frame.size.height = cardHeight * 4/5
+        tblView.frame.size.height = cardHeight * 3/5
         
         searchBar.delegate = self
         searchBar.returnKeyType = UIReturnKeyType.done
+        
+        
+        searchAndSortView.translatesAutoresizingMaskIntoConstraints = false
+        searchTopAnchor = searchAndSortView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: -11)
+        searchTopAnchor!.isActive = true
     }
 
     
@@ -63,6 +78,7 @@ class CardViewController: UIViewController {
 //        print("fr = \(fractionComplete)")
 //        print("vel = \(scrollView.panGestureRecognizer.velocity(in: self.tblView).y)")
         if ((fractionComplete > 0 && fractionComplete < 1) || (nextState == .Expanded && fractionComplete < 1)) {
+            print("fractionComplete = \(fractionComplete)")
             tblView.contentOffset.y = 0
         }
     }
@@ -110,104 +126,97 @@ extension CardViewController: UISearchBarDelegate {
 //MARK: - TableView extension
 extension CardViewController: UITableViewDataSource, UITableViewDelegate {
     
-        func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-            return payments.count
-        }
-        
-        
-        func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-            
-            let p = payments[indexPath.row]
-                 
-            let cell = tableView.dequeueReusableCell(withIdentifier: "paymentCell", for: indexPath) as! PaymentTableViewCell
-            
-            cell.amountPaidText.text = p.amountPaid!
-            cell.placeText.text = p.place!
-            cell.dateText.text = p.date!
-            cell.receivedPayment = p.paymentReceived
-            
-            
-            if (p.paymentReceived == true) {
-                cell.tickLabel.backgroundColor = UIColor(rgb: 0x3498db).withAlphaComponent(1)
-                cell.tickLabel.text = "✓"
-            } else {
-                cell.tickLabel.backgroundColor = UIColor(rgb: 0x3498db).withAlphaComponent(0)
-                cell.tickLabel.text = ""
-            }
-            
-            return cell
-        }
-        
-        
-        
-        func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-            return tableRowsHeight
-        }
-        
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return payments.count
+    }
     
-        func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-            tableView.deselectRow(at: indexPath, animated: true)
-            
-            let selectedPayment = payments[indexPath.row]
-            paymentUpdateIndex = indexPath.row
-            
-            if let paymentVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "PaymentDetails") as? PaymentViewController
-            {
-                paymentVC.passedImage = UIImage(data: selectedPayment.receiptPhoto ?? Data())
-                paymentVC.amountPaid = selectedPayment.amountPaid!
-                paymentVC.place = selectedPayment.place!
-                paymentVC.date = selectedPayment.date!
-                paymentVC.pageType = .UpdatePayment
-                
-                paymentVC.paymentDelegate = self
-                
-                paymentVC.modalPresentationStyle = .fullScreen
-                self.present(paymentVC, animated: true, completion: nil)
-            }
-                
-        }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        
-        
-        //MARK: - Slide and remove TableView Cell
-        
-        func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-            
-            if (payments[indexPath.row].paymentReceived == true) {
-                return false
-            }
-            
-            return true
-        }
+        let cell = tableView.dequeueReusableCell(withIdentifier: "paymentCell", for: indexPath) as! PaymentTableViewCell
+        cell.setCell(for: payments[indexPath.row])
+        return cell
+    }
+    
+    
+    
+    
+    
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return tableRowsHeight
+    }
+    
 
-        func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        let selectedPayment = payments[indexPath.row]
+        paymentUpdateIndex = indexPath.row
+        
+        if let paymentVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "PaymentDetails") as? PaymentViewController
+        {
+            paymentVC.passedImage = UIImage(data: selectedPayment.receiptPhoto ?? Data())
+            paymentVC.amountPaid = selectedPayment.amountPaid!
+            paymentVC.place = selectedPayment.place!
+            paymentVC.date = selectedPayment.date!
+            paymentVC.pageType = .UpdatePayment
+            
+            paymentVC.paymentDelegate = self
+            
+            paymentVC.modalPresentationStyle = .fullScreen
+            self.present(paymentVC, animated: true, completion: nil)
+        }
+    }
+    
+    
+    //MARK: - Sections
 
-            if (editingStyle == .delete) {
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return names[section]
+    }
+
+    func sectionIndexTitles(for tableView: UITableView) -> [String]? {
+        return names
+    }
+
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 2 //sections.count // or sortedFirstLetters.count
+    }
+
+
+    
+    //MARK: - Slide and remove TableView Cell
+    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+
+        if (editingStyle == .delete) {
+            if (payments[indexPath.row].paymentReceived == false) {
                 payments[indexPath.row].paymentReceived = true
                 database.saveContext()
                 //reload row and then data for animation
                 tableView.reloadRows(at: [indexPath], with: .none)
                 tableView.reloadData()
-    
-//                database.delete(item: payments[indexPath.row])
-//                payments.remove(at: indexPath.row)
-//                tableView.deleteRows(at: [indexPath], with: .automatic)
-            }
-        }
-
-
-        func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-            
-            let contextItem = UIContextualAction(style: .destructive, title: "✓") {  (contextualAction, view, boolValue) in
-                self.tblView.dataSource?.tableView!(self.tblView, commit: .delete, forRowAt: indexPath)
-                return
+            } else {
+                database.delete(item: payments[indexPath.row])
+                payments.remove(at: indexPath.row)
+                tableView.deleteRows(at: [indexPath], with: .automatic)
             }
 
-            contextItem.backgroundColor = UIColor(rgb: 0x3498db)  //Flat UI Color "Light blue"
-            let swipeActions = UISwipeActionsConfiguration(actions: [contextItem])
 
-            return swipeActions
         }
+    }
+
+
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        
+        return swipeActions.createTrailingActions(for: indexPath, in: payments)
+    }
+
 }
 
 

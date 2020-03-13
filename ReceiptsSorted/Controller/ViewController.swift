@@ -40,6 +40,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
     let imageCompression = ImageCompression()
     var cardAnimations: CardAnimations!
     
+//    var ignore = false
+    
     
     
     //MARK: - Status Bar
@@ -215,23 +217,38 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
 
             switch recogniser.state{
             case .began:
-                startInteractiveTransition(forState: nextState, duration: 0.6)
+//                let translation = recogniser.translation(in: recogniser.view)
+//                print("translation.y = \(translation.y)")
+//                if ((nextState == .Expanded && translation.y < 0) || (nextState == .Collapsed && translation.y > 0) ) {
+//                    ignore = true
+//                } else {
+//                    ignore = false
+//                }
+                
+//                if (ignore){
+                    startInteractiveTransition(forState: nextState, duration: 0.6)
+//                }
 
             case .changed:
-                let translation = recogniser.translation(in: recogniser.view)
-                fractionComplete = translation.y / (cardStartPointY - self.view.frame.size.height + cardHeight)
-                fractionComplete = cardVisible ? fractionComplete : -fractionComplete
+//                if (ignore){
+                    let translation = recogniser.translation(in: recogniser.view)
+                    fractionComplete = translation.y / (cardStartPointY - self.view.frame.size.height + cardHeight - cardViewController.searchAndSortView.frame.size.height)
+                    fractionComplete = cardVisible ? fractionComplete : -fractionComplete
 
-                lastFraction = fractionComplete
-                updateInteractiveTransition(fractionCompleted: fractionComplete)
-
+                    lastFraction = fractionComplete
+                    updateInteractiveTransition(fractionCompleted: fractionComplete)
+//                }
 
             case .ended:
+//                if (ignore){
                 if (lastFraction < 0.1) {
                     stopAndGoToStartPositionInteractiveTransition()
                 } else {
                     continueInteractiveTransition()
                 }
+//                }
+                
+                //fractionComplete = 1
 
             default:
                 break
@@ -305,7 +322,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
     - Parameter duration: Duration of the animation.
     */
     func animateTransitionIfNeeded (with state: CardState, for duration: TimeInterval, withDampingRatio dumpingRatio: CGFloat) {
-
+        
         /* Size animation */
         let frameAnimator = UIViewPropertyAnimator(duration: duration, dampingRatio: dumpingRatio) {
             switch state {
@@ -317,15 +334,16 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
             }
         }
 
+        frameAnimator.startAnimation()
+        runningAnimations.append(frameAnimator)
+
+        
         frameAnimator.addCompletion { _ in
             cardVisible = !cardVisible
             self.runningAnimations.removeAll()
         }
 
-        frameAnimator.startAnimation()
-        runningAnimations.append(frameAnimator)
-
-
+        
         /* Blur animation*/
         let blurAnimator = UIViewPropertyAnimator(duration: duration, dampingRatio: dumpingRatio) {
             switch state {
@@ -352,6 +370,29 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
 
         buttonOpacityAnimator.startAnimation()
         runningAnimations.append(buttonOpacityAnimator)
+        
+        
+        switch state {
+        case .Expanded:
+//            NSLayoutConstraint.deactivate([self.cardViewController.searchAndSortView.topAnchor.constraint(equalTo: NSLayoutAnchor<NSLayoutYAxisAnchor>)])
+            searchTopAnchor?.isActive = false
+            searchTopAnchor = self.cardViewController.searchAndSortView.topAnchor.constraint(equalTo: self.cardViewController.view.topAnchor, constant: 32)
+            searchTopAnchor?.isActive = true
+        case .Collapsed:
+            searchTopAnchor?.isActive = false
+            searchTopAnchor = self.cardViewController.searchAndSortView.topAnchor.constraint(equalTo: self.cardViewController.view.topAnchor, constant: -11)
+            searchTopAnchor?.isActive = true
+        }
+        
+        
+        /* Top Search and Sort bar hide/unhide */
+        let searchViewAnimator = UIViewPropertyAnimator(duration: duration, dampingRatio: dumpingRatio) {
+            self.cardViewController.view.layoutIfNeeded()
+        }
+        
+
+        searchViewAnimator.startAnimation()
+        runningAnimations.append(searchViewAnimator)
 
     }
     

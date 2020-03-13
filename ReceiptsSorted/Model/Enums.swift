@@ -6,7 +6,6 @@
 //  Copyright © 2019 Maksim. All rights reserved.
 //
 
-import UIKit
 
 enum ImageSource {
     case photoLibrary
@@ -25,6 +24,10 @@ enum ShowPaymentAs {
     case AddPayment, UpdatePayment
 }
 
-enum CircularTransitionMode:Int {
+enum CircularTransitionMode {
     case present, dismiss, pop
+}
+
+enum SortBy {
+    case DateTime, Name, Place
 }

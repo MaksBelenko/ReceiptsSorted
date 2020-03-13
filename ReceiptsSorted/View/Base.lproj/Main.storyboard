@@ -15,17 +15,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="PictureMain" translatesAutoresizingMaskIntoConstraints="NO" id="7WK-Sn-jhC">
-                                <rect key="frame" x="9" y="467" width="357" height="318"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" systemColor="linkColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            </imageView>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zg2-2o-XkT">
                                 <rect key="frame" x="15" y="45" width="36" height="34"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <viewLayoutGuide key="safeArea" id="PJN-Oc-KhX"/>
                                 <color key="tintColor" red="0.26040893790000003" green="0.62689352040000001" blue="0.82998108859999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <state key="normal" backgroundImage="person.crop.circle" catalog="system"/>
+                                <state key="normal" backgroundImage="envelope.circle" catalog="system"/>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="-£120.00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mUl-uz-7uc">
                                 <rect key="frame" x="83" y="167" width="209" height="63"/>
@@ -65,74 +60,10 @@
                         <color key="backgroundColor" red="0.20392156862745098" green="0.27843137254901962" blue="0.3529411764705882" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
-                    <connections>
-                        <outlet property="imageTake" destination="7WK-Sn-jhC" id="SKk-MQ-Yos"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-1252.1739130434783" y="53.571428571428569"/>
-        </scene>
-        <!--Taken Picture View Controller-->
-        <scene sceneID="wsd-vR-nfg">
-            <objects>
-                <viewController storyboardIdentifier="PictureTakenView" id="c4r-Yb-DGd" userLabel="Taken Picture View Controller" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="CLS-hX-1vO">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DnH-73-FHx">
-                                <rect key="frame" x="44" y="714" width="122" height="47"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES"/>
-                                <color key="backgroundColor" red="0.9475018382" green="0.7293147445" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="32"/>
-                                <state key="normal" title="Use">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    <color key="titleShadowColor" cocoaTouchSystemColor="darkTextColor"/>
-                                </state>
-                                <connections>
-                                    <action selector="pressedAddButton:" destination="gk0-yM-Syz" eventType="touchUpInside" id="eEP-c3-7JK"/>
-                                    <action selector="usePictureButtonPressed:" destination="c4r-Yb-DGd" eventType="touchUpInside" id="0ku-X7-Ux5"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BFQ-sR-uWB">
-                                <rect key="frame" x="222" y="714" width="122" height="47"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMinY="YES" heightSizable="YES"/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="28"/>
-                                <state key="normal" title="Retake">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    <color key="titleShadowColor" cocoaTouchSystemColor="darkTextColor"/>
-                                </state>
-                                <connections>
-                                    <action selector="pressedAddButton:" destination="gk0-yM-Syz" eventType="touchUpInside" id="XDU-ub-lDI"/>
-                                    <action selector="retakePictureButtonPressed:" destination="c4r-Yb-DGd" eventType="touchUpInside" id="Sg4-UA-1rx"/>
-                                </connections>
-                            </button>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Receipt-Test" translatesAutoresizingMaskIntoConstraints="NO" id="PAm-kY-a5A">
-                                <rect key="frame" x="16" y="128" width="343" height="556"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                            </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wr1-Wg-xqK">
-                                <rect key="frame" x="299" y="45" width="60" height="60"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                <color key="tintColor" red="0.96459501979999995" green="0.75792801379999997" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <state key="normal" backgroundImage="pencil.circle.fill" catalog="system"/>
-                                <connections>
-                                    <action selector="editPhotoButtonPressed:" destination="c4r-Yb-DGd" eventType="touchUpInside" id="4Od-Zr-cjz"/>
-                                </connections>
-                            </button>
-                        </subviews>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                        <viewLayoutGuide key="safeArea" id="guO-Jq-aBz"/>
-                    </view>
-                    <connections>
-                        <outlet property="photoTakenImageView" destination="PAm-kY-a5A" id="9dy-Xf-c9D"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="2Nj-AE-2Ky" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-428" y="51.724137931034484"/>
         </scene>
         <!--Payment View Controller-->
         <scene sceneID="dg8-XG-Y1U">
@@ -220,7 +151,6 @@
                                 <color key="tintColor" red="0.96459501979999995" green="0.75792801379999997" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" backgroundImage="arrow.left" catalog="system"/>
                                 <connections>
-                                    <action selector="editPhotoButtonPressed:" destination="c4r-Yb-DGd" eventType="touchUpInside" id="f0U-RI-bxU"/>
                                     <action selector="returnToCameraButtonPressed:" destination="gk0-yM-Syz" eventType="touchUpInside" id="fFF-Cv-GKg"/>
                                 </connections>
                             </button>
@@ -228,10 +158,9 @@
                                 <rect key="frame" x="329" y="44" width="35" height="35"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <color key="tintColor" red="0.96459501979999995" green="0.75792801379999997" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <state key="normal" backgroundImage="pencil.circle.fill" catalog="system"/>
+                                <state key="normal" backgroundImage="square.and.pencil" catalog="system"/>
                                 <connections>
                                     <action selector="editButtonPressed:" destination="gk0-yM-Syz" eventType="touchUpInside" id="HR0-i6-9kd"/>
-                                    <action selector="editPhotoButtonPressed:" destination="c4r-Yb-DGd" eventType="touchUpInside" id="jiE-Yo-p1S"/>
                                 </connections>
                             </button>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Receipt-Test" translatesAutoresizingMaskIntoConstraints="NO" id="6yn-5r-fWK">
@@ -252,7 +181,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KCc-YS-UoZ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="336.80000000000001" y="52.463054187192121"/>
+            <point key="canvasLocation" x="-527" y="53"/>
         </scene>
         <!--Date Popup View Controller-->
         <scene sceneID="sJn-6l-lJS">
@@ -306,7 +235,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="c3p-SI-AbC" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1340" y="-183"/>
+            <point key="canvasLocation" x="193" y="-182"/>
         </scene>
         <!--Text Popup View Controller-->
         <scene sceneID="v1k-uf-d7I">
@@ -363,15 +292,14 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7q8-Ju-plE" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1338" y="465"/>
+            <point key="canvasLocation" x="190" y="466"/>
         </scene>
     </scenes>
     <resources>
-        <image name="PictureMain" width="566" height="567"/>
         <image name="Receipt-Test" width="340" height="453"/>
         <image name="arrow.left" catalog="system" width="64" height="48"/>
+        <image name="envelope.circle" catalog="system" width="64" height="60"/>
         <image name="gear" catalog="system" width="64" height="58"/>
-        <image name="pencil.circle.fill" catalog="system" width="64" height="60"/>
-        <image name="person.crop.circle" catalog="system" width="64" height="60"/>
+        <image name="square.and.pencil" catalog="system" width="64" height="58"/>
     </resources>
 </document>
