@@ -18,16 +18,6 @@ class DatePopupViewController: UIViewController {
     
     var delegate: PopupDelegate?
     
-    var formattedDate: String {
-        get {
-            let formatter = DateFormatter()
-            formatter.dateStyle = .long
-            return formatter.string(from: datePicker.date)
-        }
-    }
-    
-    
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,7 +38,7 @@ class DatePopupViewController: UIViewController {
 
     
     @IBAction func selectDate(_ sender: UIButton) {
-        delegate?.setDatepopupValue(value: formattedDate)
+        delegate?.setDatepopupValue(value: datePicker.date)
         dismiss(animated: true, completion: nil)
     }
     

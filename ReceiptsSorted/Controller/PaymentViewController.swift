@@ -16,9 +16,9 @@ class PaymentViewController: UIViewController, UIGestureRecognizerDelegate {
     
     var passedImage: UIImage? = nil
     var imageOrigin : CGPoint?
-    var amountPaid: String = ""
+    var amountPaid: Float = 0.0
     var place: String = ""
-    var date: String = ""
+    var date: Date = Date()
     
     @IBOutlet weak var receiptImageView: UIImageView!
     @IBOutlet weak var amountPaidTextField: UITextField!
@@ -28,19 +28,10 @@ class PaymentViewController: UIViewController, UIGestureRecognizerDelegate {
     
     let buttonAnimations = AddButtonAnimations()
     
-    
-    
     let wetAsphaltCGColor = UIColor(red:0.20, green:0.29, blue:0.37, alpha:1.0)
     
     var paymentDelegate: PaymentDelegate?
     
-    var formattedDateToday: String {
-        get {
-            let formatter = DateFormatter()
-            formatter.dateStyle = .long
-            return formatter.string(from: Date())
-        }
-    }
     
     
     //set Status Bar icons to black
@@ -133,13 +124,13 @@ class PaymentViewController: UIViewController, UIGestureRecognizerDelegate {
         placeOfPurchaseTextField.text = place
         
         if (pageType == .UpdatePayment) {
-            amountPaidTextField.text = amountPaid
-            dateTextField.text = date
+            amountPaidTextField.text = "£" + amountPaid.ToString(decimals: 2)
+            dateTextField.text = date.ToString(as: .long)
         }
         
         if (pageType == .AddPayment) {
             amountPaidTextField.text = "£0.00"
-            dateTextField.text = formattedDateToday
+            dateTextField.text = date.ToString(as: .long)
         }
     }
     
@@ -218,7 +209,7 @@ class PaymentViewController: UIViewController, UIGestureRecognizerDelegate {
     
     @IBAction func pressedAddButton(_ sender: UIButton) {
         
-        paymentDelegate?.passData(amountPaid: amountPaidTextField.text!, place: placeOfPurchaseTextField.text!, date: dateTextField.text!, receiptImage: receiptImageView.image ?? UIImage())
+        paymentDelegate?.passData(amountPaid: amountPaid, place: place, date: date, receiptImage: receiptImageView.image ?? UIImage())
         
         if (pageType == .AddPayment) {
             self.view.window!.rootViewController?.dismiss(animated: true, completion: nil)
@@ -257,14 +248,17 @@ class PaymentViewController: UIViewController, UIGestureRecognizerDelegate {
 //MARK:- Extensions
 extension PaymentViewController: PopupDelegate {
     
-    func setAmountPaidValue(value: String) {
-        amountPaidTextField.text = value
+    func setAmountPaidValue(value: Float) {
+        amountPaid = value
+        amountPaidTextField.text = "£" + value.ToString(decimals: 2) //"£\(value)"
     }
     func setPlaceValue(value: String) {
+        place = value
         placeOfPurchaseTextField.text = value
     }
-    func setDatepopupValue(value: String) {
-        dateTextField.text = value
+    func setDatepopupValue(value: Date) {
+        date = value
+        dateTextField.text = value.ToString(as: .long)
     }
     
 }

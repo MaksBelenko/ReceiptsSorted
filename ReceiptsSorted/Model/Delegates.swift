@@ -10,12 +10,12 @@ import UIKit
 
 
 protocol PopupDelegate {
-    func setAmountPaidValue(value: String)
+    func setAmountPaidValue(value: Float)
     func setPlaceValue(value: String)
-    func setDatepopupValue(value: String)
+    func setDatepopupValue(value: Date)
 }
 
 
 protocol PaymentDelegate {
-    func passData(amountPaid: String, place: String, date: String, receiptImage: UIImage)
+    func passData(amountPaid: Float, place: String, date: Date, receiptImage: UIImage)
 }

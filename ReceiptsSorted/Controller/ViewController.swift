@@ -427,7 +427,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
 //MARK: - Extension for PaymentDelegate
 extension ViewController: PaymentDelegate {
     
-    func passData(amountPaid: String, place: String, date: String, receiptImage: UIImage) {
+    func passData(amountPaid: Float, place: String, date: Date, receiptImage: UIImage) {
         
         let newPayment = Payments(context: cardViewController.database.context)
         newPayment.amountPaid = amountPaid

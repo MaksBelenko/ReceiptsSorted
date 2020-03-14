@@ -28,15 +28,10 @@ class PaymentTableViewCell: UITableViewCell {
         tickLabel.layer.cornerRadius = tickLabel.frame.size.height/2
         tickLabel.layer.masksToBounds = true
         
-//        if (receivedPayment == true) {
-//            tickLabel.backgroundColor = UIColor(rgb: 0x3498db).withAlphaComponent(1)
-//            tickLabel.text = "✓"
-//        } else {
-//            tickLabel.backgroundColor = UIColor(rgb: 0x3498db).withAlphaComponent(0)
-//            tickLabel.text = ""
-//        }
     }
 
+    
+    
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
@@ -48,11 +43,11 @@ class PaymentTableViewCell: UITableViewCell {
     
     func setCell(for payment: Payments) {
         
-        let p = payment//payments[indexPath.row]
+        let p = payment
         
-        self.amountPaidText.text = p.amountPaid!
+        self.amountPaidText.text = "£" + p.amountPaid.ToString(decimals: 2)
         self.placeText.text = p.place!
-        self.dateText.text = p.date!
+        self.dateText.text = "Paid on " + p.date!.ToString(as: .long) //parseDate(date: p.date!)
         self.receivedPayment = p.paymentReceived
         
         
@@ -63,5 +58,16 @@ class PaymentTableViewCell: UITableViewCell {
             self.tickLabel.backgroundColor = UIColor(rgb: 0x3498db).withAlphaComponent(0)
             self.tickLabel.text = ""
         }
+    }
+    
+    
+    
+    func parseDate(date: Date) -> String {
+        let calendar = Calendar.current
+        let year = calendar.component(.year, from: date)
+        let month = calendar.component(.month, from: date)
+        let day = calendar.component(.day, from: date)
+        
+        return "Paid on \(day) of \(month) \(year)"
     }
 }

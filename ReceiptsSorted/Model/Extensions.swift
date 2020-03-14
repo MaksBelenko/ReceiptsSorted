@@ -52,3 +52,22 @@ extension CALayer {
 
   }
 }
+
+
+//MARK: - Date extension
+extension Date {
+    func ToString(as format: DateFormatter.Style) -> String {
+        let formatter = DateFormatter()
+        formatter.dateStyle = format
+        return formatter.string(from: self)
+    }
+}
+
+
+//MARK: - Float extension
+
+extension Float {
+    func ToString(decimals: Int) -> String {
+        return String(format: "%.0\(decimals)f", self)
+    }
+}

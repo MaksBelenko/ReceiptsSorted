@@ -157,7 +157,7 @@ extension CardViewController: UITableViewDataSource, UITableViewDelegate {
         if let paymentVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "PaymentDetails") as? PaymentViewController
         {
             paymentVC.passedImage = UIImage(data: selectedPayment.receiptPhoto ?? Data())
-            paymentVC.amountPaid = selectedPayment.amountPaid!
+            paymentVC.amountPaid = selectedPayment.amountPaid
             paymentVC.place = selectedPayment.place!
             paymentVC.date = selectedPayment.date!
             paymentVC.pageType = .UpdatePayment
@@ -172,17 +172,17 @@ extension CardViewController: UITableViewDataSource, UITableViewDelegate {
     
     //MARK: - Sections
 
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return names[section]
-    }
-
-    func sectionIndexTitles(for tableView: UITableView) -> [String]? {
-        return names
-    }
-
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 2 //sections.count // or sortedFirstLetters.count
-    }
+//    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+//        return names[section]
+//    }
+//
+//    func sectionIndexTitles(for tableView: UITableView) -> [String]? {
+//        return names
+//    }
+//
+//    func numberOfSections(in tableView: UITableView) -> Int {
+//        return 2 //sections.count // or sortedFirstLetters.count
+//    }
 
 
     
@@ -223,9 +223,9 @@ extension CardViewController: UITableViewDataSource, UITableViewDelegate {
 //MARK: - PaymentDelegate extension
 extension CardViewController: PaymentDelegate {
     
-    func passData(amountPaid: String, place: String, date: String, receiptImage: UIImage) {
+    func passData(amountPaid: Float, place: String, date: Date, receiptImage: UIImage) {
         
-//        payments[paymentUpdateIndex].receiptPhoto = receiptImage.jpegData(compressionQuality: 1)
+        payments[paymentUpdateIndex].receiptPhoto = receiptImage.jpegData(compressionQuality: 1)
         payments[paymentUpdateIndex].amountPaid = amountPaid
         payments[paymentUpdateIndex].place = place
         payments[paymentUpdateIndex].date = date
