@@ -29,5 +29,9 @@ enum CircularTransitionMode {
 }
 
 enum SortBy {
-    case DateTime, Name, Place
+    case OldestDateAdded, NewestDateAdded, Place
+}
+
+enum PaymentStatusSort {
+    case Pending, Received, All
 }

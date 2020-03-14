@@ -19,3 +19,7 @@ protocol PopupDelegate {
 protocol PaymentDelegate {
     func passData(amountPaid: Float, place: String, date: Date, receiptImage: UIImage)
 }
+
+protocol SortButtonLabelDelegate {
+    func changeButtonLabel(sortByOption: SortBy)
+}

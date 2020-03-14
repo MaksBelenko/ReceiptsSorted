@@ -68,6 +68,9 @@
                         <segment title="Received"/>
                         <segment title="All"/>
                     </segments>
+                    <connections>
+                        <action selector="segmentedControlValueChanged:" destination="-1" eventType="valueChanged" id="HTZ-hu-dcd"/>
+                    </connections>
                 </segmentedControl>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="qpD-v6-aLx">
                     <rect key="frame" x="0.0" y="134" width="414" height="541"/>

@@ -10,10 +10,17 @@ import UIKit
 
 class SortingDropDownMenu: NSObject, UITableViewDelegate, UITableViewDataSource {
     
-    private lazy var dropDownOptions: [String] = ["Date", "Place", "Name"]
-    let tableViewController = UITableViewController()
     
+    private lazy var dropDownOptions: [String] = ["Place", "Date added (oldest)", "Date added (newest)"]
+    
+    
+    let tableViewController = UITableViewController()
     var button = UIButton()
+    var sortButtonLabelDelegate: SortButtonLabelDelegate?
+    
+    
+    
+    
     
     
     /**
@@ -63,16 +70,39 @@ class SortingDropDownMenu: NSObject, UITableViewDelegate, UITableViewDataSource 
         let cell = UITableViewCell()
         cell.frame.size.height = 30
         cell.textLabel?.text = dropDownOptions[indexPath.row]
-        cell.textLabel?.textAlignment = .center
+        cell.textLabel?.textAlignment = .right
         return cell
     }
+    
+    
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print("Selected \(dropDownOptions[indexPath.row])")
         
-        tableViewController.dismiss(animated: true) {
-            self.button.titleLabel?.text = self.dropDownOptions[indexPath.row]
+        sortButtonLabelDelegate?.changeButtonLabel(sortByOption: getSortType(for: dropDownOptions[indexPath.row]))
+        
+        tableViewController.dismiss(animated: true, completion: nil)
+    }
+    
+    
+    
+    func getSortType(for name: String) -> SortBy {
+        var sortOption: SortBy?
+        
+        switch name {
+            case "Place":
+                sortOption = .Place
+            case "Date added (oldest)":
+                sortOption = .OldestDateAdded
+            case "Date added (newest)":
+                sortOption = .NewestDateAdded
+            default:
+                print("Error retrieving name in popover")
+                break
         }
+        
+        
+        return sortOption!
     }
     
 }

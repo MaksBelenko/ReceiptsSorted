@@ -45,12 +45,46 @@ class Database {
      */
     func fetchData(forName name: String) -> [Payments]{
         let request: NSFetchRequest<Payments> = Payments.fetchRequest()
-        //[cd] is to make it non-casesensitive and non-diacritic
         
         if (name != "") {
+            //[cd] is to make it non-casesensitive and non-diacritic
             request.predicate = NSPredicate(format: "place CONTAINS[cd] %@", name)
             request.sortDescriptors = [NSSortDescriptor(key: "place", ascending: true)]
         }
+        
+        return loadPayments(with: request)
+    }
+    
+    
+    
+    /**
+     Fetch sorted data from database
+     - Parameter type: by what parameter should the data be sorted
+     */
+    func fetchSortedData(by sort: SortBy, and paymentStatus: PaymentStatusSort) -> [Payments] {
+        let request: NSFetchRequest<Payments> = Payments.fetchRequest()
+        
+        switch paymentStatus
+        {
+        case .Pending:
+            request.predicate = NSPredicate(format: "paymentReceived == %@", NSNumber(value: false))
+        case .Received:
+            request.predicate = NSPredicate(format: "paymentReceived == %@", NSNumber(value: true))
+        case .All:
+            break
+        }
+        
+        
+        switch sort
+        {
+        case .Place:
+            request.sortDescriptors = [NSSortDescriptor(key: "place", ascending: true)]
+        case .NewestDateAdded:
+            request.sortDescriptors = [NSSortDescriptor(key: "date", ascending: false)]
+        case .OldestDateAdded:
+            request.sortDescriptors = [NSSortDescriptor(key: "date", ascending: true)]
+        }
+        
         
         return loadPayments(with: request)
     }

@@ -35,9 +35,14 @@ class CardViewController: UIViewController {
     let dropDownMenu = SortingDropDownMenu()
     let swipeActions = SwipeActions()
     
-    var sortByOption: SortBy = .DateTime
+    var sortByOption: SortBy = .NewestDateAdded
+    var paymentStatusSort: PaymentStatusSort = .Pending
     
     var names: [String] = ["March", "April"]
+    
+    
+    
+    
     
     
     
@@ -46,7 +51,7 @@ class CardViewController: UIViewController {
         super.viewDidLoad()
     
         print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
-        payments = database.loadPayments()
+        payments = database.fetchSortedData(by: sortByOption, and: paymentStatusSort)
         
         tblView.dataSource = self
         tblView.delegate = self
@@ -67,6 +72,8 @@ class CardViewController: UIViewController {
         searchAndSortView.translatesAutoresizingMaskIntoConstraints = false
         searchTopAnchor = searchAndSortView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: -11)
         searchTopAnchor!.isActive = true
+        
+        setButtonTitle(for: sortByOption)
     }
 
     
@@ -82,23 +89,69 @@ class CardViewController: UIViewController {
             tblView.contentOffset.y = 0
         }
     }
+
+    
+    
+    @IBAction func segmentedControlValueChanged(_ sender: UISegmentedControl) {
+        switch sender.selectedSegmentIndex {
+        case 0:
+            paymentStatusSort = .Pending
+        case 1:
+            paymentStatusSort = .Received
+        case 2:
+            paymentStatusSort = .All
+        default:
+            break
+        }
+        
+        payments = database.fetchSortedData(by: sortByOption, and: paymentStatusSort)
+        tblView.reloadData()
+    }
+    
     
 }
 
 
-extension CardViewController: UIPopoverPresentationControllerDelegate {
+
+//MARK: - Sort Popover
+extension CardViewController: UIPopoverPresentationControllerDelegate, SortButtonLabelDelegate {
+    
     @IBAction func sortButtonPressed(_ sender: UIButton) {
         
-        let popoverPresentationController = dropDownMenu.createDropDownMenu(for: sender, ofSize: CGSize(width: 90, height: 130))
+        let popoverPresentationController = dropDownMenu.createDropDownMenu(for: sender, ofSize: CGSize(width: 200, height: 130))
         popoverPresentationController?.delegate = self
+        dropDownMenu.sortButtonLabelDelegate = self
         
         self.present(dropDownMenu.tableViewController, animated: true, completion: nil)
     }
     
     
-    
     func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
         return .none
+    }
+    
+    
+    func changeButtonLabel(sortByOption: SortBy) {
+        if (self.sortByOption != sortByOption) {
+            self.sortByOption = sortByOption
+            
+            setButtonTitle(for: sortByOption)
+        
+            payments = database.fetchSortedData(by: sortByOption, and: paymentStatusSort)
+            tblView.reloadData()
+        }
+    }
+    
+    func setButtonTitle(for sortTitle: SortBy) {
+        switch sortTitle
+        {
+        case .Place:
+            sortButton.setTitle( "Place", for: .normal)
+        case .NewestDateAdded:
+            sortButton.setTitle( "Date ↓", for: .normal)
+        case .OldestDateAdded:
+            sortButton.setTitle( "Date ↑", for: .normal)
+        }
     }
 }
 
