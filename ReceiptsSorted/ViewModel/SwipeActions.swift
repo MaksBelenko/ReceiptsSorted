@@ -9,6 +9,9 @@
 import UIKit
 
 class SwipeActions {
+
+    var swipeActionDelegate: SwipeActionDelegate?
+    
     
     /**
      Creates "Tick/Untick" and "Remove" trailing actions
@@ -17,34 +20,49 @@ class SwipeActions {
      */
     func createTrailingActions(for indexPath: IndexPath, in payments: [Payments]) -> UISwipeActionsConfiguration {
         
-        let deleteAction = UIContextualAction(style: .destructive, title: "Remove") {  (action, view, nil) in
-            self.deleteItem(in: payments, for: indexPath)
+        let checkAction:UIContextualAction?
+        
+        let deleteAction = createContextualAction(title: "Remove", colour: UIColor.red, indexPath: indexPath) { (indexPath) in
+            self.deleteItem(for: indexPath)
         }
         
-        let checkAction = UIContextualAction(style: .normal, title: "Received") {  (action, view, nil) in
-            self.tickItem(in: payments, for: indexPath)
+        if (payments[indexPath.row].paymentReceived == false){
+            checkAction = createContextualAction(title: "Received", colour: UIColor(rgb: 0x3498db), indexPath: indexPath, onSelectAction: { (indexPath) in
+                self.tickItem(for: indexPath)
+            })
+        } else {
+            checkAction = createContextualAction(title: "Not Received", colour: UIColor.gray, indexPath: indexPath, onSelectAction: { (indexPath) in
+                self.unTickItem(for: indexPath)
+            })
         }
-        
-        deleteAction.backgroundColor = UIColor.red
-        checkAction.backgroundColor = UIColor(rgb: 0x3498db)  //Flat UI Color "Light blue"
         
 //        deleteAction.image = UIImage(named: "Remove_50x50")
 //        deleteAction.image = UIImage(systemName: "xmark")
 //        checkAction.image = UIImage(systemName: "checkmark.circle")
         
-        return UISwipeActionsConfiguration(actions: [deleteAction, checkAction])
+        return UISwipeActionsConfiguration(actions: [deleteAction, checkAction!])
     }
     
     
-    
-    
-    private func deleteItem(in payments: [Payments], for indexPath: IndexPath) {
-//        database.delete(item: payments[indexPath.row])
-//        payments.remove(at: indexPath.row)
-//        tableView.deleteRows(at: [indexPath], with: .automatic)
-    }
-    
-    private func tickItem(in payments: [Payments], for indexPath: IndexPath) {
+    private func createContextualAction(title: String, colour: UIColor, indexPath: IndexPath, onSelectAction: @escaping (IndexPath) -> ()) -> UIContextualAction {
+        let action = UIContextualAction(style: .normal, title: title) {  (action, view, nil) in
+            onSelectAction(indexPath)
+        }
+        action.backgroundColor = colour
         
+        return action
+    }
+    
+    
+    
+    private func deleteItem(for indexPath: IndexPath) {
+        swipeActionDelegate?.onSwipeClicked(swipeCommand: .Remove, indexPath: indexPath)
+    }
+    
+    private func tickItem(for indexPath: IndexPath) {
+        swipeActionDelegate?.onSwipeClicked(swipeCommand: .Tick, indexPath: indexPath)
+    }
+    private func unTickItem(for indexPath: IndexPath) {
+        swipeActionDelegate?.onSwipeClicked(swipeCommand: .Untick, indexPath: indexPath)
     }
 }

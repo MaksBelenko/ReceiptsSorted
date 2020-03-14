@@ -35,3 +35,7 @@ enum SortBy {
 enum PaymentStatusSort {
     case Pending, Received, All
 }
+
+enum SwipeCommandType {
+    case Remove, Tick, Untick
+}

@@ -132,11 +132,10 @@ extension CardViewController: UIPopoverPresentationControllerDelegate, SortButto
     
     
     func changeButtonLabel(sortByOption: SortBy) {
+        
         if (self.sortByOption != sortByOption) {
             self.sortByOption = sortByOption
-            
             setButtonTitle(for: sortByOption)
-        
             payments = database.fetchSortedData(by: sortByOption, and: paymentStatusSort)
             tblView.reloadData()
         }
@@ -146,11 +145,11 @@ extension CardViewController: UIPopoverPresentationControllerDelegate, SortButto
         switch sortTitle
         {
         case .Place:
-            sortButton.setTitle( "Place", for: .normal)
+            sortButton.setTitle("Place", for: .normal)
         case .NewestDateAdded:
-            sortButton.setTitle( "Date ↓", for: .normal)
+            sortButton.setTitle("Date ↓", for: .normal)
         case .OldestDateAdded:
-            sortButton.setTitle( "Date ↑", for: .normal)
+            sortButton.setTitle("Date ↑", for: .normal)
         }
     }
 }
@@ -177,7 +176,7 @@ extension CardViewController: UISearchBarDelegate {
 
 
 //MARK: - TableView extension
-extension CardViewController: UITableViewDataSource, UITableViewDelegate {
+extension CardViewController: UITableViewDataSource, UITableViewDelegate, SwipeActionDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return payments.count
@@ -266,8 +265,30 @@ extension CardViewController: UITableViewDataSource, UITableViewDelegate {
 
 
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        
+        swipeActions.swipeActionDelegate = self
         return swipeActions.createTrailingActions(for: indexPath, in: payments)
+    }
+    
+    func onSwipeClicked(swipeCommand: SwipeCommandType, indexPath: IndexPath) {
+        switch swipeCommand
+        {
+        case .Remove:
+            database.delete(item: payments[indexPath.row])
+            payments.remove(at: indexPath.row)
+            tblView.deleteRows(at: [indexPath], with: .automatic)
+        case .Tick:
+            payments[indexPath.row].paymentReceived = true
+            database.saveContext()
+            //reload row and then data for animation
+            //tblView.reloadRows(at: [indexPath], with: .none)
+            tblView.reloadData()
+        case .Untick:
+            payments[indexPath.row].paymentReceived = false
+            database.saveContext()
+            //reload row and then data for animation
+            //tblView.reloadRows(at: [indexPath], with: .none)
+            tblView.reloadData()
+        }
     }
 
 }

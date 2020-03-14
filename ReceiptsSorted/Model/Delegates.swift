@@ -23,3 +23,7 @@ protocol PaymentDelegate {
 protocol SortButtonLabelDelegate {
     func changeButtonLabel(sortByOption: SortBy)
 }
+
+protocol SwipeActionDelegate {
+    func onSwipeClicked(swipeCommand: SwipeCommandType, indexPath: IndexPath)
+}
