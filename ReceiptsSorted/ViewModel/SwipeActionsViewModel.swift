@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SwipeActions {
+class SwipeActionsViewModel {
 
     var swipeActionDelegate: SwipeActionDelegate?
     

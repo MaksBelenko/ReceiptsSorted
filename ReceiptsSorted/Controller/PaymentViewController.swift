@@ -234,7 +234,7 @@ class PaymentViewController: UIViewController, UIGestureRecognizerDelegate {
     
     @IBAction func pressedDetectTextButton(_ sender: UIButton) {
      
-        let textRecogniser = TextRecogniser()
+        let textRecogniser = TextRecogniserViewModel()
         let text = textRecogniser.findReceiptDetails(for: passedImage!)
         amountPaidTextField.text = text
     }

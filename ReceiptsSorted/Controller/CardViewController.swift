@@ -33,7 +33,7 @@ class CardViewController: UIViewController {
     var paymentUpdateIndex = 0
     
     let dropDownMenu = SortingDropDownMenu()
-    let swipeActions = SwipeActions()
+    let swipeActions = SwipeActionsViewModel()
     
     var sortByOption: SortBy = .NewestDateAdded
     var paymentStatusSort: PaymentStatusSort = .Pending

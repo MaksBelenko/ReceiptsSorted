@@ -15,7 +15,7 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
     
     var controllerFrame: CGRect?
     var photoOutput: AVCapturePhotoOutput?
-    var cameraSession: CameraSession?
+    var cameraSession: CameraSessionViewModel?
     var image: UIImage?
     let imagePicker = UIImagePickerController()
     
@@ -30,7 +30,7 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
         self.view.frame = controllerFrame ?? CGRect(x: 0, y: 0, width: 100, height: 100)
         takePhotoButton.layer.cornerRadius = takePhotoButton.frame.size.height/2
         
-        cameraSession = CameraSession(forView: view)
+        cameraSession = CameraSessionViewModel(forView: view)
     }
     
     override func viewWillAppear(_ animated: Bool) {

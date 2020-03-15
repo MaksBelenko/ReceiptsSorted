@@ -37,7 +37,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
     var ignoreGesture: Bool = false
     
     let addButtonAnimations = AddButtonAnimations()
-    let imageCompression = ImageCompression()
+    let imageCompression = ImageCompressionViewModel()
     var cardAnimations: CardAnimations!
     
 //    var ignore = false

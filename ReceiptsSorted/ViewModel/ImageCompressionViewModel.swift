@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ImageCompression {
+class ImageCompressionViewModel {
     
     var settings = Settings()
     

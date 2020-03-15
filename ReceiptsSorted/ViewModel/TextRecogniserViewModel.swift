@@ -9,7 +9,7 @@
 import UIKit
 import Vision
 
-class TextRecogniser {
+class TextRecogniserViewModel {
     
     var textFound: String = ""
     
@@ -36,7 +36,7 @@ class TextRecogniser {
         
         
         
-    func handleDetectedText(request: VNRequest?, error: Error?) {
+    private func handleDetectedText(request: VNRequest?, error: Error?) {
         if let error = error {
             print("ERROR: \(error)")
             return
