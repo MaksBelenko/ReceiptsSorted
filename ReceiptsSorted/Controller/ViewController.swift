@@ -9,12 +9,6 @@
 import UIKit
 import CoreData
 
-var cardVisible = false
-var nextState: CardState {
-    return cardVisible ? .Collapsed : .Expanded
-}
-var fractionComplete: CGFloat = 0.0
-
 
 class ViewController: UIViewController, UINavigationControllerDelegate, UIGestureRecognizerDelegate, UIViewControllerTransitioningDelegate  {
     
@@ -22,25 +16,22 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
     @IBOutlet var imageTake: UIImageView!
     
     var visualEffectView : UIVisualEffectView!  //For blur
-    var runningAnimations = [UIViewPropertyAnimator]()
-    var animationProgressWhenInterrupted: CGFloat = 0
-    
     var cardViewController : CardViewController!
     var cardHeight: CGFloat = 0
     var cardStartPointY: CGFloat = 0
-    var lastFraction: CGFloat = 0
     
     let circularTransition = CircularTransition()
     var cameraViewController: CameraViewController!
     var addButton: UIButton!
     
-    var ignoreGesture: Bool = false
-    
     let addButtonAnimations = AddButtonAnimations()
     let imageCompression = ImageCompressionViewModel()
     var cardAnimations: CardAnimations!
     
-//    var ignore = false
+    var cardGesturesViewModel = CardGesturesViewModel()
+    
+    let emailViewModel = EmailViewModel()
+    
     
     
     
@@ -56,9 +47,14 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
         
         initialiseCircle()
         
-//        setupAddButton(withSize: self.view.frame.size.width / 4.5)
         setupCard()
         setupAddButton(withSize: self.view.frame.size.width / 4.5)
+        
+        
+        cardGesturesViewModel.MainView = self.view
+        cardGesturesViewModel.cardViewController = cardViewController
+        cardGesturesViewModel.visualEffectView = visualEffectView
+        cardGesturesViewModel.addButton = addButton
     }
 
     
@@ -73,12 +69,10 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
         let buttonPositionY = self.view.frame.size.height - buttonSize - self.view.frame.size.height/18
         addButton.frame = CGRect(x: buttonPositionX, y: buttonPositionY, width: buttonSize, height: buttonSize)
         addButton.backgroundColor = UIColor(rgb: 0xEDB200)  //orange Flat UI
-        
         addButton.setTitle("+", for: .normal)
         addButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 70)
         addButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 7, right: 0)
         addButton.setTitleColor(.white, for: .normal)
-        
         addButton.addTarget(self, action: #selector(ViewController.addButtonPressed), for: UIControl.Event.touchUpInside)
         addButtonAnimations.startAnimatingPressActions(for: addButton)
         
@@ -147,10 +141,6 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
         cardViewController.view.roundCorners(corners: [.topLeft, .topRight], radius: 30)
         
         
-//        cardAnimations = CardAnimations(mainViewHeight: self.view.frame.size.height, cardViewController: cardViewController, addButton: addButton, visualEffectView: visualEffectView)
-        
-        
-        
         // Create gesture recognisers
         let tapGestureRecogniser = UITapGestureRecognizer(target: self, action: #selector(ViewController.handleCardTap(recogniser:)))
         
@@ -160,7 +150,6 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
         
         // Add gestures for TableView in the CardViewController.xib
         cardViewController.tblView.addGestureRecognizer(setPanGestureRecognizer())
-        
     }
     
     
@@ -175,13 +164,13 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
     }
     
     
+    
     //MARK: - Handling Gestures
 
     //Deactivates PanGesture for TableView if the movement is horizontal
     func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
         if let panGestureRecognizer = gestureRecognizer as? UIPanGestureRecognizer {
             let translation = panGestureRecognizer.translation(in: self.cardViewController.tblView)
-//            print("x = \(translation.x)      y = \(translation.y)")
             if (abs(translation.x) < abs(translation.y)) {
                 return true
             }
@@ -207,194 +196,16 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
     
     
     
-    
     @objc func handleCardTap(recogniser: UITapGestureRecognizer) {
-        animateTransitionIfNeeded(with: nextState, for: 0.7, withDampingRatio: 0.8)
+        cardGesturesViewModel.animateTransitionIfNeeded(with: nextState, for: 0.7, withDampingRatio: 0.8)
     }
 
 
      @objc func handleCardPan (recogniser: UIPanGestureRecognizer) {
-
-            switch recogniser.state{
-            case .began:
-//                let translation = recogniser.translation(in: recogniser.view)
-//                print("translation.y = \(translation.y)")
-//                if ((nextState == .Expanded && translation.y < 0) || (nextState == .Collapsed && translation.y > 0) ) {
-//                    ignore = true
-//                } else {
-//                    ignore = false
-//                }
-                
-//                if (ignore){
-                    startInteractiveTransition(forState: nextState, duration: 0.6)
-//                }
-
-            case .changed:
-//                if (ignore){
-                    let translation = recogniser.translation(in: recogniser.view)
-                    fractionComplete = translation.y / (cardStartPointY - self.view.frame.size.height + cardHeight - cardViewController.searchAndSortView.frame.size.height)
-                    fractionComplete = cardVisible ? fractionComplete : -fractionComplete
-
-                    lastFraction = fractionComplete
-                    updateInteractiveTransition(fractionCompleted: fractionComplete)
-//                }
-
-            case .ended:
-//                if (ignore){
-                if (lastFraction < 0.1) {
-                    stopAndGoToStartPositionInteractiveTransition()
-                } else {
-                    continueInteractiveTransition()
-                }
-//                }
-                
-                //fractionComplete = 1
-
-            default:
-                break
-            }
-
-        }
-
-
-
-    //MARK: - Interactions and Animations
-
-    /**
-    Starts an interactive Card transition
-
-    - Parameter state: The card state which is either "Expanded" or "Collapsed".
-    - Parameter duration: Duration of the animation.
-    */
-    func startInteractiveTransition (forState state: CardState, duration: TimeInterval) {
-        if runningAnimations.isEmpty {
-            animateTransitionIfNeeded(with: state, for: duration, withDampingRatio: 0.8)
-        }
-
-        for animator in runningAnimations {
-            animator.pauseAnimation()
-            animationProgressWhenInterrupted = animator.fractionComplete
-        }
+        cardGesturesViewModel.handleCardPan(recogniser: recogniser)
     }
 
 
-    /**
-    Updates animators' fraction of the animation that is completed
-
-    - Parameter fractionCompleted: fraction of the animation calculated beforehand.
-    */
-    func updateInteractiveTransition (fractionCompleted: CGFloat) {
-       for animator in runningAnimations {
-           animator.fractionComplete = fractionCompleted + animationProgressWhenInterrupted
-       }
-
-    }
-
-
-    /**
-    Continues all remaining animations
-    */
-    func continueInteractiveTransition() {
-        for animator in runningAnimations {
-            animator.continueAnimation(withTimingParameters: nil, durationFactor: 0)
-        }
-    }
-
-    /**
-    Stops animation and goes to start of the animation
-    */
-    func stopAndGoToStartPositionInteractiveTransition() {
-        for animator in runningAnimations {
-            animator.stopAnimation(false)
-            animator.finishAnimation(at: .start)
-        }
-        self.runningAnimations.removeAll()
-
-        cardVisible = !cardVisible
-    }
-
-
-
-    /**
-    Creates array of animations and starts them
-
-    - Parameter state: The card state which is either ".Expanded" or ".Collapsed".
-    - Parameter duration: Duration of the animation.
-    */
-    func animateTransitionIfNeeded (with state: CardState, for duration: TimeInterval, withDampingRatio dumpingRatio: CGFloat) {
-        
-        /* Size animation */
-        let frameAnimator = UIViewPropertyAnimator(duration: duration, dampingRatio: dumpingRatio) {
-            switch state {
-            case .Expanded:
-                self.cardViewController.view.frame.origin.y = self.view.frame.height - self.cardHeight
-
-            case .Collapsed:
-                self.cardViewController.view.frame.origin.y = self.cardStartPointY
-            }
-        }
-
-        frameAnimator.startAnimation()
-        runningAnimations.append(frameAnimator)
-
-        
-        frameAnimator.addCompletion { _ in
-            cardVisible = !cardVisible
-            self.runningAnimations.removeAll()
-        }
-
-        
-        /* Blur animation*/
-        let blurAnimator = UIViewPropertyAnimator(duration: duration, dampingRatio: dumpingRatio) {
-            switch state {
-            case .Expanded:
-                self.visualEffectView.effect = UIBlurEffect(style: .dark)
-            case .Collapsed:
-                self.visualEffectView.effect = nil
-            }
-        }
-
-        blurAnimator.startAnimation()
-        runningAnimations.append(blurAnimator)
-
-
-        /* Add Button Opacity animation*/
-        let buttonOpacityAnimator = UIViewPropertyAnimator(duration: duration, dampingRatio: dumpingRatio) {
-            switch state {
-            case .Expanded:
-                self.addButton.alpha = 0
-            case .Collapsed:
-                self.addButton.alpha = 1
-            }
-        }
-
-        buttonOpacityAnimator.startAnimation()
-        runningAnimations.append(buttonOpacityAnimator)
-        
-        
-        switch state {
-        case .Expanded:
-//            NSLayoutConstraint.deactivate([self.cardViewController.searchAndSortView.topAnchor.constraint(equalTo: NSLayoutAnchor<NSLayoutYAxisAnchor>)])
-            searchTopAnchor?.isActive = false
-            searchTopAnchor = self.cardViewController.searchAndSortView.topAnchor.constraint(equalTo: self.cardViewController.view.topAnchor, constant: 32)
-            searchTopAnchor?.isActive = true
-        case .Collapsed:
-            searchTopAnchor?.isActive = false
-            searchTopAnchor = self.cardViewController.searchAndSortView.topAnchor.constraint(equalTo: self.cardViewController.view.topAnchor, constant: -11)
-            searchTopAnchor?.isActive = true
-        }
-        
-        
-        /* Top Search and Sort bar hide/unhide */
-        let searchViewAnimator = UIViewPropertyAnimator(duration: duration, dampingRatio: dumpingRatio) {
-            self.cardViewController.view.layoutIfNeeded()
-        }
-        
-
-        searchViewAnimator.startAnimation()
-        runningAnimations.append(searchViewAnimator)
-
-    }
     
     
     //MARK: - Initialisation of Top graphics
@@ -416,6 +227,23 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
         view.layer.addSublayer(lightGreenBar)
         view.layer.addSublayer(lightRedBar)
     }
+    
+    
+    
+    @IBAction func testButtonPressed(_ sender: UIButton) {
+//        let circularPath = UIBezierPath(arcCenter: CGPoint(x: view.frame.size.width/2, y: view.frame.size.height/4), radius: view.frame.size.width * 4/11, startAngle: CGFloat.pi, endAngle: CGFloat.pi*2, clockwise: true)
+//        UIView.animate(withDuration: 0.5) {
+//            self.redCircle.path = circularPath.cgPath
+//        }
+    }
+    
+    
+    @IBAction func emailButtonPressed(_ sender: UIButton) {
+//        let emailViewModel = EmailViewModel()
+        let emailViewController = emailViewModel.sendMail()
+        self.present(emailViewController, animated: true, completion: nil)
+    }
+    
 }
 
 

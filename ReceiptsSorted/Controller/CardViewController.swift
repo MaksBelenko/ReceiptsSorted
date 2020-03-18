@@ -131,8 +131,8 @@ extension CardViewController: UIPopoverPresentationControllerDelegate, SortButto
     }
     
     
+    //Delegate method
     func changeButtonLabel(sortByOption: SortBy) {
-        
         if (self.sortByOption != sortByOption) {
             self.sortByOption = sortByOption
             setButtonTitle(for: sortByOption)
@@ -140,6 +140,7 @@ extension CardViewController: UIPopoverPresentationControllerDelegate, SortButto
             tblView.reloadData()
         }
     }
+    
     
     func setButtonTitle(for sortTitle: SortBy) {
         switch sortTitle
@@ -244,24 +245,24 @@ extension CardViewController: UITableViewDataSource, UITableViewDelegate, SwipeA
         return true
     }
 
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-
-        if (editingStyle == .delete) {
-            if (payments[indexPath.row].paymentReceived == false) {
-                payments[indexPath.row].paymentReceived = true
-                database.saveContext()
-                //reload row and then data for animation
-                tableView.reloadRows(at: [indexPath], with: .none)
-                tableView.reloadData()
-            } else {
-                database.delete(item: payments[indexPath.row])
-                payments.remove(at: indexPath.row)
-                tableView.deleteRows(at: [indexPath], with: .automatic)
-            }
-
-
-        }
-    }
+//    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+//
+//        if (editingStyle == .delete) {
+//            if (payments[indexPath.row].paymentReceived == false) {
+//                payments[indexPath.row].paymentReceived = true
+//                database.saveContext()
+//                //reload row and then data for animation
+//                tableView.reloadRows(at: [indexPath], with: .none)
+//                tableView.reloadData()
+//            } else {
+//                database.delete(item: payments[indexPath.row])
+//                payments.remove(at: indexPath.row)
+//                tableView.deleteRows(at: [indexPath], with: .automatic)
+//            }
+//
+//
+//        }
+//    }
 
 
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
@@ -279,12 +280,14 @@ extension CardViewController: UITableViewDataSource, UITableViewDelegate, SwipeA
         case .Tick:
             payments[indexPath.row].paymentReceived = true
             database.saveContext()
+            payments = database.fetchSortedData(by: sortByOption, and: paymentStatusSort)
             //reload row and then data for animation
             //tblView.reloadRows(at: [indexPath], with: .none)
             tblView.reloadData()
         case .Untick:
             payments[indexPath.row].paymentReceived = false
             database.saveContext()
+            payments = database.fetchSortedData(by: sortByOption, and: paymentStatusSort)
             //reload row and then data for animation
             //tblView.reloadRows(at: [indexPath], with: .none)
             tblView.reloadData()
@@ -308,4 +311,6 @@ extension CardViewController: PaymentDelegate {
         tblView.reloadData()
     }
 }
+
+
 

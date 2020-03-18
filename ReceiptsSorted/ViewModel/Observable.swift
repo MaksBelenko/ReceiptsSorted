@@ -10,17 +10,27 @@ import Foundation
 
 class Observable<T> {
     
+    typealias Listener = (T) -> Void
+    var listener: Listener?
+    
     var value: T {
         didSet {
-            DispatchQueue.main.async {
-                self.valueChanged?(self.value)
-            }
+            listener?(value)
         }
     }
+
+    init(_ value: T) {
+        self.value = value
+    }
     
-    var valueChanged: ((T) -> Void)?
-    
-    init(_ v: T) {
-      value = v
+    func bind(listener: Listener?) {
+        self.listener = listener
+        listener?(value)
     }
 }
+
+/*
+ viewModel.variable.bind { [unowned self] in
+    self.Label.text = $0
+ }
+ */
