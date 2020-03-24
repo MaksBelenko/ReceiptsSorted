@@ -11,6 +11,8 @@ import UIKit
 class PaymentTableViewCell: UITableViewCell {
     
     var receivedPayment = true
+    var tickColor = UIColor(rgb: 0x3D556D)
+    
     
     @IBOutlet weak var amountPaidText: UILabel!
     @IBOutlet weak var dateText: UILabel!
@@ -23,7 +25,7 @@ class PaymentTableViewCell: UITableViewCell {
         
         self.accessoryType = .disclosureIndicator
         
-        tickLabel.layer.borderColor = UIColor.gray.cgColor
+        tickLabel.layer.borderColor = tickColor.cgColor
         tickLabel.layer.borderWidth = 1
         tickLabel.layer.cornerRadius = tickLabel.frame.size.height/2
         tickLabel.layer.masksToBounds = true
@@ -41,6 +43,7 @@ class PaymentTableViewCell: UITableViewCell {
     
     
     
+    
     func setCell(for payment: Payments) {
         
         let p = payment
@@ -52,10 +55,10 @@ class PaymentTableViewCell: UITableViewCell {
         
         
         if (p.paymentReceived == true) {
-            self.tickLabel.backgroundColor = UIColor(rgb: 0x3498db).withAlphaComponent(1)
+            self.tickLabel.backgroundColor = tickColor.withAlphaComponent(1)
             self.tickLabel.text = "✓"
         } else {
-            self.tickLabel.backgroundColor = UIColor(rgb: 0x3498db).withAlphaComponent(0)
+            self.tickLabel.backgroundColor = tickColor.withAlphaComponent(0)
             self.tickLabel.text = ""
         }
     }

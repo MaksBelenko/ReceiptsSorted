@@ -58,6 +58,17 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
     }
 
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        navigationController?.setNavigationBarHidden(true, animated: animated)
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: animated)
+    }
+    
     
     
     //MARK: - Setup Button
@@ -265,7 +276,7 @@ extension ViewController: PaymentDelegate {
         newPayment.paymentReceived = false
         
         
-        cardViewController.payments.insert(newPayment, at: 0)
+        cardViewController.showingPayments.insert(newPayment, at: 0)
         
         cardViewController.database.saveContext()
         

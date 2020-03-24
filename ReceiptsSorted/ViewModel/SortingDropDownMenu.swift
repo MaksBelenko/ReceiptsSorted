@@ -13,9 +13,8 @@ class SortingDropDownMenu: NSObject, UITableViewDelegate, UITableViewDataSource 
     
     private lazy var dropDownOptions: [String] = ["Place", "Date added (oldest)", "Date added (newest)"]
     
-    
     let tableViewController = UITableViewController()
-    var button = UIButton()
+    private var button = UIButton()
     var sortButtonLabelDelegate: SortButtonLabelDelegate?
     
     
