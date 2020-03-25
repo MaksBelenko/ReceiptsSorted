@@ -71,10 +71,10 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
         amountAnimation.animateCircle(to: totalAmount)
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        navigationController?.setNavigationBarHidden(false, animated: animated)
-    }
+//    override func viewWillDisappear(_ animated: Bool) {
+//        super.viewWillDisappear(animated)
+//        navigationController?.setNavigationBarHidden(false, animated: animated)
+//    }
     
 
     

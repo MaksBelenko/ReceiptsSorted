@@ -11,7 +11,7 @@ import UIKit
 class PaymentTableViewCell: UITableViewCell {
     
     var receivedPayment = true
-    var tickColor = UIColor(rgb: 0x3D556D)
+    var tickColor = UIColor(rgb: 0x425C76)
     
     
     @IBOutlet weak var amountPaidText: UILabel!

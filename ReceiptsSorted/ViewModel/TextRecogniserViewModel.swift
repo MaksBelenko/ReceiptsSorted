@@ -12,8 +12,9 @@ import Vision
 class TextRecogniserViewModel {
     
     var textFound: String = ""
+    var priceFound: Float!
     
-    func findReceiptDetails (for passedImage: UIImage) -> String {
+    func findReceiptDetails (for passedImage: UIImage) -> Float {
         let request = VNRecognizeTextRequest(completionHandler: self.handleDetectedText)
         request.recognitionLevel = .accurate
         //request.recognitionLanguages = ["en_GB"]
@@ -31,7 +32,7 @@ class TextRecogniserViewModel {
         try? handler.perform(requests)
         //}
         
-        return textFound
+        return priceFound
     }
         
         
@@ -64,7 +65,7 @@ class TextRecogniserViewModel {
         for word in allWords {
             if word.hasPrefix("£") {
                 print("FOUND: \(word) ")
-                textFound = word
+                priceFound = word.components(separatedBy: "£")[1].floatValue
             }
         }
     }

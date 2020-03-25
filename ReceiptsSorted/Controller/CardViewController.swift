@@ -251,32 +251,14 @@ extension CardViewController: UITableViewDataSource, UITableViewDelegate, SwipeA
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
-
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-
-        print("Here")
-        
-//        if (editingStyle == .delete) {
-//            if (showingPayments[indexPath.row].paymentReceived == false) {
-//                showingPayments[indexPath.row].paymentReceived = true
-//                database.saveContext()
-//                //reload row and then data for animation
-//                tableView.reloadRows(at: [indexPath], with: .none)
-//                tableView.reloadData()
-//            } else {
-//                database.delete(item: showingPayments[indexPath.row])
-//                showingPayments.remove(at: indexPath.row)
-//                tableView.deleteRows(at: [indexPath], with: .automatic)
-//            }
-//        }
-    }
-
+    
 
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         swipeActions.swipeActionDelegate = self
         tblView.setEditing(false, animated: true)
         return swipeActions.createTrailingActions(for: indexPath, in: showingPayments)
     }
+    
     
     func onSwipeClicked(swipeCommand: SwipeCommandType, indexPath: IndexPath) {
         switch swipeCommand

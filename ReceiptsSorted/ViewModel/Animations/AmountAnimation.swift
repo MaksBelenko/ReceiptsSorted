@@ -45,13 +45,15 @@ class AmountAnimation {
     }
     
     
-    
+    /**
+     Creates animation for the circle graphics
+     */
     func createCircleAnimation() {
         let circleAnimation = CABasicAnimation(keyPath: "strokeEnd")
         circleAnimation.fromValue = overallAmount.value/1000
         circleAnimation.toValue = self.endValue/1000
         circleAnimation.duration = animationDuration
-        /*Keep animation after completion*/
+        /* Keep animation after completion */
         circleAnimation.fillMode = .forwards
         circleAnimation.isRemovedOnCompletion = false
         animationCircle.add(circleAnimation, forKey: "circleAnim")

@@ -235,8 +235,8 @@ class PaymentViewController: UIViewController, UIGestureRecognizerDelegate {
     @IBAction func pressedDetectTextButton(_ sender: UIButton) {
      
         let textRecogniser = TextRecogniserViewModel()
-        let text = textRecogniser.findReceiptDetails(for: passedImage!)
-        amountPaidTextField.text = text
+        amountPaid = textRecogniser.findReceiptDetails(for: passedImage!)
+        amountPaidTextField.text = "£\(amountPaid.ToString(decimals: 2))"
     }
     
 }
@@ -252,6 +252,8 @@ extension PaymentViewController: PopupDelegate {
         amountPaid = value
         amountPaidTextField.text = "£" + value.ToString(decimals: 2) //"£\(value)"
     }
+    
+    
     func setPlaceValue(value: String) {
         place = value
         placeOfPurchaseTextField.text = value
