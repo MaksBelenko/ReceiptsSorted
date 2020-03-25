@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		36AF7BF5421B96747FBC19F6 /* libPods-ReceiptsSorted.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F881D179E0F0BF7791163B48 /* libPods-ReceiptsSorted.a */; };
+		B50BAADB242B7DC200EAFECA /* AmountAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50BAADA242B7DC200EAFECA /* AmountAnimation.swift */; };
 		B526B4E2241B09A10031F629 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B526B4E1241B09A10031F629 /* Observable.swift */; };
 		B5377C0023A82E280010B144 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5377BFF23A82E280010B144 /* AppDelegate.swift */; };
 		B5377C0223A82E280010B144 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5377C0123A82E280010B144 /* SceneDelegate.swift */; };
@@ -50,6 +51,7 @@
 
 /* Begin PBXFileReference section */
 		0684F8876FBD25DAACD5A6E3 /* Pods-ReceiptsSorted.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReceiptsSorted.debug.xcconfig"; path = "Target Support Files/Pods-ReceiptsSorted/Pods-ReceiptsSorted.debug.xcconfig"; sourceTree = "<group>"; };
+		B50BAADA242B7DC200EAFECA /* AmountAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmountAnimation.swift; sourceTree = "<group>"; };
 		B526B4E1241B09A10031F629 /* Observable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
 		B5377BFC23A82E280010B144 /* ReceiptsSorted.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ReceiptsSorted.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B5377BFF23A82E280010B144 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -159,6 +161,7 @@
 		B54967A924105B4B00684A2F /* Animations */ = {
 			isa = PBXGroup;
 			children = (
+				B50BAADA242B7DC200EAFECA /* AmountAnimation.swift */,
 				B564470A241027EB00B08AD3 /* AddButtonAnimations.swift */,
 				B54967AA24105E1600684A2F /* CardAnimations.swift */,
 				B573FAA723B98061005473D2 /* CircularTransition.swift */,
@@ -373,6 +376,7 @@
 				B5377C0023A82E280010B144 /* AppDelegate.swift in Sources */,
 				B59E3E2323B44DE80017D474 /* CardViewController.swift in Sources */,
 				B59E3E2C23B53FEF0017D474 /* Enums.swift in Sources */,
+				B50BAADB242B7DC200EAFECA /* AmountAnimation.swift in Sources */,
 				B564470B241027EB00B08AD3 /* AddButtonAnimations.swift in Sources */,
 				B573FA9A23B81EC8005473D2 /* PaymentViewController.swift in Sources */,
 				B5AD17DD240464CB00BB3069 /* MainGraphicsViewModel.swift in Sources */,

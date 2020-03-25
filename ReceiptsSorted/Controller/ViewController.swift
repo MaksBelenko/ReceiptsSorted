@@ -13,7 +13,7 @@ import CoreData
 class ViewController: UIViewController, UINavigationControllerDelegate, UIGestureRecognizerDelegate, UIViewControllerTransitioningDelegate  {
     
     //MARK: - Fields
-    @IBOutlet var imageTake: UIImageView!
+    @IBOutlet weak var amountSum: UILabel!
     
     var visualEffectView : UIVisualEffectView!  //For blur
     var cardViewController : CardViewController!
@@ -29,8 +29,11 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
     var cardAnimations: CardAnimations!
     
     var cardGesturesViewModel = CardGesturesViewModel()
-    
     let emailViewModel = EmailViewModel()
+    
+    var amountAnimation: AmountAnimation!
+    
+    
     
     
     
@@ -62,6 +65,10 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
         super.viewWillAppear(animated)
         
         navigationController?.setNavigationBarHidden(true, animated: animated)
+        
+        let totalAmount = getTotalUnpaid(for: cardViewController.showingPayments)
+        
+        amountAnimation.animateCircle(to: totalAmount)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -69,7 +76,18 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
         navigationController?.setNavigationBarHidden(false, animated: animated)
     }
     
+
     
+    func getTotalUnpaid(for payments: [Payments]) -> Float {
+        var totalAmount: Float = 0
+        for payment in payments {
+            if (payment.paymentReceived == false){
+                 totalAmount += payment.amountPaid
+            }
+        }
+        
+        return totalAmount
+    }
     
     //MARK: - Setup Button
     func setupAddButton(withSize buttonSize: CGFloat) {
@@ -225,7 +243,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
         let mainGraphics = MainGraphicsViewModel(frameWidth: view.frame.size.width, frameHeight: view.frame.size.height)
         
         let whiteCircle = mainGraphics.createCircleLine(from: CGFloat.pi*3/4, to: CGFloat.pi*1/4, ofColour: UIColor.white.cgColor)
-        let redCircle = mainGraphics.createCircleLine(from: CGFloat.pi*3/4, to: CGFloat.pi, ofColour: UIColor(rgb: 0xC24D35).cgColor)
+        let redCircle = mainGraphics.createCircleLine(from: CGFloat.pi*3/4, to: CGFloat.pi*1/4, ofColour: UIColor(rgb: 0xC24D35).cgColor)
         
         let lightGreenBar = mainGraphics.createHorizontalBar(percentage: 1, colour: UIColor(rgb: 0xC0CEB7))
         let lightRedBar = mainGraphics.createHorizontalBar(percentage: 0.7, colour: UIColor(rgb: 0xCA8D8B))
@@ -237,20 +255,27 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
         }
         view.layer.addSublayer(lightGreenBar)
         view.layer.addSublayer(lightRedBar)
+        
+        
+        
+        amountAnimation = AmountAnimation(animationCircle: redCircle)
+        
+        amountAnimation.overallAmount.bind { [weak self] in
+            self?.amountSum.text = "-£\($0.ToString(decimals: 2))"
+        }
     }
     
     
     
     @IBAction func testButtonPressed(_ sender: UIButton) {
-//        let circularPath = UIBezierPath(arcCenter: CGPoint(x: view.frame.size.width/2, y: view.frame.size.height/4), radius: view.frame.size.width * 4/11, startAngle: CGFloat.pi, endAngle: CGFloat.pi*2, clockwise: true)
-//        UIView.animate(withDuration: 0.5) {
-//            self.redCircle.path = circularPath.cgPath
-//        }
+        amountAnimation.animateCircle(from: 300, to: 800)
     }
+    
+        
     
     
     @IBAction func emailButtonPressed(_ sender: UIButton) {
-//        let emailViewModel = EmailViewModel()
+        
         let emailViewController = emailViewModel.sendMail()
         self.present(emailViewController, animated: true, completion: nil)
     }
@@ -274,6 +299,10 @@ extension ViewController: PaymentDelegate {
         newPayment.date = date
         newPayment.receiptPhoto = imageCompression.compressImage(for: receiptImage)
         newPayment.paymentReceived = false
+        
+        
+        let totalBefore = getTotalUnpaid(for: cardViewController.showingPayments)
+        amountAnimation.animateCircle(from: totalBefore, to: totalBefore + newPayment.amountPaid)
         
         
         cardViewController.showingPayments.insert(newPayment, at: 0)

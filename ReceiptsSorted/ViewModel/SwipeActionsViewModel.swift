@@ -47,8 +47,8 @@ class SwipeActionsViewModel {
     private func createContextualAction(title: String, colour: UIColor, indexPath: IndexPath, onSelectAction: @escaping (IndexPath) -> ()) -> UIContextualAction {
         
         let action = UIContextualAction(style: .normal, title: title) {  (action, view, complete) in
-            complete(true)
             onSelectAction(indexPath)
+            complete(true)
         }
         action.backgroundColor = colour
         
