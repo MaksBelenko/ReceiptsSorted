@@ -19,7 +19,6 @@
 		B5377C0923A82E2A0010B144 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B5377C0823A82E2A0010B144 /* Assets.xcassets */; };
 		B5377C0C23A82E2A0010B144 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B5377C0A23A82E2A0010B144 /* LaunchScreen.storyboard */; };
 		B54967A824104E3500684A2F /* ImageCompressionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54967A724104E3500684A2F /* ImageCompressionViewModel.swift */; };
-		B54967AB24105E1600684A2F /* CardAnimations.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54967AA24105E1600684A2F /* CardAnimations.swift */; };
 		B54967AD241167C000684A2F /* SortingDropDownMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54967AC241167C000684A2F /* SortingDropDownMenu.swift */; };
 		B564470B241027EB00B08AD3 /* AddButtonAnimations.swift in Sources */ = {isa = PBXBuildFile; fileRef = B564470A241027EB00B08AD3 /* AddButtonAnimations.swift */; };
 		B573FA9A23B81EC8005473D2 /* PaymentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B573FA9923B81EC8005473D2 /* PaymentViewController.swift */; };
@@ -67,7 +66,6 @@
 		B5377C0D23A82E2A0010B144 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B5470F2B20BCB16126F229BA /* Pods-ReceiptsSorted.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReceiptsSorted.release.xcconfig"; path = "Target Support Files/Pods-ReceiptsSorted/Pods-ReceiptsSorted.release.xcconfig"; sourceTree = "<group>"; };
 		B54967A724104E3500684A2F /* ImageCompressionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCompressionViewModel.swift; sourceTree = "<group>"; };
-		B54967AA24105E1600684A2F /* CardAnimations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardAnimations.swift; sourceTree = "<group>"; };
 		B54967AC241167C000684A2F /* SortingDropDownMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortingDropDownMenu.swift; sourceTree = "<group>"; };
 		B564470A241027EB00B08AD3 /* AddButtonAnimations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddButtonAnimations.swift; sourceTree = "<group>"; };
 		B573FA9923B81EC8005473D2 /* PaymentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentViewController.swift; sourceTree = "<group>"; };
@@ -167,7 +165,7 @@
 			children = (
 				B50BAADA242B7DC200EAFECA /* AmountAnimation.swift */,
 				B564470A241027EB00B08AD3 /* AddButtonAnimations.swift */,
-				B54967AA24105E1600684A2F /* CardAnimations.swift */,
+				B5AD17E22404757300BB3069 /* CardGesturesViewModel.swift */,
 				B573FAA723B98061005473D2 /* CircularTransition.swift */,
 			);
 			path = Animations;
@@ -219,7 +217,6 @@
 				B526B4E1241B09A10031F629 /* Observable.swift */,
 				B54967A924105B4B00684A2F /* Animations */,
 				B5AD17DC240464CB00BB3069 /* MainGraphicsViewModel.swift */,
-				B5AD17E22404757300BB3069 /* CardGesturesViewModel.swift */,
 				B573FAAD23BA815F005473D2 /* CameraSessionViewModel.swift */,
 				B5B6757F23CF70F400291D31 /* TextRecogniserViewModel.swift */,
 				B54967AC241167C000684A2F /* SortingDropDownMenu.swift */,
@@ -398,7 +395,6 @@
 				B5B6758223CF724000291D31 /* ImageManipulator.swift in Sources */,
 				B54967AD241167C000684A2F /* SortingDropDownMenu.swift in Sources */,
 				B5F54E85241E783C0016DCED /* UIViewExtensions.swift in Sources */,
-				B54967AB24105E1600684A2F /* CardAnimations.swift in Sources */,
 				B526B4E2241B09A10031F629 /* Observable.swift in Sources */,
 				B50BAADD242BB8E000EAFECA /* SettingsViewController.swift in Sources */,
 				B5AD17E32404757300BB3069 /* CardGesturesViewModel.swift in Sources */,

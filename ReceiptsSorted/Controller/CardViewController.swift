@@ -92,12 +92,16 @@ class CardViewController: UIViewController {
 //        print("fr = \(fractionComplete)")
 //        print("vel = \(scrollView.panGestureRecognizer.velocity(in: self.tblView).y)")
         if ((fractionComplete > 0 && fractionComplete < 1) || (nextState == .Expanded && fractionComplete < 1)) {
-            print("fractionComplete = \(fractionComplete)")
+//            print("fractionComplete = \(fractionComplete)")
             tblView.contentOffset.y = 0
+//            print("Setting table view to 0")
         }
     }
 
     
+    
+    
+    //MARK: - Segmented Control
     
     @IBAction func segmentedControlValueChanged(_ sender: UISegmentedControl) {
         switch sender.selectedSegmentIndex {

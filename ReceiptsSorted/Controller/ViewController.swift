@@ -26,7 +26,6 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
     
     let addButtonAnimations = AddButtonAnimations()
     let imageCompression = ImageCompressionViewModel()
-    var cardAnimations: CardAnimations!
     
     var cardGesturesViewModel = CardGesturesViewModel()
     let emailViewModel = EmailViewModel()
@@ -226,7 +225,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
     
     
     @objc func handleCardTap(recogniser: UITapGestureRecognizer) {
-        cardGesturesViewModel.animateTransitionIfNeeded(with: nextState, for: 0.7, withDampingRatio: 0.8)
+        cardGesturesViewModel.animateTransitionIfNeeded(with: nextState, for: 0.5, withDampingRatio: 0.8)
     }
 
 
@@ -261,7 +260,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
         amountAnimation = AmountAnimation(animationCircle: redCircle)
         
         amountAnimation.overallAmount.bind { [weak self] in
-            self?.amountSum.text = "-£\($0.ToString(decimals: 2))"
+            self?.amountSum.text = "-£\($0.ToString(decimals: 2))" 
         }
     }
     
