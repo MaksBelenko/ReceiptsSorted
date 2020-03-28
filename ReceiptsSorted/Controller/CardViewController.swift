@@ -15,30 +15,30 @@ class CardViewController: UIViewController {
     
     @IBOutlet weak var SortSegmentedControl: UISegmentedControl!
     @IBOutlet weak var searchAndSortView: UIView!
-    
     @IBOutlet weak var sortButton: UIButton!
-    
     @IBOutlet weak var searchBar: UISearchBar!
-    
     @IBOutlet weak var handleImageView: UIImageView!
     @IBOutlet weak var handleArea: UIView!
     @IBOutlet weak var tblView: UITableView!
+    
     
     var cardHeight: CGFloat = 0
     var tableRowsHeight: CGFloat = 60
 
     var showingPayments: [Payments] = []
-    var database = Database()
-
+    var sections: [PaymentTableSection] = []
     var paymentUpdateIndex = 0
-    
-    let dropDownMenu = SortingDropDownMenu()
-    let swipeActions = SwipeActionsViewModel()
     
     var sortByOption: SortBy = .NewestDateAdded
     var paymentStatusSort: PaymentStatusSort = .Pending
     
-    var names: [String] = ["March", "April"]
+    var database = Database()
+    let dropDownMenu = SortingDropDownMenu()
+    let swipeActions = SwipeActionsViewModel()
+    var cardTableViewModel = CardTableViewModel()
+    
+
+    
     
     
     
@@ -72,7 +72,9 @@ class CardViewController: UIViewController {
         
         // Set TableView height
         tblView.frame.size.height = cardHeight * 3/5
+        
     }
+    
     
     
     func setupSearchBar() {
@@ -89,12 +91,12 @@ class CardViewController: UIViewController {
     //MARK: - TableVew Scrolling
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-//        print("fr = \(fractionComplete)")
-//        print("vel = \(scrollView.panGestureRecognizer.velocity(in: self.tblView).y)")
         if ((fractionComplete > 0 && fractionComplete < 1) || (nextState == .Expanded && fractionComplete < 1)) {
-//            print("fractionComplete = \(fractionComplete)")
             tblView.contentOffset.y = 0
-//            print("Setting table view to 0")
+        }
+        
+        if (searchBar.isFirstResponder){
+            searchBar.resignFirstResponder()
         }
     }
 
@@ -117,6 +119,8 @@ class CardViewController: UIViewController {
         
         showingPayments = database.fetchSortedData(by: sortByOption, and: paymentStatusSort)
         tblView.reloadData()
+        
+        
     }
     
     
@@ -189,22 +193,14 @@ extension CardViewController: UISearchBarDelegate {
 
 //MARK: - TableView extension
 extension CardViewController: UITableViewDataSource, UITableViewDelegate, SwipeActionDelegate {
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return showingPayments.count
-    }
-    
+
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         let cell = tableView.dequeueReusableCell(withIdentifier: "paymentCell", for: indexPath) as! PaymentTableViewCell
-        cell.setCell(for: showingPayments[indexPath.row])
+        
+        cell.setCell(for: sections[indexPath.section].payments[indexPath.row])
         return cell
     }
-    
-    
-    
-    
     
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -236,18 +232,30 @@ extension CardViewController: UITableViewDataSource, UITableViewDelegate, SwipeA
     
     //MARK: - Sections
 
-//    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-//        return names[section]
-//    }
-//
+    func numberOfSections(in tableView: UITableView) -> Int {
+        sections = cardTableViewModel.getSections(for: showingPayments, sortedBy: sortByOption)
+        return sections.count
+    }
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return sections[section].payments.count
+    }
+    
+    
+    // Creates section index names on the right of tableView
 //    func sectionIndexTitles(for tableView: UITableView) -> [String]? {
-//        return names
-//    }
-//
-//    func numberOfSections(in tableView: UITableView) -> Int {
-//        return 2 //sections.count // or sortedFirstLetters.count
+//        return sections.map{ $0.key }
 //    }
 
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return "    \(sections[section].key)"
+    }
+    
+//    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+//
+//    }
+    
 
     
     //MARK: - Slide and remove TableView Cell
@@ -302,6 +310,7 @@ extension CardViewController: UITableViewDataSource, UITableViewDelegate, SwipeA
         tableView.reloadRows(at: [indexPath], with: .none)
     }
 }
+
 
 
 //MARK: - PaymentDelegate extension

@@ -225,7 +225,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
     
     
     @objc func handleCardTap(recogniser: UITapGestureRecognizer) {
-        cardGesturesViewModel.animateTransitionIfNeeded(with: nextState, for: 0.5, withDampingRatio: 0.8)
+        cardGesturesViewModel.animateTransitionIfNeeded(with: nextState, for: 0.7, withDampingRatio: 0.8)
     }
 
 

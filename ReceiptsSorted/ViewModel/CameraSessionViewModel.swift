@@ -112,7 +112,7 @@ class CameraSessionViewModel  {
      */
     func startRunningCaptureSession() {
         if (ProcessInfo.processInfo.environment["SIMULATOR_DEVICE_NAME"] == nil) {
-            DispatchQueue.global(qos: .userInitiated).async {
+            DispatchQueue.global(qos: .userInteractive).async {
                 self.captureSession.startRunning()
             }
         }

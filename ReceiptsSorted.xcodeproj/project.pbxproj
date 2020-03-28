@@ -21,6 +21,8 @@
 		B54967A824104E3500684A2F /* ImageCompressionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54967A724104E3500684A2F /* ImageCompressionViewModel.swift */; };
 		B54967AD241167C000684A2F /* SortingDropDownMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54967AC241167C000684A2F /* SortingDropDownMenu.swift */; };
 		B564470B241027EB00B08AD3 /* AddButtonAnimations.swift in Sources */ = {isa = PBXBuildFile; fileRef = B564470A241027EB00B08AD3 /* AddButtonAnimations.swift */; };
+		B566604E242FA955003DD15B /* PaymentTableSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = B566604D242FA955003DD15B /* PaymentTableSection.swift */; };
+		B5666050242FB65F003DD15B /* IntExtensins.swift in Sources */ = {isa = PBXBuildFile; fileRef = B566604F242FB65F003DD15B /* IntExtensins.swift */; };
 		B573FA9A23B81EC8005473D2 /* PaymentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B573FA9923B81EC8005473D2 /* PaymentViewController.swift */; };
 		B573FA9C23B9334A005473D2 /* DatePopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B573FA9B23B9334A005473D2 /* DatePopupViewController.swift */; };
 		B573FAA223B94BB2005473D2 /* TextPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B573FAA123B94BB2005473D2 /* TextPopupViewController.swift */; };
@@ -47,6 +49,7 @@
 		B5F54E89241E789D0016DCED /* CALayerExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F54E88241E789D0016DCED /* CALayerExtensions.swift */; };
 		B5F54E8B241E78C70016DCED /* DateExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F54E8A241E78C70016DCED /* DateExtensions.swift */; };
 		B5F54E8D241E78E60016DCED /* FloatExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F54E8C241E78E60016DCED /* FloatExtensions.swift */; };
+		B5FD65FB242EC9C7002C5C48 /* CardTableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FD65FA242EC9C7002C5C48 /* CardTableViewModel.swift */; };
 		B5FDDC03241443950037BA7E /* SwipeActionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FDDC02241443950037BA7E /* SwipeActionsViewModel.swift */; };
 /* End PBXBuildFile section */
 
@@ -68,6 +71,8 @@
 		B54967A724104E3500684A2F /* ImageCompressionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCompressionViewModel.swift; sourceTree = "<group>"; };
 		B54967AC241167C000684A2F /* SortingDropDownMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortingDropDownMenu.swift; sourceTree = "<group>"; };
 		B564470A241027EB00B08AD3 /* AddButtonAnimations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddButtonAnimations.swift; sourceTree = "<group>"; };
+		B566604D242FA955003DD15B /* PaymentTableSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentTableSection.swift; sourceTree = "<group>"; };
+		B566604F242FB65F003DD15B /* IntExtensins.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntExtensins.swift; sourceTree = "<group>"; };
 		B573FA9923B81EC8005473D2 /* PaymentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentViewController.swift; sourceTree = "<group>"; };
 		B573FA9B23B9334A005473D2 /* DatePopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePopupViewController.swift; sourceTree = "<group>"; };
 		B573FAA123B94BB2005473D2 /* TextPopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextPopupViewController.swift; sourceTree = "<group>"; };
@@ -94,6 +99,7 @@
 		B5F54E88241E789D0016DCED /* CALayerExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CALayerExtensions.swift; sourceTree = "<group>"; };
 		B5F54E8A241E78C70016DCED /* DateExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtensions.swift; sourceTree = "<group>"; };
 		B5F54E8C241E78E60016DCED /* FloatExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatExtensions.swift; sourceTree = "<group>"; };
+		B5FD65FA242EC9C7002C5C48 /* CardTableViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardTableViewModel.swift; sourceTree = "<group>"; };
 		B5FDDC02241443950037BA7E /* SwipeActionsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeActionsViewModel.swift; sourceTree = "<group>"; };
 		F881D179E0F0BF7791163B48 /* libPods-ReceiptsSorted.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ReceiptsSorted.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -175,6 +181,7 @@
 			isa = PBXGroup;
 			children = (
 				B5B6758123CF724000291D31 /* ImageManipulator.swift */,
+				B566604D242FA955003DD15B /* PaymentTableSection.swift */,
 				B573FAA323B95F57005473D2 /* Delegates.swift */,
 				B59E3E2B23B53FEF0017D474 /* Enums.swift */,
 				B5CCE49A2403195200CA0CB5 /* Settings.swift */,
@@ -216,8 +223,9 @@
 			children = (
 				B526B4E1241B09A10031F629 /* Observable.swift */,
 				B54967A924105B4B00684A2F /* Animations */,
-				B5AD17DC240464CB00BB3069 /* MainGraphicsViewModel.swift */,
 				B573FAAD23BA815F005473D2 /* CameraSessionViewModel.swift */,
+				B5FD65FA242EC9C7002C5C48 /* CardTableViewModel.swift */,
+				B5AD17DC240464CB00BB3069 /* MainGraphicsViewModel.swift */,
 				B5B6757F23CF70F400291D31 /* TextRecogniserViewModel.swift */,
 				B54967AC241167C000684A2F /* SortingDropDownMenu.swift */,
 				B5FDDC02241443950037BA7E /* SwipeActionsViewModel.swift */,
@@ -240,6 +248,7 @@
 			isa = PBXGroup;
 			children = (
 				B5F54E8A241E78C70016DCED /* DateExtensions.swift */,
+				B566604F242FB65F003DD15B /* IntExtensins.swift */,
 				B5F54E8C241E78E60016DCED /* FloatExtensions.swift */,
 				B50BAADE242BECEE00EAFECA /* StringExtensions.swift */,
 				B5F54E88241E789D0016DCED /* CALayerExtensions.swift */,
@@ -370,6 +379,7 @@
 				B54967A824104E3500684A2F /* ImageCompressionViewModel.swift in Sources */,
 				B5377C0423A82E280010B144 /* ViewController.swift in Sources */,
 				B573FAA823B98061005473D2 /* CircularTransition.swift in Sources */,
+				B5666050242FB65F003DD15B /* IntExtensins.swift in Sources */,
 				B5F54E8B241E78C70016DCED /* DateExtensions.swift in Sources */,
 				B573FAA223B94BB2005473D2 /* TextPopupViewController.swift in Sources */,
 				B59E3E2723B50D9F0017D474 /* PaymentTableViewCell.swift in Sources */,
@@ -378,6 +388,7 @@
 				B5F54E89241E789D0016DCED /* CALayerExtensions.swift in Sources */,
 				B5377C0023A82E280010B144 /* AppDelegate.swift in Sources */,
 				B59E3E2323B44DE80017D474 /* CardViewController.swift in Sources */,
+				B566604E242FA955003DD15B /* PaymentTableSection.swift in Sources */,
 				B59E3E2C23B53FEF0017D474 /* Enums.swift in Sources */,
 				B50BAADB242B7DC200EAFECA /* AmountAnimation.swift in Sources */,
 				B564470B241027EB00B08AD3 /* AddButtonAnimations.swift in Sources */,
@@ -400,6 +411,7 @@
 				B5AD17E32404757300BB3069 /* CardGesturesViewModel.swift in Sources */,
 				B573FA9C23B9334A005473D2 /* DatePopupViewController.swift in Sources */,
 				B5858EA9241F69E700695E77 /* EmailViewModel.swift in Sources */,
+				B5FD65FB242EC9C7002C5C48 /* CardTableViewModel.swift in Sources */,
 				B5CCE49B2403195200CA0CB5 /* Settings.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

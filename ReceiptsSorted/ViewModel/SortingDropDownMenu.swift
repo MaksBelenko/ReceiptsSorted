@@ -18,9 +18,7 @@ class SortingDropDownMenu: NSObject, UITableViewDelegate, UITableViewDataSource 
     var sortButtonLabelDelegate: SortButtonLabelDelegate?
     
     
-    
-    
-    
+
     
     /**
      Creates a popover with TableView
@@ -42,8 +40,7 @@ class SortingDropDownMenu: NSObject, UITableViewDelegate, UITableViewDataSource 
         tableViewController.tableView.tableFooterView = UIView()
         
         tableViewController.tableView.showsVerticalScrollIndicator = false
-//        tableViewController.tableView.isScrollEnabled = false
-//        tableViewController.tableView.contentInset = UIEdgeInsets(top: tableViewController.tableView.safeAreaInsets.top, left: 0, bottom: 0, right: 0)
+        
           
         let popoverPresentationController = tableViewController.popoverPresentationController
         popoverPresentationController?.sourceView = sender
@@ -54,6 +51,11 @@ class SortingDropDownMenu: NSObject, UITableViewDelegate, UITableViewDataSource 
         return popoverPresentationController
     }
     
+    
+    
+//    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+//        tableViewController.tableView.contentOffset.y = -20
+//    }
     
     
     
@@ -76,8 +78,7 @@ class SortingDropDownMenu: NSObject, UITableViewDelegate, UITableViewDataSource 
     
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("Selected \(dropDownOptions[indexPath.row])")
-        
+//        print("Selected \(dropDownOptions[indexPath.row])")
         sortButtonLabelDelegate?.changeButtonLabel(sortByOption: getSortType(for: dropDownOptions[indexPath.row]))
         
         tableViewController.dismiss(animated: true, completion: nil)
@@ -85,7 +86,7 @@ class SortingDropDownMenu: NSObject, UITableViewDelegate, UITableViewDataSource 
     
     
     
-    func getSortType(for name: String) -> SortBy {
+    private func getSortType(for name: String) -> SortBy {
         var sortOption: SortBy?
         
         switch name {
@@ -103,5 +104,6 @@ class SortingDropDownMenu: NSObject, UITableViewDelegate, UITableViewDataSource 
         
         return sortOption!
     }
+    
     
 }

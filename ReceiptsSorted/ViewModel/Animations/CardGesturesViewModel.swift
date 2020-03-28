@@ -65,9 +65,9 @@ class CardGesturesViewModel {
                 } else {
                     ignoreCardAnimation = false
                 }
-                print("Ignore card animation = \(ignoreCardAnimation)")
+//                print("Ignore card animation = \(ignoreCardAnimation)")
                 if (!ignoreCardAnimation) {
-                    startInteractiveTransition(forState: nextState, duration: 0.5)
+                    startInteractiveTransition(forState: nextState, duration: 0.6)
                 }
     
             case .changed:
