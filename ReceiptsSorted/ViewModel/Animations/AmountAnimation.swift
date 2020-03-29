@@ -10,7 +10,7 @@ import UIKit
 
 class AmountAnimation {
     
-    //Binded to UILabel
+    ///Bind to UILabel
     var overallAmount: Observable<Float> = Observable(0.0)
     
     private var animationDuration: Double = 0.7

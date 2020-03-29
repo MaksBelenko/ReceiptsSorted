@@ -177,6 +177,14 @@
 			path = Animations;
 			sourceTree = "<group>";
 		};
+		B566605124311384003DD15B /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				B59E3E2523B50D9F0017D474 /* PaymentTableViewCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
 		B59E3E1323B3BF4E0017D474 /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -208,12 +216,12 @@
 			children = (
 				B5377C0323A82E280010B144 /* ViewController.swift */,
 				B59E3E2123B44DE80017D474 /* CardViewController.swift */,
-				B59E3E2523B50D9F0017D474 /* PaymentTableViewCell.swift */,
 				B573FA9923B81EC8005473D2 /* PaymentViewController.swift */,
 				B573FA9B23B9334A005473D2 /* DatePopupViewController.swift */,
 				B573FAA123B94BB2005473D2 /* TextPopupViewController.swift */,
 				B573FAA923B98285005473D2 /* CameraViewController.swift */,
 				B50BAADC242BB8E000EAFECA /* SettingsViewController.swift */,
+				B566605124311384003DD15B /* Cells */,
 			);
 			path = Controller;
 			sourceTree = "<group>";

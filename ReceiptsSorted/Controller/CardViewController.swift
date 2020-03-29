@@ -9,8 +9,6 @@
 import UIKit
 import CoreData
 
-var searchTopAnchor: NSLayoutConstraint?
-
 class CardViewController: UIViewController {
     
     @IBOutlet weak var SortSegmentedControl: UISegmentedControl!
@@ -25,9 +23,8 @@ class CardViewController: UIViewController {
     var cardHeight: CGFloat = 0
     var tableRowsHeight: CGFloat = 60
 
-    var showingPayments: [Payments] = []
-    var sections: [PaymentTableSection] = []
-    var paymentUpdateIndex = 0
+    var cardTableSections: [PaymentTableSection] = []
+    var paymentUpdateIndex = (section: 0, row: 0)
     
     var sortByOption: SortBy = .NewestDateAdded
     var paymentStatusSort: PaymentStatusSort = .Pending
@@ -37,7 +34,7 @@ class CardViewController: UIViewController {
     let swipeActions = SwipeActionsViewModel()
     var cardTableViewModel = CardTableViewModel()
     
-
+    var amountAnimation: AmountAnimation!
     
     
     
@@ -49,9 +46,8 @@ class CardViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-    
+         
         print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
-        showingPayments = database.fetchSortedData(by: sortByOption, and: paymentStatusSort)
         
         setupTableView()
         setupSearchBar()
@@ -118,7 +114,7 @@ class CardViewController: UIViewController {
             break
         }
         
-        showingPayments = database.fetchSortedData(by: sortByOption, and: paymentStatusSort)
+        
         tblView.reloadData()
     }
     
@@ -131,7 +127,6 @@ class CardViewController: UIViewController {
 extension CardViewController: UIPopoverPresentationControllerDelegate, SortButtonLabelDelegate {
     
     @IBAction func sortButtonPressed(_ sender: UIButton) {
-        
         let popoverPresentationController = dropDownMenu.createDropDownMenu(for: sender, ofSize: CGSize(width: 200, height: 130))
         popoverPresentationController?.delegate = self
         dropDownMenu.sortButtonLabelDelegate = self
@@ -150,7 +145,6 @@ extension CardViewController: UIPopoverPresentationControllerDelegate, SortButto
         if (self.sortByOption != sortByOption) {
             self.sortByOption = sortByOption
             setButtonTitle(for: sortByOption)
-            showingPayments = database.fetchSortedData(by: sortByOption, and: paymentStatusSort)
             tblView.reloadData()
         }
     }
@@ -165,6 +159,8 @@ extension CardViewController: UIPopoverPresentationControllerDelegate, SortButto
             sortButton.setTitle("Date ↓", for: .normal)
         case .OldestDateAdded:
             sortButton.setTitle("Date ↑", for: .normal)
+        case .None:
+            break
         }
     }
 }
@@ -179,7 +175,6 @@ extension CardViewController: UISearchBarDelegate {
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        showingPayments = database.fetchData(forName: searchText)
         tblView.reloadData()
     }
     
@@ -196,7 +191,7 @@ extension CardViewController: UITableViewDataSource, UITableViewDelegate, SwipeA
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "paymentCell", for: indexPath) as! PaymentTableViewCell
-        cell.setCell(for: sections[indexPath.section].payments[indexPath.row])
+        cell.setCell(for: cardTableSections[indexPath.section].payments[indexPath.row])
         return cell
     }
     
@@ -209,8 +204,8 @@ extension CardViewController: UITableViewDataSource, UITableViewDelegate, SwipeA
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-        let selectedPayment = showingPayments[indexPath.row]
-        paymentUpdateIndex = indexPath.row
+        let selectedPayment = cardTableSections[indexPath.section].payments[indexPath.row]
+        paymentUpdateIndex = (section: indexPath.section, row: indexPath.row)
         
         if let paymentVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "PaymentDetails") as? PaymentViewController
         {
@@ -231,12 +226,13 @@ extension CardViewController: UITableViewDataSource, UITableViewDelegate, SwipeA
     //MARK: - Sections
 
     func numberOfSections(in tableView: UITableView) -> Int {
-        sections = cardTableViewModel.getSections(for: showingPayments, sortedBy: sortByOption)
-        return sections.count
+        let fetchedPayments = database.fetchSortedData(by: sortByOption, and: paymentStatusSort)
+        cardTableSections = cardTableViewModel.getSections(for: fetchedPayments, sortedBy: sortByOption)
+        return cardTableSections.count
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return sections[section].payments.count
+        return cardTableSections[section].payments.count
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -259,7 +255,7 @@ extension CardViewController: UITableViewDataSource, UITableViewDelegate, SwipeA
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         swipeActions.swipeActionDelegate = self
         tblView.setEditing(false, animated: true)
-        return swipeActions.createTrailingActions(for: indexPath, in: showingPayments)
+        return swipeActions.createTrailingActions(for: indexPath, in: cardTableSections[indexPath.section].payments)
     }
     
     
@@ -267,14 +263,14 @@ extension CardViewController: UITableViewDataSource, UITableViewDelegate, SwipeA
         switch swipeCommand
         {
         case .Remove:
-            database.delete(item: showingPayments[indexPath.row])
-            showingPayments.remove(at: indexPath.row)
+            database.delete(item: cardTableSections[indexPath.section].payments[indexPath.row])
+            cardTableSections[indexPath.section].payments.remove(at: indexPath.row)
             tblView.deleteRows(at: [indexPath], with: .fade)
         case .Tick:
-            showingPayments[indexPath.row].paymentReceived = true
+            cardTableSections[indexPath.section].payments[indexPath.row].paymentReceived = true
             database.saveContext()
             if (paymentStatusSort != .All) {
-                showingPayments.remove(at: indexPath.row)
+                cardTableSections[indexPath.section].payments.remove(at: indexPath.row)
                 tblView.deleteRows(at: [indexPath], with: .right)
             } else {
 //                (tblView.cellForRow(at: [indexPath.row]) as! PaymentTableViewCell).tickLabel.text = "✓"
@@ -282,10 +278,10 @@ extension CardViewController: UITableViewDataSource, UITableViewDelegate, SwipeA
 //                tblView.reloadRows(at: [indexPath], with: .right)
             }
         case .Untick:
-            showingPayments[indexPath.row].paymentReceived = false
+            cardTableSections[indexPath.section].payments[indexPath.row].paymentReceived = false
             database.saveContext()
             if (paymentStatusSort != .All) {
-                showingPayments.remove(at: indexPath.row)
+                cardTableSections[indexPath.section].payments.remove(at: indexPath.row)
                 tblView.deleteRows(at: [indexPath], with: .left)
             } else {
 //                (tblView.cellForRow(at: [indexPath.row]) as! PaymentTableViewCell).tickLabel.text = ""
@@ -295,26 +291,33 @@ extension CardViewController: UITableViewDataSource, UITableViewDelegate, SwipeA
         }
     }
     
-    func tableView(_ tableView: UITableView, didEndEditingRowAt indexPath: IndexPath?) {
-        print("Finished")
-        guard let indexPath = indexPath else {return}
-        tableView.reloadRows(at: [indexPath], with: .none)
-    }
+//    func tableView(_ tableView: UITableView, didEndEditingRowAt indexPath: IndexPath?) {
+//        print("Finished")
+//        guard let indexPath = indexPath else {return}
+//        tableView.reloadRows(at: [indexPath], with: .none)
+//    }
 }
+
+
+
+
 
 
 
 //MARK: - PaymentDelegate extension
 extension CardViewController: PaymentDelegate {
     
-    func passData(amountPaid: Float, place: String, date: Date, receiptImage: UIImage) {
+    func passData(as showPayment: ShowPaymentAs, paymentTuple:(amountPaid: Float, place: String, date: Date, receiptImage: UIImage)) {
         
-        showingPayments[paymentUpdateIndex].receiptPhoto = receiptImage.jpegData(compressionQuality: 1)
-        showingPayments[paymentUpdateIndex].amountPaid = amountPaid
-        showingPayments[paymentUpdateIndex].place = place
-        showingPayments[paymentUpdateIndex].date = date
+        switch showPayment
+        {
+            case .AddPayment:
+                let totalTuple = database.add(payment: paymentTuple)
+                amountAnimation.animateCircle(from: totalTuple.totalBefore, to: totalTuple.totalAfter)
+            case .UpdatePayment:
+                database.update(payment: cardTableSections[paymentUpdateIndex.section].payments[paymentUpdateIndex.row], with: paymentTuple)
+        }
         
-        database.saveContext()
         tblView.reloadData()
     }
 }

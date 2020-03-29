@@ -209,7 +209,8 @@ class PaymentViewController: UIViewController, UIGestureRecognizerDelegate {
     
     @IBAction func pressedAddButton(_ sender: UIButton) {
         
-        paymentDelegate?.passData(amountPaid: amountPaid, place: place, date: date, receiptImage: receiptImageView.image ?? UIImage())
+        let paymentTuple = (amountPaid: amountPaid, place: place, date: date, receiptImage: receiptImageView.image ?? UIImage())
+        paymentDelegate?.passData(as: pageType, paymentTuple: paymentTuple)
         
         if (pageType == .AddPayment) {
             self.view.window!.rootViewController?.dismiss(animated: true, completion: nil)

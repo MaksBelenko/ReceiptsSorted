@@ -107,7 +107,7 @@ extension CircularTransition: UIViewControllerAnimatedTransitioning {
     
     
     
-    func frameForCircle (withViewCenter viewCenter: CGPoint, size viewSize: CGSize, startPoint: CGPoint) -> CGRect {
+    private func frameForCircle (withViewCenter viewCenter: CGPoint, size viewSize: CGSize, startPoint: CGPoint) -> CGRect {
         
         let xLength = fmax(startPoint.x, viewSize.width - startPoint.x)
         let yLength = fmax(startPoint.y, viewSize.height - startPoint.y)

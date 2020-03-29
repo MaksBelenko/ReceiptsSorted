@@ -14,6 +14,7 @@ var nextState: CardState {
 }
 var fractionComplete: CGFloat = 0.0
 
+var searchTopAnchor: NSLayoutConstraint?
 
 
 

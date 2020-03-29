@@ -12,6 +12,13 @@ import CoreData
 class Database {
     
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    let imageCompression = ImageCompressionViewModel()
+    
+    
+    
+    
+    
+    //MARK: - Save and Delete Methods
     
     /**
      Attempts to commit unsaved changes to registered objects to the context’s parent store.
@@ -24,6 +31,19 @@ class Database {
         }
     }
     
+    
+    /**
+     Deletes an item in the database
+     - Parameter item: Item to delete from database
+     */
+    func delete(item: NSManagedObject) {
+        context.delete(item)
+        saveContext()
+    }
+    
+    
+    
+    //MARK: - Fetch methods
     
     /**
      Get all payments from database
@@ -83,6 +103,8 @@ class Database {
             request.sortDescriptors = [NSSortDescriptor(key: "date", ascending: false)]
         case .OldestDateAdded:
             request.sortDescriptors = [NSSortDescriptor(key: "date", ascending: true)]
+        case .None:
+            break
         }
         
         
@@ -90,12 +112,54 @@ class Database {
     }
     
     
+    
+    
+    
+    //MARK: - Add & Update Payment methods
+    
     /**
-     Deletes an item in the database
-     - Parameter item: Item to delete from database
+     Adds a payments to database and returns a tuple of the totals before and after the payment
+     - Parameter payment: Tuple that is used to create a new entry in the database
      */
-    func delete(item: NSManagedObject) {
-        context.delete(item)
+    func add (payment: (amountPaid: Float, place: String, date: Date, receiptImage: UIImage)) -> (totalBefore: Float, totalAfter: Float) {
+        let newPayment = Payments(context: context)
+        newPayment.amountPaid = payment.amountPaid
+        newPayment.place = payment.place
+        newPayment.date = payment.date
+        newPayment.receiptPhoto = imageCompression.compressImage(for: payment.receiptImage)
+        newPayment.paymentReceived = false
+
         saveContext()
+       
+        let totalAfter = getTotalAmount(of: .Pending)
+        return (totalBefore: totalAfter - newPayment.amountPaid, totalAfter: totalAfter)
+    }
+    
+    
+    /**
+     Updates a payments with the information passed in tuple
+     - Parameter payment: Payment from the database to be updated
+     - Parameter dataTuple: Tuple used to update the payment information
+     */
+    func update(payment: Payments, with dataTuple: (amountPaid: Float, place: String, date: Date, receiptImage: UIImage)) {
+        payment.receiptPhoto = dataTuple.receiptImage.jpegData(compressionQuality: 1)
+        payment.amountPaid = dataTuple.amountPaid
+        payment.place = dataTuple.place
+        payment.date = dataTuple.date
+        
+        saveContext()
+    }
+    
+    
+    
+    /**
+     Gets total amount of payments
+     - Parameter sortMethod: Allows to get a total either for all, pending or received payments
+     */
+    func getTotalAmount(of sortMethod: PaymentStatusSort) -> Float {
+        let payments = fetchSortedData(by: .None, and: sortMethod)
+        let totalAmount = payments.map({ $0.amountPaid }).reduce(0,+)
+        
+        return totalAmount
     }
 }

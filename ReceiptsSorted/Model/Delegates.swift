@@ -17,7 +17,7 @@ protocol PopupDelegate {
 
 
 protocol PaymentDelegate {
-    func passData(amountPaid: Float, place: String, date: Date, receiptImage: UIImage)
+    func passData(as showPayment: ShowPaymentAs, paymentTuple:(amountPaid: Float, place: String, date: Date, receiptImage: UIImage))
 }
 
 protocol SortButtonLabelDelegate {

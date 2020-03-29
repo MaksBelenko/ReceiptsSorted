@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 class CardTableViewModel {
     
@@ -15,7 +16,10 @@ class CardTableViewModel {
     
     
     
+    
+    
     //MARK: - Public methods
+ 
     
     /**
      Get the Sections Dictionary

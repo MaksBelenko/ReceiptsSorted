@@ -14,7 +14,7 @@
 struct PaymentTableSection {
     
     /// First letter or a month name
-    let key : String
+    var key : String
     ///Payments that have the same first letter or month
-    let payments : [Payments]
+    var payments : [Payments]
 }

@@ -32,7 +32,9 @@ class TextPopupViewController: UIViewController, UITextFieldDelegate {
         topLabel.text = (popupType! == .AmountPaid) ? "Amount paid:" : "Place of purchase:"
         
         numericTextField.delegate = self
-        numericTextField.text = passedNumericText
+        numericTextField.text = (popupType! == .AmountPaid) ? passedNumericText.components(separatedBy: "£")[1] : passedNumericText
+        numericTextField.keyboardType = (popupType! == .AmountPaid) ? .decimalPad : .asciiCapable
+        
         // Force start editing text
         numericTextField.becomeFirstResponder()
         
@@ -71,4 +73,5 @@ class TextPopupViewController: UIViewController, UITextFieldDelegate {
     }
     
 
+    
 }

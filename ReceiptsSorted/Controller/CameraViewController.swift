@@ -19,7 +19,7 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
     var image: UIImage?
     let imagePicker = UIImagePickerController()
     
-    var mainView: ViewController?
+    var mainView: CardViewController?
     
     
     

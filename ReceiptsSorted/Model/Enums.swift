@@ -29,7 +29,7 @@ enum CircularTransitionMode {
 }
 
 enum SortBy {
-    case OldestDateAdded, NewestDateAdded, Place
+    case OldestDateAdded, NewestDateAdded, Place, None
 }
 
 enum PaymentStatusSort {

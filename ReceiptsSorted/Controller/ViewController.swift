@@ -43,6 +43,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
     override var preferredStatusBarStyle: UIStatusBarStyle { return .lightContent }
 
     
+    
+    
     //MARK: - ViewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,6 +52,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
         initialiseCircle()
         
         setupCard()
+        cardViewController.amountAnimation = amountAnimation
+        
         setupAddButton(withSize: self.view.frame.size.width / 4.5)
         
         
@@ -65,28 +69,17 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
         
         navigationController?.setNavigationBarHidden(true, animated: animated)
         
-        let totalAmount = getTotalUnpaid(for: cardViewController.showingPayments)
-        
+        let totalAmount = cardViewController.database.getTotalAmount(of: .Pending)
         amountAnimation.animateCircle(to: totalAmount)
     }
 
+    
 //    override func viewWillDisappear(_ animated: Bool) {
 //        super.viewWillDisappear(animated)
 //        navigationController?.setNavigationBarHidden(false, animated: animated)
 //    }
     
 
-    
-    func getTotalUnpaid(for payments: [Payments]) -> Float {
-        var totalAmount: Float = 0
-        for payment in payments {
-            if (payment.paymentReceived == false){
-                 totalAmount += payment.amountPaid
-            }
-        }
-        
-        return totalAmount
-    }
     
     //MARK: - Setup Button
     func setupAddButton(withSize buttonSize: CGFloat) {
@@ -118,7 +111,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
         cameraVC.modalPresentationStyle = .custom
         cameraVC.controllerFrame = self.view.frame
         
-        cameraVC.mainView = self
+        cameraVC.mainView = cardViewController
         
         self.present(cameraVC, animated: true, completion: nil)
     }
@@ -278,34 +271,3 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
 
 
 
-
-
-
-//MARK: - Extension for PaymentDelegate
-extension ViewController: PaymentDelegate {
-    
-    func passData(amountPaid: Float, place: String, date: Date, receiptImage: UIImage) {
-        
-        let newPayment = Payments(context: cardViewController.database.context)
-        newPayment.amountPaid = amountPaid
-        newPayment.place = place
-        newPayment.date = date
-        newPayment.receiptPhoto = imageCompression.compressImage(for: receiptImage)
-        newPayment.paymentReceived = false
-        
-        
-        let totalBefore = getTotalUnpaid(for: cardViewController.showingPayments)
-        amountAnimation.animateCircle(from: totalBefore, to: totalBefore + newPayment.amountPaid)
-        
-        
-        cardViewController.showingPayments.insert(newPayment, at: 0)
-        
-        cardViewController.database.saveContext()
-        
-        cardViewController.tblView.beginUpdates()
-        cardViewController.tblView.insertRows(at: [IndexPath.init(row: 0, section: 0)], with: .left)
-        cardViewController.tblView.endUpdates()
-    }
-    
-    
-}
