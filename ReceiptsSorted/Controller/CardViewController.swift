@@ -66,7 +66,8 @@ class CardViewController: UIViewController {
         tblView.register(UINib(nibName: "PaymentTableViewCell", bundle: nil), forCellReuseIdentifier: "paymentCell")
         
         // Used to make separators lines full width
-        tblView.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+//        tblView.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        tblView.separatorStyle = .none
         //Removes uneeded separator lines at the end of TableView
         tblView.tableFooterView = UIView()
         
@@ -119,8 +120,6 @@ class CardViewController: UIViewController {
         
         showingPayments = database.fetchSortedData(by: sortByOption, and: paymentStatusSort)
         tblView.reloadData()
-        
-        
     }
     
     
@@ -197,7 +196,6 @@ extension CardViewController: UITableViewDataSource, UITableViewDelegate, SwipeA
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "paymentCell", for: indexPath) as! PaymentTableViewCell
-        
         cell.setCell(for: sections[indexPath.section].payments[indexPath.row])
         return cell
     }
@@ -241,20 +239,13 @@ extension CardViewController: UITableViewDataSource, UITableViewDelegate, SwipeA
         return sections[section].payments.count
     }
     
-    
-    // Creates section index names on the right of tableView
-//    func sectionIndexTitles(for tableView: UITableView) -> [String]? {
-//        return sections.map{ $0.key }
-//    }
-
-    
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return "    \(sections[section].key)"
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        return cardTableViewModel.getSectionHeaderView(for: section, sortedBy: sortByOption, width: view.frame.width)
     }
     
-//    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-//
-//    }
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return (section == 0) ? 30 : 40
+    }
     
 
     

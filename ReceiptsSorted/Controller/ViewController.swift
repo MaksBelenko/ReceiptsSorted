@@ -264,13 +264,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
         }
     }
     
-    
-    
-    @IBAction func testButtonPressed(_ sender: UIButton) {
-        amountAnimation.animateCircle(from: 300, to: 800)
-    }
-    
-        
+         
     
     
     @IBAction func emailButtonPressed(_ sender: UIButton) {

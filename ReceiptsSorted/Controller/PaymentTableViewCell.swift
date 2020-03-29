@@ -30,6 +30,12 @@ class PaymentTableViewCell: UITableViewCell {
         tickLabel.layer.cornerRadius = tickLabel.frame.size.height/2
         tickLabel.layer.masksToBounds = true
         
+        
+        let bottomLine = CALayer()
+        bottomLine.frame = CGRect(x: 0, y: self.frame.size.height - 0.3, width: self.frame.size.width, height: 0.3)
+        bottomLine.backgroundColor = UIColor(rgb: 0xbdc3c7).cgColor
+        self.layer.addSublayer(bottomLine)
+        
     }
 
     
