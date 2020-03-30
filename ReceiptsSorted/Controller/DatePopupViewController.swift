@@ -29,7 +29,6 @@ class DatePopupViewController: UIViewController {
     func setupPopupLook() {
         popupView.layer.cornerRadius = 30
         selectButton.layer.cornerRadius = selectButton.frame.size.height/2
-        topLabel.roundCorners(corners: [.topLeft, .topRight], radius: 30)
         
         datePicker.setValue(UIColor.white, forKeyPath: "textColor")
         datePicker.setValue(false, forKeyPath: "highlightsToday")

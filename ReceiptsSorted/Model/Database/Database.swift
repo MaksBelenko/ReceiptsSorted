@@ -151,6 +151,32 @@ class Database {
     }
     
     
+    /**
+     Update individual attribute of payment in the database
+     - Parameter payment: Entry to update
+     - Parameter detailType: Enum of the attributes
+     - Parameter newDetail: Value that the attribute of the entry should be updated with.
+                            AmountPaid -> Float; Place -> String; ReceiptPhoto -> Data;
+                            PaymentReceived -> Bool
+     */
+    func updateDetail(for payment: Payments, detailType: PaymentDetail, with newDetail: Any) {
+        switch detailType {
+        case .AmountPaid:
+            payment.amountPaid = newDetail as! Float
+        case .Place:
+            payment.place = newDetail as! String
+        case .Image:
+            payment.receiptPhoto = newDetail as! Data
+        case .PaymentReceived:
+            payment.paymentReceived = newDetail as! Bool
+        }
+        
+        saveContext()
+    }
+    
+    
+    
+    
     
     /**
      Gets total amount of payments

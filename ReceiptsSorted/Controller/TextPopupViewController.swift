@@ -46,7 +46,6 @@ class TextPopupViewController: UIViewController, UITextFieldDelegate {
     func setupPopupLook() {
         popupView.layer.cornerRadius = 30
         insertButton.layer.cornerRadius = insertButton.frame.size.height/2
-        topLabel.roundCorners(corners: [.topLeft, .topRight], radius: 30)
     }
     
     

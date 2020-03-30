@@ -12,6 +12,7 @@ import AVFoundation
 class CameraViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
     @IBOutlet weak var takePhotoButton: UIButton!
+    @IBOutlet weak var cameraView: UIView!
     
     var controllerFrame: CGRect?
     var photoOutput: AVCapturePhotoOutput?
@@ -28,9 +29,17 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
 
         imagePicker.delegate = self
         self.view.frame = controllerFrame ?? CGRect(x: 0, y: 0, width: 100, height: 100)
-        takePhotoButton.layer.cornerRadius = takePhotoButton.frame.size.height/2
+//        takePhotoButton.layer.cornerRadius = takePhotoButton.frame.size.height/2
         
-        cameraSession = CameraSessionViewModel(forView: view)
+        cameraView.layer.cornerRadius = 20
+        cameraSession = CameraSessionViewModel(forView: cameraView)
+        
+        cameraSession?.changeBackgroundColor.bind { [unowned self] in
+            if ($0 == true) {
+                self.view.backgroundColor = UIColor.black
+                self.cameraView.backgroundColor = UIColor.black
+            }
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -40,6 +49,10 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(true)
+    
+        view.backgroundColor = UIColor(rgb: 0xF0BC00)
+        cameraView.backgroundColor = UIColor(rgb: 0xF0BC00)
+        
         cameraSession!.stopCaptureSession()
     }
     

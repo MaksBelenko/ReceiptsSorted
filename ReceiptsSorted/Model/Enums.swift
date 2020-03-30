@@ -39,3 +39,7 @@ enum PaymentStatusSort {
 enum SwipeCommandType {
     case Remove, Tick, Untick
 }
+
+enum PaymentDetail {
+    case Image, AmountPaid, Place, PaymentReceived
+}

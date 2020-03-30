@@ -79,7 +79,9 @@ class SortingDropDownMenu: NSObject, UITableViewDelegate, UITableViewDataSource 
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 //        print("Selected \(dropDownOptions[indexPath.row])")
-        sortButtonLabelDelegate?.changeButtonLabel(sortByOption: getSortType(for: dropDownOptions[indexPath.row]))
+        
+        let sortMethod = getSortType(for: dropDownOptions[indexPath.row])
+        sortButtonLabelDelegate?.changeButtonLabel(sortByOption: sortMethod, buttonTitle: getButtonTitle(for: sortMethod))
         
         tableViewController.dismiss(animated: true, completion: nil)
     }
@@ -103,6 +105,21 @@ class SortingDropDownMenu: NSObject, UITableViewDelegate, UITableViewDataSource 
         
         
         return sortOption!
+    }
+    
+    
+    func getButtonTitle(for sortTitle: SortBy) -> String {
+        switch sortTitle
+        {
+        case .Place:
+            return "Place"
+        case .NewestDateAdded:
+            return "Date ↓"
+        case .OldestDateAdded:
+            return "Date ↑"
+        case .None:
+            return "something wrong"
+        }
     }
     
     

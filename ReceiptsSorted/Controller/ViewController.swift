@@ -20,19 +20,15 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
     var cardHeight: CGFloat = 0
     var cardStartPointY: CGFloat = 0
     
-    let circularTransition = CircularTransition()
-    var cameraViewController: CameraViewController!
     var addButton: UIButton!
-    
     let addButtonAnimations = AddButtonAnimations()
-    let imageCompression = ImageCompressionViewModel()
-    
     var cardGesturesViewModel = CardGesturesViewModel()
+    let circularTransition = CircularTransition()
     let emailViewModel = EmailViewModel()
     
     var amountAnimation: AmountAnimation!
     
-    
+    let cameraVC = CameraViewController(nibName: "CameraViewController", bundle: nil)
     
     
     
@@ -61,6 +57,17 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
         cardGesturesViewModel.cardViewController = cardViewController
         cardGesturesViewModel.visualEffectView = visualEffectView
         cardGesturesViewModel.addButton = addButton
+        
+        
+//        DispatchQueue.main.async {
+//            self.cameraVC.transitioningDelegate = self
+//            self.cameraVC.modalPresentationStyle = .custom
+//            self.cameraVC.controllerFrame = self.view.frame
+//            self.cameraVC.mainView = self.cardViewController
+//            self.cameraVC.cameraSession?.setupCamera()
+//        }
+        
+        
     }
 
     
@@ -110,7 +117,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
         cameraVC.transitioningDelegate = self
         cameraVC.modalPresentationStyle = .custom
         cameraVC.controllerFrame = self.view.frame
-        
+
         cameraVC.mainView = cardViewController
         
         self.present(cameraVC, animated: true, completion: nil)

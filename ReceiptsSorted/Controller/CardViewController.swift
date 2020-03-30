@@ -31,7 +31,7 @@ class CardViewController: UIViewController {
     
     var database = Database()
     let dropDownMenu = SortingDropDownMenu()
-    let swipeActions = SwipeActionsViewModel()
+    var swipeActions: SwipeActionsViewModel!
     var cardTableViewModel = CardTableViewModel()
     
     var amountAnimation: AmountAnimation!
@@ -47,11 +47,16 @@ class CardViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
          
+        //Initialise ViewModels
+        swipeActions = SwipeActionsViewModel(database: database)
+        
+        
         print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
         
         setupTableView()
         setupSearchBar()
-        setButtonTitle(for: sortByOption)
+        sortButton.setTitle(dropDownMenu.getButtonTitle(for: sortByOption), for: .normal)
+//        setButtonTitle(for: sortByOption)
         
     }
 
@@ -141,28 +146,28 @@ extension CardViewController: UIPopoverPresentationControllerDelegate, SortButto
     
     
     //Delegate method
-    func changeButtonLabel(sortByOption: SortBy) {
+    func changeButtonLabel(sortByOption: SortBy, buttonTitle: String) {
         if (self.sortByOption != sortByOption) {
             self.sortByOption = sortByOption
-            setButtonTitle(for: sortByOption)
+            sortButton.setTitle(buttonTitle, for: .normal)
             tblView.reloadData()
         }
     }
     
     
-    func setButtonTitle(for sortTitle: SortBy) {
-        switch sortTitle
-        {
-        case .Place:
-            sortButton.setTitle("Place", for: .normal)
-        case .NewestDateAdded:
-            sortButton.setTitle("Date ↓", for: .normal)
-        case .OldestDateAdded:
-            sortButton.setTitle("Date ↑", for: .normal)
-        case .None:
-            break
-        }
-    }
+//    func setButtonTitle(for sortTitle: SortBy) {
+//        switch sortTitle
+//        {
+//        case .Place:
+//            sortButton.setTitle("Place", for: .normal)
+//        case .NewestDateAdded:
+//            sortButton.setTitle("Date ↓", for: .normal)
+//        case .OldestDateAdded:
+//            sortButton.setTitle("Date ↑", for: .normal)
+//        case .None:
+//            break
+//        }
+//    }
 }
 
 
@@ -177,17 +182,12 @@ extension CardViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         tblView.reloadData()
     }
-    
-    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        // start animation if cardView is minimised
-    }
 }
 
 
 
 //MARK: - TableView extension
 extension CardViewController: UITableViewDataSource, UITableViewDelegate, SwipeActionDelegate {
-
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "paymentCell", for: indexPath) as! PaymentTableViewCell
@@ -255,46 +255,23 @@ extension CardViewController: UITableViewDataSource, UITableViewDelegate, SwipeA
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         swipeActions.swipeActionDelegate = self
         tblView.setEditing(false, animated: true)
-        return swipeActions.createTrailingActions(for: indexPath, in: cardTableSections[indexPath.section].payments)
+        return swipeActions.createTrailingActions(for: indexPath, in: cardTableSections[indexPath.section].payments[indexPath.row])
     }
     
     
-    func onSwipeClicked(swipeCommand: SwipeCommandType, indexPath: IndexPath) {
-        switch swipeCommand
-        {
-        case .Remove:
-            database.delete(item: cardTableSections[indexPath.section].payments[indexPath.row])
+    func onSwipeClicked(indexPath: IndexPath) {
+        if (paymentStatusSort != .All) {
             cardTableSections[indexPath.section].payments.remove(at: indexPath.row)
             tblView.deleteRows(at: [indexPath], with: .fade)
-        case .Tick:
-            cardTableSections[indexPath.section].payments[indexPath.row].paymentReceived = true
-            database.saveContext()
-            if (paymentStatusSort != .All) {
-                cardTableSections[indexPath.section].payments.remove(at: indexPath.row)
-                tblView.deleteRows(at: [indexPath], with: .right)
-            } else {
-//                (tblView.cellForRow(at: [indexPath.row]) as! PaymentTableViewCell).tickLabel.text = "✓"
-//                tblView.reloadData()
-//                tblView.reloadRows(at: [indexPath], with: .right)
-            }
-        case .Untick:
-            cardTableSections[indexPath.section].payments[indexPath.row].paymentReceived = false
-            database.saveContext()
-            if (paymentStatusSort != .All) {
-                cardTableSections[indexPath.section].payments.remove(at: indexPath.row)
-                tblView.deleteRows(at: [indexPath], with: .left)
-            } else {
-//                (tblView.cellForRow(at: [indexPath.row]) as! PaymentTableViewCell).tickLabel.text = ""
-//                tblView.reloadData()
-//                tblView.reloadRows(at: [indexPath], with: .right)
-            }
+        } else {
+            tblView.reloadRows(at: [indexPath], with: .left)
         }
     }
     
 //    func tableView(_ tableView: UITableView, didEndEditingRowAt indexPath: IndexPath?) {
 //        print("Finished")
 //        guard let indexPath = indexPath else {return}
-//        tableView.reloadRows(at: [indexPath], with: .none)
+//        tblView.deleteRows(at: [indexPath], with: .left)
 //    }
 }
 
@@ -308,17 +285,18 @@ extension CardViewController: UITableViewDataSource, UITableViewDelegate, SwipeA
 extension CardViewController: PaymentDelegate {
     
     func passData(as showPayment: ShowPaymentAs, paymentTuple:(amountPaid: Float, place: String, date: Date, receiptImage: UIImage)) {
-        
-        switch showPayment
-        {
-            case .AddPayment:
-                let totalTuple = database.add(payment: paymentTuple)
-                amountAnimation.animateCircle(from: totalTuple.totalBefore, to: totalTuple.totalAfter)
-            case .UpdatePayment:
-                database.update(payment: cardTableSections[paymentUpdateIndex.section].payments[paymentUpdateIndex.row], with: paymentTuple)
+        DispatchQueue.main.async {
+            switch showPayment
+            {
+                case .AddPayment:
+                    let totalTuple = self.database.add(payment: paymentTuple)
+                    self.amountAnimation.animateCircle(from: totalTuple.totalBefore, to: totalTuple.totalAfter)
+                case .UpdatePayment:
+                    self.database.update(payment: self.cardTableSections[self.paymentUpdateIndex.section].payments[self.paymentUpdateIndex.row], with: paymentTuple)
+            }
+            
+            self.tblView.reloadData()
         }
-        
-        tblView.reloadData()
     }
 }
 

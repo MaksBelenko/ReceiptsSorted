@@ -27,6 +27,8 @@ class CameraSessionViewModel  {
     }
     var currentFlashMode = FlashMode.Auto
     
+    var changeBackgroundColor: Observable<Bool> = Observable(false)
+    
     
     
     //MARK: - Initialiser
@@ -39,13 +41,14 @@ class CameraSessionViewModel  {
     
     
     //MARK: - Private methods
-    private func setupCamera() {
-        self.setupCaptureSession()
-        self.setupDevice()
-        self.setupInputOutput()
-        self.setupPreviewLayer()
-        self.setupLayersCaptureSession()
-
+    func setupCamera() {
+        DispatchQueue.main.async {
+            self.setupCaptureSession()
+            self.setupDevice()
+            self.setupInputOutput()
+            self.setupPreviewLayer()
+            self.setupLayersCaptureSession()
+        }
     }
     
     
@@ -99,9 +102,11 @@ class CameraSessionViewModel  {
         cameraPreviewLayer?.connection?.videoOrientation = AVCaptureVideoOrientation.portrait
     }
     
+    
+    
     private func setupLayersCaptureSession() {
-        self.cameraPreviewLayer?.frame = view.frame
-        view.layer.insertSublayer(self.cameraPreviewLayer!, at: 0)
+        cameraPreviewLayer?.frame = view.layer.bounds
+        view.layer.insertSublayer(cameraPreviewLayer!, at: 0)
     }
     
     
@@ -112,8 +117,9 @@ class CameraSessionViewModel  {
      */
     func startRunningCaptureSession() {
         if (ProcessInfo.processInfo.environment["SIMULATOR_DEVICE_NAME"] == nil) {
-            DispatchQueue.global(qos: .userInteractive).async {
+            DispatchQueue.main.async {
                 self.captureSession.startRunning()
+                self.changeBackgroundColor.value = true
             }
         }
     }
@@ -123,7 +129,7 @@ class CameraSessionViewModel  {
      */
     func stopCaptureSession() {
         if (ProcessInfo.processInfo.environment["SIMULATOR_DEVICE_NAME"] == nil) {
-            DispatchQueue.global(qos: .background).async {
+            DispatchQueue.main.async {
                 self.captureSession.stopRunning()
             }
         }

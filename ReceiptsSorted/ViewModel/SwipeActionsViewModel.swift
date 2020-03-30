@@ -11,6 +11,13 @@ import UIKit
 class SwipeActionsViewModel {
 
     var swipeActionDelegate: SwipeActionDelegate?
+    var database: Database!
+    
+    
+    init(database: Database) {
+        self.database = database
+    }
+    
     
     
     /**
@@ -18,21 +25,21 @@ class SwipeActionsViewModel {
      - Parameter itemNumber: Index of the item to perform trailing actions for
      - Parameter payments: List of payments
      */
-    func createTrailingActions(for indexPath: IndexPath, in payments: [Payments]) -> UISwipeActionsConfiguration {
+    func createTrailingActions(for indexPath: IndexPath, in payment: Payments) -> UISwipeActionsConfiguration {
         
         let checkAction:UIContextualAction?
         
         let deleteAction = createContextualAction(title: "Remove", colour: UIColor.red, indexPath: indexPath) { (indexPath) in
-            self.deleteItem(for: indexPath)
+            self.actionClicked(for: .Remove, indexPath: indexPath, payment: payment)
         }
         
-        if (payments[indexPath.row].paymentReceived == false){
+        if (payment.paymentReceived == false){
             checkAction = createContextualAction(title: "Received", colour: UIColor(rgb: 0x3498db), indexPath: indexPath, onSelectAction: { (indexPath) in
-                self.tickItem(for: indexPath)
+                self.actionClicked(for: .Tick, indexPath: indexPath, payment: payment)
             })
         } else {
             checkAction = createContextualAction(title: "Not Received", colour: UIColor.gray, indexPath: indexPath, onSelectAction: { (indexPath) in
-                self.unTickItem(for: indexPath)
+                self.actionClicked(for: .Untick, indexPath: indexPath, payment: payment)
             })
         }
         
@@ -43,28 +50,47 @@ class SwipeActionsViewModel {
         return UISwipeActionsConfiguration(actions: [deleteAction, checkAction!])
     }
     
+
     
+    
+    
+    
+    
+    func actionClicked(for swipeCommand: SwipeCommandType, indexPath: IndexPath, payment: Payments) {
+            switch swipeCommand
+            {
+            case .Remove:
+                database.delete(item: payment)
+            case .Tick:
+                database.updateDetail(for: payment, detailType: .PaymentReceived, with: true)
+            case .Untick:
+                database.updateDetail(for: payment, detailType: .PaymentReceived, with: false)
+            }
+        
+        swipeActionDelegate?.onSwipeClicked(indexPath: indexPath)
+    }
+    
+    
+    
+    
+    
+    
+    /**
+     Creates UIContextualAction for the tableView cell
+     - Parameter title: The title of the action button
+     - Parameter colour: The colour of the action button
+     - Parameter indexPath: IndexPath of the tableView cell that is passed to closure
+     - Parameter onSelectAction: Closure that is executed once action button is pressed
+     */
     private func createContextualAction(title: String, colour: UIColor, indexPath: IndexPath, onSelectAction: @escaping (IndexPath) -> ()) -> UIContextualAction {
         
         let action = UIContextualAction(style: .normal, title: title) {  (action, view, complete) in
-            onSelectAction(indexPath)
             complete(true)
+            onSelectAction(indexPath)
         }
         action.backgroundColor = colour
         
         return action
     }
     
-    
-    
-    private func deleteItem(for indexPath: IndexPath) {
-        swipeActionDelegate?.onSwipeClicked(swipeCommand: .Remove, indexPath: indexPath)
-    }
-    
-    private func tickItem(for indexPath: IndexPath) {
-        swipeActionDelegate?.onSwipeClicked(swipeCommand: .Tick, indexPath: indexPath)
-    }
-    private func unTickItem(for indexPath: IndexPath) {
-        swipeActionDelegate?.onSwipeClicked(swipeCommand: .Untick, indexPath: indexPath)
-    }
 }
