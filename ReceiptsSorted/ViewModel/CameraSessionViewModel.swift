@@ -98,8 +98,8 @@ class CameraSessionViewModel  {
     
     private func setupPreviewLayer() {
         cameraPreviewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
-        cameraPreviewLayer?.videoGravity = AVLayerVideoGravity.resizeAspectFill
-        cameraPreviewLayer?.connection?.videoOrientation = AVCaptureVideoOrientation.portrait
+        cameraPreviewLayer?.videoGravity = .resizeAspectFill
+        cameraPreviewLayer?.connection?.videoOrientation = .portrait
     }
     
     
@@ -188,4 +188,39 @@ class CameraSessionViewModel  {
         }
         return "exclamationmark.triangle.fill"
     }
+    
+    
+    
+    
+    
+    /**
+     Focuses camera on the tapped point in the view
+     - Parameter recogniser: Tap recogniser
+     */
+    @objc func handleTapToFocus(recogniser: UITapGestureRecognizer) {
+        if let device = currentCamera {
+            let focusPoint = recogniser.location(in: recogniser.view)
+            let focusScaledPointX = focusPoint.x / recogniser.view!.frame.size.width
+            let focusScaledPointY = focusPoint.y / recogniser.view!.frame.size.height
+            if device.isFocusModeSupported(.autoFocus) && device.isFocusPointOfInterestSupported {
+                do {
+                    try device.lockForConfiguration()
+                } catch {
+                    print("Unable to lock for configuration for fcamera focus. Error: \(error)")
+                    return
+                }
+
+                device.focusPointOfInterest = CGPoint(x: focusScaledPointX, y: focusScaledPointY)
+                device.focusMode = .continuousAutoFocus
+
+                device.unlockForConfiguration()
+                
+//                //For test purposes
+//                let uiView = UIView(frame: CGRect(x: focusPoint.x - 25, y: focusPoint.y - 25, width: 50, height: 50))
+//                uiView.backgroundColor = UIColor.red
+//                recogniser.view?.addSubview(uiView)
+            }
+        }
+    }
+    
 }

@@ -24,13 +24,40 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
     
     
     
+    
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         imagePicker.delegate = self
         self.view.frame = controllerFrame ?? CGRect(x: 0, y: 0, width: 100, height: 100)
-//        takePhotoButton.layer.cornerRadius = takePhotoButton.frame.size.height/2
         
+        setupCameraSession()
+        setupGestureRecognisers()
+    }
+        
+    
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        cameraSession!.startRunningCaptureSession()
+    }
+    
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(true)
+    
+        view.backgroundColor = UIColor(rgb: 0xF0BC00)
+        cameraView.backgroundColor = UIColor(rgb: 0xF0BC00)
+        
+        cameraSession!.stopCaptureSession()
+    }
+    
+    
+    
+    
+    func setupCameraSession() {
         cameraView.layer.cornerRadius = 20
         cameraSession = CameraSessionViewModel(forView: cameraView)
         
@@ -42,19 +69,14 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
         }
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(true)
-        cameraSession!.startRunningCaptureSession()
+    
+    func setupGestureRecognisers() {
+        // Create gesture recognisers for focusing of camera
+        let tapGestureRecogniser = UITapGestureRecognizer(target: cameraSession, action: #selector(cameraSession?.handleTapToFocus(recogniser:)))
+        cameraView.addGestureRecognizer(tapGestureRecogniser)
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(true)
     
-        view.backgroundColor = UIColor(rgb: 0xF0BC00)
-        cameraView.backgroundColor = UIColor(rgb: 0xF0BC00)
-        
-        cameraSession!.stopCaptureSession()
-    }
     
     
     

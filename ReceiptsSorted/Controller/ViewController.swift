@@ -57,17 +57,6 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
         cardGesturesViewModel.cardViewController = cardViewController
         cardGesturesViewModel.visualEffectView = visualEffectView
         cardGesturesViewModel.addButton = addButton
-        
-        
-//        DispatchQueue.main.async {
-//            self.cameraVC.transitioningDelegate = self
-//            self.cameraVC.modalPresentationStyle = .custom
-//            self.cameraVC.controllerFrame = self.view.frame
-//            self.cameraVC.mainView = self.cardViewController
-//            self.cameraVC.cameraSession?.setupCamera()
-//        }
-        
-        
     }
 
     
@@ -75,11 +64,16 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
         super.viewWillAppear(animated)
         
         navigationController?.setNavigationBarHidden(true, animated: animated)
+    }
+
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         
         let totalAmount = cardViewController.database.getTotalAmount(of: .Pending)
         amountAnimation.animateCircle(to: totalAmount)
     }
-
+    
     
 //    override func viewWillDisappear(_ animated: Bool) {
 //        super.viewWillDisappear(animated)

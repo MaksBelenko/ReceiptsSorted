@@ -268,6 +268,17 @@ extension CardViewController: UITableViewDataSource, UITableViewDelegate, SwipeA
         }
     }
     
+    func removeEntryOrSection(indexPath: IndexPath) {
+        if (cardTableSections[indexPath.section].payments.count == 1) {  //One payments in section
+//            cardTableSections.remove(at: indexPath.section)
+            cardTableSections[indexPath.section].payments.remove(at: indexPath.row)
+            tblView.reloadData()//deleteSections(IndexSet([indexPath.section]), with: .fade)
+        } else {
+            cardTableSections[indexPath.section].payments.remove(at: indexPath.row)
+            tblView.deleteRows(at: [indexPath], with: .fade)
+        }
+    }
+    
 //    func tableView(_ tableView: UITableView, didEndEditingRowAt indexPath: IndexPath?) {
 //        print("Finished")
 //        guard let indexPath = indexPath else {return}
