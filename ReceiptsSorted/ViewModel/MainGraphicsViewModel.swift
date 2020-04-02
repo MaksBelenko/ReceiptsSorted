@@ -83,7 +83,7 @@ class MainGraphicsViewModel {
                 
                 shapeLayer.fillColor = UIColor.clear.cgColor
                 
-                shapeLayer.strokeColor = UIColor(rgb: 0x34475A).cgColor
+                shapeLayer.strokeColor = UIColor.wetAsphalt.cgColor
                 shapeLayer.lineWidth = frameWidth/11 + 1
                 
                 sublayers.append(shapeLayer)  //Add layers

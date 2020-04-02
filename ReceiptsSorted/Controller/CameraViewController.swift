@@ -48,8 +48,8 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(true)
     
-        view.backgroundColor = UIColor(rgb: 0xF0BC00)
-        cameraView.backgroundColor = UIColor(rgb: 0xF0BC00)
+        view.backgroundColor = .flatOrange
+        cameraView.backgroundColor = .flatOrange
         
         cameraSession!.stopCaptureSession()
     }

@@ -28,3 +28,12 @@ extension UIColor {
        )
    }
 }
+
+
+//<ARK: - Custom App Colours
+extension UIColor {
+    
+    static let flatOrange = UIColor(rgb: 0xEDB200)
+    static let wetAsphalt = UIColor(rgb: 0x34475A)
+
+}

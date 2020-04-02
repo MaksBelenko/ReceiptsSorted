@@ -23,6 +23,7 @@
 		B564470B241027EB00B08AD3 /* AddButtonAnimations.swift in Sources */ = {isa = PBXBuildFile; fileRef = B564470A241027EB00B08AD3 /* AddButtonAnimations.swift */; };
 		B566604E242FA955003DD15B /* PaymentTableSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = B566604D242FA955003DD15B /* PaymentTableSection.swift */; };
 		B5666050242FB65F003DD15B /* IntExtensins.swift in Sources */ = {isa = PBXBuildFile; fileRef = B566604F242FB65F003DD15B /* IntExtensins.swift */; };
+		B56B2F442433B1AB00B8814C /* EmailButtonAnimations.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56B2F432433B1AB00B8814C /* EmailButtonAnimations.swift */; };
 		B573FA9A23B81EC8005473D2 /* PaymentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B573FA9923B81EC8005473D2 /* PaymentViewController.swift */; };
 		B573FA9C23B9334A005473D2 /* DatePopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B573FA9B23B9334A005473D2 /* DatePopupViewController.swift */; };
 		B573FAA223B94BB2005473D2 /* TextPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B573FAA123B94BB2005473D2 /* TextPopupViewController.swift */; };
@@ -73,6 +74,7 @@
 		B564470A241027EB00B08AD3 /* AddButtonAnimations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddButtonAnimations.swift; sourceTree = "<group>"; };
 		B566604D242FA955003DD15B /* PaymentTableSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentTableSection.swift; sourceTree = "<group>"; };
 		B566604F242FB65F003DD15B /* IntExtensins.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntExtensins.swift; sourceTree = "<group>"; };
+		B56B2F432433B1AB00B8814C /* EmailButtonAnimations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailButtonAnimations.swift; sourceTree = "<group>"; };
 		B573FA9923B81EC8005473D2 /* PaymentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentViewController.swift; sourceTree = "<group>"; };
 		B573FA9B23B9334A005473D2 /* DatePopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePopupViewController.swift; sourceTree = "<group>"; };
 		B573FAA123B94BB2005473D2 /* TextPopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextPopupViewController.swift; sourceTree = "<group>"; };
@@ -171,6 +173,7 @@
 			children = (
 				B50BAADA242B7DC200EAFECA /* AmountAnimation.swift */,
 				B564470A241027EB00B08AD3 /* AddButtonAnimations.swift */,
+				B56B2F432433B1AB00B8814C /* EmailButtonAnimations.swift */,
 				B5AD17E22404757300BB3069 /* CardGesturesViewModel.swift */,
 				B573FAA723B98061005473D2 /* CircularTransition.swift */,
 			);
@@ -417,6 +420,7 @@
 				B526B4E2241B09A10031F629 /* Observable.swift in Sources */,
 				B50BAADD242BB8E000EAFECA /* SettingsViewController.swift in Sources */,
 				B5AD17E32404757300BB3069 /* CardGesturesViewModel.swift in Sources */,
+				B56B2F442433B1AB00B8814C /* EmailButtonAnimations.swift in Sources */,
 				B573FA9C23B9334A005473D2 /* DatePopupViewController.swift in Sources */,
 				B5858EA9241F69E700695E77 /* EmailViewModel.swift in Sources */,
 				B5FD65FB242EC9C7002C5C48 /* CardTableViewModel.swift in Sources */,

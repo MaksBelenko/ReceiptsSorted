@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CircularTransition: NSObject {
+class CircularTransition: NSObject, UIViewControllerAnimatedTransitioning  {
 
     var circle = UIView()
     var circleColor = UIColor.white
@@ -20,12 +20,11 @@ class CircularTransition: NSObject {
             circle.center = startingPoint
         }
     }
+ 
     
-}
-
-
-
-extension CircularTransition: UIViewControllerAnimatedTransitioning {
+    
+    
+    
     
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
         return duration

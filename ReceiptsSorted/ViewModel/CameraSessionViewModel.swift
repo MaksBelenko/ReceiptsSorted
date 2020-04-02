@@ -215,10 +215,12 @@ class CameraSessionViewModel  {
 
                 device.unlockForConfiguration()
                 
-//                //For test purposes
-//                let uiView = UIView(frame: CGRect(x: focusPoint.x - 25, y: focusPoint.y - 25, width: 50, height: 50))
-//                uiView.backgroundColor = UIColor.red
-//                recogniser.view?.addSubview(uiView)
+                //For test purposes
+//                let image = UIImage(systemName: "circle")
+////                image?.withTintColor(UIColor(rgb: 0xEDB200))
+//                let imageView = UIImageView(image: image)
+//                imageView.frame = CGRect(x: focusPoint.x - 30, y: focusPoint.y - 30, width: 60, height: 60)
+//                recogniser.view?.addSubview(imageView)
             }
         }
     }

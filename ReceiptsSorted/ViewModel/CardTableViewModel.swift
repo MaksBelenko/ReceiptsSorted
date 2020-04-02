@@ -58,7 +58,7 @@ class CardTableViewModel {
         
         let label = UILabel(frame: CGRect(x: 0, y: yOffset, width: width, height: 30))
         label.text = getSectionTitle(for: section, sortedBy: sortedBy)
-        label.textColor = UIColor(rgb: 0xEDB200) // Flat UI Orange
+        label.textColor = UIColor.flatOrange // Flat UI Orange
         label.font = UIFont.systemFont(ofSize: 23, weight: .bold)
         sectionView.addSubview(label)
         

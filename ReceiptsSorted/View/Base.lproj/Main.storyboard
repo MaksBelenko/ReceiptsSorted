@@ -15,16 +15,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zg2-2o-XkT">
-                                <rect key="frame" x="16" y="45" width="36" height="34"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <viewLayoutGuide key="safeArea" id="PJN-Oc-KhX"/>
-                                <color key="tintColor" red="0.26040893790000003" green="0.62689352040000001" blue="0.82998108859999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <state key="normal" backgroundImage="envelope.circle" catalog="system"/>
-                                <connections>
-                                    <action selector="emailButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="bJX-l2-5qp"/>
-                                </connections>
-                            </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="-£120.00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mUl-uz-7uc">
                                 <rect key="frame" x="83" y="167" width="209" height="63"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
@@ -54,14 +44,37 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NcS-2M-h2U">
-                                <rect key="frame" x="323" y="45" width="36" height="34"/>
+                                <rect key="frame" x="323" y="59" width="36" height="34"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
-                                <color key="tintColor" red="0.26040893790000003" green="0.62689352040000001" blue="0.82998108859999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <state key="normal" backgroundImage="gear" catalog="system"/>
                                 <connections>
                                     <segue destination="2t4-Kx-Wv9" kind="show" id="Zik-J7-Tpu"/>
                                 </connections>
                             </button>
+                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rY5-IO-utz" userLabel="Email View">
+                                <rect key="frame" x="10" y="45" width="63" height="62"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zg2-2o-XkT">
+                                        <rect key="frame" x="8" y="9" width="36" height="34.666666666666671"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="36" id="EE3-OH-Hvj"/>
+                                            <constraint firstAttribute="width" constant="36" id="MD2-BT-7LT"/>
+                                        </constraints>
+                                        <viewLayoutGuide key="safeArea" id="PJN-Oc-KhX"/>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <state key="normal" backgroundImage="envelope.circle" catalog="system"/>
+                                        <connections>
+                                            <action selector="emailButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="bJX-l2-5qp"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" red="0.20392156862745098" green="0.27843137254901962" blue="0.3529411764705882" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstItem="Zg2-2o-XkT" firstAttribute="top" secondItem="rY5-IO-utz" secondAttribute="top" constant="8" id="WFg-YS-ksR"/>
+                                    <constraint firstItem="Zg2-2o-XkT" firstAttribute="leading" secondItem="rY5-IO-utz" secondAttribute="leading" constant="8" id="hgF-jf-crp"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="0.20392156862745098" green="0.27843137254901962" blue="0.3529411764705882" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
@@ -69,11 +82,13 @@
                     <navigationItem key="navigationItem" id="A6g-JB-lMc"/>
                     <connections>
                         <outlet property="amountSum" destination="mUl-uz-7uc" id="H4z-LE-npb"/>
+                        <outlet property="emailButton" destination="Zg2-2o-XkT" id="Sng-Ee-Okh"/>
+                        <outlet property="emailContainerView" destination="rY5-IO-utz" id="ugh-Nf-W59"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1393" y="52"/>
+            <point key="canvasLocation" x="-1394.4000000000001" y="51.724137931034484"/>
         </scene>
         <!--Settings-->
         <scene sceneID="ff7-N3-s9b">
@@ -187,7 +202,7 @@
                         </textAttributes>
                     </navigationBar>
                     <connections>
-                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="Zeu-Ob-5OS"/>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="qeA-t9-97N"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="opj-0H-EcV" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

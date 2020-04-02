@@ -28,8 +28,6 @@ class PaymentViewController: UIViewController, UIGestureRecognizerDelegate {
     
     let buttonAnimations = AddButtonAnimations()
     
-    let wetAsphaltCGColor = UIColor(red:0.20, green:0.29, blue:0.37, alpha:1.0)
-    
     var paymentDelegate: PaymentDelegate?
     
     
@@ -159,7 +157,7 @@ class PaymentViewController: UIViewController, UIGestureRecognizerDelegate {
     func drawBottomLine(for textField: UITextField) {
         let bottomLine = CALayer()
         bottomLine.frame = CGRect(x: 0.0, y: textField.frame.height - 1, width: textField.frame.width, height: 1.0)
-        bottomLine.backgroundColor = wetAsphaltCGColor.cgColor
+        bottomLine.backgroundColor = UIColor.wetAsphalt.cgColor
         textField.borderStyle = UITextField.BorderStyle.none
         textField.layer.addSublayer(bottomLine)
     }
