@@ -32,7 +32,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
     var cardGesturesViewModel = CardGesturesViewModel()
     let circularTransition = CircularTransition()
     let emailViewModel = EmailViewModel()
-    let emailButtonAnimations = EmailButtonAnimations()
+    var emailButtonAnimations: EmailButtonAnimations!
     
     var amountAnimation: AmountAnimation!
     
@@ -65,6 +65,9 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
         cardGesturesViewModel.cardViewController = cardViewController
         cardGesturesViewModel.visualEffectView = visualEffectView
         cardGesturesViewModel.addButton = addButton
+        
+        setupEmailView()
+        emailButtonAnimations = EmailButtonAnimations(button: emailButton, container: emailContainerView, heightConstraint: emailContainerViewHeight, widthConstraint: emailContainerViewWidth)
     }
 
     
@@ -72,7 +75,6 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
         super.viewWillAppear(animated)
         
         navigationController?.setNavigationBarHidden(true, animated: animated)
-        setupEmailView()
     }
 
     
@@ -250,8 +252,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
         let lightGreenBar = mainGraphics.createHorizontalBar(percentage: 1, colour: UIColor(rgb: 0xC0CEB7))
         let lightRedBar = mainGraphics.createHorizontalBar(percentage: 0.7, colour: UIColor(rgb: 0xCA8D8B))
         
-        view.layer.insertSublayer(whiteCircle, at: 0) //addSublayer(whiteCircle)
-        view.layer.insertSublayer(redCircle, at: 1) //addSublayer(redCircle)
+        view.layer.insertSublayer(whiteCircle, at: 0)
+        view.layer.insertSublayer(redCircle, at: 1)
         for layer in mainGraphics.createEmptySpaces(amount: 55) {
             view.layer.insertSublayer(layer, at: 2)
         }
@@ -270,6 +272,9 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
          
     
     
+    
+    
+    //MARK: - Email button
     func setupEmailView() {
         emailContainerView.layer.cornerRadius = 20
         
@@ -279,66 +284,15 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
         emailContainerViewHeight = emailContainerView.heightAnchor.constraint(equalTo: emailButton.heightAnchor, constant: 20)
         emailContainerViewWidth  = emailContainerView.widthAnchor.constraint(equalTo: emailButton.widthAnchor, constant: 20)
         NSLayoutConstraint.activate([emailContainerViewHeight, emailContainerViewWidth])
-        
+    
     }
     
     
     @IBAction func emailButtonPressed(_ sender: UIButton) {
-//        emailButtonAnimations.animate(button: emailButton)
-        
-//        let emailViewController = emailViewModel.sendMail()
-//        self.present(emailViewController, animated: true, completion: nil)
-        
-        NSLayoutConstraint.deactivate([emailContainerViewHeight, emailContainerViewWidth])
-        emailContainerViewHeight.constant = 125
-        emailContainerViewWidth.constant  = 140
-        NSLayoutConstraint.activate([emailContainerViewHeight, emailContainerViewWidth])
-        
-        self.emailButton.setBackgroundImage(UIImage(systemName: "xmark"), for: .normal)
-        
-        let circleView = UIView(frame: CGRect(x: 8, y: 8, width: emailButton.frame.size.width, height: emailButton.frame.size.height))
-        circleView.backgroundColor = UIColor.wetAsphalt
-        circleView.layer.cornerRadius = circleView.frame.size.height / 2
-        emailContainerView.insertSubview(circleView, at: 0)
-        
-        UIView.animate(withDuration: 0.3) {
-            self.view.layoutIfNeeded()
-            self.emailContainerView.backgroundColor = UIColor(rgb: 0x213345).withAlphaComponent(0.8)
-            self.emailButton.transform = CGAffineTransform.identity.scaledBy(x: 0.5, y: 0.5)
-        }
-        
-        let buttonPending = createEmailSubviewButton(withTitle: "All Pending", yOffset: 55, width: 160)
-        let buttonSelect = createEmailSubviewButton(withTitle: "Select", yOffset: 110, width: 100)
-        emailContainerView.addSubview(buttonPending)
-        emailContainerView.addSubview(buttonSelect)
-        
-        UIView.animate(withDuration: 0.2, delay: 0.2, options: .curveLinear, animations: {
-            buttonPending.alpha = 1
-        }, completion: nil)
-        
-        UIView.animate(withDuration: 0.2, delay: 0.3, options: .curveLinear, animations: {
-            buttonSelect.alpha = 1
-        }, completion: nil)
+        emailButtonAnimations.animate()
     }
     
-    
-    
-    func createEmailSubviewButton(withTitle buttonTitle: String, yOffset: Int, width: Int) -> UIButton {
-        let button = UIButton(type: .system)
 
-        button.frame = CGRect(x: 8, y: yOffset, width: width, height: 40)
-        button.backgroundColor = UIColor.flatOrange //orange Flat UI
-        button.setTitle(buttonTitle, for: .normal)
-        button.titleLabel?.textAlignment = .center
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .bold)
-//        button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 7, right: 0)
-        button.setTitleColor(.white, for: .normal)
-        button.layer.cornerRadius = button.frame.size.height / 2
-
-        button.alpha = 0 // Make it invisible first
-         
-        return button
-    }
     
 }
 
