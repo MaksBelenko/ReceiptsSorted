@@ -290,6 +290,11 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
     
     @IBAction func emailButtonPressed(_ sender: UIButton) {
         emailButtonAnimations.animate()
+        
+        let pdfPreviewVC = PDFPreviewViewController(nibName: "PDFPreviewViewController", bundle: nil)
+        pdfPreviewVC.passedPayments = cardViewController.database.fetchSortedData(by: .NewestDateAdded, and: .Pending)
+        self.present(pdfPreviewVC, animated: true)
+
     }
     
 

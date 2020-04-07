@@ -56,6 +56,9 @@ class CardViewController: UIViewController {
         setupTableView()
         setupSearchBar()
         sortButton.setTitle(dropDownMenu.getButtonTitle(for: sortByOption), for: .normal)
+        
+        let fetchedPayments = database.fetchSortedData(by: sortByOption, and: paymentStatusSort)
+        cardTableSections = cardTableViewModel.getSections(for: fetchedPayments, sortedBy: sortByOption)
 //        setButtonTitle(for: sortByOption)
         
     }
@@ -119,7 +122,8 @@ class CardViewController: UIViewController {
             break
         }
         
-        
+        let fetchedPayments = database.fetchSortedData(by: sortByOption, and: paymentStatusSort)
+        cardTableSections = cardTableViewModel.getSections(for: fetchedPayments, sortedBy: sortByOption)
         tblView.reloadData()
     }
     
@@ -150,24 +154,13 @@ extension CardViewController: UIPopoverPresentationControllerDelegate, SortButto
         if (self.sortByOption != sortByOption) {
             self.sortByOption = sortByOption
             sortButton.setTitle(buttonTitle, for: .normal)
+            
+            let fetchedPayments = database.fetchSortedData(by: sortByOption, and: paymentStatusSort)
+            cardTableSections = cardTableViewModel.getSections(for: fetchedPayments, sortedBy: sortByOption)
             tblView.reloadData()
         }
     }
-    
-    
-//    func setButtonTitle(for sortTitle: SortBy) {
-//        switch sortTitle
-//        {
-//        case .Place:
-//            sortButton.setTitle("Place", for: .normal)
-//        case .NewestDateAdded:
-//            sortButton.setTitle("Date ↓", for: .normal)
-//        case .OldestDateAdded:
-//            sortButton.setTitle("Date ↑", for: .normal)
-//        case .None:
-//            break
-//        }
-//    }
+
 }
 
 
@@ -180,6 +173,8 @@ extension CardViewController: UISearchBarDelegate {
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        let fetchedPayments = database.fetchData(forName: searchText, by: sortByOption, and: paymentStatusSort)  //fetchSortedData(by: sortByOption, and: paymentStatusSort)
+        cardTableSections = cardTableViewModel.getSections(for: fetchedPayments, sortedBy: sortByOption)
         tblView.reloadData()
     }
 }
@@ -226,8 +221,8 @@ extension CardViewController: UITableViewDataSource, UITableViewDelegate, SwipeA
     //MARK: - Sections
 
     func numberOfSections(in tableView: UITableView) -> Int {
-        let fetchedPayments = database.fetchSortedData(by: sortByOption, and: paymentStatusSort)
-        cardTableSections = cardTableViewModel.getSections(for: fetchedPayments, sortedBy: sortByOption)
+//        let fetchedPayments = database.fetchSortedData(by: sortByOption, and: paymentStatusSort)
+//        cardTableSections = cardTableViewModel.getSections(for: fetchedPayments, sortedBy: sortByOption)
         return cardTableSections.count
     }
 

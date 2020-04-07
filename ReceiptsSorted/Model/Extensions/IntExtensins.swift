@@ -49,3 +49,22 @@ extension Int {
 //        return String(format: "%.0\(decimals)f", self)
     }
 }
+    
+    
+extension Int {
+    func numberAbbreviation() -> String {
+        let lastDigit = self % 10
+        
+        switch lastDigit
+        {
+        case 1:
+            return "\(self)st"
+        case 2:
+            return "\(self)nd"
+        case 3:
+            return "\(self)rd"
+        default:
+            return "\(self)th"
+        }
+    }
+}

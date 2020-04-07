@@ -30,6 +30,9 @@ class CircularTransition: NSObject, UIViewControllerAnimatedTransitioning  {
         return duration
     }
     
+    
+    
+    
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
         
         let containerView = transitionContext.containerView
@@ -107,7 +110,6 @@ class CircularTransition: NSObject, UIViewControllerAnimatedTransitioning  {
     
     
     private func frameForCircle (withViewCenter viewCenter: CGPoint, size viewSize: CGSize, startPoint: CGPoint) -> CGRect {
-        
         let xLength = fmax(startPoint.x, viewSize.width - startPoint.x)
         let yLength = fmax(startPoint.y, viewSize.height - startPoint.y)
         
@@ -115,7 +117,6 @@ class CircularTransition: NSObject, UIViewControllerAnimatedTransitioning  {
         let size = CGSize(width:  offsetVector, height: offsetVector)
         
         return CGRect(origin: CGPoint.zero, size: size)
-        
     }
     
     

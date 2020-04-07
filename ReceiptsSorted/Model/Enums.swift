@@ -43,3 +43,11 @@ enum SwipeCommandType {
 enum PaymentDetail {
     case Image, AmountPaid, Place, PaymentReceived
 }
+
+enum Alignment {
+    case left, centre, right
+}
+
+enum TableColumn {
+    case Date, Place, Price
+}

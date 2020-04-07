@@ -17,3 +17,14 @@ extension Date {
         return formatter.string(from: self)
     }
 }
+
+
+extension Date {
+    func toDateString() -> String {
+        let calendar = Calendar.current
+        let day = calendar.component(.day, from: self)
+        let month = calendar.component(.month, from: self)
+        let year = calendar.component(.year, from: self)
+        return "\(day) \(month.mapToMonth()) \(year)"
+    }
+}

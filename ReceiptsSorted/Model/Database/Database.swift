@@ -63,16 +63,40 @@ class Database {
      - Parameter name: Place's name that is used to filter and fetch data
                        from database
      */
-    func fetchData(forName name: String) -> [Payments]{
+    func fetchData(forName name: String, by sort: SortBy, and paymentStatus: PaymentStatusSort) -> [Payments]{
         let request: NSFetchRequest<Payments> = Payments.fetchRequest()
         
         if (name != "") {
             //[cd] is to make it non-casesensitive and non-diacritic
-            request.predicate = NSPredicate(format: "place CONTAINS[cd] %@", name)
+            let predicateSearchName = NSPredicate(format: "place CONTAINS[cd] %@", name)
+            
+            var predicatePaymentReceived: NSPredicate?
+            switch paymentStatus
+            {
+            case .Pending:
+                predicatePaymentReceived = NSPredicate(format: "paymentReceived == %@", NSNumber(value: false))
+            case .Received:
+                predicatePaymentReceived = NSPredicate(format: "paymentReceived == %@", NSNumber(value: true))
+            case .All:
+                break
+            }
+            
+            if let secondPredicate = predicatePaymentReceived {
+                request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicateSearchName, secondPredicate])
+            } else {
+                request.predicate = predicateSearchName
+            }
+            
+            
             request.sortDescriptors = [NSSortDescriptor(key: "place", ascending: true)]
+            
+            
+            return loadPayments(with: request)
+            
+        } else {
+            return fetchSortedData(by: sort, and: paymentStatus)
         }
         
-        return loadPayments(with: request)
     }
     
     
