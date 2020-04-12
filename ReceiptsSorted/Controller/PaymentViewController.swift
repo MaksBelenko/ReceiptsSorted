@@ -20,6 +20,7 @@ class PaymentViewController: UIViewController, UIGestureRecognizerDelegate {
     var place: String = ""
     var date: Date = Date()
     
+    @IBOutlet weak var bottomView: UIView!
     @IBOutlet weak var receiptImageView: UIImageView!
     @IBOutlet weak var amountPaidTextField: UITextField!
     @IBOutlet weak var placeOfPurchaseTextField: UITextField!
@@ -43,6 +44,10 @@ class PaymentViewController: UIViewController, UIGestureRecognizerDelegate {
         super.viewDidLoad()
 
         receiptImageView.image = passedImage
+        
+        bottomView.layer.cornerRadius = 13
+        bottomView.layer.applyShadow(color: .black, alpha: 0.2, x: 0, y: -3, blur: 4)
+        
         setTextFields()
         
         setupTextFields()
@@ -100,8 +105,21 @@ class PaymentViewController: UIViewController, UIGestureRecognizerDelegate {
         guard recogniser.view != nil else { return }
 
         if (recogniser.state == .began || recogniser.state == .changed) {
-            recogniser.view?.transform = (recogniser.view?.transform.scaledBy(x: recogniser.scale, y: recogniser.scale))!
-            recogniser.scale = 1
+            guard let view = recogniser.view else {return}
+            let pinchCenter = CGPoint(x: recogniser.location(in: view).x - view.bounds.midX,y: recogniser.location(in: view).y - view.bounds.midY)
+            let transform = view.transform.translatedBy(x: pinchCenter.x, y: pinchCenter.y).scaledBy(x: recogniser.scale, y: recogniser.scale).translatedBy(x: -pinchCenter.x, y: -pinchCenter.y)
+            let currentScale = self.receiptImageView.frame.size.width / self.receiptImageView.bounds.size.width
+            var newScale = currentScale*recogniser.scale
+            if newScale < 1 {
+                newScale = 1
+                let transform = CGAffineTransform(scaleX: newScale, y: newScale)
+                self.receiptImageView.transform = transform
+                recogniser.scale = 1
+                
+            } else {
+                view.transform = transform
+                recogniser.scale = 1
+            }
         }
         
         
@@ -136,8 +154,8 @@ class PaymentViewController: UIViewController, UIGestureRecognizerDelegate {
     
     
     func setupAddButton() {
-        addButton.layer.cornerRadius = addButton.frame.size.height/2
-        addButton.layer.applyShadow(color: .black, alpha: 0.25, x: 5, y: 10, blur: 10)
+        addButton.layer.cornerRadius = addButton.frame.size.height/4
+        addButton.layer.applyShadow(color: .flatOrange, alpha: 0.5, x: 1, y: 4, blur: 6)
         
         let buttonTitle = (pageType == .AddPayment) ? "Add" : "Save"
         addButton.setTitle( buttonTitle, for: .normal)

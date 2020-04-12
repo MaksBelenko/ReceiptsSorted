@@ -13,6 +13,7 @@ class CircularTransition: NSObject, UIViewControllerAnimatedTransitioning  {
     var circle = UIView()
     var circleColor = UIColor.white
     var duration: TimeInterval = 0.3
+    
     var transitionMode: CircularTransitionMode = .present
     
     var startingPoint = CGPoint.zero {
@@ -21,7 +22,6 @@ class CircularTransition: NSObject, UIViewControllerAnimatedTransitioning  {
         }
     }
  
-    
     
     
     
@@ -47,7 +47,7 @@ class CircularTransition: NSObject, UIViewControllerAnimatedTransitioning  {
                 circle = UIView() // make sure its completely new (re-initializing)
                 circle.frame = frameForCircle(withViewCenter: viewCenter, size: viewSize, startPoint: startingPoint)
                 
-                circle.layer.cornerRadius = circle.frame.size.height / 2
+                circle.layer.cornerRadius = circle.frame.size.height / 6
                 circle.center = startingPoint
                 circle.backgroundColor = circleColor
                 circle.transform = CGAffineTransform(scaleX: 0.001, y: 0.001)
@@ -78,7 +78,8 @@ class CircularTransition: NSObject, UIViewControllerAnimatedTransitioning  {
                 
                 circle.frame = frameForCircle(withViewCenter: viewCenter, size: viewSize, startPoint: startingPoint)
                 
-                circle.layer.cornerRadius = circle.frame.height / 2
+                circle.layer.cornerRadius = circle.frame.height / 6
+                
                 circle.center = startingPoint
                 
                 UIView.animate(withDuration: duration, animations: {
