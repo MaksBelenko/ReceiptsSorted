@@ -14,13 +14,10 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
     
     //MARK: - Fields
     @IBOutlet weak var amountSum: UILabel!
-    @IBOutlet weak var emailContainerView: UIView!
     @IBOutlet weak var emailButton: UIButton!
-    
     
     var emailContainerViewHeight = NSLayoutConstraint()
     var emailContainerViewWidth = NSLayoutConstraint()
-    
     
     var visualEffectView : UIVisualEffectView!  //For blur
     var cardViewController : CardViewController!
@@ -28,15 +25,15 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
     var cardStartPointY: CGFloat = 0
     
     var addButton: UIButton!
+    var buttonView: UIView!
     let buttonAnimations = AddButtonAnimations()
     var cardGesturesViewModel = CardGesturesViewModel()
     let circularTransition = CircularTransition()
-    let emailViewModel = EmailViewModel()
-    var emailButtonAnimations: EmailButtonAnimations!
     
     var amountAnimation: AmountAnimation!
     
     let cameraVC = CameraViewController(nibName: "CameraViewController", bundle: nil)
+    
     
     
     
@@ -53,27 +50,23 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        initialiseCircle()
+//        initialiseCircle()
         
         setupCard()
+        setupCardHandle()
         cardViewController.amountAnimation = amountAnimation
         
-        setupAddButton(withSize: self.view.frame.size.width / 4.5)
-        
+        setupAddButton(withSize: 55)
         
         cardGesturesViewModel.MainView = self.view
         cardGesturesViewModel.cardViewController = cardViewController
         cardGesturesViewModel.visualEffectView = visualEffectView
         cardGesturesViewModel.addButton = addButton
-        
-        setupEmailView()
-        emailButtonAnimations = EmailButtonAnimations(button: emailButton, container: emailContainerView, heightConstraint: emailContainerViewHeight, widthConstraint: emailContainerViewWidth)
     }
 
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
         navigationController?.setNavigationBarHidden(true, animated: animated)
     }
 
@@ -82,7 +75,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
         super.viewDidAppear(animated)
         
         let totalAmount = cardViewController.database.getTotalAmount(of: .Pending)
-        amountAnimation.animateCircle(to: totalAmount)
+//        amountAnimation.animateCircle(to: totalAmount)
     }
     
     
@@ -96,23 +89,45 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
     //MARK: - Setup Button
     func setupAddButton(withSize buttonSize: CGFloat) {
         
-        addButton = UIButton(type: .system)
+        /* Adding UIView that will contain button (needed for  3D Transform*/
+        buttonView = UIView(frame: CGRect(x: 0, y: 0, width: buttonSize, height: buttonSize))
+        self.view.addSubview(buttonView)
         
-        let buttonPositionX = self.view.frame.size.width - buttonSize - self.view.frame.size.width/20
-        let buttonPositionY = self.view.frame.size.height - buttonSize - self.view.frame.size.height/18
-        addButton.frame = CGRect(x: buttonPositionX, y: buttonPositionY, width: buttonSize, height: buttonSize)
+        buttonView.translatesAutoresizingMaskIntoConstraints = false
+        buttonView.heightAnchor.constraint(equalToConstant: buttonSize).isActive = true
+        buttonView.widthAnchor.constraint(equalToConstant: buttonSize).isActive = true
+        buttonView.centerYAnchor.constraint(equalTo: cardViewController.view.topAnchor, constant: -8).isActive = true
+        buttonView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30).isActive = true
+        
+        /* Creating Add Button */
+        addButton = UIButton(type: .system)
+        addButton.frame = CGRect(x: 0, y: 0, width: buttonSize, height: buttonSize)
         addButton.backgroundColor = UIColor.flatOrange //orange Flat UI
         addButton.setTitle("+", for: .normal)
-        addButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 70)
+        addButton.titleLabel?.font = UIFont.systemFont(ofSize: 45)
         addButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 7, right: 0)
         addButton.setTitleColor(.white, for: .normal)
         addButton.addTarget(self, action: #selector(ViewController.addButtonPressed), for: UIControl.Event.touchUpInside)
         buttonAnimations.startAnimatingPressActions(for: addButton)
         
-        self.view.addSubview(addButton)
         
-        addButton.layer.applyShadow(color: .black, alpha: 0.25, x: 5, y: 10, blur: 10)
-        addButton.layer.cornerRadius = buttonSize/2
+        /* Adding Transform Layer to enable 3D animation*/
+        var perspective = CATransform3DIdentity
+        perspective.m34 = -1 / 1000
+        let transformLayer = CATransformLayer()
+        transformLayer.transform = perspective
+
+        transformLayer.addSublayer(addButton.layer)
+        buttonView.layer.addSublayer(transformLayer)
+
+        addButton.layer.transform = CATransform3DMakeRotation(0, 1, 0, 0) //CGFloat(M_PI*0.5)
+        
+        
+        /* Add Button to button view and adjust corner radius*/
+        buttonView.addSubview(addButton)
+        
+        addButton.layer.applyShadow(color: .flatOrange, alpha: 0.5, x: 1, y: 2, blur: 4)
+        addButton.layer.cornerRadius = 18
     }
     
     
@@ -122,7 +137,6 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
         cameraVC.transitioningDelegate = self
         cameraVC.modalPresentationStyle = .custom
         cameraVC.controllerFrame = self.view.frame
-
         cameraVC.mainView = cardViewController
         
         self.present(cameraVC, animated: true, completion: nil)
@@ -132,17 +146,16 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
     
     
     func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        
         circularTransition.transitionMode = .present
-        circularTransition.startingPoint = addButton.center
+        circularTransition.startingPoint = buttonView.center
         circularTransition.circleColor = addButton.backgroundColor!
-                
+        
         return circularTransition
     }
     
     func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         circularTransition.transitionMode = .dismiss
-        circularTransition.startingPoint = addButton.center
+        circularTransition.startingPoint = buttonView.center
         circularTransition.circleColor = addButton.backgroundColor!
         
         return circularTransition
@@ -154,8 +167,9 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
     //MARK: - Card Setup
     
     func setupCard() {
-        cardStartPointY = self.view.frame.size.height / 2
-        cardHeight = self.view.frame.size.height * 19/20
+        let viewHeight = self.view.frame.size.height
+        cardStartPointY = viewHeight - viewHeight * CGFloat(cardCollapsedProportion)
+        cardHeight = viewHeight * CGFloat(cardExpandedProportion)
         
         visualEffectView = UIVisualEffectView()
         visualEffectView.frame = self.view.frame
@@ -171,22 +185,21 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
         cardViewController.view.frame = CGRect(x: 0, y: cardStartPointY , width: self.view.bounds.width, height: cardHeight)
         
         cardViewController.view.clipsToBounds = true
-        cardViewController.view.roundCorners(corners: [.topLeft, .topRight], radius: 30)
-        
+        cardViewController.view.roundCorners(corners: [.topLeft, .topRight], radius: 25)
         
         // Create gesture recognisers
-        let tapGestureRecogniser = UITapGestureRecognizer(target: self, action: #selector(ViewController.handleCardTap(recogniser:)))
+//        let tapGestureRecogniser = UITapGestureRecognizer(target: self, action: #selector(ViewController.handleCardTap(recogniser:)))
         
         // Add gestures for Handle Area in the CardViewController.xib
-        cardViewController.handleArea.addGestureRecognizer(tapGestureRecogniser)
-        cardViewController.handleArea.addGestureRecognizer(setPanGestureRecognizer())
+//        cardViewController.handleArea.addGestureRecognizer(tapGestureRecogniser)
+//        cardViewController.handleArea.addGestureRecognizer(setPanGestureRecognizer())
         
         // Add gestures for TableView in the CardViewController.xib
         cardViewController.tblView.addGestureRecognizer(setPanGestureRecognizer())
     }
     
     
-    // For multiple views to have the same PanGesture
+    /// For multiple views to have the same PanGesture
     func setPanGestureRecognizer() -> UIPanGestureRecognizer {
         let panGestureRecogniser = UIPanGestureRecognizer (target: self, action: #selector(ViewController.handleCardPan(recogniser:)))
         panGestureRecogniser.delegate = self
@@ -196,6 +209,23 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
         return panGestureRecogniser
     }
     
+    
+    
+    
+    func setupCardHandle() {
+        let handleView = UIView(frame: CGRect(x: 0, y: 0, width: 50, height: 3))
+        handleView.backgroundColor = .white
+        
+        self.view.addSubview(handleView)
+        
+        handleView.translatesAutoresizingMaskIntoConstraints = false
+        handleView.centerXAnchor.constraint(equalTo: cardViewController.view.centerXAnchor).isActive = true
+        handleView.bottomAnchor.constraint(equalTo: cardViewController.view.topAnchor, constant: -10).isActive = true
+        handleView.widthAnchor.constraint(equalToConstant: 50).isActive = true
+        handleView.heightAnchor.constraint(equalToConstant: 3).isActive = true
+      
+        handleView.layer.cornerRadius = handleView.frame.height
+    }
     
     
     //MARK: - Handling Gestures
@@ -275,29 +305,13 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
     
     
     //MARK: - Email button
-    func setupEmailView() {
-        emailContainerView.layer.cornerRadius = 20
-        
-        emailContainerView.translatesAutoresizingMaskIntoConstraints = false
-        emailContainerView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 10).isActive = true
-        emailContainerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0).isActive = true
-        emailContainerViewHeight = emailContainerView.heightAnchor.constraint(equalTo: emailButton.heightAnchor, constant: 20)
-        emailContainerViewWidth  = emailContainerView.widthAnchor.constraint(equalTo: emailButton.widthAnchor, constant: 20)
-        NSLayoutConstraint.activate([emailContainerViewHeight, emailContainerViewWidth])
-    
-    }
-    
     
     @IBAction func emailButtonPressed(_ sender: UIButton) {
-        emailButtonAnimations.animate()
-        
         let pdfPreviewVC = PDFPreviewViewController(nibName: "PDFPreviewViewController", bundle: nil)
         pdfPreviewVC.passedPayments = cardViewController.database.fetchSortedData(by: .NewestDateAdded, and: .Pending)
         self.present(pdfPreviewVC, animated: true)
 
     }
-    
-
     
 }
 

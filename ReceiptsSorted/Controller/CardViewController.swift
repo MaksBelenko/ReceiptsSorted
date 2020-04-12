@@ -70,13 +70,13 @@ class CardViewController: UIViewController {
         tblView.register(UINib(nibName: "PaymentTableViewCell", bundle: nil), forCellReuseIdentifier: "paymentCell")
         
         // Used to make separators lines full width
-//        tblView.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        tblView.separatorStyle = .none
+        tblView.separatorInset = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15)
+//        tblView.separatorStyle = .none
         //Removes uneeded separator lines at the end of TableView
         tblView.tableFooterView = UIView()
         
         // Set TableView height
-        tblView.frame.size.height = cardHeight * 3/5
+        tblView.frame.size.height = cardHeight * 1/5
         
     }
     
@@ -87,8 +87,10 @@ class CardViewController: UIViewController {
         searchBar.returnKeyType = UIReturnKeyType.done
         
         searchAndSortView.translatesAutoresizingMaskIntoConstraints = false
-        searchTopAnchor = searchAndSortView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: -11)
-        searchTopAnchor!.isActive = true
+        searchTopAnchor = searchAndSortView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: -(searchAndSortView.frame.size.height))
+        searchBottomAnchor = searchAndSortView.bottomAnchor.constraint(equalTo: self.SortSegmentedControl.topAnchor, constant: -25)
+        
+        NSLayoutConstraint.activate([searchTopAnchor!, searchBottomAnchor!])
     }
     
     
@@ -235,7 +237,8 @@ extension CardViewController: UITableViewDataSource, UITableViewDelegate, SwipeA
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return (section == 0) ? 30 : 40
+//        return (section == 0) ? 20 : 30
+        return 40
     }
     
 

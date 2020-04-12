@@ -14,9 +14,12 @@ class PaymentTableViewCell: UITableViewCell {
     var tickColor = UIColor(rgb: 0x425C76)
     
     
+    @IBOutlet weak var tickLabelLeadingConstraint: NSLayoutConstraint!
+    
     @IBOutlet weak var amountPaidText: UILabel!
     @IBOutlet weak var dateText: UILabel!
     @IBOutlet weak var placeText: UILabel!
+    @IBOutlet weak var receivedLabel: UILabel!
     @IBOutlet weak var tickLabel: UILabel!
     
     
@@ -31,10 +34,10 @@ class PaymentTableViewCell: UITableViewCell {
         tickLabel.layer.masksToBounds = true
         
         
-        let bottomLine = CALayer()
-        bottomLine.frame = CGRect(x: 0, y: self.frame.size.height - 0.3, width: self.frame.size.width, height: 0.3)
-        bottomLine.backgroundColor = UIColor(rgb: 0xbdc3c7).cgColor
-        self.layer.addSublayer(bottomLine)
+//        let bottomLine = CALayer()
+//        bottomLine.frame = CGRect(x: 15, y: self.frame.size.height - 0.5, width: self.frame.size.width - 50, height: 0.5)
+//        bottomLine.backgroundColor = UIColor(rgb: 0xbdc3c7).cgColor
+//        self.layer.addSublayer(bottomLine)
         
     }
 
@@ -61,11 +64,13 @@ class PaymentTableViewCell: UITableViewCell {
         
         
         if (p.paymentReceived == true) {
-            self.tickLabel.backgroundColor = tickColor.withAlphaComponent(1)
-            self.tickLabel.text = "✓"
+            receivedLabel.alpha = 1
+//            self.tickLabel.backgroundColor = tickColor.withAlphaComponent(1)
+//            self.tickLabel.text = "✓"
         } else {
-            self.tickLabel.backgroundColor = tickColor.withAlphaComponent(0)
-            self.tickLabel.text = ""
+            receivedLabel.alpha = 0
+//            self.tickLabel.backgroundColor = tickColor.withAlphaComponent(0)
+//            self.tickLabel.text = ""
         }
     }
     

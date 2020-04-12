@@ -33,9 +33,9 @@ extension UIColor {
 //<ARK: - Custom App Colours
 extension UIColor {
     
-    static let superLightFlatOrange = UIColor(rgb: 0xEDB200).withAlphaComponent(0.1)
-    static let lightFlatOrange = UIColor(rgb: 0xEDB200).withAlphaComponent(0.8)
-    static let flatOrange = UIColor(rgb: 0xEDB200)
-    static let wetAsphalt = UIColor(rgb: 0x34475A)
+    static let superLightFlatOrange = UIColor(rgb: 0xF39C12).withAlphaComponent(0.1)
+    static let lightFlatOrange = UIColor(rgb: 0xF39C12).withAlphaComponent(0.8)
+    static let flatOrange = UIColor(rgb: 0xF39C12)
+    static let wetAsphalt = UIColor(rgb: 0x34495E)
 
 }

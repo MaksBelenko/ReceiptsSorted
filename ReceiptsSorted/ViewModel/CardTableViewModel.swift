@@ -49,17 +49,17 @@ class CardTableViewModel {
      */
     func getSectionHeaderView(for section: Int, sortedBy: SortBy, width: CGFloat) -> UIView {
         
-        headerHeight = (section == 0) ? 30 : 40
+        headerHeight = 40 //(section == 0) ? 20 : 30
         
         let sectionView = UIView(frame: CGRect(x: 0, y: 0, width: width, height: headerHeight)) //set these values as necessary
         sectionView.backgroundColor = .white
         
-        let yOffset: CGFloat = (section == 0) ? 0 : 10
+//        let yOffset: CGFloat = (section == 0) ? 0 : 10
         
-        let label = UILabel(frame: CGRect(x: 0, y: yOffset, width: width, height: 30))
+        let label = UILabel(frame: CGRect(x: 0, y: 20, width: width, height: 20))
         label.text = getSectionTitle(for: section, sortedBy: sortedBy)
         label.textColor = UIColor.flatOrange // Flat UI Orange
-        label.font = UIFont.systemFont(ofSize: 23, weight: .bold)
+        label.font = UIFont.systemFont(ofSize: 17, weight: .semibold)
         sectionView.addSubview(label)
         
         
@@ -76,14 +76,14 @@ class CardTableViewModel {
      - Parameter section: Section index
      - Parameter sortedBy: Sort method
      */
-    func getSectionTitle(for section: Int, sortedBy: SortBy) -> String {
+    private func getSectionTitle(for section: Int, sortedBy: SortBy) -> String {
         let calendar = Calendar.current
         let currentMonth = calendar.component(.month, from: Date()).mapToMonth()
 
         if (section == 0 && sortedBy == .NewestDateAdded && currentMonth == sections[0].key ) {
-            return "    This month"
+            return "  THIS MONTH"
         } else {
-            return "    \(sections[section].key)"
+            return "  \(sections[section].key.uppercased())"
         }
     }
     

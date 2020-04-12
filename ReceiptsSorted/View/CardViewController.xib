@@ -10,8 +10,6 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CardViewController" customModule="ReceiptsSorted" customModuleProvider="target">
             <connections>
                 <outlet property="SortSegmentedControl" destination="cOg-BH-ggV" id="hHR-aR-6zV"/>
-                <outlet property="handleArea" destination="j8N-Um-Mhj" id="bZ7-h3-0r7"/>
-                <outlet property="handleImageView" destination="yRr-3K-Ve6" id="EaH-dC-uBZ"/>
                 <outlet property="searchAndSortView" destination="CUx-DJ-xt5" id="gmU-se-PpO"/>
                 <outlet property="searchBar" destination="6Hk-WJ-MAr" id="pkn-08-oYk"/>
                 <outlet property="sortButton" destination="uB3-D3-tJh" id="GrU-0K-CNc"/>
@@ -25,18 +23,19 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CUx-DJ-xt5" userLabel="SearchAndSortView">
-                    <rect key="frame" x="0.0" y="39" width="414" height="44"/>
+                    <rect key="frame" x="0.0" y="40" width="414" height="40"/>
                     <subviews>
-                        <searchBar contentMode="redraw" fixedFrame="YES" searchBarStyle="minimal" translatesAutoresizingMaskIntoConstraints="NO" id="6Hk-WJ-MAr">
-                            <rect key="frame" x="0.0" y="-6" width="340" height="56"/>
+                        <searchBar contentMode="redraw" fixedFrame="YES" searchBarStyle="minimal" text="" translatesAutoresizingMaskIntoConstraints="NO" id="6Hk-WJ-MAr">
+                            <rect key="frame" x="8" y="-8" width="332" height="56"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                             <textInputTraits key="textInputTraits"/>
                         </searchBar>
                         <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uB3-D3-tJh">
-                            <rect key="frame" x="340" y="2" width="74" height="40"/>
+                            <rect key="frame" x="340" y="0.0" width="74" height="40"/>
                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" name="ArialMT" family="Arial" pointSize="17"/>
                             <state key="normal" title="Place">
-                                <color key="titleColor" red="0.8117555528" green="0.6373264622" blue="0.0065413103780000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="titleColor" red="0.95294117647058818" green="0.61176470588235299" blue="0.070588235294117646" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
                             <connections>
                                 <action selector="sortButtonPressed:" destination="-1" eventType="touchUpInside" id="2E1-DG-7dM"/>
@@ -44,21 +43,7 @@
                         </button>
                     </subviews>
                     <constraints>
-                        <constraint firstAttribute="height" constant="44" id="1pB-yg-tsA"/>
-                    </constraints>
-                </view>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="j8N-Um-Mhj">
-                    <rect key="frame" x="0.0" y="0.0" width="414" height="29"/>
-                    <subviews>
-                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="chevron.compact.up" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="yRr-3K-Ve6">
-                            <rect key="frame" x="179" y="4" width="55" height="22"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        </imageView>
-                    </subviews>
-                    <color key="backgroundColor" white="0.85295970799171761" alpha="1" colorSpace="calibratedWhite"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="29" id="Noe-hE-jzq"/>
+                        <constraint firstAttribute="height" constant="40" id="ckT-kr-rra"/>
                     </constraints>
                 </view>
                 <segmentedControl opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="cOg-BH-ggV">
@@ -73,24 +58,20 @@
                     </connections>
                 </segmentedControl>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="qpD-v6-aLx">
-                    <rect key="frame" x="0.0" y="134" width="414" height="541"/>
+                    <rect key="frame" x="0.0" y="132" width="414" height="543"/>
                     <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                 </tableView>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstAttribute="trailing" secondItem="j8N-Um-Mhj" secondAttribute="trailing" id="BAr-Ff-BF0"/>
                 <constraint firstItem="CUx-DJ-xt5" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="HgC-ZM-0h0"/>
-                <constraint firstItem="cOg-BH-ggV" firstAttribute="top" secondItem="CUx-DJ-xt5" secondAttribute="bottom" constant="5" id="Pmb-Fo-Owl"/>
                 <constraint firstItem="CUx-DJ-xt5" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="Xp9-aS-X8P"/>
-                <constraint firstItem="qpD-v6-aLx" firstAttribute="top" secondItem="cOg-BH-ggV" secondAttribute="bottom" constant="10" id="cCU-A7-OcO"/>
-                <constraint firstItem="j8N-Um-Mhj" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="dJ3-hN-obj"/>
-                <constraint firstItem="qpD-v6-aLx" firstAttribute="top" secondItem="cOg-BH-ggV" secondAttribute="bottom" constant="10" id="gvW-r3-6Zk"/>
+                <constraint firstItem="qpD-v6-aLx" firstAttribute="top" secondItem="cOg-BH-ggV" secondAttribute="bottom" id="eVh-KB-USk"/>
+                <constraint firstItem="qpD-v6-aLx" firstAttribute="top" secondItem="cOg-BH-ggV" secondAttribute="bottom" id="mkG-Hv-cU0"/>
                 <constraint firstItem="cOg-BH-ggV" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="10" id="rfB-X9-j0E"/>
                 <constraint firstItem="qpD-v6-aLx" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="sUI-kN-LbG"/>
                 <constraint firstAttribute="bottom" secondItem="qpD-v6-aLx" secondAttribute="bottom" id="sdP-nM-1Wn"/>
                 <constraint firstItem="qpD-v6-aLx" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="seV-uA-58Z"/>
-                <constraint firstItem="j8N-Um-Mhj" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="tGW-N0-r3u"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="cOg-BH-ggV" secondAttribute="trailing" constant="10" id="yac-sX-VGY"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
@@ -98,7 +79,4 @@
             <point key="canvasLocation" x="-13.043478260869566" y="39.84375"/>
         </view>
     </objects>
-    <resources>
-        <image name="chevron.compact.up" catalog="system" width="128" height="43"/>
-    </resources>
 </document>

@@ -15,6 +15,12 @@ var nextState: CardState {
 var fractionComplete: CGFloat = 0.0
 
 var searchTopAnchor: NSLayoutConstraint?
+var searchBottomAnchor: NSLayoutConstraint?
+
+var cardCollapsedProportion = 0.70
+var cardExpandedProportion = 0.94
+
+
 
 
 
@@ -35,8 +41,9 @@ class CardGesturesViewModel {
         get { return mainView }
         set {
             mainView = newValue
-            cardStartPointY = mainView.frame.size.height / 2
-            cardHeight = mainView.frame.size.height * 19/20
+            let viewHeight = mainView.frame.size.height
+            cardStartPointY = viewHeight - viewHeight*CGFloat(cardCollapsedProportion)
+            cardHeight = viewHeight * CGFloat(cardExpandedProportion)
         }
     }
     
@@ -68,7 +75,7 @@ class CardGesturesViewModel {
                 }
 //                print("Ignore card animation = \(ignoreCardAnimation)")
                 if (!ignoreCardAnimation) {
-                    startInteractiveTransition(forState: nextState, duration: 0.6)
+                    startInteractiveTransition(forState: nextState, duration: 0.5)
                 }
     
             case .changed:
@@ -111,7 +118,6 @@ class CardGesturesViewModel {
             switch state {
             case .Expanded:
                 self.cardViewController.view.frame.origin.y = self.mainView.frame.height - self.cardHeight
-
             case .Collapsed:
                 self.cardViewController.view.frame.origin.y = self.cardStartPointY
             }
@@ -143,10 +149,13 @@ class CardGesturesViewModel {
 
         /* Add Button Opacity animation*/
         let buttonOpacityAnimator = UIViewPropertyAnimator(duration: duration, dampingRatio: dumpingRatio) {
+            self.mainView.layoutIfNeeded()
             switch state {
             case .Expanded:
+                self.addButton.layer.transform = CATransform3DMakeRotation(CGFloat(Double.pi*0.5), 1, 0, 0) //put back 90 deg
                 self.addButton.alpha = 0
             case .Collapsed:
+                self.addButton.layer.transform = CATransform3DMakeRotation(0, 1, 0, 0) //put to initial state
                 self.addButton.alpha = 1
             }
         }
@@ -155,20 +164,20 @@ class CardGesturesViewModel {
         runningAnimations.append(buttonOpacityAnimator)
         
         
-        switch state {
-        case .Expanded:
-//            NSLayoutConstraint.deactivate([self.cardViewController.searchAndSortView.topAnchor.constraint(equalTo: NSLayoutAnchor<NSLayoutYAxisAnchor>)])
-            searchTopAnchor?.isActive = false
-            searchTopAnchor = self.cardViewController.searchAndSortView.topAnchor.constraint(equalTo: self.cardViewController.view.topAnchor, constant: 32)
-            searchTopAnchor?.isActive = true
-        case .Collapsed:
-            searchTopAnchor?.isActive = false
-            searchTopAnchor = self.cardViewController.searchAndSortView.topAnchor.constraint(equalTo: self.cardViewController.view.topAnchor, constant: -11)
-            searchTopAnchor?.isActive = true
-        }
-        
         
         /* Top Search and Sort bar hide/unhide */
+        NSLayoutConstraint.deactivate([searchTopAnchor!, searchBottomAnchor!])
+        switch state {
+        case .Expanded:
+            searchTopAnchor = self.cardViewController.searchAndSortView.topAnchor.constraint(equalTo: self.cardViewController.view.topAnchor, constant: 15)
+            searchBottomAnchor = self.cardViewController.searchAndSortView.bottomAnchor.constraint(equalTo: self.cardViewController.SortSegmentedControl.topAnchor, constant: -15)
+        case .Collapsed:
+            searchTopAnchor = self.cardViewController.searchAndSortView.topAnchor.constraint(equalTo: self.cardViewController.view.topAnchor, constant: -(self.cardViewController.searchAndSortView.frame.size.height))
+            searchBottomAnchor = self.cardViewController.searchAndSortView.bottomAnchor.constraint(equalTo: self.cardViewController.SortSegmentedControl.topAnchor, constant: -25)
+        }
+        NSLayoutConstraint.activate([searchTopAnchor!, searchBottomAnchor!])
+        
+        
         let searchViewAnimator = UIViewPropertyAnimator(duration: duration, dampingRatio: dumpingRatio) {
             self.cardViewController.view.layoutIfNeeded()
         }

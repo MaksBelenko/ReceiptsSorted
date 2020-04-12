@@ -22,11 +22,11 @@
                 <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lto-ph-Osu">
                     <rect key="frame" x="0.0" y="44" width="375" height="734"/>
                     <subviews>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gXZ-Dz-QGX">
-                            <rect key="frame" x="306" y="28" width="44" height="41"/>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gXZ-Dz-QGX" userLabel="Close button">
+                            <rect key="frame" x="322" y="27.666666666666664" width="28" height="25"/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="44" id="6ZQ-5Z-8tQ"/>
-                                <constraint firstAttribute="height" constant="46" id="ZPU-V4-NK7"/>
+                                <constraint firstAttribute="height" constant="30" id="SBm-a8-1zA"/>
+                                <constraint firstAttribute="width" constant="28" id="UZf-yq-Dyl"/>
                             </constraints>
                             <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <state key="normal" backgroundImage="xmark" catalog="system"/>
@@ -34,35 +34,23 @@
                                 <action selector="pressedCloseCamera:" destination="-1" eventType="touchUpInside" id="Yc0-rw-JYM"/>
                             </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" adjustsImageSizeForAccessibilityContentSizeCategory="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="365-wz-sNb">
-                            <rect key="frame" x="136" y="625" width="103" height="102"/>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" adjustsImageSizeForAccessibilityContentSizeCategory="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="365-wz-sNb" userLabel="Take Picture button">
+                            <rect key="frame" x="142.66666666666666" y="636" width="90" height="88.666666666666629"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="103" id="eS0-rf-r0L"/>
-                                <constraint firstAttribute="width" constant="103" id="jRR-GO-ccj"/>
+                                <constraint firstAttribute="height" constant="90" id="0uO-jz-EsR"/>
+                                <constraint firstAttribute="width" constant="90" id="fLb-y9-pa7"/>
                             </constraints>
                             <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            <state key="normal" backgroundImage="camera.circle.fill" catalog="system"/>
+                            <state key="normal" backgroundImage="circle" catalog="system"/>
                             <connections>
                                 <action selector="pressedTakePhotoButton:" destination="-1" eventType="touchUpInside" id="xhZ-Uj-ZRA"/>
                             </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SIH-m9-Zga">
-                            <rect key="frame" x="46" y="653" width="61" height="46"/>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DHd-Jy-jG0" userLabel="Flash button">
+                            <rect key="frame" x="25" y="24.666666666666671" width="31" height="33"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="49" id="JI6-3Q-FJJ"/>
-                                <constraint firstAttribute="width" constant="61" id="taA-nT-LDk"/>
-                            </constraints>
-                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            <state key="normal" backgroundImage="photo" catalog="system"/>
-                            <connections>
-                                <action selector="pressedPickFromGalleryButton:" destination="-1" eventType="touchUpInside" id="xuh-JO-rFl"/>
-                            </connections>
-                        </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DHd-Jy-jG0">
-                            <rect key="frame" x="25" y="24.666666666666671" width="37" height="44"/>
-                            <constraints>
-                                <constraint firstAttribute="width" constant="37" id="LQu-PX-1ML"/>
-                                <constraint firstAttribute="height" constant="43" id="dd1-dl-jmg"/>
+                                <constraint firstAttribute="width" constant="31" id="JFO-zn-VlG"/>
+                                <constraint firstAttribute="height" constant="32" id="lrn-na-Fsb"/>
                             </constraints>
                             <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <state key="normal" backgroundImage="bolt.badge.a.fill" catalog="system">
@@ -72,21 +60,28 @@
                                 <action selector="pressedFlashButton:" destination="-1" eventType="touchUpInside" id="tcp-I0-jdZ"/>
                             </connections>
                         </button>
+                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SIH-m9-Zga" userLabel="Library button">
+                            <rect key="frame" x="52" y="663" width="44" height="34"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <state key="normal" backgroundImage="photo.on.rectangle" catalog="system"/>
+                            <connections>
+                                <action selector="pressedPickFromGalleryButton:" destination="-1" eventType="touchUpInside" id="xuh-JO-rFl"/>
+                            </connections>
+                        </button>
                     </subviews>
-                    <color key="backgroundColor" red="0.94117647058823528" green="0.73725490196078436" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <color key="backgroundColor" red="0.95294117647058818" green="0.61176470588235299" blue="0.070588235294117646" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
-                        <constraint firstItem="365-wz-sNb" firstAttribute="centerX" secondItem="lto-ph-Osu" secondAttribute="centerX" id="2O6-hf-Rog"/>
-                        <constraint firstAttribute="bottom" secondItem="SIH-m9-Zga" secondAttribute="bottom" constant="33.670000000000002" id="3UR-7e-XK8"/>
-                        <constraint firstItem="SIH-m9-Zga" firstAttribute="leading" secondItem="lto-ph-Osu" secondAttribute="leading" constant="46" id="HBi-TH-cVX"/>
-                        <constraint firstItem="gXZ-Dz-QGX" firstAttribute="top" secondItem="lto-ph-Osu" secondAttribute="top" constant="25" id="XQ6-WD-KaW"/>
-                        <constraint firstAttribute="bottom" secondItem="365-wz-sNb" secondAttribute="bottom" constant="7" id="ZlQ-ac-4fW"/>
-                        <constraint firstAttribute="trailing" secondItem="gXZ-Dz-QGX" secondAttribute="trailing" constant="25" id="e9K-yq-7Hu"/>
-                        <constraint firstItem="DHd-Jy-jG0" firstAttribute="top" secondItem="lto-ph-Osu" secondAttribute="top" constant="25" id="jgw-Sf-LbZ"/>
-                        <constraint firstItem="DHd-Jy-jG0" firstAttribute="leading" secondItem="lto-ph-Osu" secondAttribute="leading" constant="25" id="ufH-Hu-Ers"/>
+                        <constraint firstAttribute="trailing" secondItem="gXZ-Dz-QGX" secondAttribute="trailing" constant="25" id="0aw-lg-cgz"/>
+                        <constraint firstItem="365-wz-sNb" firstAttribute="centerX" secondItem="lto-ph-Osu" secondAttribute="centerX" id="9F1-Nx-Ecd"/>
+                        <constraint firstItem="gXZ-Dz-QGX" firstAttribute="top" secondItem="lto-ph-Osu" secondAttribute="top" constant="25" id="ORC-yE-7nh"/>
+                        <constraint firstItem="DHd-Jy-jG0" firstAttribute="top" secondItem="lto-ph-Osu" secondAttribute="top" constant="25" id="hgL-Hh-nhs"/>
+                        <constraint firstItem="DHd-Jy-jG0" firstAttribute="leading" secondItem="lto-ph-Osu" secondAttribute="leading" constant="25" id="wH7-8A-hPI"/>
+                        <constraint firstAttribute="bottom" secondItem="365-wz-sNb" secondAttribute="bottom" constant="9" id="xJS-pZ-9O7"/>
                     </constraints>
                 </view>
             </subviews>
-            <color key="backgroundColor" red="0.94117647058823528" green="0.73725490196078436" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color key="backgroundColor" red="0.95294117647058818" green="0.61176470588235299" blue="0.070588235294117646" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="lto-ph-Osu" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="4gI-nS-ZND"/>
                 <constraint firstItem="lto-ph-Osu" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="EjW-gB-Uxc"/>
@@ -99,8 +94,8 @@
     </objects>
     <resources>
         <image name="bolt.badge.a.fill" catalog="system" width="113" height="128"/>
-        <image name="camera.circle.fill" catalog="system" width="128" height="121"/>
-        <image name="photo" catalog="system" width="128" height="93"/>
+        <image name="circle" catalog="system" width="128" height="121"/>
+        <image name="photo.on.rectangle" catalog="system" width="128" height="98"/>
         <image name="xmark" catalog="system" width="128" height="113"/>
     </resources>
 </document>
