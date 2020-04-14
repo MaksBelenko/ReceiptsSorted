@@ -13,8 +13,9 @@ import CoreData
 class ViewController: UIViewController, UINavigationControllerDelegate, UIGestureRecognizerDelegate, UIViewControllerTransitioningDelegate  {
     
     //MARK: - Fields
-    @IBOutlet weak var amountSum: UILabel!
     @IBOutlet weak var emailButton: UIButton!
+    
+    var amountSum: UILabel!
     
     var emailContainerViewHeight = NSLayoutConstraint()
     var emailContainerViewWidth = NSLayoutConstraint()
@@ -52,8 +53,10 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
         
 //        initialiseCircle()
         
+        
         setupCard()
         setupCardHandle()
+        setupTopViewWithGraphics()
         cardViewController.amountAnimation = amountAnimation
         
         setupAddButton(withSize: 55)
@@ -277,7 +280,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
         let mainGraphics = MainGraphicsViewModel(frameWidth: view.frame.size.width, frameHeight: view.frame.size.height)
         
         let whiteCircle = mainGraphics.createCircleLine(from: CGFloat.pi*3/4, to: CGFloat.pi*1/4, ofColour: UIColor.white.cgColor)
-        let redCircle = mainGraphics.createCircleLine(from: CGFloat.pi*3/4, to: CGFloat.pi*1/4, ofColour: UIColor(rgb: 0xC24D35).cgColor)
+        let redCircle = mainGraphics.createCircleLine(from: CGFloat.pi*3/4, to: CGFloat.pi, ofColour: UIColor(rgb: 0xC24D35).cgColor)
         
         let lightGreenBar = mainGraphics.createHorizontalBar(percentage: 1, colour: UIColor(rgb: 0xC0CEB7))
         let lightRedBar = mainGraphics.createHorizontalBar(percentage: 0.7, colour: UIColor(rgb: 0xCA8D8B))
@@ -300,6 +303,72 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
     }
     
          
+    
+    private func setupTopViewWithGraphics() {
+        let topView = UIView()
+        topView.backgroundColor = .wetAsphalt
+        
+        view.insertSubview(topView, at: 0)
+        
+        topView.translatesAutoresizingMaskIntoConstraints = false
+        topView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+        topView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        topView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        topView.heightAnchor.constraint(equalToConstant: cardStartPointY).isActive = true
+        
+        
+        let mainGraphics = MainGraphicsViewModel(frameWidth: view.frame.size.width, frameHeight: cardStartPointY)
+        let contourCircle = mainGraphics.createCircleLine(from: 0, to: CGFloat.pi*2, ofColour: UIColor.contourFlatColour.cgColor)
+        let indicatorCircle = mainGraphics.createCircleLine(from: -CGFloat.pi/2, to: 0, ofColour: UIColor.flatOrange.cgColor)
+        
+        topView.layer.addSublayer(contourCircle)
+        topView.layer.addSublayer(indicatorCircle)
+        
+        contourCircle.applyShadow(color: .black, alpha: 0.16, x: 2, y: 2, blur: 3)
+        indicatorCircle.applyShadow(color: .flatOrange, alpha: 0.7, x: 0, y: 1, blur: 6)
+        
+        
+        
+        let currencyLabel = UILabel()
+        currencyLabel.text = "£"
+        currencyLabel.textColor = .flatOrange
+        currencyLabel.font = UIFont(name: "Arial", size: 46)
+        currencyLabel.textAlignment = .center
+        currencyLabel.frame.size.height = 50
+        currencyLabel.frame.size.width = 50
+        currencyLabel.center = CGPoint(x: view.frame.size.width/5, y: cardStartPointY * 0.43)
+        
+        topView.addSubview(currencyLabel)
+        
+        currencyLabel.layer.applyShadow(color: .black, alpha: 0.16, x: 2, y: 2, blur: 4)
+        
+        
+        
+        
+        amountSum = UILabel()
+        amountSum.textColor = UIColor(rgb: 0xC6CACE)
+        amountSum.font = UIFont(name: "Arial", size: 25)
+        amountSum.textAlignment = .right
+        
+        topView.addSubview(amountSum)
+        
+        amountSum.translatesAutoresizingMaskIntoConstraints = false
+        amountSum.rightAnchor.constraint(equalTo: topView.rightAnchor, constant: -25).isActive = true
+        amountSum.leftAnchor.constraint(equalTo: topView.leftAnchor).isActive = true
+        amountSum.heightAnchor.constraint(equalToConstant: 28).isActive = true
+        amountSum.centerYAnchor.constraint(equalTo: currencyLabel.centerYAnchor).isActive = true
+        
+        
+        
+        amountAnimation = AmountAnimation(animationCircle: indicatorCircle)
+        
+        amountAnimation.overallAmount.bind {
+            self.amountSum.text = "£\($0.ToString(decimals: 2))"
+        }
+    }
+    
+    
+    
     
     
     

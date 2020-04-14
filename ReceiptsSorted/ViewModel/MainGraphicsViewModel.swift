@@ -45,15 +45,16 @@ class MainGraphicsViewModel {
     func createCircleLine(from startAngle: CGFloat, to endAngle: CGFloat, ofColour colour: CGColor) -> CAShapeLayer {
         let shapeLayer = CAShapeLayer()
         
-        let circleCenter = CGPoint(x: frameWidth/2, y: frameHeight/4)
-        let circleRadius = frameWidth * 4/11
+        let circleCenter = CGPoint(x: frameWidth/5, y: frameHeight * 0.43)
+        let circleRadius: CGFloat = frameWidth / 9
         
         let circularPath = UIBezierPath(arcCenter: circleCenter, radius: circleRadius, startAngle: startAngle, endAngle: endAngle, clockwise: true)
         
         shapeLayer.path = circularPath.cgPath
         shapeLayer.fillColor = UIColor.clear.cgColor
         shapeLayer.strokeColor = colour
-        shapeLayer.lineWidth = frameWidth/11
+        shapeLayer.lineCap = .round
+        shapeLayer.lineWidth = 6  //frameWidth/11
         
         return shapeLayer
     }

@@ -15,34 +15,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="-£120.00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mUl-uz-7uc">
-                                <rect key="frame" x="83" y="167" width="209" height="63"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="45"/>
-                                <color key="textColor" red="0.7798619923857868" green="0.7798619923857868" blue="0.7798619923857868" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="£0.00" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CTr-MP-dvX">
-                                <rect key="frame" x="10" y="290" width="69" height="65"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="20"/>
-                                <color key="textColor" red="0.92516656091370564" green="0.92516656091370564" blue="0.92516656091370564" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="£1000" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LjE-Jq-c6Z">
-                                <rect key="frame" x="267" y="290" width="98" height="65"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="20"/>
-                                <color key="textColor" red="0.92516656090000005" green="0.92516656090000005" blue="0.92516656090000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="7 out of 31 days left" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SGZ-vv-mBm">
-                                <rect key="frame" x="87" y="328" width="201" height="60"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
-                                <color key="textColor" red="0.92516656090000005" green="0.92516656090000005" blue="0.92516656090000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NcS-2M-h2U">
                                 <rect key="frame" x="318" y="154" width="41" height="39"/>
                                 <constraints>
@@ -80,7 +52,6 @@
                     </view>
                     <navigationItem key="navigationItem" id="A6g-JB-lMc"/>
                     <connections>
-                        <outlet property="amountSum" destination="mUl-uz-7uc" id="H4z-LE-npb"/>
                         <outlet property="emailButton" destination="Zg2-2o-XkT" id="Sng-Ee-Okh"/>
                     </connections>
                 </viewController>
@@ -288,29 +259,42 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
-                                <color key="backgroundColor" red="0.97292059659999997" green="0.96952372789999997" blue="0.96931976080000004" alpha="0.97999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.97999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
                             <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WPh-Mf-0PA">
                                 <rect key="frame" x="0.0" y="44" width="375" height="44"/>
+                                <color key="barTintColor" systemColor="linkColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <textAttributes key="titleTextAttributes">
-                                    <color key="textColor" red="0.24313725489999999" green="0.32156862749999998" blue="0.41176470590000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <color key="textColor" systemColor="systemGreenColor" red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </textAttributes>
                                 <items>
                                     <navigationItem title="Payment Details" id="1DN-QI-oPa">
                                         <leftBarButtonItems>
                                             <barButtonItem title="return" image="chevron.left" catalog="system" id="gkD-Cs-HIA">
-                                                <color key="tintColor" red="0.24313725489999999" green="0.32156862749999998" blue="0.41176470590000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <connections>
+                                                    <action selector="returnToCameraBarButtonPressed:" destination="gk0-yM-Syz" id="t7i-eP-X13"/>
+                                                </connections>
                                             </barButtonItem>
                                             <barButtonItem title="save to photos" image="square.and.arrow.down" catalog="system" id="BFW-pn-e1x">
-                                                <color key="tintColor" red="0.24313725489999999" green="0.32156862749999998" blue="0.41176470590000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <connections>
+                                                    <action selector="saveToLibraryBarButtonPressed:" destination="gk0-yM-Syz" id="2P7-J0-ahd"/>
+                                                </connections>
                                             </barButtonItem>
                                         </leftBarButtonItems>
                                         <rightBarButtonItems>
                                             <barButtonItem systemItem="trash" id="ub3-Lw-AN3">
-                                                <color key="tintColor" red="0.24313725489999999" green="0.32156862749999998" blue="0.41176470590000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <connections>
+                                                    <action selector="deleteBarButtonPressed:" destination="gk0-yM-Syz" id="Ymn-8H-REW"/>
+                                                </connections>
                                             </barButtonItem>
                                             <barButtonItem systemItem="compose" id="tlh-wP-Ze0">
-                                                <color key="tintColor" red="0.24313725489999999" green="0.32156862749999998" blue="0.41176470590000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <connections>
+                                                    <action selector="editBarButtonPressed:" destination="gk0-yM-Syz" id="qa7-MI-OHX"/>
+                                                </connections>
                                             </barButtonItem>
                                         </rightBarButtonItems>
                                     </navigationItem>
@@ -337,6 +321,7 @@
                         <outlet property="dateTextField" destination="4L5-nO-PLR" id="lQa-2G-kso"/>
                         <outlet property="placeOfPurchaseTextField" destination="mHb-vD-WSY" id="dDQ-fj-5co"/>
                         <outlet property="receiptImageView" destination="6yn-5r-fWK" id="Wlg-wr-oMh"/>
+                        <outlet property="topNavigationBar" destination="WPh-Mf-0PA" id="hTH-4e-R2f"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KCc-YS-UoZ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

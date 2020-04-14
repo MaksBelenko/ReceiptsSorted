@@ -215,6 +215,7 @@ extension CardViewController: UITableViewDataSource, UITableViewDelegate, SwipeA
             paymentVC.paymentDelegate = self
             
             paymentVC.modalPresentationStyle = .fullScreen
+//            navigationController?.pushViewController(paymentVC, animated: true)
             self.present(paymentVC, animated: true, completion: nil)
         }
     }
@@ -237,7 +238,6 @@ extension CardViewController: UITableViewDataSource, UITableViewDelegate, SwipeA
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-//        return (section == 0) ? 20 : 30
         return 40
     }
     

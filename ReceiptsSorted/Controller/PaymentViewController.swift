@@ -20,6 +20,7 @@ class PaymentViewController: UIViewController, UIGestureRecognizerDelegate {
     var place: String = ""
     var date: Date = Date()
     
+    @IBOutlet weak var topNavigationBar: UINavigationBar!
     @IBOutlet weak var bottomView: UIView!
     @IBOutlet weak var receiptImageView: UIImageView!
     @IBOutlet weak var amountPaidTextField: UITextField!
@@ -34,7 +35,7 @@ class PaymentViewController: UIViewController, UIGestureRecognizerDelegate {
     
     
     //set Status Bar icons to black
-    override var preferredStatusBarStyle: UIStatusBarStyle { return .darkContent }
+    override var preferredStatusBarStyle: UIStatusBarStyle { return .lightContent }
     
     
     
@@ -45,6 +46,9 @@ class PaymentViewController: UIViewController, UIGestureRecognizerDelegate {
 
         receiptImageView.image = passedImage
         
+        setupNavigationBar()
+        
+        
         bottomView.layer.cornerRadius = 13
         bottomView.layer.applyShadow(color: .black, alpha: 0.2, x: 0, y: -3, blur: 4)
         
@@ -54,6 +58,26 @@ class PaymentViewController: UIViewController, UIGestureRecognizerDelegate {
         setupAddButton()
         setupGestures()
     }
+    
+    
+    
+    private func setupNavigationBar() {
+        if #available(iOS 13.0, *) {
+            let appearance = UINavigationBarAppearance()
+            appearance.configureWithOpaqueBackground()
+            appearance.backgroundColor = UIColor.wetAsphalt
+            appearance.titleTextAttributes = [.foregroundColor: UIColor.white] // With a red background, make the title more readable.
+            topNavigationBar.standardAppearance = appearance
+            topNavigationBar.scrollEdgeAppearance = appearance
+            topNavigationBar.compactAppearance = appearance // For iPhone small navigation bar in landscape.
+        } else {
+            topNavigationBar.barTintColor = UIColor.wetAsphalt
+            topNavigationBar.tintColor = UIColor.white
+            topNavigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
+        }
+    }
+    
+    
     
     
     //MARK: - Gestures
@@ -174,7 +198,7 @@ class PaymentViewController: UIViewController, UIGestureRecognizerDelegate {
     
     func drawBottomLine(for textField: UITextField) {
         let bottomLine = CALayer()
-        bottomLine.frame = CGRect(x: 0.0, y: textField.frame.height - 1, width: textField.frame.width, height: 1.0)
+        bottomLine.frame = CGRect(x: 0.0, y: textField.frame.height - 7, width: textField.frame.width, height: 1.0)
         bottomLine.backgroundColor = UIColor.wetAsphalt.cgColor
         textField.borderStyle = UITextField.BorderStyle.none
         textField.layer.addSublayer(bottomLine)
@@ -236,14 +260,58 @@ class PaymentViewController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     
-    @IBAction func editButtonPressed(_ sender: UIButton) {
+    
+    
+    //MARK: - Bar Buttons Actions
+    @IBAction func returnToCameraBarButtonPressed(_ sender: UIBarButtonItem) {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    @IBAction func saveToLibraryBarButtonPressed(_ sender: UIBarButtonItem) {
+        let optionMenu = UIAlertController(title: "Do you want to save the receipt image to your photos?", message: nil , preferredStyle: .actionSheet)
+
+        let deleteAction = UIAlertAction(title: "Yes, save", style: .default, handler: { alert in
+            guard let image = self.receiptImageView.image else { return }
+            UIImageWriteToSavedPhotosAlbum(image, self, #selector(self.image(_:didFinishSavingWithError:contextInfo:)), nil)
+        })
+
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        optionMenu.addAction(deleteAction)
+        optionMenu.addAction(cancelAction)
+        self.present(optionMenu, animated: true, completion: nil)
+    }
+    
+    @objc func image(_ image: UIImage, didFinishSavingWithError error: Error?, contextInfo: UnsafeRawPointer) {
+        if let error = error {
+            let ac = UIAlertController(title: "Error saving an image", message: error.localizedDescription, preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "OK", style: .default))
+            present(ac, animated: true)
+        } else {
+            let ac = UIAlertController(title: "Receipt image saved", message: "Your receipt image has been saved to your photos.", preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "OK", style: .default))
+            present(ac, animated: true)
+        }
+    }
+    
+    
+    
+    @IBAction func editBarButtonPressed(_ sender: UIBarButtonItem) {
         presentCropViewController(withImage: receiptImageView.image!)
     }
     
-    
-    @IBAction func returnToCameraButtonPressed(_ sender: UIButton) {
-        dismiss(animated: true, completion: nil)
+    @IBAction func deleteBarButtonPressed(_ sender: UIBarButtonItem) {
+        let optionMenu = UIAlertController(title: "Are you sure you want to remove the payment?", message: nil , preferredStyle: .actionSheet)
+
+        let deleteAction = UIAlertAction(title: "Yes, remove", style: .destructive, handler: { alert in
+            self.view.window!.rootViewController?.dismiss(animated: true, completion: nil)
+        })
+
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        optionMenu.addAction(deleteAction)
+        optionMenu.addAction(cancelAction)
+        self.present(optionMenu, animated: true, completion: nil)
     }
+    
     
     
     

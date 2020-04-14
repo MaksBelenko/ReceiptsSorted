@@ -35,7 +35,9 @@ extension UIColor {
     
     static let superLightFlatOrange = UIColor(rgb: 0xF39C12).withAlphaComponent(0.1)
     static let lightFlatOrange = UIColor(rgb: 0xF39C12).withAlphaComponent(0.8)
+    
     static let flatOrange = UIColor(rgb: 0xF39C12)
     static let wetAsphalt = UIColor(rgb: 0x34495E)
 
+    static let contourFlatColour = UIColor(rgb: 0x4D6379)
 }
