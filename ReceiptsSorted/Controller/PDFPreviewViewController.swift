@@ -13,6 +13,7 @@ class PDFPreviewViewController: UIViewController {
     
     var passedPayments: [Payments]!
     
+    @IBOutlet weak var topNavigationBar: UINavigationBar!
     @IBOutlet weak var sendEmailButton: UIButton!
     @IBOutlet weak var previewView: UIView!
     private let pdfView = PDFView()
@@ -34,6 +35,7 @@ class PDFPreviewViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        setupNavigationBar()
         setupEmailButton()
         setupPDFView()
         createPDFPreviewDocument()
@@ -41,8 +43,25 @@ class PDFPreviewViewController: UIViewController {
 
     
     
+    private func setupNavigationBar() {
+        if #available(iOS 13.0, *) {
+            let appearance = UINavigationBarAppearance()
+            appearance.configureWithOpaqueBackground()
+            appearance.backgroundColor = UIColor.wetAsphalt
+            appearance.titleTextAttributes = [.foregroundColor: UIColor.white]
+            topNavigationBar.standardAppearance = appearance
+            topNavigationBar.scrollEdgeAppearance = appearance
+            topNavigationBar.compactAppearance = appearance // For iPhone small navigation bar in landscape.
+        } else {
+            topNavigationBar.barTintColor = UIColor.wetAsphalt
+            topNavigationBar.tintColor = UIColor.white
+            topNavigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
+        }
+    }
+    
+    
     private func setupEmailButton() {
-        sendEmailButton.layer.cornerRadius = sendEmailButton.frame.size.height/2
+        sendEmailButton.layer.cornerRadius = 13//sendEmailButton.frame.size.height/2
         sendEmailButton.layer.applyShadow(color: .black, alpha: 0.25, x: 5, y: 10, blur: 10)
         buttonAnimations.startAnimatingPressActions(for: sendEmailButton)
     }
@@ -78,7 +97,7 @@ class PDFPreviewViewController: UIViewController {
     
     
     
-    @IBAction func closeButtonPressed(_ sender: UIButton) {
+    @IBAction func closeButtonPressed(_ sender: UIBarButtonItem) {
         dismiss(animated: true, completion: nil)
     }
     

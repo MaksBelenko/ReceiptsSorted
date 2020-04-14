@@ -68,7 +68,7 @@ class PaymentViewController: UIViewController {
             let appearance = UINavigationBarAppearance()
             appearance.configureWithOpaqueBackground()
             appearance.backgroundColor = UIColor.wetAsphalt
-            appearance.titleTextAttributes = [.foregroundColor: UIColor.white] // With a red background, make the title more readable.
+            appearance.titleTextAttributes = [.foregroundColor: UIColor.white]
             topNavigationBar.standardAppearance = appearance
             topNavigationBar.scrollEdgeAppearance = appearance
             topNavigationBar.compactAppearance = appearance // For iPhone small navigation bar in landscape.
@@ -85,17 +85,10 @@ class PaymentViewController: UIViewController {
     //MARK: - Gestures
     func setupGestures() {
         receiptImageView.isUserInteractionEnabled = true
-        
         //Pinch Gesture
-        let pinchGesture = UIPinchGestureRecognizer(target: imageGesturesViewModel, action: #selector(ImageGesturesViewModel.pinchGesture))
-        pinchGesture.delegate = imageGesturesViewModel
-        receiptImageView.addGestureRecognizer(pinchGesture)
-        
+        receiptImageView.addGestureRecognizer(imageGesturesViewModel.createPinchGesture())
         //Pan Gesture
-        let panGestureRecogniser = UIPanGestureRecognizer (target: imageGesturesViewModel, action: #selector(ImageGesturesViewModel.panGesture))
-        panGestureRecogniser.delegate = imageGesturesViewModel
-        panGestureRecogniser.minimumNumberOfTouches = 2
-        receiptImageView.addGestureRecognizer(panGestureRecogniser)
+        receiptImageView.addGestureRecognizer(imageGesturesViewModel.createPanGesture())
     }
     
     
@@ -119,21 +112,6 @@ class PaymentViewController: UIViewController {
         }
     }
     
-    
-    
-    
-    func setupAddButton() {
-        addButton.layer.cornerRadius = addButton.frame.size.height/4
-        addButton.layer.applyShadow(color: .flatOrange, alpha: 0.5, x: 1, y: 4, blur: 6)
-        
-        let buttonTitle = (pageType == .AddPayment) ? "Add" : "Save"
-        addButton.setTitle( buttonTitle, for: .normal)
-        
-        buttonAnimations.startAnimatingPressActions(for: addButton)
-    }
-    
-    
-    
     func setupTextFields() {
         drawBottomLine(for: amountPaidTextField)
         drawBottomLine(for: placeOfPurchaseTextField)
@@ -148,6 +126,20 @@ class PaymentViewController: UIViewController {
         textField.borderStyle = UITextField.BorderStyle.none
         textField.layer.addSublayer(bottomLine)
     }
+    
+    
+    
+    
+    func setupAddButton() {
+        addButton.layer.cornerRadius = addButton.frame.size.height/4
+        addButton.layer.applyShadow(color: .flatOrange, alpha: 0.5, x: 1, y: 4, blur: 6)
+        
+        let buttonTitle = (pageType == .AddPayment) ? "Add" : "Save"
+        addButton.setTitle( buttonTitle, for: .normal)
+        
+        buttonAnimations.startAnimatingPressActions(for: addButton)
+    }
+    
     
     
     
@@ -243,6 +235,7 @@ class PaymentViewController: UIViewController {
     @IBAction func editBarButtonPressed(_ sender: UIBarButtonItem) {
         presentCropViewController(withImage: receiptImageView.image!)
     }
+    
     
     @IBAction func deleteBarButtonPressed(_ sender: UIBarButtonItem) {
         let optionMenu = UIAlertController(title: "Are you sure you want to remove the payment?", message: nil , preferredStyle: .actionSheet)

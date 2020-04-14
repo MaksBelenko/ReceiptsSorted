@@ -141,6 +141,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		B516804D244634360057DF7C /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				B59E3E2623B50D9F0017D474 /* PaymentTableViewCell.xib */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
 		B5377BF323A82E280010B144 = {
 			isa = PBXGroup;
 			children = (
@@ -222,9 +230,9 @@
 				B5377C0A23A82E2A0010B144 /* LaunchScreen.storyboard */,
 				B5377C0523A82E280010B144 /* Main.storyboard */,
 				B59E3E2223B44DE80017D474 /* CardViewController.xib */,
-				B59E3E2623B50D9F0017D474 /* PaymentTableViewCell.xib */,
 				B573FAAA23B98285005473D2 /* CameraViewController.xib */,
 				B516CF13243BF1F0003D09E1 /* PDFPreviewViewController.xib */,
+				B516804D244634360057DF7C /* Cells */,
 			);
 			path = View;
 			sourceTree = "<group>";

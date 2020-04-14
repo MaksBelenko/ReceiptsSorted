@@ -37,14 +37,14 @@
                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="REVEIVED" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dS1-ya-cIv">
-                        <rect key="frame" x="334" y="39" width="61" height="14"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="RECEIVED" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dS1-ya-cIv">
+                        <rect key="frame" x="323" y="39" width="72" height="14"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="14" id="I7N-Aw-Iaw"/>
-                            <constraint firstAttribute="width" constant="61" id="TRd-Ns-OBz"/>
+                            <constraint firstAttribute="height" constant="14" id="BQK-HY-MKN"/>
+                            <constraint firstAttribute="width" constant="72" id="tb7-3P-VFk"/>
                         </constraints>
                         <fontDescription key="fontDescription" name="ArialMT" family="Arial" pointSize="12"/>
-                        <color key="textColor" red="0.59999999999999998" green="0.6705882352941176" blue="0.74509803921568629" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="textColor" red="0.96862745098039216" green="0.74901960784313726" blue="0.40392156862745099" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Apple Styre" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sOq-Hv-o8H">
@@ -71,10 +71,10 @@
                     <constraint firstItem="sOq-Hv-o8H" firstAttribute="leading" secondItem="35V-nN-LEd" secondAttribute="trailing" constant="15" id="PaD-I5-a96"/>
                     <constraint firstItem="zRv-MX-Haz" firstAttribute="top" secondItem="sOq-Hv-o8H" secondAttribute="bottom" constant="3" id="ThR-NR-jkd"/>
                     <constraint firstItem="sOq-Hv-o8H" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="VPv-Zd-8TD"/>
-                    <constraint firstAttribute="trailing" secondItem="dS1-ya-cIv" secondAttribute="trailing" constant="4" id="anb-Wi-vjF"/>
-                    <constraint firstItem="dS1-ya-cIv" firstAttribute="top" secondItem="uWM-yr-gwx" secondAttribute="bottom" constant="-1" id="cAH-aw-5gX"/>
+                    <constraint firstAttribute="trailing" secondItem="dS1-ya-cIv" secondAttribute="trailing" constant="4" id="daz-Tt-Pom"/>
                     <constraint firstItem="35V-nN-LEd" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="dcr-4E-Xr4"/>
                     <constraint firstItem="uWM-yr-gwx" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="18" id="fF7-XC-Vs2"/>
+                    <constraint firstItem="dS1-ya-cIv" firstAttribute="top" secondItem="uWM-yr-gwx" secondAttribute="bottom" constant="-1" id="hNN-Nu-MmW"/>
                     <constraint firstItem="zRv-MX-Haz" firstAttribute="leading" secondItem="35V-nN-LEd" secondAttribute="trailing" constant="15" id="zDp-uO-yqF"/>
                     <constraint firstItem="zRv-MX-Haz" firstAttribute="top" secondItem="sOq-Hv-o8H" secondAttribute="bottom" constant="3" id="zd7-rT-35i"/>
                 </constraints>

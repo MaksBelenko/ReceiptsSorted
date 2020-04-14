@@ -13,10 +13,28 @@ class MainGraphicsViewModel {
     var frameWidth: CGFloat = 100.0
     var frameHeight: CGFloat = 100.0
     
+    var circleCenter: CGPoint {
+        return CGPoint(x: frameWidth/5, y: frameHeight * 0.43)
+    }
+    
+    var circleRadius: CGFloat {
+        return frameWidth / 9
+    }
+    
+    var circleRightSideOffset: CGFloat {
+        return circleCenter.x + circleRadius
+    }
+    
+    
+    
+    
     init(frameWidth: CGFloat, frameHeight: CGFloat) {
         self.frameWidth = frameWidth
         self.frameHeight = frameHeight
     }
+    
+    
+    
     
     
     /**
@@ -25,11 +43,17 @@ class MainGraphicsViewModel {
                              is from 0.0 to 1.0 which represents percentage from 0% to 100%
      - Parameter colour: Colour of the horizontal bar
      */
-    func createHorizontalBar(percentage: CGFloat, colour: UIColor) -> CALayer {
+    func createHorizontalBar(percentage: CGFloat = 1, colour: UIColor, offset: CGFloat) -> CALayer {
         let barLayer = CALayer()
-        let barwidth = 18/20 * frameWidth * percentage
-        barLayer.frame = CGRect(x: frameWidth/20, y: 14/30*frameHeight, width: barwidth, height: 14)
-        barLayer.cornerRadius = 7
+        
+        let barHeight: CGFloat = 6
+        let offsetY = circleCenter.y + circleRadius*3/4
+        
+        let offsetX = circleRightSideOffset + offset
+        let barWidth = percentage * (frameWidth - offsetX) - offset
+
+        barLayer.frame = CGRect(x: offsetX, y: offsetY, width: barWidth, height: barHeight)
+        barLayer.cornerRadius = barHeight/2
         barLayer.backgroundColor = colour.cgColor
         
         return barLayer
@@ -45,9 +69,6 @@ class MainGraphicsViewModel {
     func createCircleLine(from startAngle: CGFloat, to endAngle: CGFloat, ofColour colour: CGColor) -> CAShapeLayer {
         let shapeLayer = CAShapeLayer()
         
-        let circleCenter = CGPoint(x: frameWidth/5, y: frameHeight * 0.43)
-        let circleRadius: CGFloat = frameWidth / 9
-        
         let circularPath = UIBezierPath(arcCenter: circleCenter, radius: circleRadius, startAngle: startAngle, endAngle: endAngle, clockwise: true)
         
         shapeLayer.path = circularPath.cgPath
@@ -60,37 +81,31 @@ class MainGraphicsViewModel {
     }
     
     
-    /**
-     Creates visual gaps for the main circle in UI
-     - Parameter amount: Amount of gaps that should be on the main circle
-     */
-    func createEmptySpaces(amount: Int) -> [CAShapeLayer]{
+    
+    func createCurrencyLabel() -> UILabel {
+        let currencyLabel = UILabel()
+        currencyLabel.text = "£"
+        currencyLabel.textColor = .flatOrange
+        currencyLabel.font = UIFont(name: "Arial", size: 46)
+        currencyLabel.textAlignment = .center
+        currencyLabel.frame.size.height = 50
+        currencyLabel.frame.size.width = 50
+        currencyLabel.center = circleCenter
         
-        var sublayers: [CAShapeLayer] = []
+        currencyLabel.layer.applyShadow(color: .black, alpha: 0.16, x: 2, y: 2, blur: 4)
         
-        for i in 1...amount*2 {
-            if (i%2 == 0) {
-                let shapeLayer = CAShapeLayer()
-                
-                let circleCenter = CGPoint(x: frameWidth/2, y: frameHeight/4)
-                let circleRadius = frameWidth * 4/11
-                
-                let size = (3/2 * CGFloat.pi)/CGFloat(2*amount+1)
-                let startPoint = 3/4 * CGFloat.pi + size*CGFloat(i-1)
-                let endPoint = startPoint + size
-                
-                let circularPath = UIBezierPath(arcCenter: circleCenter, radius: circleRadius, startAngle: startPoint, endAngle: endPoint, clockwise: true)
-                shapeLayer.path = circularPath.cgPath
-                
-                shapeLayer.fillColor = UIColor.clear.cgColor
-                
-                shapeLayer.strokeColor = UIColor.wetAsphalt.cgColor
-                shapeLayer.lineWidth = frameWidth/11 + 1
-                
-                sublayers.append(shapeLayer)  //Add layers
-            }
-        }
-        
-        return sublayers
+        return currencyLabel
+    }
+    
+    
+    
+    func createLabel(text: String = "", textAlignment: NSTextAlignment = .right) -> UILabel {
+        let label = UILabel()
+        label.text = text
+        label.textColor = UIColor(rgb: 0xC6CACE)
+        label.font = UIFont(name: "Arial", size: 25)
+        label.textAlignment = textAlignment
+
+        return label
     }
 }

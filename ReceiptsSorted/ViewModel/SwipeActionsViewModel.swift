@@ -29,16 +29,16 @@ class SwipeActionsViewModel {
         
         let checkAction:UIContextualAction?
         
-        let deleteAction = createContextualAction(title: "Remove", colour: UIColor.red, indexPath: indexPath) { (indexPath) in
+        let deleteAction = createContextualAction(title: "Remove", colour: UIColor(rgb: 0xFF6060), indexPath: indexPath) { (indexPath) in
             self.actionClicked(for: .Remove, indexPath: indexPath, payment: payment)
         }
         
         if (payment.paymentReceived == false){
-            checkAction = createContextualAction(title: "Received", colour: UIColor(rgb: 0x3498db), indexPath: indexPath, onSelectAction: { (indexPath) in
+            checkAction = createContextualAction(title: "Received", colour: UIColor(rgb: 0x3C556E), indexPath: indexPath, onSelectAction: { (indexPath) in
                 self.actionClicked(for: .Tick, indexPath: indexPath, payment: payment)
             })
         } else {
-            checkAction = createContextualAction(title: "Not Received", colour: UIColor.gray, indexPath: indexPath, onSelectAction: { (indexPath) in
+            checkAction = createContextualAction(title: "Not Received", colour: UIColor(rgb: 0x676767), indexPath: indexPath, onSelectAction: { (indexPath) in
                 self.actionClicked(for: .Untick, indexPath: indexPath, payment: payment)
             })
         }
@@ -47,7 +47,7 @@ class SwipeActionsViewModel {
 //        deleteAction.image = UIImage(systemName: "xmark")
 //        checkAction.image = UIImage(systemName: "checkmark.circle")
         
-        return UISwipeActionsConfiguration(actions: [deleteAction, checkAction!])
+        return UISwipeActionsConfiguration(actions: [checkAction!, deleteAction])
     }
     
 

@@ -16,10 +16,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NcS-2M-h2U">
-                                <rect key="frame" x="318" y="154" width="41" height="39"/>
+                                <rect key="frame" x="325" y="150" width="34" height="31"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="41" id="37d-ls-Jwt"/>
-                                    <constraint firstAttribute="height" constant="38.670000000000002" id="MJn-AB-oxt"/>
+                                    <constraint firstAttribute="height" constant="30.670000000000002" id="63Y-aW-hfg"/>
+                                    <constraint firstAttribute="width" constant="34" id="7KJ-Wd-JF6"/>
                                 </constraints>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <state key="normal" backgroundImage="gear" catalog="system"/>
@@ -28,10 +28,10 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zg2-2o-XkT">
-                                <rect key="frame" x="16" y="155" width="48" height="33.000000000000014"/>
+                                <rect key="frame" x="16" y="152.33333333333334" width="38" height="27.000000000000014"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="37" id="Gop-fz-9s4"/>
-                                    <constraint firstAttribute="width" constant="48" id="Pfu-yX-rgy"/>
+                                    <constraint firstAttribute="width" constant="38" id="ESc-Iw-xok"/>
+                                    <constraint firstAttribute="height" constant="31" id="Nfd-PF-cuB"/>
                                 </constraints>
                                 <viewLayoutGuide key="safeArea" id="PJN-Oc-KhX"/>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -41,12 +41,12 @@
                                 </connections>
                             </button>
                         </subviews>
-                        <color key="backgroundColor" red="0.20392156862745098" green="0.27843137254901962" blue="0.3529411764705882" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.20392156862745098" green="0.28627450980392155" blue="0.36862745098039218" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="NcS-2M-h2U" secondAttribute="trailing" constant="16" id="8C3-a5-WKR"/>
-                            <constraint firstItem="NcS-2M-h2U" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="14" id="S1c-he-Akr"/>
-                            <constraint firstItem="Zg2-2o-XkT" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="caH-w6-ajc"/>
-                            <constraint firstItem="Zg2-2o-XkT" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="12.67" id="zgz-bn-1Al"/>
+                            <constraint firstItem="Zg2-2o-XkT" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="IYm-8g-j3F"/>
+                            <constraint firstItem="Zg2-2o-XkT" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="NWn-3M-mlO"/>
+                            <constraint firstItem="NcS-2M-h2U" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="qnJ-TB-dLZ"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="NcS-2M-h2U" secondAttribute="trailing" constant="16" id="yEE-l4-LbU"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
@@ -171,7 +171,7 @@
                         </textAttributes>
                     </navigationBar>
                     <connections>
-                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="YXA-3b-pt6"/>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="1x8-Ps-jRX"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="opj-0H-EcV" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

@@ -16,6 +16,7 @@ var fractionComplete: CGFloat = 0.0
 
 var searchTopAnchor: NSLayoutConstraint?
 var searchBottomAnchor: NSLayoutConstraint?
+var noReceiptImageCenterYAnchor: NSLayoutConstraint?
 
 var cardCollapsedProportion = 0.70
 var cardExpandedProportion = 0.94
@@ -24,7 +25,7 @@ var cardExpandedProportion = 0.94
 
 
 
-class CardGesturesViewModel {
+class CardGesturesViewModel: NSObject {
     
     var cardHeight: CGFloat!
     var cardStartPointY: CGFloat!
@@ -60,7 +61,7 @@ class CardGesturesViewModel {
     
     //MARK: - Public methods
     
-    func handleCardPan(recogniser: UIPanGestureRecognizer) {
+    @objc func handleCardPan(recogniser: UIPanGestureRecognizer) {
         switch recogniser.state {
             case .began:
 //                print("Recogniser velocity: \(recogniser.velocity(in: recogniser.view).y)")
@@ -111,7 +112,7 @@ class CardGesturesViewModel {
     */
     func animateTransitionIfNeeded (with state: CardState, for duration: TimeInterval, withDampingRatio dumpingRatio: CGFloat) {
 
-        print("next state = \(nextState)")
+//        print("next state = \(nextState)")
         
         /* Size animation */
         let frameAnimator = UIViewPropertyAnimator(duration: duration, dampingRatio: dumpingRatio) {
@@ -166,16 +167,18 @@ class CardGesturesViewModel {
         
         
         /* Top Search and Sort bar hide/unhide */
-        NSLayoutConstraint.deactivate([searchTopAnchor!, searchBottomAnchor!])
+        NSLayoutConstraint.deactivate([searchTopAnchor!, searchBottomAnchor!, noReceiptImageCenterYAnchor!])
         switch state {
         case .Expanded:
             searchTopAnchor = self.cardViewController.searchAndSortView.topAnchor.constraint(equalTo: self.cardViewController.view.topAnchor, constant: 15)
             searchBottomAnchor = self.cardViewController.searchAndSortView.bottomAnchor.constraint(equalTo: self.cardViewController.SortSegmentedControl.topAnchor, constant: -15)
+            noReceiptImageCenterYAnchor = self.cardViewController.noReceiptsImage?.centerYAnchor.constraint(equalTo: self.cardViewController.tblView.centerYAnchor)
         case .Collapsed:
             searchTopAnchor = self.cardViewController.searchAndSortView.topAnchor.constraint(equalTo: self.cardViewController.view.topAnchor, constant: -(self.cardViewController.searchAndSortView.frame.size.height))
             searchBottomAnchor = self.cardViewController.searchAndSortView.bottomAnchor.constraint(equalTo: self.cardViewController.SortSegmentedControl.topAnchor, constant: -25)
+            noReceiptImageCenterYAnchor = self.cardViewController.noReceiptsImage?.centerYAnchor.constraint(equalTo: self.cardViewController.tblView.centerYAnchor, constant: -cardStartPointY/2)
         }
-        NSLayoutConstraint.activate([searchTopAnchor!, searchBottomAnchor!])
+        NSLayoutConstraint.activate([searchTopAnchor!, searchBottomAnchor!, noReceiptImageCenterYAnchor!])
         
         
         let searchViewAnimator = UIViewPropertyAnimator(duration: duration, dampingRatio: dumpingRatio) {
@@ -260,5 +263,36 @@ class CardGesturesViewModel {
         } else {
             return .Up
         }
+    }
+}
+
+//MARK: - Handling Gestures
+extension CardGesturesViewModel: UIGestureRecognizerDelegate {
+
+    //Deactivates PanGesture for TableView if the movement is horizontal
+    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        if let panGestureRecognizer = gestureRecognizer as? UIPanGestureRecognizer {
+            let translation = panGestureRecognizer.translation(in: self.cardViewController.tblView)
+            if (abs(translation.x) < abs(translation.y)) {
+                return true
+            }
+        }
+        return false
+    }
+    
+    
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRequireFailureOf otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        if gestureRecognizer is UIPanGestureRecognizer {
+            if cardViewController.tblView.contentOffset.y > 1 && nextState == .Collapsed {
+                return true
+            }
+        }
+        return false
+    }
+    
+    
+    // Enable multiple gesture recognition
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return (gestureRecognizer is UIPanGestureRecognizer) ? true : false
     }
 }

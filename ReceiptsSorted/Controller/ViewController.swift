@@ -10,7 +10,7 @@ import UIKit
 import CoreData
 
 
-class ViewController: UIViewController, UINavigationControllerDelegate, UIGestureRecognizerDelegate, UIViewControllerTransitioningDelegate  {
+class ViewController: UIViewController, UINavigationControllerDelegate, UIViewControllerTransitioningDelegate  {
     
     //MARK: - Fields
     @IBOutlet weak var emailButton: UIButton!
@@ -50,9 +50,6 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
     //MARK: - ViewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-//        initialiseCircle()
-        
         
         setupCard()
         setupCardHandle()
@@ -181,6 +178,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
         
         cardViewController = CardViewController(nibName: "CardViewController", bundle: nil)
         cardViewController.cardHeight = cardHeight
+        cardViewController.cardStartPointY = cardStartPointY
         
         self.addChild(cardViewController)
         self.view.addSubview(cardViewController.view)
@@ -190,13 +188,6 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
         cardViewController.view.clipsToBounds = true
         cardViewController.view.roundCorners(corners: [.topLeft, .topRight], radius: 25)
         
-        // Create gesture recognisers
-//        let tapGestureRecogniser = UITapGestureRecognizer(target: self, action: #selector(ViewController.handleCardTap(recogniser:)))
-        
-        // Add gestures for Handle Area in the CardViewController.xib
-//        cardViewController.handleArea.addGestureRecognizer(tapGestureRecogniser)
-//        cardViewController.handleArea.addGestureRecognizer(setPanGestureRecognizer())
-        
         // Add gestures for TableView in the CardViewController.xib
         cardViewController.tblView.addGestureRecognizer(setPanGestureRecognizer())
     }
@@ -204,8 +195,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
     
     /// For multiple views to have the same PanGesture
     func setPanGestureRecognizer() -> UIPanGestureRecognizer {
-        let panGestureRecogniser = UIPanGestureRecognizer (target: self, action: #selector(ViewController.handleCardPan(recogniser:)))
-        panGestureRecogniser.delegate = self
+        let panGestureRecogniser = UIPanGestureRecognizer (target: cardGesturesViewModel, action: #selector(CardGesturesViewModel.handleCardPan(recogniser:)))
+        panGestureRecogniser.delegate = cardGesturesViewModel
 
         panGestureRecogniser.minimumNumberOfTouches = 1
         panGestureRecogniser.maximumNumberOfTouches = 4
@@ -230,83 +221,15 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
         handleView.layer.cornerRadius = handleView.frame.height
     }
     
-    
-    //MARK: - Handling Gestures
 
-    //Deactivates PanGesture for TableView if the movement is horizontal
-    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-        if let panGestureRecognizer = gestureRecognizer as? UIPanGestureRecognizer {
-            let translation = panGestureRecognizer.translation(in: self.cardViewController.tblView)
-            if (abs(translation.x) < abs(translation.y)) {
-                return true
-            }
-        }
-        return false
-    }
     
-    
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRequireFailureOf otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        if gestureRecognizer is UIPanGestureRecognizer {
-            if cardViewController.tblView.contentOffset.y > 1 && nextState == .Collapsed {
-                return true
-            }
-        }
-        return false
-    }
-    
-    
-    // Enable multiple gesture recognition
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        return (gestureRecognizer is UIPanGestureRecognizer) ? true : false
-    }
-    
-    
-    
-    @objc func handleCardTap(recogniser: UITapGestureRecognizer) {
-        cardGesturesViewModel.animateTransitionIfNeeded(with: nextState, for: 0.7, withDampingRatio: 0.8)
-    }
-
-
-     @objc func handleCardPan (recogniser: UIPanGestureRecognizer) {
-        cardGesturesViewModel.handleCardPan(recogniser: recogniser)
-    }
-
 
     
     
     //MARK: - Initialisation of Top graphics
-    func initialiseCircle() {
-        
-        let mainGraphics = MainGraphicsViewModel(frameWidth: view.frame.size.width, frameHeight: view.frame.size.height)
-        
-        let whiteCircle = mainGraphics.createCircleLine(from: CGFloat.pi*3/4, to: CGFloat.pi*1/4, ofColour: UIColor.white.cgColor)
-        let redCircle = mainGraphics.createCircleLine(from: CGFloat.pi*3/4, to: CGFloat.pi, ofColour: UIColor(rgb: 0xC24D35).cgColor)
-        
-        let lightGreenBar = mainGraphics.createHorizontalBar(percentage: 1, colour: UIColor(rgb: 0xC0CEB7))
-        let lightRedBar = mainGraphics.createHorizontalBar(percentage: 0.7, colour: UIColor(rgb: 0xCA8D8B))
-        
-        view.layer.insertSublayer(whiteCircle, at: 0)
-        view.layer.insertSublayer(redCircle, at: 1)
-        for layer in mainGraphics.createEmptySpaces(amount: 55) {
-            view.layer.insertSublayer(layer, at: 2)
-        }
-        view.layer.addSublayer(lightGreenBar)
-        view.layer.addSublayer(lightRedBar)
-        
-        
-        
-        amountAnimation = AmountAnimation(animationCircle: redCircle)
-        
-        amountAnimation.overallAmount.bind { [weak self] in
-            self?.amountSum.text = "-£\($0.ToString(decimals: 2))" 
-        }
-    }
-    
-         
     
     private func setupTopViewWithGraphics() {
         let topView = UIView()
-        topView.backgroundColor = .wetAsphalt
         
         view.insertSubview(topView, at: 0)
         
@@ -329,35 +252,59 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
         indicatorCircle.applyShadow(color: .flatOrange, alpha: 0.7, x: 0, y: 1, blur: 6)
         
         
-        
-        let currencyLabel = UILabel()
-        currencyLabel.text = "£"
-        currencyLabel.textColor = .flatOrange
-        currencyLabel.font = UIFont(name: "Arial", size: 46)
-        currencyLabel.textAlignment = .center
-        currencyLabel.frame.size.height = 50
-        currencyLabel.frame.size.width = 50
-        currencyLabel.center = CGPoint(x: view.frame.size.width/5, y: cardStartPointY * 0.43)
-        
+        /* Creating Currency Label inside the circle */
+        let currencyLabel = mainGraphics.createCurrencyLabel()
         topView.addSubview(currencyLabel)
-        
-        currencyLabel.layer.applyShadow(color: .black, alpha: 0.16, x: 2, y: 2, blur: 4)
-        
+
         
         
         
-        amountSum = UILabel()
-        amountSum.textColor = UIColor(rgb: 0xC6CACE)
-        amountSum.font = UIFont(name: "Arial", size: 25)
-        amountSum.textAlignment = .right
-        
+        /* Creating Amount sum label that will show sum of all pending payments */
+        amountSum = mainGraphics.createLabel()
         topView.addSubview(amountSum)
         
+        let offsetRight: CGFloat = 25
+        
         amountSum.translatesAutoresizingMaskIntoConstraints = false
-        amountSum.rightAnchor.constraint(equalTo: topView.rightAnchor, constant: -25).isActive = true
-        amountSum.leftAnchor.constraint(equalTo: topView.leftAnchor).isActive = true
+        amountSum.rightAnchor.constraint(equalTo: topView.rightAnchor, constant: -offsetRight).isActive = true
+        amountSum.widthAnchor.constraint(equalTo: topView.widthAnchor, constant: -mainGraphics.circleRightSideOffset-2*offsetRight).isActive = true
         amountSum.heightAnchor.constraint(equalToConstant: 28).isActive = true
-        amountSum.centerYAnchor.constraint(equalTo: currencyLabel.centerYAnchor).isActive = true
+        amountSum.centerYAnchor.constraint(equalTo: currencyLabel.centerYAnchor, constant: -mainGraphics.circleRadius*3/4).isActive = true
+        
+        
+        /* Creating "Pending:" UILabel */
+        let pendingLabel = mainGraphics.createLabel(text: "Pending:", textAlignment: .left)
+        topView.addSubview(pendingLabel)
+        
+        pendingLabel.translatesAutoresizingMaskIntoConstraints = false
+        pendingLabel.rightAnchor.constraint(equalTo: amountSum.rightAnchor).isActive = true
+        pendingLabel.heightAnchor.constraint(equalTo: amountSum.heightAnchor).isActive = true
+        pendingLabel.widthAnchor.constraint(equalTo: amountSum.widthAnchor).isActive = true
+        pendingLabel.centerYAnchor.constraint(equalTo: amountSum.centerYAnchor).isActive = true
+        
+        
+        
+        
+        let contourBar = mainGraphics.createHorizontalBar(colour: .contourFlatColour, offset: offsetRight)
+        let dayBar = mainGraphics.createHorizontalBar(percentage: 0.85, colour: .flatOrange, offset: offsetRight)
+        topView.layer.addSublayer(contourBar)
+        topView.layer.addSublayer(dayBar)
+        contourBar.applyShadow(color: .black, alpha: 0.16, x: 2, y: 2, blur: 3)
+        dayBar.applyShadow(color: .flatOrange, alpha: 0.7, x: 0, y: 1, blur: 6)
+        
+        
+        let daysLeftLabel = UILabel(frame: CGRect(x: contourBar.frame.origin.x,
+                                                  y: contourBar.frame.origin.y - 25,
+                                                  width: contourBar.frame.width,
+                                                  height: 17))
+        daysLeftLabel.text = "1 out of 7 days left"
+        daysLeftLabel.textColor = UIColor(rgb: 0xC6CACE)
+        daysLeftLabel.font = UIFont(name: "Arial", size: 15)
+        daysLeftLabel.textAlignment = .center
+        
+        topView.addSubview(daysLeftLabel)
+        
+        
         
         
         
@@ -377,10 +324,46 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
     //MARK: - Email button
     
     @IBAction func emailButtonPressed(_ sender: UIButton) {
-        let pdfPreviewVC = PDFPreviewViewController(nibName: "PDFPreviewViewController", bundle: nil)
-        pdfPreviewVC.passedPayments = cardViewController.database.fetchSortedData(by: .NewestDateAdded, and: .Pending)
-        self.present(pdfPreviewVC, animated: true)
+        let optionMenu = UIAlertController(title: "Send:", message: nil , preferredStyle: .actionSheet)
 
+        let allPendingAction = UIAlertAction(title: "All pending", style: .default, handler: { alert in
+            self.showFileFormatAlertSheet()
+        })
+        let selecteReceiptsAction = UIAlertAction(title: "Select receipts", style: .default, handler: { alert in
+            //TODO: Implement expantion and selection
+        })
+
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        optionMenu.addAction(allPendingAction)
+        optionMenu.addAction(selecteReceiptsAction)
+        optionMenu.addAction(cancelAction)
+        self.present(optionMenu, animated: true, completion: nil)
+    }
+    
+    
+    private func showFileFormatAlertSheet() {
+        let optionMenu = UIAlertController(title: "Send receipts as:", message: nil , preferredStyle: .actionSheet)
+
+        let pdfAction = UIAlertAction(title: "PDF (Table & photos)", style: .default, handler: { alert in
+            self.showPDFPreview(for: self.cardViewController.database.fetchSortedData(by: .NewestDateAdded, and: .Pending))
+        })
+        let archiveAction = UIAlertAction(title: "Archive (Only photos)", style: .default, handler: { alert in
+            //TODO: Implement
+        })
+
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        optionMenu.addAction(pdfAction)
+        optionMenu.addAction(archiveAction)
+        optionMenu.addAction(cancelAction)
+        self.present(optionMenu, animated: true, completion: nil)
+    }
+    
+    
+    
+    private func showPDFPreview(for payments: [Payments]) {
+        let pdfPreviewVC = PDFPreviewViewController(nibName: "PDFPreviewViewController", bundle: nil)
+        pdfPreviewVC.passedPayments = payments//cardViewController.database.fetchSortedData(by: .NewestDateAdded, and: .Pending)
+        self.present(pdfPreviewVC, animated: true)
     }
     
 }

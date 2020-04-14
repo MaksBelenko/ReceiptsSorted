@@ -15,12 +15,11 @@ class CardViewController: UIViewController {
     @IBOutlet weak var searchAndSortView: UIView!
     @IBOutlet weak var sortButton: UIButton!
     @IBOutlet weak var searchBar: UISearchBar!
-    @IBOutlet weak var handleImageView: UIImageView!
-    @IBOutlet weak var handleArea: UIView!
     @IBOutlet weak var tblView: UITableView!
     
     
     var cardHeight: CGFloat = 0
+    var cardStartPointY: CGFloat = 0
     var tableRowsHeight: CGFloat = 60
 
     var cardTableSections: [PaymentTableSection] = []
@@ -35,6 +34,8 @@ class CardViewController: UIViewController {
     var cardTableViewModel = CardTableViewModel()
     
     var amountAnimation: AmountAnimation!
+    
+    var noReceiptsImage: UIImageView?
     
     
     
@@ -61,10 +62,31 @@ class CardViewController: UIViewController {
         cardTableSections = cardTableViewModel.getSections(for: fetchedPayments, sortedBy: sortByOption)
 //        setButtonTitle(for: sortByOption)
         
+        setupNoReceiptsImage()
     }
 
     
-    func setupTableView() {
+    
+    private func setupNoReceiptsImage() {
+        noReceiptsImage = UIImageView(image: UIImage(named: "NoReceipts"))
+        noReceiptsImage?.contentMode = .scaleAspectFit
+        if let imageView = noReceiptsImage {
+            view.addSubview(imageView)
+        }
+        
+        let offsetY: CGFloat = cardStartPointY/2
+        noReceiptImageCenterYAnchor = noReceiptsImage?.centerYAnchor.constraint(equalTo: tblView.centerYAnchor, constant: -offsetY)
+        
+        noReceiptsImage?.translatesAutoresizingMaskIntoConstraints = false
+        noReceiptsImage?.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        noReceiptImageCenterYAnchor?.isActive = true
+        noReceiptsImage?.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.5).isActive = true
+        noReceiptsImage?.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.5).isActive = true
+    }
+    
+    
+    
+    private func setupTableView() {
         tblView.dataSource = self
         tblView.delegate = self
         tblView.register(UINib(nibName: "PaymentTableViewCell", bundle: nil), forCellReuseIdentifier: "paymentCell")
@@ -82,7 +104,7 @@ class CardViewController: UIViewController {
     
     
     
-    func setupSearchBar() {
+    private func setupSearchBar() {
         searchBar.delegate = self
         searchBar.returnKeyType = UIReturnKeyType.done
         
@@ -226,6 +248,7 @@ extension CardViewController: UITableViewDataSource, UITableViewDelegate, SwipeA
     func numberOfSections(in tableView: UITableView) -> Int {
 //        let fetchedPayments = database.fetchSortedData(by: sortByOption, and: paymentStatusSort)
 //        cardTableSections = cardTableViewModel.getSections(for: fetchedPayments, sortedBy: sortByOption)
+        noReceiptsImage?.alpha = (cardTableSections.count == 0) ? 1 : 0
         return cardTableSections.count
     }
 

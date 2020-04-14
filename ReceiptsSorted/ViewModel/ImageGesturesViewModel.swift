@@ -10,18 +10,45 @@ import UIKit
 
 class ImageGesturesViewModel: NSObject {
     
-    ///Origin oof the image to be used when pan gesture begins
+    ///Image's origin to be used for pan gesture
     var imageOrigin : CGPoint!
     
     
     
     
     
+    //MARK: - Creation of gestures
+    
+    /**
+     Creates pinch gesture
+     */
+    func createPinchGesture() -> UIPinchGestureRecognizer {
+        let pinchGesture = UIPinchGestureRecognizer(target: self, action: #selector(ImageGesturesViewModel.pinchGesture))
+        pinchGesture.delegate = self
+        
+        return pinchGesture
+    }
+    
+    /**
+     Creates pan gesture with 2 minimum touches
+     */
+    func createPanGesture() -> UIPanGestureRecognizer {
+        let panGestureRecogniser = UIPanGestureRecognizer (target: self, action: #selector(ImageGesturesViewModel.panGesture))
+        panGestureRecogniser.delegate = self
+        panGestureRecogniser.minimumNumberOfTouches = 2
+        
+        return panGestureRecogniser
+    }
+    
+    
+    
+    //MARK: - Pinch & Pan
+    
     /**
      Move image gesture
      - Parameter recogniser: Pinch gesture recogniser
      */
-    @objc func panGesture(_ recogniser : UIPanGestureRecognizer) {
+    @objc private func panGesture(_ recogniser : UIPanGestureRecognizer) {
         
         guard recogniser.view != nil else { return }
         
@@ -51,7 +78,7 @@ class ImageGesturesViewModel: NSObject {
      Pinch zoom to a specific area
      - Parameter recogniser: Pinch gesture recogniser
      */
-    @objc func pinchGesture(_ recogniser : UIPinchGestureRecognizer) {
+    @objc private func pinchGesture(_ recogniser : UIPinchGestureRecognizer) {
         
         guard let recogniserView = recogniser.view else {return}
         
