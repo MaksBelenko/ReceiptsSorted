@@ -10,12 +10,11 @@ import UIKit
 import Vision
 import CropViewController
 
-class PaymentViewController: UIViewController, UIGestureRecognizerDelegate {
+class PaymentViewController: UIViewController {
 
     var pageType: ShowPaymentAs = .AddPayment
     
     var passedImage: UIImage? = nil
-    var imageOrigin : CGPoint?
     var amountPaid: Float = 0.0
     var place: String = ""
     var date: Date = Date()
@@ -29,8 +28,11 @@ class PaymentViewController: UIViewController, UIGestureRecognizerDelegate {
     @IBOutlet weak var addButton: UIButton!
     
     let buttonAnimations = AddButtonAnimations()
+    var imageGesturesViewModel = ImageGesturesViewModel()
     
     var paymentDelegate: PaymentDelegate?
+    
+    
     
     
     
@@ -83,77 +85,20 @@ class PaymentViewController: UIViewController, UIGestureRecognizerDelegate {
     //MARK: - Gestures
     func setupGestures() {
         receiptImageView.isUserInteractionEnabled = true
-        imageOrigin = receiptImageView.center
         
         //Pinch Gesture
-        let pinchGesture = UIPinchGestureRecognizer(target: self, action: #selector(self.pinchGesture))
-        pinchGesture.delegate = self
+        let pinchGesture = UIPinchGestureRecognizer(target: imageGesturesViewModel, action: #selector(ImageGesturesViewModel.pinchGesture))
+        pinchGesture.delegate = imageGesturesViewModel
         receiptImageView.addGestureRecognizer(pinchGesture)
         
         //Pan Gesture
-        let panGestureRecogniser = UIPanGestureRecognizer (target: self, action: #selector(self.panGesture))
-        panGestureRecogniser.delegate = self
+        let panGestureRecogniser = UIPanGestureRecognizer (target: imageGesturesViewModel, action: #selector(ImageGesturesViewModel.panGesture))
+        panGestureRecogniser.delegate = imageGesturesViewModel
         panGestureRecogniser.minimumNumberOfTouches = 2
         receiptImageView.addGestureRecognizer(panGestureRecogniser)
     }
     
     
-    
-    
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        return true
-    }
-    
-    
-    @objc func panGesture(_ recogniser : UIPanGestureRecognizer) {
-        guard recogniser.view != nil else { return }
-
-        if (recogniser.state == .began || recogniser.state == .changed) {
-            let translation = recogniser.translation(in: recogniser.view)
-            recogniser.view!.center = CGPoint(x: recogniser.view!.center.x + translation.x, y: recogniser.view!.center.y + translation.y)
-            recogniser.setTranslation(CGPoint.zero, in: recogniser.view)
-            
-            print("Translation x=\(translation.x) + y=\(translation.y)")
-        }
-        
-        if (recogniser.state == .ended) {
-            UIView.animate(withDuration: 0.2) {
-                recogniser.view?.center = self.imageOrigin!
-            }
-        }
-    }
-    
-    
-    @objc func pinchGesture(_ recogniser : UIPinchGestureRecognizer) {
-        
-        guard recogniser.view != nil else { return }
-
-        if (recogniser.state == .began || recogniser.state == .changed) {
-            guard let view = recogniser.view else {return}
-            let pinchCenter = CGPoint(x: recogniser.location(in: view).x - view.bounds.midX,y: recogniser.location(in: view).y - view.bounds.midY)
-            let transform = view.transform.translatedBy(x: pinchCenter.x, y: pinchCenter.y).scaledBy(x: recogniser.scale, y: recogniser.scale).translatedBy(x: -pinchCenter.x, y: -pinchCenter.y)
-            let currentScale = self.receiptImageView.frame.size.width / self.receiptImageView.bounds.size.width
-            var newScale = currentScale*recogniser.scale
-            if newScale < 1 {
-                newScale = 1
-                let transform = CGAffineTransform(scaleX: newScale, y: newScale)
-                self.receiptImageView.transform = transform
-                recogniser.scale = 1
-                
-            } else {
-                view.transform = transform
-                recogniser.scale = 1
-            }
-        }
-        
-        
-        if (recogniser.state == .ended) {
-            UIView.animate(withDuration: 0.2) {
-                recogniser.view?.transform = CGAffineTransform.identity
-            }
-            
-        }
-    }
     
 
     

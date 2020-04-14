@@ -78,7 +78,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
         super.viewDidAppear(animated)
         
         let totalAmount = cardViewController.database.getTotalAmount(of: .Pending)
-//        amountAnimation.animateCircle(to: totalAmount)
+        amountAnimation.animateCircle(to: totalAmount)
     }
     
     
@@ -317,9 +317,10 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIGestur
         topView.heightAnchor.constraint(equalToConstant: cardStartPointY).isActive = true
         
         
+        /* Create circles; region is [-pi/2 ; pi*3/2] */
         let mainGraphics = MainGraphicsViewModel(frameWidth: view.frame.size.width, frameHeight: cardStartPointY)
-        let contourCircle = mainGraphics.createCircleLine(from: 0, to: CGFloat.pi*2, ofColour: UIColor.contourFlatColour.cgColor)
-        let indicatorCircle = mainGraphics.createCircleLine(from: -CGFloat.pi/2, to: 0, ofColour: UIColor.flatOrange.cgColor)
+        let contourCircle = mainGraphics.createCircleLine(from: -CGFloat.pi/2, to: CGFloat.pi*3/2, ofColour: UIColor.contourFlatColour.cgColor)
+        let indicatorCircle = mainGraphics.createCircleLine(from: -CGFloat.pi/2, to: CGFloat.pi*3/2, ofColour: UIColor.flatOrange.cgColor)
         
         topView.layer.addSublayer(contourCircle)
         topView.layer.addSublayer(indicatorCircle)

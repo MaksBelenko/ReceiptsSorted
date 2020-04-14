@@ -46,6 +46,7 @@
 		B5B6758223CF724000291D31 /* ImageManipulator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B6758123CF724000291D31 /* ImageManipulator.swift */; };
 		B5CCE49B2403195200CA0CB5 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CCE49A2403195200CA0CB5 /* Settings.swift */; };
 		B5DB922323BE929F0081E8D7 /* PaymentsData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B5DB922123BE929F0081E8D7 /* PaymentsData.xcdatamodeld */; };
+		B5E3C3782445403B00AD59AC /* ImageGesturesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E3C3772445403B00AD59AC /* ImageGesturesViewModel.swift */; };
 		B5E5E5C923C106E7006A14EE /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E5E5C823C106E7006A14EE /* Database.swift */; };
 		B5F54E85241E783C0016DCED /* UIViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F54E84241E783C0016DCED /* UIViewExtensions.swift */; };
 		B5F54E87241E78750016DCED /* UIColorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F54E86241E78750016DCED /* UIColorExtensions.swift */; };
@@ -99,6 +100,7 @@
 		B5B6758123CF724000291D31 /* ImageManipulator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageManipulator.swift; sourceTree = "<group>"; };
 		B5CCE49A2403195200CA0CB5 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		B5DB922223BE929F0081E8D7 /* PaymentsData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = PaymentsData.xcdatamodel; sourceTree = "<group>"; };
+		B5E3C3772445403B00AD59AC /* ImageGesturesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageGesturesViewModel.swift; sourceTree = "<group>"; };
 		B5E5E5C823C106E7006A14EE /* Database.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Database.swift; sourceTree = "<group>"; };
 		B5F54E84241E783C0016DCED /* UIViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtensions.swift; sourceTree = "<group>"; };
 		B5F54E86241E78750016DCED /* UIColorExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtensions.swift; sourceTree = "<group>"; };
@@ -256,6 +258,7 @@
 				B54967AC241167C000684A2F /* SortingDropDownMenu.swift */,
 				B5FDDC02241443950037BA7E /* SwipeActionsViewModel.swift */,
 				B54967A724104E3500684A2F /* ImageCompressionViewModel.swift */,
+				B5E3C3772445403B00AD59AC /* ImageGesturesViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -437,6 +440,7 @@
 				B5F54E85241E783C0016DCED /* UIViewExtensions.swift in Sources */,
 				B526B4E2241B09A10031F629 /* Observable.swift in Sources */,
 				B50BAADD242BB8E000EAFECA /* SettingsViewController.swift in Sources */,
+				B5E3C3782445403B00AD59AC /* ImageGesturesViewModel.swift in Sources */,
 				B5AD17E32404757300BB3069 /* CardGesturesViewModel.swift in Sources */,
 				B573FA9C23B9334A005473D2 /* DatePopupViewController.swift in Sources */,
 				B5FD65FB242EC9C7002C5C48 /* CardTableViewModel.swift in Sources */,
