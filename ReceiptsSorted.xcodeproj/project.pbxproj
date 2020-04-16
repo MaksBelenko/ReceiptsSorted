@@ -65,7 +65,7 @@
 		B516CF12243BF1F0003D09E1 /* PDFPreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFPreviewViewController.swift; sourceTree = "<group>"; };
 		B516CF13243BF1F0003D09E1 /* PDFPreviewViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PDFPreviewViewController.xib; sourceTree = "<group>"; };
 		B526B4E1241B09A10031F629 /* Observable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
-		B5377BFC23A82E280010B144 /* ReceiptsSorted.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ReceiptsSorted.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B5377BFC23A82E280010B144 /* WorkReceipts.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WorkReceipts.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B5377BFF23A82E280010B144 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B5377C0123A82E280010B144 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		B5377C0323A82E280010B144 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -162,7 +162,7 @@
 		B5377BFD23A82E280010B144 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				B5377BFC23A82E280010B144 /* ReceiptsSorted.app */,
+				B5377BFC23A82E280010B144 /* WorkReceipts.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -313,7 +313,7 @@
 			);
 			name = ReceiptsSorted;
 			productName = ReceiptsSorted;
-			productReference = B5377BFC23A82E280010B144 /* ReceiptsSorted.app */;
+			productReference = B5377BFC23A82E280010B144 /* WorkReceipts.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -605,7 +605,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.belenko.ReceiptsSorted;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = WorkReceipts;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -624,7 +624,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.belenko.ReceiptsSorted;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = WorkReceipts;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

@@ -290,7 +290,7 @@
                                                     <action selector="deleteBarButtonPressed:" destination="gk0-yM-Syz" id="Ymn-8H-REW"/>
                                                 </connections>
                                             </barButtonItem>
-                                            <barButtonItem systemItem="compose" id="tlh-wP-Ze0">
+                                            <barButtonItem title="Item" image="crop" catalog="system" id="tlh-wP-Ze0">
                                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <connections>
                                                     <action selector="editBarButtonPressed:" destination="gk0-yM-Syz" id="qa7-MI-OHX"/>
@@ -443,6 +443,7 @@
     <resources>
         <image name="Receipt-Test" width="340" height="453"/>
         <image name="chevron.left" catalog="system" width="96" height="128"/>
+        <image name="crop" catalog="system" width="128" height="122"/>
         <image name="envelope" catalog="system" width="128" height="93"/>
         <image name="gear" catalog="system" width="128" height="119"/>
         <image name="square.and.arrow.down" catalog="system" width="121" height="128"/>

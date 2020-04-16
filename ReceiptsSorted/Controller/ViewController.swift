@@ -145,6 +145,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIViewCo
     
     
     
+    //MARK: - Transition animation
+    
     func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         circularTransition.transitionMode = .present
         circularTransition.startingPoint = buttonView.center
