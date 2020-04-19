@@ -309,15 +309,15 @@ class PDFCreator: NSObject {
     - Parameter alignment: Enum to show the alignment of the image relative to the page
     */
     private func drawImage(image: UIImage, pageRect: CGRect, imageTop: CGFloat, width: CGFloat, alignment: Alignment) -> CGFloat {
-        //      let maxHeight = pageRect.height * 0.4
-        //      let maxWidth = pageRect.width * 0.8
+        let maxHeight = pageRect.height * 0.5
+//        let maxWidth = pageRect.width * 0.8
 
         let aspectWidth = width / image.size.width
-        //      let aspectHeight = maxHeight / image.size.height
-        //      let aspectRatio = min(aspectWidth, aspectHeight)
+        let aspectHeight = maxHeight / image.size.height
+        let aspectRatio = min(aspectWidth, aspectHeight)
 
-        let scaledWidth = image.size.width * aspectWidth
-        let scaledHeight = image.size.height * aspectWidth
+        let scaledWidth = image.size.width * aspectRatio
+        let scaledHeight = image.size.height * aspectRatio
         
         let imageX = getAlignedPositionX(alignment: alignment, pageRect: pageRect, width: scaledWidth)
         let imageRect = CGRect(x: imageX, y: imageTop, width: scaledWidth, height: scaledHeight)

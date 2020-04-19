@@ -14,6 +14,7 @@
 		B516CF14243BF1F0003D09E1 /* PDFPreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B516CF12243BF1F0003D09E1 /* PDFPreviewViewController.swift */; };
 		B516CF15243BF1F1003D09E1 /* PDFPreviewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B516CF13243BF1F0003D09E1 /* PDFPreviewViewController.xib */; };
 		B526B4E2241B09A10031F629 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B526B4E1241B09A10031F629 /* Observable.swift */; };
+		B535A1C0244BC320005585F0 /* LogHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B535A1BF244BC320005585F0 /* LogHelper.swift */; };
 		B5377C0023A82E280010B144 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5377BFF23A82E280010B144 /* AppDelegate.swift */; };
 		B5377C0223A82E280010B144 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5377C0123A82E280010B144 /* SceneDelegate.swift */; };
 		B5377C0423A82E280010B144 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5377C0323A82E280010B144 /* ViewController.swift */; };
@@ -65,6 +66,7 @@
 		B516CF12243BF1F0003D09E1 /* PDFPreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFPreviewViewController.swift; sourceTree = "<group>"; };
 		B516CF13243BF1F0003D09E1 /* PDFPreviewViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PDFPreviewViewController.xib; sourceTree = "<group>"; };
 		B526B4E1241B09A10031F629 /* Observable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
+		B535A1BF244BC320005585F0 /* LogHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogHelper.swift; sourceTree = "<group>"; };
 		B5377BFC23A82E280010B144 /* WorkReceipts.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WorkReceipts.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B5377BFF23A82E280010B144 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B5377C0123A82E280010B144 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -149,10 +151,19 @@
 			path = Cells;
 			sourceTree = "<group>";
 		};
+		B535A1BE244BC2D7005585F0 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				B535A1BF244BC320005585F0 /* LogHelper.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
 		B5377BF323A82E280010B144 = {
 			isa = PBXGroup;
 			children = (
 				B5377BFE23A82E280010B144 /* ReceiptsSorted */,
+				B535A1BE244BC2D7005585F0 /* Helpers */,
 				B5377BFD23A82E280010B144 /* Products */,
 				2E3883DB9B9A8B4185BE22A4 /* Pods */,
 				803926E438852DAB4B27F83D /* Frameworks */,
@@ -443,6 +454,7 @@
 				B516CF14243BF1F0003D09E1 /* PDFPreviewViewController.swift in Sources */,
 				B5F54E87241E78750016DCED /* UIColorExtensions.swift in Sources */,
 				B5B6758223CF724000291D31 /* ImageManipulator.swift in Sources */,
+				B535A1C0244BC320005585F0 /* LogHelper.swift in Sources */,
 				B561B38F243BFBAD00F7B29B /* PDFCreator.swift in Sources */,
 				B54967AD241167C000684A2F /* SortingDropDownMenu.swift in Sources */,
 				B5F54E85241E783C0016DCED /* UIViewExtensions.swift in Sources */,

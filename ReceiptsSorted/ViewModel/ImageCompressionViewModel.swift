@@ -13,19 +13,45 @@ class ImageCompressionViewModel {
     var settings = Settings()
     
     
+    /**
+     Compresses the image.
+     
+     Image compression is needed to use less memory on device and
+        create lite PDFs and Zip files maintaining readability
+     
+     - Parameter receiptImage: image to be compressed
+     */
     func compressImage(for receiptImage: UIImage) -> Data? {
         let imageSizeinMB = Float(receiptImage.jpegData(compressionQuality: 1.0)!.count) / powf(10, 6)
-        print("size in MB = \(imageSizeinMB)")
+        LogHelper.debug(message: "size in MB = \(imageSizeinMB)")
+
+        var newImage = receiptImage
         
-        var compression : CGFloat = 1.0
-        
-        if (imageSizeinMB > settings.compressedSizeInMB) {
-            compression = CGFloat(settings.compressedSizeInMB / imageSizeinMB)
-            let newSize = Float(receiptImage.jpegData(compressionQuality: compression)!.count) / powf(10, 6)
-            print("After Compression in MB = \(newSize) and ratio = \(compression)")
+        if receiptImage.size.width > 1200 {
+            newImage = resize(image: receiptImage, toWidth: 1200)
         }
+
+        let newImageData = newImage.jpegData(compressionQuality: settings.compression)!
+        LogHelper.debug(message: "Size compressed in MB = \(Float(newImageData.count) / powf(10, 6))")
         
-        return receiptImage.jpegData(compressionQuality: compression)
+        return newImageData
     }
     
+    
+    
+    /**
+     Resizes the image to a specific width using UIGraphicsImageRenderer
+     - Parameter image: Image to be resized
+     - Parameter width: Width to be obtained
+     */
+    private func resize(image: UIImage, toWidth width: CGFloat) -> UIImage {
+        let newSize = CGSize(width: width, height: CGFloat(ceil(width/image.size.width * image.size.height)))
+        let format = image.imageRendererFormat
+        format.opaque = true
+        
+        let compressedImage = UIGraphicsImageRenderer(size: newSize, format: format).image { _ in
+            image.draw(in: CGRect(origin: .zero, size: newSize))
+        }
+        return compressedImage
+    }
 }

@@ -14,7 +14,6 @@ class PDFPreviewViewController: UIViewController {
     var passedPayments: [Payments]!
     
     @IBOutlet weak var topNavigationBar: UINavigationBar!
-    @IBOutlet weak var sendEmailButton: UIButton!
     @IBOutlet weak var previewView: UIView!
     private let pdfView = PDFView()
     private var pdfData: Data!
@@ -34,9 +33,8 @@ class PDFPreviewViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         setupNavigationBar()
-        setupEmailButton()
         setupPDFView()
         createPDFPreviewDocument()
     }
@@ -60,25 +58,17 @@ class PDFPreviewViewController: UIViewController {
     }
     
     
-    private func setupEmailButton() {
-        sendEmailButton.layer.cornerRadius = 13//sendEmailButton.frame.size.height/2
-        sendEmailButton.layer.applyShadow(color: .black, alpha: 0.25, x: 5, y: 10, blur: 10)
-        buttonAnimations.startAnimatingPressActions(for: sendEmailButton)
-    }
-    
     
     private func setupPDFView() {
         pdfView.backgroundColor = .white
-        pdfView.layer.borderWidth = 1
-        pdfView.layer.borderColor = UIColor.flatOrange.cgColor
         
         previewView.addSubview(pdfView)
 
         pdfView.translatesAutoresizingMaskIntoConstraints = false
-        pdfView.topAnchor.constraint(equalTo: previewView.safeAreaLayoutGuide.topAnchor, constant: 0).isActive = true
-        pdfView.bottomAnchor.constraint(equalTo: previewView.safeAreaLayoutGuide.bottomAnchor, constant: 0).isActive = true
-        pdfView.leftAnchor.constraint(equalTo: previewView.safeAreaLayoutGuide.leftAnchor, constant: 0).isActive = true
-        pdfView.rightAnchor.constraint(equalTo: previewView.safeAreaLayoutGuide.rightAnchor, constant: 0).isActive = true
+        pdfView.topAnchor.constraint(equalTo: previewView.safeAreaLayoutGuide.topAnchor).isActive = true
+        pdfView.bottomAnchor.constraint(equalTo: previewView.bottomAnchor).isActive = true
+        pdfView.leftAnchor.constraint(equalTo: previewView.safeAreaLayoutGuide.leftAnchor).isActive = true
+        pdfView.rightAnchor.constraint(equalTo: previewView.safeAreaLayoutGuide.rightAnchor).isActive = true
         
         pdfView.autoScales = true
         pdfView.displayMode = .singlePageContinuous
@@ -100,13 +90,9 @@ class PDFPreviewViewController: UIViewController {
     @IBAction func closeButtonPressed(_ sender: UIBarButtonItem) {
         dismiss(animated: true, completion: nil)
     }
+       
     
-    @IBAction func shareButtonPressed(_ sender: UIButton) {
-        
-    }
-    
-    
-    @IBAction func sendEmailButtonPressed(_ sender: UIButton) {
+    @IBAction func sendEmailButtonPressed(_ sender: UIBarButtonItem) {
         let temporaryFolder = FileManager.default.temporaryDirectory
         let fileName = "Receipts \(dateToday).pdf"
         let temporaryFileURL = temporaryFolder.appendingPathComponent(fileName)

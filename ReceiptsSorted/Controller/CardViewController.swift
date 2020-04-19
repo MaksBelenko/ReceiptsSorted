@@ -229,6 +229,8 @@ extension CardViewController: UITableViewDataSource, UITableViewDelegate, SwipeA
         if let paymentVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "PaymentDetails") as? PaymentViewController
         {
             paymentVC.passedImage = UIImage(data: selectedPayment.receiptPhoto ?? Data())
+            LogHelper.debug(message: "size in MB = \(Float(selectedPayment.receiptPhoto!.count) / powf(10, 6))")
+            
             paymentVC.amountPaid = selectedPayment.amountPaid
             paymentVC.place = selectedPayment.place!
             paymentVC.date = selectedPayment.date!

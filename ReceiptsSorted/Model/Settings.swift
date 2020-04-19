@@ -10,5 +10,6 @@ import UIKit
 
 class Settings {
     
-    var compressedSizeInMB : Float = 1.0
+    ///0 is maximum compression, 1 is no compression
+    var compression : CGFloat = 0.3
 }

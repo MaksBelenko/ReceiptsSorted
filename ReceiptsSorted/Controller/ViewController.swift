@@ -365,6 +365,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIViewCo
     private func showPDFPreview(for payments: [Payments]) {
         let pdfPreviewVC = PDFPreviewViewController(nibName: "PDFPreviewViewController", bundle: nil)
         pdfPreviewVC.passedPayments = payments//cardViewController.database.fetchSortedData(by: .NewestDateAdded, and: .Pending)
+        pdfPreviewVC.modalPresentationStyle = .overFullScreen
         self.present(pdfPreviewVC, animated: true)
     }
     
