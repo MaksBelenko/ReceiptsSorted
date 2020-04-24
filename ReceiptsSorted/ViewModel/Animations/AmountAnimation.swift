@@ -35,7 +35,7 @@ class AmountAnimation {
      */
     func animateCircle(from startValue: Float = 0, to endValue: Float ) {
         animationStartTime = Date()
-        overallAmount.value = startValue
+        overallAmount.value = startValue //before animation executed
         self.startValue = startValue
         self.endValue = endValue
         

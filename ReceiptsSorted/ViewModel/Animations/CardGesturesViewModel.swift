@@ -34,8 +34,6 @@ class CardGesturesViewModel: NSObject {
     var animationProgressWhenInterrupted: CGFloat = 0
     var lastFraction: CGFloat = 0
     
-//    var addButtonAlpha: Observable<CGFloat> = Observable(1.0)
-    
     private var mainView: UIView!
     
     var MainView: UIView {

@@ -133,7 +133,6 @@ class CardTableViewModel {
         
         //Creating PaymentTableSection array from tuple
         var sectionArray = [PaymentTableSection]()
-//        let todayMonth = calendar.component(.month, from: Date())
         let todayYear = calendar.component(.year, from: Date())
         for p in tupleArray {
             if (p.year == todayYear) {

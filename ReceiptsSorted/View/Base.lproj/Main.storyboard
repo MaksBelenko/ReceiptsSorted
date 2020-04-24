@@ -10,7 +10,7 @@
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="ReceiptsSorted" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="WorkReceipts" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -62,7 +62,7 @@
         <!--Settings-->
         <scene sceneID="ff7-N3-s9b">
             <objects>
-                <tableViewController id="2t4-Kx-Wv9" customClass="SettingsViewController" customModule="ReceiptsSorted" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="2t4-Kx-Wv9" customClass="SettingsViewController" customModule="WorkReceipts" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="r3g-dd-7YN">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -181,7 +181,7 @@
         <!--Payment View Controller-->
         <scene sceneID="dg8-XG-Y1U">
             <objects>
-                <viewController storyboardIdentifier="PaymentDetails" id="gk0-yM-Syz" userLabel="Payment View Controller" customClass="PaymentViewController" customModule="ReceiptsSorted" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="PaymentDetails" id="gk0-yM-Syz" userLabel="Payment View Controller" customClass="PaymentViewController" customModule="WorkReceipts" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="yX2-af-nex">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -201,7 +201,7 @@
                                         <color key="textColor" red="0.95294117647058818" green="0.61176470588235299" blue="0.070588235294117646" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Hotel" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="mHb-vD-WSY">
+                                    <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Hotel" borderStyle="roundedRect" placeholder="Place of purchase" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="mHb-vD-WSY">
                                         <rect key="frame" x="20" y="37" width="335" height="34"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                         <color key="textColor" red="0.24313725490196078" green="0.32156862745098036" blue="0.41176470588235292" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -218,7 +218,7 @@
                                         <color key="textColor" red="0.95294117647058818" green="0.61176470588235299" blue="0.070588235294117646" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="£54.50" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Ruu-6h-88t">
+                                    <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="£54.50" borderStyle="roundedRect" placeholder="£0.00" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Ruu-6h-88t">
                                         <rect key="frame" x="20" y="103" width="146" height="34"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                         <color key="textColor" red="0.24313725489999999" green="0.32156862749999998" blue="0.41176470590000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -331,7 +331,7 @@
         <!--Date Popup View Controller-->
         <scene sceneID="sJn-6l-lJS">
             <objects>
-                <viewController storyboardIdentifier="DatePopupViewController" modalPresentationStyle="overCurrentContext" id="83q-Ob-L4t" customClass="DatePopupViewController" customModule="ReceiptsSorted" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="DatePopupViewController" modalPresentationStyle="overCurrentContext" id="83q-Ob-L4t" customClass="DatePopupViewController" customModule="WorkReceipts" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="sOu-9d-U8U" userLabel="Date Popup ViewController">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -385,7 +385,7 @@
         <!--Text Popup View Controller-->
         <scene sceneID="v1k-uf-d7I">
             <objects>
-                <viewController storyboardIdentifier="TextPopupViewController" id="Tjq-vK-ITp" customClass="TextPopupViewController" customModule="ReceiptsSorted" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="TextPopupViewController" id="Tjq-vK-ITp" customClass="TextPopupViewController" customModule="WorkReceipts" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="pbX-wi-9CE">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

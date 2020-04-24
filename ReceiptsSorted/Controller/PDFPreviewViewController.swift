@@ -95,8 +95,18 @@ class PDFPreviewViewController: UIViewController {
     @IBAction func sendEmailButtonPressed(_ sender: UIBarButtonItem) {
         let temporaryFolder = FileManager.default.temporaryDirectory
         let fileName = "Receipts \(dateToday).pdf"
+        
         let temporaryFileURL = temporaryFolder.appendingPathComponent(fileName)
-        print(temporaryFileURL.path)
+        LogHelper.debug(message: "Files are saved to: \(temporaryFileURL.path)")
+        
+//        do {
+//            let temporaryFileURL = temporaryFolder.appendingPathComponent("test.zlib")
+//            let compressedData = try (pdfData as NSData).compressed(using: .zlib)
+//            try compressedData.write(to: temporaryFileURL)
+//        } catch {
+//            LogHelper.exception(message: "Error with compressed data: Error = \(error.localizedDescription)")
+//        }
+        
         do {
             try pdfData!.write(to: temporaryFileURL) //Write document to defaults storage
             

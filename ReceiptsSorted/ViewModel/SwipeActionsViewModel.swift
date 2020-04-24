@@ -10,7 +10,7 @@ import UIKit
 
 class SwipeActionsViewModel {
 
-    var swipeActionDelegate: SwipeActionDelegate?
+    weak var swipeActionDelegate: SwipeActionDelegate?
     var database: Database!
     
     

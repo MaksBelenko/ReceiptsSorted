@@ -9,21 +9,21 @@
 import UIKit
 
 
-protocol PopupDelegate {
+protocol PopupDelegate: AnyObject {
     func setAmountPaidValue(value: Float)
     func setPlaceValue(value: String)
     func setDatepopupValue(value: Date)
 }
 
 
-protocol PaymentDelegate {
+protocol PaymentDelegate: AnyObject {
     func passData(as showPayment: ShowPaymentAs, paymentTuple:(amountPaid: Float, place: String, date: Date, receiptImage: UIImage))
 }
 
-protocol SortButtonLabelDelegate {
+protocol SortButtonLabelDelegate: AnyObject {
     func changeButtonLabel(sortByOption: SortBy, buttonTitle: String)
 }
 
-protocol SwipeActionDelegate {
+protocol SwipeActionDelegate: AnyObject {
     func onSwipeClicked(indexPath: IndexPath)
 }

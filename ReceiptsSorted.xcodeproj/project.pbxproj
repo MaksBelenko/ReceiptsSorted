@@ -41,11 +41,14 @@
 		B59E3E2723B50D9F0017D474 /* PaymentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59E3E2523B50D9F0017D474 /* PaymentTableViewCell.swift */; };
 		B59E3E2823B50D9F0017D474 /* PaymentTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B59E3E2623B50D9F0017D474 /* PaymentTableViewCell.xib */; };
 		B59E3E2C23B53FEF0017D474 /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59E3E2B23B53FEF0017D474 /* Enums.swift */; };
+		B5AC4AAF2453940E00D6F6D3 /* UISegmentedControlExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5AC4AAE2453940E00D6F6D3 /* UISegmentedControlExtensions.swift */; };
 		B5AD17DD240464CB00BB3069 /* MainGraphicsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5AD17DC240464CB00BB3069 /* MainGraphicsViewModel.swift */; };
 		B5AD17E32404757300BB3069 /* CardGesturesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5AD17E22404757300BB3069 /* CardGesturesViewModel.swift */; };
 		B5B6758023CF70F400291D31 /* TextRecogniserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B6757F23CF70F400291D31 /* TextRecogniserViewModel.swift */; };
 		B5B6758223CF724000291D31 /* ImageManipulator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B6758123CF724000291D31 /* ImageManipulator.swift */; };
 		B5CCE49B2403195200CA0CB5 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CCE49A2403195200CA0CB5 /* Settings.swift */; };
+		B5D70A6B245338530080BF81 /* TopGraphicsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D70A6A245338530080BF81 /* TopGraphicsView.swift */; };
+		B5D70A6D24534DCA0080BF81 /* AddButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D70A6C24534DCA0080BF81 /* AddButtonView.swift */; };
 		B5DB922323BE929F0081E8D7 /* PaymentsData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B5DB922123BE929F0081E8D7 /* PaymentsData.xcdatamodeld */; };
 		B5E3C3782445403B00AD59AC /* ImageGesturesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E3C3772445403B00AD59AC /* ImageGesturesViewModel.swift */; };
 		B5E5E5C923C106E7006A14EE /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E5E5C823C106E7006A14EE /* Database.swift */; };
@@ -96,11 +99,14 @@
 		B59E3E2523B50D9F0017D474 /* PaymentTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentTableViewCell.swift; sourceTree = "<group>"; };
 		B59E3E2623B50D9F0017D474 /* PaymentTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PaymentTableViewCell.xib; sourceTree = "<group>"; };
 		B59E3E2B23B53FEF0017D474 /* Enums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
+		B5AC4AAE2453940E00D6F6D3 /* UISegmentedControlExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISegmentedControlExtensions.swift; sourceTree = "<group>"; };
 		B5AD17DC240464CB00BB3069 /* MainGraphicsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainGraphicsViewModel.swift; sourceTree = "<group>"; };
 		B5AD17E22404757300BB3069 /* CardGesturesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardGesturesViewModel.swift; sourceTree = "<group>"; };
 		B5B6757F23CF70F400291D31 /* TextRecogniserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextRecogniserViewModel.swift; sourceTree = "<group>"; };
 		B5B6758123CF724000291D31 /* ImageManipulator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageManipulator.swift; sourceTree = "<group>"; };
 		B5CCE49A2403195200CA0CB5 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
+		B5D70A6A245338530080BF81 /* TopGraphicsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopGraphicsView.swift; sourceTree = "<group>"; };
+		B5D70A6C24534DCA0080BF81 /* AddButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddButtonView.swift; sourceTree = "<group>"; };
 		B5DB922223BE929F0081E8D7 /* PaymentsData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = PaymentsData.xcdatamodel; sourceTree = "<group>"; };
 		B5E3C3772445403B00AD59AC /* ImageGesturesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageGesturesViewModel.swift; sourceTree = "<group>"; };
 		B5E5E5C823C106E7006A14EE /* Database.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Database.swift; sourceTree = "<group>"; };
@@ -244,6 +250,8 @@
 				B573FAAA23B98285005473D2 /* CameraViewController.xib */,
 				B516CF13243BF1F0003D09E1 /* PDFPreviewViewController.xib */,
 				B516804D244634360057DF7C /* Cells */,
+				B5D70A6A245338530080BF81 /* TopGraphicsView.swift */,
+				B5D70A6C24534DCA0080BF81 /* AddButtonView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -301,6 +309,7 @@
 				B5F54E88241E789D0016DCED /* CALayerExtensions.swift */,
 				B5F54E84241E783C0016DCED /* UIViewExtensions.swift */,
 				B5F54E86241E78750016DCED /* UIColorExtensions.swift */,
+				B5AC4AAE2453940E00D6F6D3 /* UISegmentedControlExtensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -431,6 +440,7 @@
 				B5F54E8B241E78C70016DCED /* DateExtensions.swift in Sources */,
 				B573FAA223B94BB2005473D2 /* TextPopupViewController.swift in Sources */,
 				B59E3E2723B50D9F0017D474 /* PaymentTableViewCell.swift in Sources */,
+				B5D70A6B245338530080BF81 /* TopGraphicsView.swift in Sources */,
 				B573FAA423B95F57005473D2 /* Delegates.swift in Sources */,
 				B573FAAE23BA815F005473D2 /* CameraSessionViewModel.swift in Sources */,
 				B5F54E89241E789D0016DCED /* CALayerExtensions.swift in Sources */,
@@ -451,11 +461,13 @@
 				B5B6758023CF70F400291D31 /* TextRecogniserViewModel.swift in Sources */,
 				B5E5E5C923C106E7006A14EE /* Database.swift in Sources */,
 				B5F54E8D241E78E60016DCED /* FloatExtensions.swift in Sources */,
+				B5AC4AAF2453940E00D6F6D3 /* UISegmentedControlExtensions.swift in Sources */,
 				B516CF14243BF1F0003D09E1 /* PDFPreviewViewController.swift in Sources */,
 				B5F54E87241E78750016DCED /* UIColorExtensions.swift in Sources */,
 				B5B6758223CF724000291D31 /* ImageManipulator.swift in Sources */,
 				B535A1C0244BC320005585F0 /* LogHelper.swift in Sources */,
 				B561B38F243BFBAD00F7B29B /* PDFCreator.swift in Sources */,
+				B5D70A6D24534DCA0080BF81 /* AddButtonView.swift in Sources */,
 				B54967AD241167C000684A2F /* SortingDropDownMenu.swift in Sources */,
 				B5F54E85241E783C0016DCED /* UIViewExtensions.swift in Sources */,
 				B526B4E2241B09A10031F629 /* Observable.swift in Sources */,

@@ -39,22 +39,17 @@ class CardViewController: UIViewController {
     
     
     
-    
-    
-    
-    
-    
+    //MARK: - Lyfecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-         
+        print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
+        
+        
         //Initialise ViewModels
         swipeActions = SwipeActionsViewModel(database: database)
         
-        
-        print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
-        
-        setupTableView()
+        configureTableView()
         setupSearchBar()
         sortButton.setTitle(dropDownMenu.getButtonTitle(for: sortByOption), for: .normal)
         
@@ -67,39 +62,15 @@ class CardViewController: UIViewController {
 
     
     
-    private func setupNoReceiptsImage() {
-        noReceiptsImage = UIImageView(image: UIImage(named: "NoReceipts"))
-        noReceiptsImage?.contentMode = .scaleAspectFit
-        if let imageView = noReceiptsImage {
-            view.addSubview(imageView)
-        }
-        
-        let offsetY: CGFloat = cardStartPointY/2
-        noReceiptImageCenterYAnchor = noReceiptsImage?.centerYAnchor.constraint(equalTo: tblView.centerYAnchor, constant: -offsetY)
-        
-        noReceiptsImage?.translatesAutoresizingMaskIntoConstraints = false
-        noReceiptsImage?.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        noReceiptImageCenterYAnchor?.isActive = true
-        noReceiptsImage?.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.5).isActive = true
-        noReceiptsImage?.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.5).isActive = true
-    }
+    //MARK: - Configurations
     
-    
-    
-    private func setupTableView() {
+    private func configureTableView() {
         tblView.dataSource = self
         tblView.delegate = self
         tblView.register(UINib(nibName: "PaymentTableViewCell", bundle: nil), forCellReuseIdentifier: "paymentCell")
         
-        // Used to make separators lines full width
-        tblView.separatorInset = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15)
-//        tblView.separatorStyle = .none
-        //Removes uneeded separator lines at the end of TableView
-        tblView.tableFooterView = UIView()
-        
-        // Set TableView height
-        tblView.frame.size.height = cardHeight * 1/5
-        
+        tblView.separatorInset = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15) //separator lines full width
+        tblView.tableFooterView = UIView() //Removes uneeded separator lines at the end of TableView
     }
     
     
@@ -113,6 +84,28 @@ class CardViewController: UIViewController {
         searchBottomAnchor = searchAndSortView.bottomAnchor.constraint(equalTo: self.SortSegmentedControl.topAnchor, constant: -25)
         
         NSLayoutConstraint.activate([searchTopAnchor!, searchBottomAnchor!])
+    }
+    
+    
+    private func setupNoReceiptsImage() {
+        noReceiptsImage = UIImageView(image: UIImage(named: "NoReceipts"))
+        
+        guard let image = noReceiptsImage else {
+            LogHelper.debug(message: "Image not found")
+            return
+        }
+        
+        image.contentMode = .scaleAspectFit
+        view.addSubview(image)
+        
+        image.translatesAutoresizingMaskIntoConstraints = false
+        image.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        image.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.5).isActive = true
+        image.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.5).isActive = true
+        
+        let offsetY: CGFloat = cardStartPointY/2
+        noReceiptImageCenterYAnchor = image.centerYAnchor.constraint(equalTo: tblView.centerYAnchor, constant: -offsetY)
+        noReceiptImageCenterYAnchor?.isActive = true
     }
     
     
@@ -135,16 +128,7 @@ class CardViewController: UIViewController {
     //MARK: - Segmented Control
     
     @IBAction func segmentedControlValueChanged(_ sender: UISegmentedControl) {
-        switch sender.selectedSegmentIndex {
-        case 0:
-            paymentStatusSort = .Pending
-        case 1:
-            paymentStatusSort = .Received
-        case 2:
-            paymentStatusSort = .All
-        default:
-            break
-        }
+        paymentStatusSort = sender.getCurrentPosition()
         
         let fetchedPayments = database.fetchSortedData(by: sortByOption, and: paymentStatusSort)
         cardTableSections = cardTableViewModel.getSections(for: fetchedPayments, sortedBy: sortByOption)
@@ -248,8 +232,6 @@ extension CardViewController: UITableViewDataSource, UITableViewDelegate, SwipeA
     //MARK: - Sections
 
     func numberOfSections(in tableView: UITableView) -> Int {
-//        let fetchedPayments = database.fetchSortedData(by: sortByOption, and: paymentStatusSort)
-//        cardTableSections = cardTableViewModel.getSections(for: fetchedPayments, sortedBy: sortByOption)
         noReceiptsImage?.alpha = (cardTableSections.count == 0) ? 1 : 0
         return cardTableSections.count
     }
@@ -281,7 +263,7 @@ extension CardViewController: UITableViewDataSource, UITableViewDelegate, SwipeA
         return swipeActions.createTrailingActions(for: indexPath, in: cardTableSections[indexPath.section].payments[indexPath.row])
     }
     
-    
+    //Delegate method
     func onSwipeClicked(indexPath: IndexPath) {
         if (paymentStatusSort != .All) {
             cardTableSections[indexPath.section].payments.remove(at: indexPath.row)
@@ -301,12 +283,6 @@ extension CardViewController: UITableViewDataSource, UITableViewDelegate, SwipeA
             tblView.deleteRows(at: [indexPath], with: .fade)
         }
     }
-    
-//    func tableView(_ tableView: UITableView, didEndEditingRowAt indexPath: IndexPath?) {
-//        print("Finished")
-//        guard let indexPath = indexPath else {return}
-//        tblView.deleteRows(at: [indexPath], with: .left)
-//    }
 }
 
 

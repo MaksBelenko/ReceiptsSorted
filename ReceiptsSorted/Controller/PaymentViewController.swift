@@ -10,7 +10,7 @@ import UIKit
 import Vision
 import CropViewController
 
-class PaymentViewController: UIViewController {
+class PaymentViewController: UIViewController, UITextFieldDelegate {
 
     var pageType: ShowPaymentAs = .AddPayment
     
@@ -30,7 +30,7 @@ class PaymentViewController: UIViewController {
     let buttonAnimations = AddButtonAnimations()
     var imageGesturesViewModel = ImageGesturesViewModel()
     
-    var paymentDelegate: PaymentDelegate?
+    weak var paymentDelegate: PaymentDelegate?
     
     
     
@@ -42,7 +42,8 @@ class PaymentViewController: UIViewController {
     
     
     
-    //MARK: - ViewDidLoad
+    //MARK: - Lifecycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -50,18 +51,65 @@ class PaymentViewController: UIViewController {
         
         setupNavigationBar()
         
-        
         bottomView.layer.cornerRadius = 13
         bottomView.layer.applyShadow(color: .black, alpha: 0.2, x: 0, y: -3, blur: 4)
         
         setTextFields()
-        
         setupTextFields()
         setupAddButton()
         setupGestures()
+        
+        amountPaidTextField.delegate = self
+        placeOfPurchaseTextField.delegate = self
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        addKeyboardObservers()
     }
     
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(true)
+        removeKeyboardObservers()
+    }
+    
+    
+    
+    
+    
+    //MARK: - Keyboard
+    
+    private func addKeyboardObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardAppearanceChanged), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardAppearanceChanged), name: UIResponder.keyboardWillHideNotification, object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(keyboardAppearanceChanged), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
+    }
+    
+    private func removeKeyboardObservers() {
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    
+    @objc func keyboardAppearanceChanged(notification: Notification) {
+        guard let keyboardRect = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else { return }
+        
+        if (notification.name == UIResponder.keyboardWillShowNotification ) {
+            view.frame.origin.y = -keyboardRect.height
+        } else {
+            view.frame.origin.y = 0
+        }
+    }
+    
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        self.view.endEditing(true)
+        return false
+    }
+    
+    
+    //MARK: - Navigation Bar
     
     private func setupNavigationBar() {
         if #available(iOS 13.0, *) {
@@ -85,10 +133,8 @@ class PaymentViewController: UIViewController {
     //MARK: - Gestures
     func setupGestures() {
         receiptImageView.isUserInteractionEnabled = true
-        //Pinch Gesture
-        receiptImageView.addGestureRecognizer(imageGesturesViewModel.createPinchGesture())
-        //Pan Gesture
-        receiptImageView.addGestureRecognizer(imageGesturesViewModel.createPanGesture())
+        receiptImageView.addGestureRecognizer(imageGesturesViewModel.createPinchGesture()) //Pinch Gesture
+        receiptImageView.addGestureRecognizer(imageGesturesViewModel.createPanGesture()) //Pan Gesture
     }
     
     
@@ -146,12 +192,12 @@ class PaymentViewController: UIViewController {
     //MARK: - Fields actions
     
     @IBAction func startedEditingAmountPaid(_ sender: UITextField) {
-        showTextPopup(popupType: .AmountPaid, numericText: amountPaidTextField.text ?? "")
+//        showTextPopup(popupType: .AmountPaid, numericText: amountPaidTextField.text ?? "")
     }
     
     
     @IBAction func startedEditingPlace(_ sender: UITextField) {
-        showTextPopup(popupType: .Place, numericText: placeOfPurchaseTextField.text ?? "")
+//        showTextPopup(popupType: .Place, numericText: placeOfPurchaseTextField.text ?? "")
     }
     
     
@@ -256,7 +302,6 @@ class PaymentViewController: UIViewController {
     //MARK: - Text detection
     
     @IBAction func pressedDetectTextButton(_ sender: UIButton) {
-     
         let textRecogniser = TextRecogniserViewModel()
         amountPaid = textRecogniser.findReceiptDetails(for: passedImage!)
         amountPaidTextField.text = "£\(amountPaid.ToString(decimals: 2))"
@@ -268,19 +313,19 @@ class PaymentViewController: UIViewController {
 
 
 
-//MARK:- Extensions
+//MARK:- PopupDelegate
 extension PaymentViewController: PopupDelegate {
     
     func setAmountPaidValue(value: Float) {
         amountPaid = value
-        amountPaidTextField.text = "£" + value.ToString(decimals: 2) //"£\(value)"
+        amountPaidTextField.text = "£" + value.ToString(decimals: 2)
     }
-    
     
     func setPlaceValue(value: String) {
         place = value
         placeOfPurchaseTextField.text = value
     }
+    
     func setDatepopupValue(value: Date) {
         date = value
         dateTextField.text = value.ToString(as: .long)
@@ -293,7 +338,6 @@ extension PaymentViewController: PopupDelegate {
 extension PaymentViewController: CropViewControllerDelegate {
     
     func presentCropViewController(withImage image: UIImage) {
-
         let cropViewController = CropViewController(image: image)
         cropViewController.delegate = self
         present(cropViewController, animated: true, completion: nil)
@@ -301,8 +345,6 @@ extension PaymentViewController: CropViewControllerDelegate {
 
 
     func cropViewController(_ cropViewController: CropViewController, didCropToImage image: UIImage, withRect cropRect: CGRect, angle: Int) {
-            // 'image' is the newly cropped version of the original image
-        
         let viewController = cropViewController.children.first!
         viewController.modalTransitionStyle = .coverVertical
         viewController.presentingViewController?.dismiss(animated: true, completion: nil)
@@ -312,10 +354,8 @@ extension PaymentViewController: CropViewControllerDelegate {
 
 
     func cropViewController(_ cropViewController: CropViewController, didFinishCancelled cancelled: Bool) {
-
         let viewController = cropViewController.children.first!
         viewController.modalTransitionStyle = .coverVertical
         viewController.presentingViewController?.dismiss(animated: true, completion: nil)
-        
     }
 }

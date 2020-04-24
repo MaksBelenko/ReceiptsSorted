@@ -20,7 +20,7 @@ class TextPopupViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var insertButton: UIButton!
     @IBOutlet weak var popupView: UIView!
     
-    var delegate: PopupDelegate?
+    weak var delegate: PopupDelegate?
     
     
     //"Amount paid:"

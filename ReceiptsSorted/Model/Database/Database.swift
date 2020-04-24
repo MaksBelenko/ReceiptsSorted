@@ -188,9 +188,9 @@ class Database {
         case .AmountPaid:
             payment.amountPaid = newDetail as! Float
         case .Place:
-            payment.place = newDetail as! String
+            payment.place = newDetail as? String
         case .Image:
-            payment.receiptPhoto = newDetail as! Data
+            payment.receiptPhoto = newDetail as? Data
         case .PaymentReceived:
             payment.paymentReceived = newDetail as! Bool
         }

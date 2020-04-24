@@ -15,7 +15,7 @@ class SortingDropDownMenu: NSObject, UITableViewDelegate, UITableViewDataSource 
     
     let tableViewController = UITableViewController()
     private var button = UIButton()
-    var sortButtonLabelDelegate: SortButtonLabelDelegate?
+    weak var sortButtonLabelDelegate: SortButtonLabelDelegate?
     
     
 

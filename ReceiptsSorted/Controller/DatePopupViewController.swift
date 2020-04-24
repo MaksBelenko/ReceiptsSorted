@@ -16,7 +16,7 @@ class DatePopupViewController: UIViewController {
     @IBOutlet weak var popupView: UIView!
     @IBOutlet weak var topLabel: UILabel!
     
-    var delegate: PopupDelegate?
+    weak var delegate: PopupDelegate?
     
     
     override func viewDidLoad() {

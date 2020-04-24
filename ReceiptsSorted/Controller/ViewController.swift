@@ -25,13 +25,11 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIViewCo
     var cardHeight: CGFloat = 0
     var cardStartPointY: CGFloat = 0
     
-    var addButton: UIButton!
-    var buttonView: UIView!
-    let buttonAnimations = AddButtonAnimations()
+    var buttonView: AddButtonView!
     var cardGesturesViewModel = CardGesturesViewModel()
     let circularTransition = CircularTransition()
     
-    var amountAnimation: AmountAnimation!
+    var topGraphicsView: TopGraphicsView!
     
     let cameraVC = CameraViewController(nibName: "CameraViewController", bundle: nil)
     
@@ -54,14 +52,14 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIViewCo
         setupCard()
         setupCardHandle()
         setupTopViewWithGraphics()
-        cardViewController.amountAnimation = amountAnimation
+        cardViewController.amountAnimation = topGraphicsView.amountAnimation
         
         setupAddButton(withSize: 55)
         
         cardGesturesViewModel.MainView = self.view
         cardGesturesViewModel.cardViewController = cardViewController
         cardGesturesViewModel.visualEffectView = visualEffectView
-        cardGesturesViewModel.addButton = addButton
+        cardGesturesViewModel.addButton = buttonView.addButton
     }
 
     
@@ -75,7 +73,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIViewCo
         super.viewDidAppear(animated)
         
         let totalAmount = cardViewController.database.getTotalAmount(of: .Pending)
-        amountAnimation.animateCircle(to: totalAmount)
+        topGraphicsView.amountAnimation.animateCircle(to: totalAmount)
     }
     
     
@@ -90,7 +88,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIViewCo
     func setupAddButton(withSize buttonSize: CGFloat) {
         
         /* Adding UIView that will contain button (needed for  3D Transform*/
-        buttonView = UIView(frame: CGRect(x: 0, y: 0, width: buttonSize, height: buttonSize))
+        buttonView = AddButtonView(self, action: #selector(ViewController.addButtonPressed), frame: CGRect(x: 0, y: 0, width: buttonSize, height: buttonSize))
+                
         self.view.addSubview(buttonView)
         
         buttonView.translatesAutoresizingMaskIntoConstraints = false
@@ -98,36 +97,6 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIViewCo
         buttonView.widthAnchor.constraint(equalToConstant: buttonSize).isActive = true
         buttonView.centerYAnchor.constraint(equalTo: cardViewController.view.topAnchor, constant: -8).isActive = true
         buttonView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30).isActive = true
-        
-        /* Creating Add Button */
-        addButton = UIButton(type: .system)
-        addButton.frame = CGRect(x: 0, y: 0, width: buttonSize, height: buttonSize)
-        addButton.backgroundColor = UIColor.flatOrange //orange Flat UI
-        addButton.setTitle("+", for: .normal)
-        addButton.titleLabel?.font = UIFont.systemFont(ofSize: 45)
-        addButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 7, right: 0)
-        addButton.setTitleColor(.white, for: .normal)
-        addButton.addTarget(self, action: #selector(ViewController.addButtonPressed), for: UIControl.Event.touchUpInside)
-        buttonAnimations.startAnimatingPressActions(for: addButton)
-        
-        
-        /* Adding Transform Layer to enable 3D animation*/
-        var perspective = CATransform3DIdentity
-        perspective.m34 = -1 / 1000
-        let transformLayer = CATransformLayer()
-        transformLayer.transform = perspective
-
-        transformLayer.addSublayer(addButton.layer)
-        buttonView.layer.addSublayer(transformLayer)
-
-        addButton.layer.transform = CATransform3DMakeRotation(0, 1, 0, 0) //CGFloat(M_PI*0.5)
-        
-        
-        /* Add Button to button view and adjust corner radius*/
-        buttonView.addSubview(addButton)
-        
-        addButton.layer.applyShadow(color: .flatOrange, alpha: 0.5, x: 1, y: 2, blur: 4)
-        addButton.layer.cornerRadius = 18
     }
     
     
@@ -150,7 +119,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIViewCo
     func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         circularTransition.transitionMode = .present
         circularTransition.startingPoint = buttonView.center
-        circularTransition.circleColor = addButton.backgroundColor!
+        circularTransition.circleColor = buttonView.addButton.backgroundColor!
         
         return circularTransition
     }
@@ -158,7 +127,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIViewCo
     func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         circularTransition.transitionMode = .dismiss
         circularTransition.startingPoint = buttonView.center
-        circularTransition.circleColor = addButton.backgroundColor!
+        circularTransition.circleColor = buttonView.addButton.backgroundColor!
         
         return circularTransition
     }
@@ -231,90 +200,15 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIViewCo
     //MARK: - Initialisation of Top graphics
     
     private func setupTopViewWithGraphics() {
-        let topView = UIView()
+        topGraphicsView = TopGraphicsView(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: cardStartPointY))//UIView()
         
-        view.insertSubview(topView, at: 0)
+        view.insertSubview(topGraphicsView, at: 0)
         
-        topView.translatesAutoresizingMaskIntoConstraints = false
-        topView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
-        topView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        topView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-        topView.heightAnchor.constraint(equalToConstant: cardStartPointY).isActive = true
-        
-        
-        /* Create circles; region is [-pi/2 ; pi*3/2] */
-        let mainGraphics = MainGraphicsViewModel(frameWidth: view.frame.size.width, frameHeight: cardStartPointY)
-        let contourCircle = mainGraphics.createCircleLine(from: -CGFloat.pi/2, to: CGFloat.pi*3/2, ofColour: UIColor.contourFlatColour.cgColor)
-        let indicatorCircle = mainGraphics.createCircleLine(from: -CGFloat.pi/2, to: CGFloat.pi*3/2, ofColour: UIColor.flatOrange.cgColor)
-        
-        topView.layer.addSublayer(contourCircle)
-        topView.layer.addSublayer(indicatorCircle)
-        
-        contourCircle.applyShadow(color: .black, alpha: 0.16, x: 2, y: 2, blur: 3)
-        indicatorCircle.applyShadow(color: .flatOrange, alpha: 0.7, x: 0, y: 1, blur: 6)
-        
-        
-        /* Creating Currency Label inside the circle */
-        let currencyLabel = mainGraphics.createCurrencyLabel()
-        topView.addSubview(currencyLabel)
-
-        
-        
-        
-        /* Creating Amount sum label that will show sum of all pending payments */
-        amountSum = mainGraphics.createLabel()
-        topView.addSubview(amountSum)
-        
-        let offsetRight: CGFloat = 25
-        
-        amountSum.translatesAutoresizingMaskIntoConstraints = false
-        amountSum.rightAnchor.constraint(equalTo: topView.rightAnchor, constant: -offsetRight).isActive = true
-        amountSum.widthAnchor.constraint(equalTo: topView.widthAnchor, constant: -mainGraphics.circleRightSideOffset-2*offsetRight).isActive = true
-        amountSum.heightAnchor.constraint(equalToConstant: 28).isActive = true
-        amountSum.centerYAnchor.constraint(equalTo: currencyLabel.centerYAnchor, constant: -mainGraphics.circleRadius*3/4).isActive = true
-        
-        
-        /* Creating "Pending:" UILabel */
-        let pendingLabel = mainGraphics.createLabel(text: "Pending:", textAlignment: .left)
-        topView.addSubview(pendingLabel)
-        
-        pendingLabel.translatesAutoresizingMaskIntoConstraints = false
-        pendingLabel.rightAnchor.constraint(equalTo: amountSum.rightAnchor).isActive = true
-        pendingLabel.heightAnchor.constraint(equalTo: amountSum.heightAnchor).isActive = true
-        pendingLabel.widthAnchor.constraint(equalTo: amountSum.widthAnchor).isActive = true
-        pendingLabel.centerYAnchor.constraint(equalTo: amountSum.centerYAnchor).isActive = true
-        
-        
-        
-        
-        let contourBar = mainGraphics.createHorizontalBar(colour: .contourFlatColour, offset: offsetRight)
-        let dayBar = mainGraphics.createHorizontalBar(percentage: 0.85, colour: .flatOrange, offset: offsetRight)
-        topView.layer.addSublayer(contourBar)
-        topView.layer.addSublayer(dayBar)
-        contourBar.applyShadow(color: .black, alpha: 0.16, x: 2, y: 2, blur: 3)
-        dayBar.applyShadow(color: .flatOrange, alpha: 0.7, x: 0, y: 1, blur: 6)
-        
-        
-        let daysLeftLabel = UILabel(frame: CGRect(x: contourBar.frame.origin.x,
-                                                  y: contourBar.frame.origin.y - 25,
-                                                  width: contourBar.frame.width,
-                                                  height: 17))
-        daysLeftLabel.text = "1 out of 7 days left"
-        daysLeftLabel.textColor = UIColor(rgb: 0xC6CACE)
-        daysLeftLabel.font = UIFont(name: "Arial", size: 15)
-        daysLeftLabel.textAlignment = .center
-        
-        topView.addSubview(daysLeftLabel)
-        
-        
-        
-        
-        
-        amountAnimation = AmountAnimation(animationCircle: indicatorCircle)
-        
-        amountAnimation.overallAmount.bind {
-            self.amountSum.text = "£\($0.ToString(decimals: 2))"
-        }
+        topGraphicsView.translatesAutoresizingMaskIntoConstraints = false
+        topGraphicsView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+        topGraphicsView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        topGraphicsView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        topGraphicsView.heightAnchor.constraint(equalToConstant: cardStartPointY).isActive = true
     }
     
     
@@ -364,7 +258,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIViewCo
     
     private func showPDFPreview(for payments: [Payments]) {
         let pdfPreviewVC = PDFPreviewViewController(nibName: "PDFPreviewViewController", bundle: nil)
-        pdfPreviewVC.passedPayments = payments//cardViewController.database.fetchSortedData(by: .NewestDateAdded, and: .Pending)
+        pdfPreviewVC.passedPayments = payments
         pdfPreviewVC.modalPresentationStyle = .overFullScreen
         self.present(pdfPreviewVC, animated: true)
     }

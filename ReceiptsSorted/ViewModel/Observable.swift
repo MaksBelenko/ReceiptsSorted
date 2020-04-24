@@ -30,7 +30,7 @@ class Observable<T> {
 }
 
 /*
- viewModel.variable.bind { [unowned self] in
+ viewModel.variable.bind { [weak self] in
     self.Label.text = $0
  }
  */

@@ -30,7 +30,7 @@ internal class LogHelper {
     - Parameter function: Function name (do not need to specify)
     - Parameter line: Line number (do not need to specify)
     */
-    static func exception(message: String, file: String, function: String = #function, line: Int = #line ) {
+    static func exception(message: String, file: String = #file, function: String = #function, line: Int = #line ) {
         let fileName = file.components(separatedBy: "/").last ?? "unknown"
         print("EXCEPTION - [\(function) in \(fileName): Line \(line)] :  \(message)")
     }
