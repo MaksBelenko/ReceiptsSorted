@@ -7,7 +7,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CardViewController" customModule="ReceiptsSorted" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CardViewController" customModule="WorkReceipts" customModuleProvider="target">
             <connections>
                 <outlet property="SortSegmentedControl" destination="cOg-BH-ggV" id="hHR-aR-6zV"/>
                 <outlet property="searchAndSortView" destination="CUx-DJ-xt5" id="gmU-se-PpO"/>
@@ -25,7 +25,7 @@
                 <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CUx-DJ-xt5" userLabel="SearchAndSortView">
                     <rect key="frame" x="0.0" y="40" width="414" height="40"/>
                     <subviews>
-                        <searchBar contentMode="redraw" fixedFrame="YES" searchBarStyle="minimal" text="" translatesAutoresizingMaskIntoConstraints="NO" id="6Hk-WJ-MAr">
+                        <searchBar contentMode="redraw" fixedFrame="YES" searchBarStyle="minimal" text="" placeholder="Search name" translatesAutoresizingMaskIntoConstraints="NO" id="6Hk-WJ-MAr">
                             <rect key="frame" x="8" y="-8" width="332" height="56"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                             <textInputTraits key="textInputTraits"/>

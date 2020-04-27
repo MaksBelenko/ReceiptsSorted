@@ -12,7 +12,7 @@ import CoreData
 class Database {
     
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-    let imageCompression = ImageCompressionViewModel()
+    let imageCompression = ImageCompression()
     
     
     

@@ -133,17 +133,17 @@ class CardGesturesViewModel: NSObject {
 
         
         /* Blur animation*/
-        let blurAnimator = UIViewPropertyAnimator(duration: duration, dampingRatio: dumpingRatio) {
-            switch state {
-            case .Expanded:
-                self.visualEffectView.effect = UIBlurEffect(style: .dark)
-            case .Collapsed:
-                self.visualEffectView.effect = nil
-            }
-        }
+//        let blurAnimator = UIViewPropertyAnimator(duration: duration, dampingRatio: dumpingRatio) {
+//            switch state {
+//            case .Expanded:
+//                self.visualEffectView.effect = UIBlurEffect(style: .dark)
+//            case .Collapsed:
+//                self.visualEffectView.effect = nil
+//            }
+//        }
 
-        blurAnimator.startAnimation()
-        runningAnimations.append(blurAnimator)
+//        blurAnimator.startAnimation()
+//        runningAnimations.append(blurAnimator)
 
 
         /* Add Button Opacity animation*/

@@ -86,9 +86,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIViewCo
     
     //MARK: - Setup Button
     func setupAddButton(withSize buttonSize: CGFloat) {
-        
-        /* Adding UIView that will contain button (needed for  3D Transform*/
-        buttonView = AddButtonView(self, action: #selector(ViewController.addButtonPressed), frame: CGRect(x: 0, y: 0, width: buttonSize, height: buttonSize))
+        buttonView = AddButtonView(self, action: #selector(ViewController.addButtonPressed))
                 
         self.view.addSubview(buttonView)
         

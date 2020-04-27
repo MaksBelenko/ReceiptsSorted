@@ -45,7 +45,6 @@ class CardViewController: UIViewController {
         super.viewDidLoad()
         print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
         
-        
         //Initialise ViewModels
         swipeActions = SwipeActionsViewModel(database: database)
         
@@ -113,7 +112,9 @@ class CardViewController: UIViewController {
     //MARK: - TableVew Scrolling
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if ((fractionComplete > 0 && fractionComplete < 1) || (nextState == .Expanded && fractionComplete < 1)) {
+        if (fractionComplete > 0 && fractionComplete < 1) ||
+               (nextState == .Expanded && fractionComplete < 1) ||
+                (nextState == .Collapsed && fractionComplete < 0) {
             tblView.contentOffset.y = 0
         }
         

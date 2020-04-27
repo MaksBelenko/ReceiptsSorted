@@ -19,6 +19,8 @@ class PaymentViewController: UIViewController, UITextFieldDelegate {
     var place: String = ""
     var date: Date = Date()
     
+    var bottomViewBottomContraint: NSLayoutConstraint!
+    
     @IBOutlet weak var topNavigationBar: UINavigationBar!
     @IBOutlet weak var bottomView: UIView!
     @IBOutlet weak var receiptImageView: UIImageView!
@@ -28,7 +30,7 @@ class PaymentViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var addButton: UIButton!
     
     let buttonAnimations = AddButtonAnimations()
-    var imageGesturesViewModel = ImageGesturesViewModel()
+    var imageGesturesViewModel = ImageGestures()
     
     weak var paymentDelegate: PaymentDelegate?
     
@@ -61,6 +63,11 @@ class PaymentViewController: UIViewController, UITextFieldDelegate {
         
         amountPaidTextField.delegate = self
         placeOfPurchaseTextField.delegate = self
+        
+        self.dateTextField.setInputViewDatePicker(target: self, selector: #selector(pressedDoneDatePicker))
+        self.amountPaidTextField.setInputAmountPaid()
+        
+//        configureBottomView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -77,13 +84,22 @@ class PaymentViewController: UIViewController, UITextFieldDelegate {
     
     
     
+    //MARK: - BottomView
+    
+    func configureBottomView() {
+        bottomView.translatesAutoresizingMaskIntoConstraints = false
+        bottomViewBottomContraint = bottomView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        bottomViewBottomContraint.isActive = true
+    }
+    
+    
+    
     
     //MARK: - Keyboard
     
     private func addKeyboardObservers() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardAppearanceChanged), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardAppearanceChanged), name: UIResponder.keyboardWillHideNotification, object: nil)
-//        NotificationCenter.default.addObserver(self, selector: #selector(keyboardAppearanceChanged), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
     }
     
     private func removeKeyboardObservers() {
@@ -95,11 +111,13 @@ class PaymentViewController: UIViewController, UITextFieldDelegate {
     @objc func keyboardAppearanceChanged(notification: Notification) {
         guard let keyboardRect = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else { return }
         
+        
         if (notification.name == UIResponder.keyboardWillShowNotification ) {
-            view.frame.origin.y = -keyboardRect.height
+            view.frame.origin.y = -keyboardRect.height + amountPaidTextField.frame.origin.y
         } else {
             view.frame.origin.y = 0
         }
+        
     }
     
     
@@ -148,12 +166,12 @@ class PaymentViewController: UIViewController, UITextFieldDelegate {
         placeOfPurchaseTextField.text = place
         
         if (pageType == .UpdatePayment) {
-            amountPaidTextField.text = "£" + amountPaid.ToString(decimals: 2)
+            amountPaidTextField.text = amountPaid.ToString(decimals: 2)
             dateTextField.text = date.ToString(as: .long)
         }
         
         if (pageType == .AddPayment) {
-            amountPaidTextField.text = "£0.00"
+//            amountPaidTextField.text = ""
             dateTextField.text = date.ToString(as: .long)
         }
     }
@@ -192,13 +210,28 @@ class PaymentViewController: UIViewController, UITextFieldDelegate {
     //MARK: - Fields actions
     
     @IBAction func startedEditingAmountPaid(_ sender: UITextField) {
-//        showTextPopup(popupType: .AmountPaid, numericText: amountPaidTextField.text ?? "")
     }
     
     
     @IBAction func startedEditingPlace(_ sender: UITextField) {
-//        showTextPopup(popupType: .Place, numericText: placeOfPurchaseTextField.text ?? "")
     }
+    
+    
+    @IBAction func startedEditingDate(_ sender: Any) {
+    }
+    
+    
+    @objc func pressedDoneDatePicker() {
+        if let datePicker = self.dateTextField.inputView as? UIDatePicker {
+            let dateformatter = DateFormatter()
+            dateformatter.dateStyle = .medium
+            self.dateTextField.text = dateformatter.string(from: datePicker.date)
+            date = datePicker.date
+        }
+        self.dateTextField.resignFirstResponder()
+    }
+    
+    
     
     
     func showTextPopup(popupType: PopupType, numericText: String) {
@@ -215,22 +248,18 @@ class PaymentViewController: UIViewController, UITextFieldDelegate {
     
     
     
-    @IBAction func startedEditingDate(_ sender: Any) {
-        dateTextField.resignFirstResponder()
-        
-        if let datePopupVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DatePopupViewController") as?  DatePopupViewController
-        {
-            datePopupVC.delegate = self
-            datePopupVC.modalPresentationStyle = .overCurrentContext
-            self.present(datePopupVC, animated: true, completion: nil)
-        }
-    }
-    
-    
-    
     //MARK: - Add Button actions
     
     @IBAction func pressedAddButton(_ sender: UIButton) {
+        
+        if !textFieldsHaveValues() {
+            showTextFieldsAlert()
+            return
+        }
+        
+        amountPaid = amountPaidTextField.text!.floatValue
+        place = placeOfPurchaseTextField.text!
+        
         
         let paymentTuple = (amountPaid: amountPaid, place: place, date: date, receiptImage: receiptImageView.image ?? UIImage())
         paymentDelegate?.passData(as: pageType, paymentTuple: paymentTuple)
@@ -242,6 +271,22 @@ class PaymentViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
+    
+    
+    private func textFieldsHaveValues() -> Bool {
+        if amountPaidTextField.text == "" { return false }
+        if placeOfPurchaseTextField.text == "" { return false }
+        
+        return true
+    }
+    
+    
+    private func showTextFieldsAlert() {
+        let ac = UIAlertController(title: "Fill all data", message: "Some of the information is not filled", preferredStyle: .alert)
+        let okayAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+        ac.addAction(okayAction)
+        self.present(ac, animated: true)
+    }
     
     
     
@@ -302,7 +347,7 @@ class PaymentViewController: UIViewController, UITextFieldDelegate {
     //MARK: - Text detection
     
     @IBAction func pressedDetectTextButton(_ sender: UIButton) {
-        let textRecogniser = TextRecogniserViewModel()
+        let textRecogniser = TextRecogniser()
         amountPaid = textRecogniser.findReceiptDetails(for: passedImage!)
         amountPaidTextField.text = "£\(amountPaid.ToString(decimals: 2))"
     }
@@ -330,7 +375,6 @@ extension PaymentViewController: PopupDelegate {
         date = value
         dateTextField.text = value.ToString(as: .long)
     }
-    
 }
 
 

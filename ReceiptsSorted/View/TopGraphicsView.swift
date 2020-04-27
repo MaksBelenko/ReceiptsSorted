@@ -49,7 +49,7 @@ class TopGraphicsView: UIView {
     
     private func configureUI() {
         /* Create circles; region is [-pi/2 ; pi*3/2] */
-        let mainGraphics = MainGraphicsViewModel(frameWidth: viewWidth, frameHeight: viewHeight)
+        let mainGraphics = TopGraphicsShapes(frameWidth: viewWidth, frameHeight: viewHeight)
         let contourCircle = mainGraphics.createCircleLine(from: -CGFloat.pi/2, to: CGFloat.pi*3/2, ofColour: UIColor.contourFlatColour.cgColor)
         indicatorCircle = mainGraphics.createCircleLine(from: -CGFloat.pi/2, to: CGFloat.pi*3/2, ofColour: UIColor.flatOrange.cgColor)
         

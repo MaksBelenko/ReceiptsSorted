@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ImageGesturesViewModel: NSObject {
+class ImageGestures: NSObject {
     
     ///Image's origin to be used for pan gesture
     var imageOrigin : CGPoint!
@@ -23,7 +23,7 @@ class ImageGesturesViewModel: NSObject {
      Creates pinch gesture
      */
     func createPinchGesture() -> UIPinchGestureRecognizer {
-        let pinchGesture = UIPinchGestureRecognizer(target: self, action: #selector(ImageGesturesViewModel.pinchGesture))
+        let pinchGesture = UIPinchGestureRecognizer(target: self, action: #selector(ImageGestures.pinchGesture))
         pinchGesture.delegate = self
         
         return pinchGesture
@@ -33,7 +33,7 @@ class ImageGesturesViewModel: NSObject {
      Creates pan gesture with 2 minimum touches
      */
     func createPanGesture() -> UIPanGestureRecognizer {
-        let panGestureRecogniser = UIPanGestureRecognizer (target: self, action: #selector(ImageGesturesViewModel.panGesture))
+        let panGestureRecogniser = UIPanGestureRecognizer (target: self, action: #selector(ImageGestures.panGesture))
         panGestureRecogniser.delegate = self
         panGestureRecogniser.minimumNumberOfTouches = 2
         
@@ -107,7 +107,7 @@ class ImageGesturesViewModel: NSObject {
 
 
 //MARK: - UIGestureRecognizerDelegate extension
-extension ImageGesturesViewModel: UIGestureRecognizerDelegate {
+extension ImageGestures: UIGestureRecognizerDelegate {
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
     }

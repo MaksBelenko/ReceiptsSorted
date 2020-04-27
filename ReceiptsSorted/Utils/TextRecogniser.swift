@@ -9,7 +9,7 @@
 import UIKit
 import Vision
 
-class TextRecogniserViewModel {
+class TextRecogniser {
     
     var textFound: String = ""
     var priceFound: Float!

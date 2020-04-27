@@ -16,8 +16,8 @@ class AddButtonView: UIView {
     
     
     
-    init(_ target: Any?, action: Selector, frame: CGRect) {
-        super.init(frame: frame)
+    init(_ target: Any?, action: Selector) {
+        super.init(frame: CGRect())
         
         configureAddButton(target, action: action)
         configureView()

@@ -16,7 +16,7 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
     
     var controllerFrame: CGRect?
     var photoOutput: AVCapturePhotoOutput?
-    var cameraSession: CameraSessionViewModel?
+    var cameraSession: CameraSession?
     var image: UIImage?
     let imagePicker = UIImagePickerController()
     
@@ -25,7 +25,7 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
     
     
     
-    
+    //MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -59,7 +59,7 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
     
     func setupCameraSession() {
         cameraView.layer.cornerRadius = 20
-        cameraSession = CameraSessionViewModel(forView: cameraView)
+        cameraSession = CameraSession(forView: cameraView)
         
         cameraSession?.changeBackgroundColor.bind { [unowned self] in
             if ($0 == true) {

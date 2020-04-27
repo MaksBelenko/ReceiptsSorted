@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MainGraphicsViewModel {
+class TopGraphicsShapes {
     
     var frameWidth: CGFloat = 100.0
     var frameHeight: CGFloat = 100.0

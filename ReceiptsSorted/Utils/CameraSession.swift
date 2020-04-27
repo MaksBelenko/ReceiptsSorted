@@ -10,7 +10,7 @@ import UIKit
 import AVFoundation
 
 
-class CameraSessionViewModel  {
+class CameraSession  {
     
     //MARK: - Fields
     private lazy var captureSession = AVCaptureSession()
