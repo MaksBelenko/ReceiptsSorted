@@ -45,7 +45,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIViewCo
     
     
     
-    //MARK: - ViewDidLoad
+    //MARK: - Lifecycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -257,7 +258,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIViewCo
     private func showPDFPreview(for payments: [Payments]) {
         let pdfPreviewVC = PDFPreviewViewController(nibName: "PDFPreviewViewController", bundle: nil)
         pdfPreviewVC.passedPayments = payments
-        pdfPreviewVC.modalPresentationStyle = .overFullScreen
+        pdfPreviewVC.isModalInPresentation = true
+//        pdfPreviewVC.modalPresentationStyle = .overFullScreen
         self.present(pdfPreviewVC, animated: true)
     }
     

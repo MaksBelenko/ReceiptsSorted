@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		36AF7BF5421B96747FBC19F6 /* libPods-ReceiptsSorted.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F881D179E0F0BF7791163B48 /* libPods-ReceiptsSorted.a */; };
+		B5076BCF2457A28400C2BE34 /* Alerts.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5076BCE2457A28400C2BE34 /* Alerts.swift */; };
 		B50BAADB242B7DC200EAFECA /* AmountAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50BAADA242B7DC200EAFECA /* AmountAnimation.swift */; };
 		B50BAADD242BB8E000EAFECA /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50BAADC242BB8E000EAFECA /* SettingsViewController.swift */; };
 		B50BAADF242BECEE00EAFECA /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50BAADE242BECEE00EAFECA /* StringExtensions.swift */; };
@@ -23,6 +24,7 @@
 		B5377C0C23A82E2A0010B144 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B5377C0A23A82E2A0010B144 /* LaunchScreen.storyboard */; };
 		B54967A824104E3500684A2F /* ImageCompression.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54967A724104E3500684A2F /* ImageCompression.swift */; };
 		B54967AD241167C000684A2F /* SortingDropDownMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54967AC241167C000684A2F /* SortingDropDownMenu.swift */; };
+		B550E150245B2F0F000294B1 /* SortEnums+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = B550E14F245B2F0F000294B1 /* SortEnums+Ext.swift */; };
 		B561B38F243BFBAD00F7B29B /* PDFCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B561B38E243BFBAD00F7B29B /* PDFCreator.swift */; };
 		B561B391243BFBBA00F7B29B /* SimpleShapes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B561B390243BFBBA00F7B29B /* SimpleShapes.swift */; };
 		B564470B241027EB00B08AD3 /* AddButtonAnimations.swift in Sources */ = {isa = PBXBuildFile; fileRef = B564470A241027EB00B08AD3 /* AddButtonAnimations.swift */; };
@@ -63,6 +65,7 @@
 
 /* Begin PBXFileReference section */
 		0684F8876FBD25DAACD5A6E3 /* Pods-ReceiptsSorted.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReceiptsSorted.debug.xcconfig"; path = "Target Support Files/Pods-ReceiptsSorted/Pods-ReceiptsSorted.debug.xcconfig"; sourceTree = "<group>"; };
+		B5076BCE2457A28400C2BE34 /* Alerts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alerts.swift; sourceTree = "<group>"; };
 		B50BAADA242B7DC200EAFECA /* AmountAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmountAnimation.swift; sourceTree = "<group>"; };
 		B50BAADC242BB8E000EAFECA /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		B50BAADE242BECEE00EAFECA /* StringExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
@@ -81,6 +84,7 @@
 		B5470F2B20BCB16126F229BA /* Pods-ReceiptsSorted.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReceiptsSorted.release.xcconfig"; path = "Target Support Files/Pods-ReceiptsSorted/Pods-ReceiptsSorted.release.xcconfig"; sourceTree = "<group>"; };
 		B54967A724104E3500684A2F /* ImageCompression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCompression.swift; sourceTree = "<group>"; };
 		B54967AC241167C000684A2F /* SortingDropDownMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortingDropDownMenu.swift; sourceTree = "<group>"; };
+		B550E14F245B2F0F000294B1 /* SortEnums+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SortEnums+Ext.swift"; sourceTree = "<group>"; };
 		B561B38E243BFBAD00F7B29B /* PDFCreator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PDFCreator.swift; sourceTree = "<group>"; };
 		B561B390243BFBBA00F7B29B /* SimpleShapes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleShapes.swift; sourceTree = "<group>"; };
 		B564470A241027EB00B08AD3 /* AddButtonAnimations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddButtonAnimations.swift; sourceTree = "<group>"; };
@@ -177,6 +181,7 @@
 			children = (
 				B5E3C3772445403B00AD59AC /* ImageGestures.swift */,
 				B54967A724104E3500684A2F /* ImageCompression.swift */,
+				B5B6758123CF724000291D31 /* ImageManipulator.swift */,
 			);
 			path = Images;
 			sourceTree = "<group>";
@@ -192,7 +197,8 @@
 		B535A1BE244BC2D7005585F0 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
-				B59E3E2B23B53FEF0017D474 /* Enums.swift */,
+				B5076BCE2457A28400C2BE34 /* Alerts.swift */,
+				B550E14E245B230E000294B1 /* Enums */,
 				B535A1BF244BC320005585F0 /* LogHelper.swift */,
 			);
 			path = Helpers;
@@ -246,6 +252,15 @@
 			path = Animations;
 			sourceTree = "<group>";
 		};
+		B550E14E245B230E000294B1 /* Enums */ = {
+			isa = PBXGroup;
+			children = (
+				B59E3E2B23B53FEF0017D474 /* Enums.swift */,
+				B550E14F245B2F0F000294B1 /* SortEnums+Ext.swift */,
+			);
+			path = Enums;
+			sourceTree = "<group>";
+		};
 		B561B38D243BFB6C00F7B29B /* PDF */ = {
 			isa = PBXGroup;
 			children = (
@@ -266,7 +281,6 @@
 		B59E3E1323B3BF4E0017D474 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				B5B6758123CF724000291D31 /* ImageManipulator.swift */,
 				B566604D242FA955003DD15B /* PaymentTableSection.swift */,
 				B573FAA323B95F57005473D2 /* Delegates.swift */,
 				B5CCE49A2403195200CA0CB5 /* Settings.swift */,
@@ -325,13 +339,13 @@
 		B5F54E83241E78220016DCED /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				B5F54E86241E78750016DCED /* UIColorExtensions.swift */,
 				B5F54E8A241E78C70016DCED /* DateExtensions.swift */,
 				B566604F242FB65F003DD15B /* IntExtensins.swift */,
 				B5F54E8C241E78E60016DCED /* FloatExtensions.swift */,
 				B50BAADE242BECEE00EAFECA /* StringExtensions.swift */,
 				B5F54E88241E789D0016DCED /* CALayerExtensions.swift */,
 				B5F54E84241E783C0016DCED /* UIViewExtensions.swift */,
-				B5F54E86241E78750016DCED /* UIColorExtensions.swift */,
 				B5AC4AAE2453940E00D6F6D3 /* UISegmentedControlExtensions.swift */,
 				B57ECC562454A6BA003E9598 /* UITextFieldExtensions.swift */,
 			);
@@ -473,8 +487,10 @@
 				B59E3E2323B44DE80017D474 /* CardViewController.swift in Sources */,
 				B566604E242FA955003DD15B /* PaymentTableSection.swift in Sources */,
 				B59E3E2C23B53FEF0017D474 /* Enums.swift in Sources */,
+				B5076BCF2457A28400C2BE34 /* Alerts.swift in Sources */,
 				B50BAADB242B7DC200EAFECA /* AmountAnimation.swift in Sources */,
 				B564470B241027EB00B08AD3 /* AddButtonAnimations.swift in Sources */,
+				B550E150245B2F0F000294B1 /* SortEnums+Ext.swift in Sources */,
 				B573FA9A23B81EC8005473D2 /* PaymentViewController.swift in Sources */,
 				B5AD17DD240464CB00BB3069 /* TopGraphicsShapes.swift in Sources */,
 				B573FAAB23B98285005473D2 /* CameraViewController.swift in Sources */,

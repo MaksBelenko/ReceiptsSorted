@@ -234,17 +234,17 @@ class PaymentViewController: UIViewController, UITextFieldDelegate {
     
     
     
-    func showTextPopup(popupType: PopupType, numericText: String) {
-        if let textPopupVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "TextPopupViewController") as? TextPopupViewController
-        {
-            textPopupVC.popupType = popupType
-            textPopupVC.passedNumericText = numericText
-            
-            textPopupVC.delegate = self
-            textPopupVC.modalPresentationStyle = .overCurrentContext
-            self.present(textPopupVC, animated: true, completion: nil)
-        }
-    }
+//    func showTextPopup(popupType: PopupType, numericText: String) {
+//        if let textPopupVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "TextPopupViewController") as? TextPopupViewController
+//        {
+//            textPopupVC.popupType = popupType
+//            textPopupVC.passedNumericText = numericText
+//            
+//            textPopupVC.delegate = self
+//            textPopupVC.modalPresentationStyle = .overCurrentContext
+//            self.present(textPopupVC, animated: true, completion: nil)
+//        }
+//    }
     
     
     

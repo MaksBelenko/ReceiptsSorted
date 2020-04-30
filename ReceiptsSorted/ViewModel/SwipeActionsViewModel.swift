@@ -13,6 +13,11 @@ class SwipeActionsViewModel {
     weak var swipeActionDelegate: SwipeActionDelegate?
     var database: Database!
     
+    enum SwipeCommandType {
+        case Remove, Tick, Untick
+    }
+    
+    
     
     init(database: Database) {
         self.database = database

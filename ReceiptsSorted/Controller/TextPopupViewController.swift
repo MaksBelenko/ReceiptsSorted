@@ -13,7 +13,7 @@ class TextPopupViewController: UIViewController, UITextFieldDelegate {
 
     var passedLabel: String = ""
     var passedNumericText: String = ""
-    var popupType: PopupType?
+//    var popupType: PopupType?
     
     @IBOutlet weak var topLabel: UILabel!
     @IBOutlet weak var numericTextField: UITextField!
@@ -29,16 +29,16 @@ class TextPopupViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        topLabel.text = (popupType! == .AmountPaid) ? "Amount paid:" : "Place of purchase:"
-        
-        numericTextField.delegate = self
-        numericTextField.text = (popupType! == .AmountPaid) ? passedNumericText.components(separatedBy: "£")[1] : passedNumericText
-        numericTextField.keyboardType = (popupType! == .AmountPaid) ? .decimalPad : .asciiCapable
-        
-        // Force start editing text
-        numericTextField.becomeFirstResponder()
-        
-        setupPopupLook()
+//        topLabel.text = (popupType! == .AmountPaid) ? "Amount paid:" : "Place of purchase:"
+//
+//        numericTextField.delegate = self
+//        numericTextField.text = (popupType! == .AmountPaid) ? passedNumericText.components(separatedBy: "£")[1] : passedNumericText
+//        numericTextField.keyboardType = (popupType! == .AmountPaid) ? .decimalPad : .asciiCapable
+//
+//        // Force start editing text
+//        numericTextField.becomeFirstResponder()
+//
+//        setupPopupLook()
     }
     
     
@@ -61,12 +61,12 @@ class TextPopupViewController: UIViewController, UITextFieldDelegate {
     
     
     func onDismissVC() {
-        if (popupType! == .AmountPaid) {
-            delegate?.setAmountPaidValue(value: (numericTextField.text! as NSString).floatValue)
-        } else {
-            delegate?.setPlaceValue(value: numericTextField.text!)
-        }
-        
+//        if (popupType! == .AmountPaid) {
+//            delegate?.setAmountPaidValue(value: (numericTextField.text! as NSString).floatValue)
+//        } else {
+//            delegate?.setPlaceValue(value: numericTextField.text!)
+//        }
+//        
         dismiss(animated: true, completion: nil)
         self.view.endEditing(true)
     }

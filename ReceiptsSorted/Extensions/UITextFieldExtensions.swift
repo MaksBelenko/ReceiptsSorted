@@ -25,10 +25,6 @@ extension UITextField {
         self.inputAccessoryView = toolBar
     }
     
-    @objc func tapCancel() {
-        self.resignFirstResponder()
-    }
-    
     
     ///Sets parameters for AmountPaid TextField in PaymentVC
     func setInputAmountPaid() {
@@ -49,5 +45,12 @@ extension UITextField {
         let barButton = UIBarButtonItem(title: "Done", style: .plain, target: target, action: #selector(tapCancel))
         toolBar.setItems([flexible, barButton], animated: false)
         self.inputAccessoryView = toolBar
+    }
+    
+    
+    
+    
+    @objc func tapCancel() {
+        self.resignFirstResponder()
     }
 }

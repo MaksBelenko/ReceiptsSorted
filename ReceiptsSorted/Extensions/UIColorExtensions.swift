@@ -30,7 +30,7 @@ extension UIColor {
 }
 
 
-//<ARK: - Custom App Colours
+//MARK: - Custom App Colours
 extension UIColor {
     
     static let superLightFlatOrange = UIColor(rgb: 0xF39C12).withAlphaComponent(0.1)

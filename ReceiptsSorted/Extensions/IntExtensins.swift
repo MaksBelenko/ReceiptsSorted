@@ -19,7 +19,7 @@ extension Int {
         switch self
         {
         case 1:
-                return "January"
+            return "January"
         case 2:
             return "February"
         case 3:
@@ -52,6 +52,9 @@ extension Int {
     
     
 extension Int {
+    /**
+     Adds "st", "nd", "rd" or "th" abbreviation to numeber (eg "1st", "2nd", ...)
+     */
     func numberAbbreviation() -> String {
         let lastDigit = self % 10
         

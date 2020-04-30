@@ -11,6 +11,8 @@ import CoreData
 
 class Database {
     
+    let paymentsEntityName: String = "Payments"
+    
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     let imageCompression = ImageCompression()
     
@@ -18,7 +20,7 @@ class Database {
     
     
     
-    //MARK: - Save and Delete Methods
+    //MARK: - Basic methods
     
     /**
      Attempts to commit unsaved changes to registered objects to the context’s parent store.
@@ -42,14 +44,11 @@ class Database {
     }
     
     
-    
-    //MARK: - Fetch methods
-    
     /**
      Get all payments from database
      - Parameter request: NSFetchRequest that is used to fetch data from database
      */
-    func loadPayments(with request: NSFetchRequest<Payments> = Payments.fetchRequest()) -> [Payments] {
+    private func loadPayments(with request: NSFetchRequest<Payments> = Payments.fetchRequest()) -> [Payments] {
         do {
             return try context.fetch(request)
         } catch {
@@ -57,6 +56,10 @@ class Database {
             return []
         }
     }
+    
+    
+    //MARK: - Fetch methods
+    
     
     /**
      Fetch all payments from database which contain the passed place name
@@ -69,17 +72,10 @@ class Database {
         if (name != "") {
             //[cd] is to make it non-casesensitive and non-diacritic
             let predicateSearchName = NSPredicate(format: "place CONTAINS[cd] %@", name)
-            
-            var predicatePaymentReceived: NSPredicate?
-            switch paymentStatus
-            {
-            case .Pending:
-                predicatePaymentReceived = NSPredicate(format: "paymentReceived == %@", NSNumber(value: false))
-            case .Received:
-                predicatePaymentReceived = NSPredicate(format: "paymentReceived == %@", NSNumber(value: true))
-            case .All:
-                break
-            }
+
+            // Set predicate for fetch request
+            let predicatePaymentReceived = paymentStatus.getPredicate()
+
             
             if let secondPredicate = predicatePaymentReceived {
                 request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicateSearchName, secondPredicate])
@@ -88,7 +84,9 @@ class Database {
             }
             
             
-            request.sortDescriptors = [NSSortDescriptor(key: "place", ascending: true)]
+            let compareSelector = #selector(NSString.localizedStandardCompare(_:))
+            let sd = NSSortDescriptor(key: #keyPath(Payments.place), ascending: true, selector: compareSelector)
+            request.sortDescriptors = [sd]
             
             
             return loadPayments(with: request)
@@ -108,29 +106,15 @@ class Database {
     func fetchSortedData(by sort: SortBy, and paymentStatus: PaymentStatusSort) -> [Payments] {
         let request: NSFetchRequest<Payments> = Payments.fetchRequest()
         
-        switch paymentStatus
-        {
-        case .Pending:
-            request.predicate = NSPredicate(format: "paymentReceived == %@", NSNumber(value: false))
-        case .Received:
-            request.predicate = NSPredicate(format: "paymentReceived == %@", NSNumber(value: true))
-        case .All:
-            break
+        // Set predicate for fetch request
+        if let predicate = paymentStatus.getPredicate() {
+            request.predicate = predicate
         }
         
-        
-        switch sort
-        {
-        case .Place:
-            request.sortDescriptors = [NSSortDescriptor(key: "place", ascending: true)]
-        case .NewestDateAdded:
-            request.sortDescriptors = [NSSortDescriptor(key: "date", ascending: false)]
-        case .OldestDateAdded:
-            request.sortDescriptors = [NSSortDescriptor(key: "date", ascending: true)]
-        case .None:
-            break
+        // Set sortDescriptor for fetch request
+        if let sortDescriptor = sort.getSortDescriptor() {
+            request.sortDescriptors = [sortDescriptor]
         }
-        
         
         return loadPayments(with: request)
     }
@@ -200,15 +184,44 @@ class Database {
     
     
     
-    
+    // MARK: - Get Total
     
     /**
      Gets total amount of payments
      - Parameter sortMethod: Allows to get a total either for all, pending or received payments
      */
     func getTotalAmount(of sortMethod: PaymentStatusSort) -> Float {
-        let payments = fetchSortedData(by: .None, and: sortMethod)
-        let totalAmount = payments.map({ $0.amountPaid }).reduce(0,+)
+        let dictSumName = "sumAmount"
+        
+        let fetchRequest = NSFetchRequest<NSDictionary>(entityName: paymentsEntityName)
+        fetchRequest.resultType = .dictionaryResultType
+        let sumExpressionDescr = NSExpressionDescription()
+        sumExpressionDescr.name = dictSumName
+        
+        let amountSumExp = NSExpression(forKeyPath: #keyPath(Payments.amountPaid))
+        sumExpressionDescr.expression = NSExpression(forFunction: "sum:", arguments: [amountSumExp])
+        sumExpressionDescr.expressionResultType = .floatAttributeType
+        
+        //Set properties to fetch
+        fetchRequest.propertiesToFetch = [sumExpressionDescr]
+        
+        // Set predicate for sortMethod
+        if let predicate = sortMethod.getPredicate() {
+            fetchRequest.predicate = predicate
+        }
+        
+        var totalAmount: Float = -1
+        
+        do {
+            let results = try context.fetch(fetchRequest)
+            
+            let resultDict = results.first!
+            if let value = resultDict[dictSumName] as? NSNumber {
+                totalAmount = value.floatValue
+            }
+        } catch {
+            print(error)
+        }
         
         return totalAmount
     }

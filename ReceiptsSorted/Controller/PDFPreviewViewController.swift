@@ -34,6 +34,8 @@ class PDFPreviewViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.presentationController?.delegate = self
+        
         setupNavigationBar()
         setupPDFView()
         createPDFPreviewDocument()
@@ -88,7 +90,7 @@ class PDFPreviewViewController: UIViewController {
     
     
     @IBAction func closeButtonPressed(_ sender: UIBarButtonItem) {
-        dismiss(animated: true, completion: nil)
+        showDismissAlert()
     }
        
     
@@ -117,4 +119,27 @@ class PDFPreviewViewController: UIViewController {
         }
     }
     
+    
+    
+    
+    private func showDismissAlert() {
+        let optionMenu = UIAlertController(title: "Are you sure you want to dismiss the pdf?", message: nil , preferredStyle: .actionSheet)
+
+        let dismissAction = UIAlertAction(title: "Dismiss", style: .destructive, handler: { alert in
+            self.dismiss(animated: true, completion: nil)
+        })
+
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        optionMenu.addAction(dismissAction)
+        optionMenu.addAction(cancelAction)
+        self.present(optionMenu, animated: true, completion: nil)
+    }
+    
+}
+
+extension PDFPreviewViewController: UIAdaptivePresentationControllerDelegate {
+    
+    func presentationControllerDidAttemptToDismiss(_ presentationController: UIPresentationController) {
+        showDismissAlert()
+    }
 }

@@ -11,6 +11,9 @@ import PDFKit
 
 class PDFCreator: NSObject {
 
+    private var payments: [Payments]!
+    private var pageNumber = 1
+    
     var companyLogo: UIImage = #imageLiteral(resourceName: "NameLogo")
     
     let pageOffset: (top: CGFloat, bottom: CGFloat, left: CGFloat, right: CGFloat) = (top: 36, bottom: 36, left: 36, right: 36)  //Half an inch each
@@ -29,9 +32,9 @@ class PDFCreator: NSObject {
         return "\(day.numberAbbreviation()) of \(month.mapToMonth()) \(year)"
     }
     
-    private var payments: [Payments]!
-    
-    private var pageNumber = 1
+    enum Alignment {
+        case left, centre, right
+    }
     
     
     

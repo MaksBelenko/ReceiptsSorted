@@ -10,6 +10,11 @@ import UIKit
 
 class CircularTransition: NSObject, UIViewControllerAnimatedTransitioning  {
 
+    enum CircularTransitionMode {
+        case present, dismiss, pop
+    }
+    
+    
     var circle = UIView()
     var circleColor = UIColor.white
     var duration: TimeInterval = 0.3
