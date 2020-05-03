@@ -21,8 +21,10 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
     let imagePicker = UIImagePickerController()
     
     var mainView: CardViewController?
+    let circularTransition = CircularTransition()
+    var addButtonCenter: CGPoint?
     
-    
+    override var preferredStatusBarStyle: UIStatusBarStyle { return .lightContent }
     
     
     //MARK: - Lifecycle
@@ -42,14 +44,15 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         cameraSession!.startRunningCaptureSession()
+        navigationController?.delegate = self
     }
     
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(true)        
         cameraSession!.stopCaptureSession()
+//        navigationController?.delegate = nil
     }
-    
     
     
     // MARK: - Setup
@@ -74,15 +77,12 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
     
     
     func showPaymentVC(withImage image: UIImage) {
-//        let detailsVC = DetailsViewController()
-//        detailsVC.modalPresentationStyle = .fullScreen
-//        present(detailsVC, animated: true)
         if let paymentVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "PaymentDetails") as? PaymentViewController
         {
             paymentVC.passedImage = image
             paymentVC.paymentDelegate = mainView
             paymentVC.modalPresentationStyle = .fullScreen
-            self.present(paymentVC, animated: true, completion: nil)
+            navigationController?.pushViewController(paymentVC, animated: true)
         }
     }
 
@@ -96,7 +96,7 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
     
     
     @IBAction func pressedCloseCamera(_ sender: UIButton) {
-        dismiss(animated: true, completion: nil)
+        navigationController?.popViewController(animated: true)
     }
     
     
@@ -138,5 +138,26 @@ extension CameraViewController: AVCapturePhotoCaptureDelegate {
             showPaymentVC(withImage: image!)
         }
         
+    }
+}
+
+
+
+// MARK: - UIViewControllerTransitioningDelegate
+extension CameraViewController: UIViewControllerTransitioningDelegate {
+
+    func navigationController(_ navigationController: UINavigationController, animationControllerFor operation: UINavigationController.Operation, from fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+
+        // Perform custom animation only if CameraViewController
+        guard toVC is ViewController else { return nil }
+        guard let center = addButtonCenter else { return nil }
+
+        if operation == .pop {
+            circularTransition.transitionMode = .pop
+            circularTransition.startingPoint = center
+            return circularTransition
+        }
+
+        return nil
     }
 }

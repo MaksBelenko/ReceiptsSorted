@@ -40,19 +40,22 @@ extension CircularTransition: UIViewControllerAnimatedTransitioning {
         let containerView = transitionContext.containerView
      
         if transitionMode == .present {
-            if let presentedView = transitionContext.view(forKey: .to) {
-                containerView.addSubview(presentedView)
-                showMaskAnimation(for: presentedView, withAnimationFor: .present)
-            }
-        } else {
-            let transitionModeKey = (transitionMode == .pop) ? UITransitionContextViewKey.to : UITransitionContextViewKey.from
+            guard let presentedView = transitionContext.view(forKey: .to) else { return }
             
-            if let returningView = transitionContext.view(forKey: transitionModeKey) {
-                showMaskAnimation(for: returningView, withAnimationFor: .dismiss)
+            containerView.addSubview(presentedView)
+            showMaskAnimation(for: presentedView, withAnimationFor: .present)
+        } else {
+            guard let fromView = transitionContext.view(forKey: .from) else { return }
+            
+            if transitionMode == .pop {
+                guard let toView = transitionContext.view(forKey: .to) else { return }
+                transitionContext.containerView.insertSubview(toView, belowSubview: fromView)
             }
+        
+            showMaskAnimation(for: fromView, withAnimationFor: .dismiss)
         }
     }
-
+    
     
     
     // MARK: - CAShapeLayer mask animation

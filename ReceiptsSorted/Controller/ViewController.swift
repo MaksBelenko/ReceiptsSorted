@@ -67,6 +67,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIViewCo
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
+        navigationController?.delegate = self // for custom animation
     }
 
     
@@ -78,10 +79,10 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIViewCo
     }
     
     
-//    override func viewWillDisappear(_ animated: Bool) {
-//        super.viewWillDisappear(animated)
-//        navigationController?.setNavigationBarHidden(false, animated: animated)
-//    }
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.delegate = nil // stop using custom transition
+    }
     
 
     
@@ -107,7 +108,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIViewCo
         cameraVC.controllerFrame = self.view.frame
         cameraVC.mainView = cardViewController
         
-        self.present(cameraVC, animated: true, completion: nil)
+        navigationController?.pushViewController(cameraVC, animated: true)
     }
     
     
@@ -115,20 +116,18 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIViewCo
     
     //MARK: - Transition animation
     
-    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        circularTransition.transitionMode = .present
+    func navigationController(_ navigationController: UINavigationController, animationControllerFor operation: UINavigationController.Operation, from fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        
+        // Perform custom animation only if CameraViewController
+        guard let cameraVC = toVC as? CameraViewController else { return nil }
+        
+        circularTransition.transitionMode = (operation == .push) ? .present : .pop
         circularTransition.startingPoint = buttonView.center
+        cameraVC.addButtonCenter = buttonView.center
         
         return circularTransition
     }
-    
-    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        circularTransition.transitionMode = .dismiss
-        circularTransition.startingPoint = buttonView.center
-        
-        return circularTransition
-    }
-    
+
     
     
     

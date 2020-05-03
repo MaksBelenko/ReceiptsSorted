@@ -265,9 +265,9 @@ class PaymentViewController: UIViewController, UITextFieldDelegate {
         paymentDelegate?.passData(as: pageType, paymentTuple: paymentTuple)
         
         if (pageType == .AddPayment) {
-            self.view.window!.rootViewController?.dismiss(animated: true, completion: nil)
+            navigationController?.popToRootViewController(animated: true)
         } else {
-            self.dismiss(animated: true, completion: nil)
+            navigationController?.popViewController(animated: true)
         }
     }
     
@@ -292,7 +292,7 @@ class PaymentViewController: UIViewController, UITextFieldDelegate {
     
     //MARK: - Bar Buttons Actions
     @IBAction func returnToCameraBarButtonPressed(_ sender: UIBarButtonItem) {
-        dismiss(animated: true, completion: nil)
+        navigationController?.popViewController(animated: true)
     }
     
     @IBAction func saveToLibraryBarButtonPressed(_ sender: UIBarButtonItem) {

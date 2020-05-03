@@ -41,7 +41,7 @@ class TopGraphicsView: UIView {
         amountAnimation = AmountAnimation(animationCircle: indicatorCircle)
 
         amountAnimation.overallAmount.bind {
-            self.amountSumLabel.text = "£\($0.ToString(decimals: 2))"
+            self.amountSumLabel.text = "£\($0.pendingNumberRepresentation())"
         }
     }
     

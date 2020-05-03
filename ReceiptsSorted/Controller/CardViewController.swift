@@ -224,8 +224,8 @@ extension CardViewController: UITableViewDataSource, UITableViewDelegate, SwipeA
             paymentVC.paymentDelegate = self
             
             paymentVC.modalPresentationStyle = .fullScreen
-//            navigationController?.pushViewController(paymentVC, animated: true)
-            self.present(paymentVC, animated: true, completion: nil)
+            navigationController?.pushViewController(paymentVC, animated: true)
+//            self.present(paymentVC, animated: true, completion: nil)
         }
     }
     

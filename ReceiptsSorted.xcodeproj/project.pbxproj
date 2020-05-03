@@ -22,7 +22,6 @@
 		B5377C0723A82E280010B144 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B5377C0523A82E280010B144 /* Main.storyboard */; };
 		B5377C0923A82E2A0010B144 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B5377C0823A82E2A0010B144 /* Assets.xcassets */; };
 		B5377C0C23A82E2A0010B144 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B5377C0A23A82E2A0010B144 /* LaunchScreen.storyboard */; };
-		B53F42DA245DEC56006F4D02 /* DetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53F42D9245DEC56006F4D02 /* DetailsViewController.swift */; };
 		B54967A824104E3500684A2F /* ImageCompression.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54967A724104E3500684A2F /* ImageCompression.swift */; };
 		B54967AD241167C000684A2F /* SortingDropDownMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54967AC241167C000684A2F /* SortingDropDownMenu.swift */; };
 		B550E150245B2F0F000294B1 /* SortEnums+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = B550E14F245B2F0F000294B1 /* SortEnums+Ext.swift */; };
@@ -82,7 +81,6 @@
 		B5377C0823A82E2A0010B144 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B5377C0B23A82E2A0010B144 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B5377C0D23A82E2A0010B144 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B53F42D9245DEC56006F4D02 /* DetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsViewController.swift; sourceTree = "<group>"; };
 		B5470F2B20BCB16126F229BA /* Pods-ReceiptsSorted.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReceiptsSorted.release.xcconfig"; path = "Target Support Files/Pods-ReceiptsSorted/Pods-ReceiptsSorted.release.xcconfig"; sourceTree = "<group>"; };
 		B54967A724104E3500684A2F /* ImageCompression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCompression.swift; sourceTree = "<group>"; };
 		B54967AC241167C000684A2F /* SortingDropDownMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortingDropDownMenu.swift; sourceTree = "<group>"; };
@@ -317,7 +315,6 @@
 				B59E3E2123B44DE80017D474 /* CardViewController.swift */,
 				B573FAA923B98285005473D2 /* CameraViewController.swift */,
 				B573FA9923B81EC8005473D2 /* PaymentViewController.swift */,
-				B53F42D9245DEC56006F4D02 /* DetailsViewController.swift */,
 				B573FAA123B94BB2005473D2 /* TextPopupViewController.swift */,
 				B50BAADC242BB8E000EAFECA /* SettingsViewController.swift */,
 				B516CF12243BF1F0003D09E1 /* PDFPreviewViewController.swift */,
@@ -493,7 +490,6 @@
 				B573FAA423B95F57005473D2 /* Delegates.swift in Sources */,
 				B573FAAE23BA815F005473D2 /* CameraSession.swift in Sources */,
 				B5F54E89241E789D0016DCED /* CALayerExtensions.swift in Sources */,
-				B53F42DA245DEC56006F4D02 /* DetailsViewController.swift in Sources */,
 				B5377C0023A82E280010B144 /* AppDelegate.swift in Sources */,
 				B57ECC572454A6BA003E9598 /* UITextFieldExtensions.swift in Sources */,
 				B59E3E2323B44DE80017D474 /* CardViewController.swift in Sources */,
