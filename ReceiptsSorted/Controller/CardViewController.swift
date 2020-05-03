@@ -90,7 +90,7 @@ class CardViewController: UIViewController {
         noReceiptsImage = UIImageView(image: UIImage(named: "NoReceipts"))
         
         guard let image = noReceiptsImage else {
-            LogHelper.debug(message: "Image not found")
+            Log.debug(message: "Image not found")
             return
         }
         
@@ -214,7 +214,7 @@ extension CardViewController: UITableViewDataSource, UITableViewDelegate, SwipeA
         if let paymentVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "PaymentDetails") as? PaymentViewController
         {
             paymentVC.passedImage = UIImage(data: selectedPayment.receiptPhoto ?? Data())
-            LogHelper.debug(message: "size in MB = \(Float(selectedPayment.receiptPhoto!.count) / powf(10, 6))")
+            Log.debug(message: "size in MB = \(Float(selectedPayment.receiptPhoto!.count) / powf(10, 6))")
             
             paymentVC.amountPaid = selectedPayment.amountPaid
             paymentVC.place = selectedPayment.place!

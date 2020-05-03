@@ -118,7 +118,6 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIViewCo
     func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         circularTransition.transitionMode = .present
         circularTransition.startingPoint = buttonView.center
-        circularTransition.circleColor = buttonView.addButton.backgroundColor!
         
         return circularTransition
     }
@@ -126,7 +125,6 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIViewCo
     func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         circularTransition.transitionMode = .dismiss
         circularTransition.startingPoint = buttonView.center
-        circularTransition.circleColor = buttonView.addButton.backgroundColor!
         
         return circularTransition
     }
@@ -219,43 +217,14 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIViewCo
     //MARK: - Email button
     
     @IBAction func emailButtonPressed(_ sender: UIButton) {
-        let optionMenu = UIAlertController(title: "Send:", message: nil , preferredStyle: .actionSheet)
-
-        let allPendingAction = UIAlertAction(title: "All pending", style: .default, handler: { alert in
-            self.showFileFormatAlertSheet()
-        })
-        let selecteReceiptsAction = UIAlertAction(title: "Select receipts", style: .default, handler: { alert in
-            //TODO: Implement expantion and selection
-        })
-
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-        optionMenu.addAction(allPendingAction)
-        optionMenu.addAction(selecteReceiptsAction)
-        optionMenu.addAction(cancelAction)
-        self.present(optionMenu, animated: true, completion: nil)
-    }
-    
-    
-    private func showFileFormatAlertSheet() {
-        let optionMenu = UIAlertController(title: "Send receipts as:", message: nil , preferredStyle: .actionSheet)
-
-        let pdfAction = UIAlertAction(title: "PDF (Table & photos)", style: .default, handler: { alert in
-            self.showPDFPreview(for: self.cardViewController.database.fetchSortedData(by: .NewestDateAdded, and: .Pending))
-        })
-        let archiveAction = UIAlertAction(title: "Archive (Only photos)", style: .default, handler: { alert in
-            //TODO: Implement
-        })
-
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-        optionMenu.addAction(pdfAction)
-        optionMenu.addAction(archiveAction)
-        optionMenu.addAction(cancelAction)
-        self.present(optionMenu, animated: true, completion: nil)
+        Alert.shared.showEmailOptionAlert(for: self)
     }
     
     
     
-    private func showPDFPreview(for payments: [Payments]) {
+    func showPDFPreview() {
+        let payments = self.cardViewController.database.fetchSortedData(by: .NewestDateAdded, and: .Pending)
+        
         let pdfPreviewVC = PDFPreviewViewController(nibName: "PDFPreviewViewController", bundle: nil)
         pdfPreviewVC.passedPayments = payments
         pdfPreviewVC.isModalInPresentation = true

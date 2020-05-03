@@ -7,7 +7,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CameraViewController" customModule="ReceiptsSorted" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CameraViewController" customModule="WorkReceipts" customModuleProvider="target">
             <connections>
                 <outlet property="cameraView" destination="lto-ph-Osu" id="lkt-IR-h0x"/>
                 <outlet property="takePhotoButton" destination="365-wz-sNb" id="xIJ-ts-Qvm"/>
@@ -70,7 +70,7 @@
                             </connections>
                         </button>
                     </subviews>
-                    <color key="backgroundColor" red="0.95294117647058818" green="0.61176470588235299" blue="0.070588235294117646" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="trailing" secondItem="gXZ-Dz-QGX" secondAttribute="trailing" constant="25" id="0aw-lg-cgz"/>
                         <constraint firstItem="365-wz-sNb" firstAttribute="centerX" secondItem="lto-ph-Osu" secondAttribute="centerX" id="9F1-Nx-Ecd"/>
@@ -81,7 +81,7 @@
                     </constraints>
                 </view>
             </subviews>
-            <color key="backgroundColor" red="0.95294117647058818" green="0.61176470588235299" blue="0.070588235294117646" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
                 <constraint firstItem="lto-ph-Osu" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="4gI-nS-ZND"/>
                 <constraint firstItem="lto-ph-Osu" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="EjW-gB-Uxc"/>

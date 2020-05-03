@@ -19,7 +19,7 @@ extension UISegmentedControl {
         case 2:
             return .All
         default:
-            LogHelper.exception(message: "Index is out of range for SegmentedControl")
+            Log.exception(message: "Index is out of range for SegmentedControl")
             return .All
         }
     }

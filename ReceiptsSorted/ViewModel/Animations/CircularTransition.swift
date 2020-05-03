@@ -8,27 +8,24 @@
 
 import UIKit
 
-class CircularTransition: NSObject, UIViewControllerAnimatedTransitioning  {
+class CircularTransition: NSObject  {
 
-    enum CircularTransitionMode {
+    var duration: TimeInterval = 0.4
+    
+    enum TransitionMode {
         case present, dismiss, pop
     }
     
+    weak var context: UIViewControllerContextTransitioning?
+    var transitionMode: TransitionMode = .present
+    var startingPoint = CGPoint.zero
+}
     
-    var circle = UIView()
-    var circleColor = UIColor.white
-    var duration: TimeInterval = 0.3
-    
-    var transitionMode: CircularTransitionMode = .present
-    
-    var startingPoint = CGPoint.zero {
-        didSet {
-            circle.center = startingPoint
-        }
-    }
- 
-    
-    
+
+
+// MARK: - UIViewControllerAnimatedTransitioning
+
+extension CircularTransition: UIViewControllerAnimatedTransitioning {
     
     
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
@@ -37,94 +34,67 @@ class CircularTransition: NSObject, UIViewControllerAnimatedTransitioning  {
     
     
     
-    
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
         
+        context = transitionContext
         let containerView = transitionContext.containerView
      
-        if transitionMode == .present
-        {
-            if let presentedView = transitionContext.view(forKey: .to)
-            {
-                let viewCenter = presentedView.center
-                let viewSize = presentedView.frame.size
-                
-                circle = UIView() // make sure its completely new (re-initializing)
-                circle.frame = frameForCircle(withViewCenter: viewCenter, size: viewSize, startPoint: startingPoint)
-                
-                circle.layer.cornerRadius = circle.frame.size.height / 6
-                circle.center = startingPoint
-                circle.backgroundColor = circleColor
-                circle.transform = CGAffineTransform(scaleX: 0.001, y: 0.001)
-                containerView.addSubview(circle)
-                
-                presentedView.center = startingPoint
-                presentedView.transform = CGAffineTransform(scaleX: 0.001, y: 0.001)
-                presentedView.alpha = 0
+        if transitionMode == .present {
+            if let presentedView = transitionContext.view(forKey: .to) {
                 containerView.addSubview(presentedView)
-                
-                UIView.animate(withDuration: duration, animations: {
-                    self.circle.transform = CGAffineTransform.identity
-                    presentedView.transform = CGAffineTransform.identity
-                    presentedView.alpha = 1
-                    presentedView.center = viewCenter
-                }, completion: { (success:Bool) in
-                    transitionContext.completeTransition(success)
-                })
+                showMaskAnimation(for: presentedView, withAnimationFor: .present)
             }
-            
         } else {
             let transitionModeKey = (transitionMode == .pop) ? UITransitionContextViewKey.to : UITransitionContextViewKey.from
             
-            if let returningView = transitionContext.view(forKey: transitionModeKey)
-            {
-                let viewCenter = returningView.center
-                let viewSize = returningView.frame.size
-                
-                circle.frame = frameForCircle(withViewCenter: viewCenter, size: viewSize, startPoint: startingPoint)
-                
-                circle.layer.cornerRadius = circle.frame.height / 6
-                
-                circle.center = startingPoint
-                
-                UIView.animate(withDuration: duration, animations: {
-                    self.circle.transform = CGAffineTransform(scaleX: 0.001, y: 0.001)
-                    returningView.transform = CGAffineTransform(scaleX: 0.001, y: 0.001)
-                    returningView.center = self.startingPoint
-                    returningView.alpha = 0
-                    
-                    if self.transitionMode == .pop {
-                        containerView.insertSubview(returningView, belowSubview: returningView)
-                        containerView.insertSubview(self.circle, belowSubview: returningView)
-                    }
-                    
-                    
-                }) { (success:Bool) in
-                    returningView.center = viewCenter
-                    returningView.removeFromSuperview()
-                    
-                    self.circle.removeFromSuperview()
-                    
-                    transitionContext.completeTransition(success)
-                }
+            if let returningView = transitionContext.view(forKey: transitionModeKey) {
+                showMaskAnimation(for: returningView, withAnimationFor: .dismiss)
             }
-            
         }
     }
+
     
     
+    // MARK: - CAShapeLayer mask animation
     
-    
-    private func frameForCircle (withViewCenter viewCenter: CGPoint, size viewSize: CGSize, startPoint: CGPoint) -> CGRect {
-        let xLength = fmax(startPoint.x, viewSize.width - startPoint.x)
-        let yLength = fmax(startPoint.y, viewSize.height - startPoint.y)
-        
-        let offsetVector = sqrt(xLength * xLength + yLength * yLength) * 2
-        let size = CGSize(width:  offsetVector, height: offsetVector)
-        
-        return CGRect(origin: CGPoint.zero, size: size)
+    /**
+     Creates and animates mask for the transition animation
+     - Parameter view: UIView that will be shown
+     - Paramter tMode: Transition mode
+     */
+    private func showMaskAnimation(for view: UIView, withAnimationFor tMode: TransitionMode) {
+        let rect = CGRect(x: startingPoint.x, y: startingPoint.y,
+                          width: 1, height: 1)
+
+        let circleMaskPathInitial = UIBezierPath(roundedRect: rect, cornerRadius: rect.height/6)
+
+        let viewHeight = view.bounds.height
+        let extremePoint = CGPoint(x: startingPoint.x, y: startingPoint.y - viewHeight)
+        let radius = sqrt((extremePoint.x*extremePoint.x) + (extremePoint.y*extremePoint.y))
+        let newRect = rect.insetBy(dx: -radius, dy: -radius)
+        let circleMaskPathFinal = UIBezierPath(roundedRect: newRect, cornerRadius: newRect.height/6)
+
+        let maskLayer = CAShapeLayer()
+        maskLayer.path = (tMode == .present) ? circleMaskPathFinal.cgPath : circleMaskPathInitial.cgPath
+        view.layer.mask = maskLayer
+
+        let maskLayerAnimation = CABasicAnimation(keyPath: "path")
+        maskLayerAnimation.duration = duration
+        maskLayerAnimation.fromValue = (tMode == .present) ? circleMaskPathInitial.cgPath : circleMaskPathFinal.cgPath
+        maskLayerAnimation.toValue = (tMode == .present) ? circleMaskPathFinal.cgPath : circleMaskPathInitial.cgPath
+        maskLayerAnimation.delegate = self
+        maskLayer.add(maskLayerAnimation, forKey: "path")
     }
     
     
-    
+}
+
+
+
+
+// MARK: - CAAnimationDelegate
+extension CircularTransition: CAAnimationDelegate {
+    func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
+        context?.completeTransition(true)
+    }
 }

@@ -23,7 +23,7 @@ class ImageCompression {
      */
     func compressImage(for receiptImage: UIImage) -> Data? {
         let imageSizeinMB = Float(receiptImage.jpegData(compressionQuality: 1.0)!.count) / powf(10, 6)
-        LogHelper.debug(message: "size in MB = \(imageSizeinMB)")
+        Log.debug(message: "size in MB = \(imageSizeinMB)")
 
         var newImage = receiptImage
         
@@ -32,7 +32,7 @@ class ImageCompression {
         }
 
         let newImageData = newImage.jpegData(compressionQuality: settings.compression)!
-        LogHelper.debug(message: "Size compressed in MB = \(Float(newImageData.count) / powf(10, 6))")
+        Log.debug(message: "Size compressed in MB = \(Float(newImageData.count) / powf(10, 6))")
         
         return newImageData
     }

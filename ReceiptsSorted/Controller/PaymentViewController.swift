@@ -113,7 +113,7 @@ class PaymentViewController: UIViewController, UITextFieldDelegate {
         
         
         if (notification.name == UIResponder.keyboardWillShowNotification ) {
-            view.frame.origin.y = -keyboardRect.height + amountPaidTextField.frame.origin.y
+            view.frame.origin.y = -keyboardRect.height + amountPaidTextField.superview!.frame.origin.y
         } else {
             view.frame.origin.y = 0
         }
@@ -359,23 +359,23 @@ class PaymentViewController: UIViewController, UITextFieldDelegate {
 
 
 //MARK:- PopupDelegate
-extension PaymentViewController: PopupDelegate {
-    
-    func setAmountPaidValue(value: Float) {
-        amountPaid = value
-        amountPaidTextField.text = "£" + value.ToString(decimals: 2)
-    }
-    
-    func setPlaceValue(value: String) {
-        place = value
-        placeOfPurchaseTextField.text = value
-    }
-    
-    func setDatepopupValue(value: Date) {
-        date = value
-        dateTextField.text = value.ToString(as: .long)
-    }
-}
+//extension PaymentViewController: PopupDelegate {
+//
+//    func setAmountPaidValue(value: Float) {
+//        amountPaid = value
+//        amountPaidTextField.text = "£" + value.ToString(decimals: 2)
+//    }
+//
+//    func setPlaceValue(value: String) {
+//        place = value
+//        placeOfPurchaseTextField.text = value
+//    }
+//
+//    func setDatepopupValue(value: Date) {
+//        date = value
+//        dateTextField.text = value.ToString(as: .long)
+//    }
+//}
 
 
 //MARK: - CropViewController Pod implementation

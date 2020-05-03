@@ -90,7 +90,7 @@ class PDFPreviewViewController: UIViewController {
     
     
     @IBAction func closeButtonPressed(_ sender: UIBarButtonItem) {
-        showDismissAlert()
+        Alert.shared.showDismissPdfAlert(for: self)
     }
        
     
@@ -99,7 +99,7 @@ class PDFPreviewViewController: UIViewController {
         let fileName = "Receipts \(dateToday).pdf"
         
         let temporaryFileURL = temporaryFolder.appendingPathComponent(fileName)
-        LogHelper.debug(message: "Files are saved to: \(temporaryFileURL.path)")
+        Log.debug(message: "Files are saved to: \(temporaryFileURL.path)")
         
 //        do {
 //            let temporaryFileURL = temporaryFolder.appendingPathComponent("test.zlib")
@@ -119,27 +119,11 @@ class PDFPreviewViewController: UIViewController {
         }
     }
     
-    
-    
-    
-    private func showDismissAlert() {
-        let optionMenu = UIAlertController(title: "Are you sure you want to dismiss the pdf?", message: nil , preferredStyle: .actionSheet)
-
-        let dismissAction = UIAlertAction(title: "Dismiss", style: .destructive, handler: { alert in
-            self.dismiss(animated: true, completion: nil)
-        })
-
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-        optionMenu.addAction(dismissAction)
-        optionMenu.addAction(cancelAction)
-        self.present(optionMenu, animated: true, completion: nil)
-    }
-    
 }
 
 extension PDFPreviewViewController: UIAdaptivePresentationControllerDelegate {
     
     func presentationControllerDidAttemptToDismiss(_ presentationController: UIPresentationController) {
-        showDismissAlert()
+        Alert.shared.showDismissPdfAlert(for: self)
     }
 }

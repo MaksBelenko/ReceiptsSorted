@@ -8,7 +8,7 @@
 
 import Foundation
 
-internal class LogHelper {
+internal class Log {
     
     /**
      Creates a console DEBUG message

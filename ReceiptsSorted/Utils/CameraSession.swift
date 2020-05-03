@@ -27,8 +27,6 @@ class CameraSession  {
     }
     var currentFlashMode = FlashMode.Auto
     
-    var changeBackgroundColor: Observable<Bool> = Observable(false)
-    
     
     
     //MARK: - Initialiser
@@ -119,7 +117,6 @@ class CameraSession  {
         if (ProcessInfo.processInfo.environment["SIMULATOR_DEVICE_NAME"] == nil) {
             DispatchQueue.main.async {
                 self.captureSession.startRunning()
-                self.changeBackgroundColor.value = true
             }
         }
     }

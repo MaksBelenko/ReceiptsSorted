@@ -46,28 +46,19 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
     
     
     override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(true)
-    
-        view.backgroundColor = .flatOrange
-        cameraView.backgroundColor = .flatOrange
-        
+        super.viewWillDisappear(true)        
         cameraSession!.stopCaptureSession()
     }
     
     
     
+    // MARK: - Setup
     
     func setupCameraSession() {
         cameraView.layer.cornerRadius = 20
         cameraSession = CameraSession(forView: cameraView)
-        
-        cameraSession?.changeBackgroundColor.bind { [unowned self] in
-            if ($0 == true) {
-                self.view.backgroundColor = UIColor.black
-                self.cameraView.backgroundColor = UIColor.black
-            }
-        }
     }
+    
     
     
     func setupGestureRecognisers() {
@@ -83,6 +74,9 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
     
     
     func showPaymentVC(withImage image: UIImage) {
+//        let detailsVC = DetailsViewController()
+//        detailsVC.modalPresentationStyle = .fullScreen
+//        present(detailsVC, animated: true)
         if let paymentVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "PaymentDetails") as? PaymentViewController
         {
             paymentVC.passedImage = image
@@ -102,8 +96,6 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
     
     
     @IBAction func pressedCloseCamera(_ sender: UIButton) {
-        //Stop camera session
-        //cameraSession!.stopCaptureSession()
         dismiss(animated: true, completion: nil)
     }
     
@@ -119,7 +111,6 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
     @IBAction func pressedPickFromGalleryButton(_ sender: Any) {
         imagePicker.allowsEditing = false
         imagePicker.sourceType = .photoLibrary
-        
         present(imagePicker, animated: true, completion: nil)
     }
     
@@ -142,10 +133,8 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
 extension CameraViewController: AVCapturePhotoCaptureDelegate {
     
     func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
-        
         if let imageData = photo.fileDataRepresentation() {
             image = UIImage(data: imageData)
-            
             showPaymentVC(withImage: image!)
         }
         
