@@ -16,11 +16,16 @@ class CardTableViewModel {
     
     
     
+ 
+    // MARK: - Add update
+    
+    func addPayment() {
+        
+    }
     
     
     //MARK: - Public methods
  
-    
     /**
      Get the Sections Dictionary
      - Parameter payments: Payments the sections should be created for
@@ -130,6 +135,10 @@ class CardTableViewModel {
            tupleArray.sort { $0.year < $1.year }
         }
 
+        for index in 0..<tupleArray.count {
+            let sortedTuplePayments = tupleArray[index].payments.sorted{ $0.date! > $1.date! }
+            tupleArray[index].payments = sortedTuplePayments
+        }
         
         //Creating PaymentTableSection array from tuple
         var sectionArray = [PaymentTableSection]()

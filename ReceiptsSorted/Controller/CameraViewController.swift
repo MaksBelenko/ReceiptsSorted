@@ -20,7 +20,7 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
     var image: UIImage?
     let imagePicker = UIImagePickerController()
     
-    var mainView: CardViewController?
+    var cardVC: CardViewController?
     let circularTransition = CircularTransition()
     var addButtonCenter: CGPoint?
     
@@ -72,21 +72,18 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
     
     
     
-    
-    
-    
+    // MARK: - Show PaymentVC
     
     func showPaymentVC(withImage image: UIImage) {
         if let paymentVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "PaymentDetails") as? PaymentViewController
         {
             paymentVC.passedImage = image
-            paymentVC.paymentDelegate = mainView
+            paymentVC.paymentDelegate = cardVC
             paymentVC.modalPresentationStyle = .fullScreen
             navigationController?.pushViewController(paymentVC, animated: true)
         }
     }
 
-    
     
     
     //MARK: - Buttons actions

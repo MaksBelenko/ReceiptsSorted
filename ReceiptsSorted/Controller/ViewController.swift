@@ -25,6 +25,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIViewCo
     let circularTransition = CircularTransition()
     var topGraphicsView: TopGraphicsView!
     
+    var onStartup = true
     
     
     
@@ -65,8 +66,11 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIViewCo
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        let totalAmount = cardViewController.database.getTotalAmount(of: .Pending)
-        topGraphicsView.amountAnimation.animateCircle(to: totalAmount)
+        if onStartup {
+            onStartup = false
+            let totalAmount = cardViewController.database.getTotalAmount(of: .Pending)
+            topGraphicsView.amountAnimation.animateCircle(to: totalAmount)
+        }
     }
     
     
@@ -81,7 +85,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIViewCo
     func setupAddButton(withSize buttonSize: CGFloat) {
         buttonView = AddButtonView()
         buttonView.addButton.addTarget(self, action: #selector(ViewController.addButtonPressed), for: UIControl.Event.touchUpInside)
-        buttonView.addButton.addTarget(self, action: #selector(ViewController.addButtunTouchDown), for: UIControl.Event.touchDown)
+        buttonView.addButton.addTarget(self, action: #selector(ViewController.addButtonTouchDown), for: UIControl.Event.touchDown)
         
         self.view.addSubview(buttonView)
         
@@ -99,12 +103,13 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIViewCo
         cameraVC.transitioningDelegate = self
         cameraVC.modalPresentationStyle = .custom
         cameraVC.controllerFrame = self.view.frame
-        cameraVC.mainView = cardViewController
+        cameraVC.cardVC = cardViewController
         
         navigationController?.pushViewController(cameraVC, animated: true)
     }
     
-    @objc func addButtunTouchDown() {
+    
+    @objc func addButtonTouchDown() {
         Vibration.light.vibrate()
     }
     
@@ -184,9 +189,6 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIViewCo
         handleView.layer.cornerRadius = handleView.frame.height
     }
     
-
-    
-
     
     
     //MARK: - Initialisation of Top graphics
@@ -202,10 +204,6 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIViewCo
         topGraphicsView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         topGraphicsView.heightAnchor.constraint(equalToConstant: cardStartPointY).isActive = true
     }
-    
-    
-    
-    
     
     
     
@@ -228,7 +226,4 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIViewCo
     }
     
 }
-
-
-
 

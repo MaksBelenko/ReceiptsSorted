@@ -129,7 +129,9 @@ class Database {
      Adds a payments to database and returns a tuple of the totals before and after the payment
      - Parameter payment: Tuple that is used to create a new entry in the database
      */
-    func add (payment: (amountPaid: Float, place: String, date: Date, receiptImage: UIImage)) -> (totalBefore: Float, totalAfter: Float) {
+    func add (payment: (amountPaid: Float, place: String, date: Date, receiptImage: UIImage)) -> PaymentTotalInfo{
+        let totalBefore = getTotalAmount(of: .Pending)
+        
         let newPayment = Payments(context: context)
         newPayment.amountPaid = payment.amountPaid
         newPayment.place = payment.place
@@ -140,7 +142,7 @@ class Database {
         saveContext()
        
         let totalAfter = getTotalAmount(of: .Pending)
-        return (totalBefore: totalAfter - newPayment.amountPaid, totalAfter: totalAfter)
+        return PaymentTotalInfo(payment: newPayment, totalBefore: totalBefore, totalAfter: totalAfter)
     }
     
     
@@ -149,13 +151,18 @@ class Database {
      - Parameter payment: Payment from the database to be updated
      - Parameter dataTuple: Tuple used to update the payment information
      */
-    func update(payment: Payments, with dataTuple: (amountPaid: Float, place: String, date: Date, receiptImage: UIImage)) {
+    func update(payment: Payments, with dataTuple: (amountPaid: Float, place: String, date: Date, receiptImage: UIImage)) -> PaymentTotalInfo {
+        let totalBefore = getTotalAmount(of: .Pending)
+        
         payment.receiptPhoto = dataTuple.receiptImage.jpegData(compressionQuality: 1)
         payment.amountPaid = dataTuple.amountPaid
         payment.place = dataTuple.place
         payment.date = dataTuple.date
         
         saveContext()
+        
+        let totalAfter = getTotalAmount(of: .Pending)
+        return PaymentTotalInfo(payment: payment, totalBefore: totalBefore, totalAfter: totalAfter)
     }
     
     

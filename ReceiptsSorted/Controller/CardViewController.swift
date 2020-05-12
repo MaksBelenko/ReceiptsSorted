@@ -22,6 +22,7 @@ class CardViewController: UIViewController {
     var cardStartPointY: CGFloat = 0
     var tableRowsHeight: CGFloat = 60
 
+    var fetchedPayments: [Payments] = []
     var cardTableSections: [PaymentTableSection] = []
     var paymentUpdateIndex = (section: 0, row: 0)
     
@@ -32,7 +33,6 @@ class CardViewController: UIViewController {
     let dropDownMenu = SortingDropDownMenu()
     var swipeActions: SwipeActionsViewModel!
     var cardTableViewModel = CardTableViewModel()
-    
     var amountAnimation: AmountAnimation!
     
     var noReceiptsImage: UIImageView?
@@ -52,7 +52,7 @@ class CardViewController: UIViewController {
         setupSearchBar()
         sortButton.setTitle(dropDownMenu.getButtonTitle(for: sortByOption), for: .normal)
         
-        let fetchedPayments = database.fetchSortedData(by: sortByOption, and: paymentStatusSort)
+        fetchedPayments = database.fetchSortedData(by: sortByOption, and: paymentStatusSort)
         cardTableSections = cardTableViewModel.getSections(for: fetchedPayments, sortedBy: sortByOption)
 //        setButtonTitle(for: sortByOption)
         
@@ -131,7 +131,7 @@ class CardViewController: UIViewController {
     @IBAction func segmentedControlValueChanged(_ sender: UISegmentedControl) {
         paymentStatusSort = sender.getCurrentPosition()
         
-        let fetchedPayments = database.fetchSortedData(by: sortByOption, and: paymentStatusSort)
+        fetchedPayments = database.fetchSortedData(by: sortByOption, and: paymentStatusSort)
         cardTableSections = cardTableViewModel.getSections(for: fetchedPayments, sortedBy: sortByOption)
         tblView.reloadData()
     }
@@ -164,7 +164,7 @@ extension CardViewController: UIPopoverPresentationControllerDelegate, SortButto
             self.sortByOption = sortByOption
             sortButton.setTitle(buttonTitle, for: .normal)
             
-            let fetchedPayments = database.fetchSortedData(by: sortByOption, and: paymentStatusSort)
+            fetchedPayments = database.fetchSortedData(by: sortByOption, and: paymentStatusSort)
             cardTableSections = cardTableViewModel.getSections(for: fetchedPayments, sortedBy: sortByOption)
             tblView.reloadData()
         }
@@ -182,7 +182,7 @@ extension CardViewController: UISearchBarDelegate {
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        let fetchedPayments = database.fetchData(forName: searchText, by: sortByOption, and: paymentStatusSort)  //fetchSortedData(by: sortByOption, and: paymentStatusSort)
+        fetchedPayments = database.fetchData(forName: searchText, by: sortByOption, and: paymentStatusSort)  //fetchSortedData(by: sortByOption, and: paymentStatusSort)
         cardTableSections = cardTableViewModel.getSections(for: fetchedPayments, sortedBy: sortByOption)
         tblView.reloadData()
     }
@@ -300,12 +300,25 @@ extension CardViewController: PaymentDelegate {
             switch showPayment
             {
                 case .AddPayment:
-                    let totalTuple = self.database.add(payment: paymentTuple)
-                    self.amountAnimation.animateCircle(from: totalTuple.totalBefore, to: totalTuple.totalAfter)
+                    let addPayment = self.database.add(payment: paymentTuple)
+                    if (self.paymentStatusSort != .Received) {
+                        self.fetchedPayments.append(addPayment.payment)
+                    }
+                    self.amountAnimation.animateCircle(from: addPayment.totalBefore, to: addPayment.totalAfter)
                 case .UpdatePayment:
-                    self.database.update(payment: self.cardTableSections[self.paymentUpdateIndex.section].payments[self.paymentUpdateIndex.row], with: paymentTuple)
+                    let payment = self.cardTableSections[self.paymentUpdateIndex.section].payments[self.paymentUpdateIndex.row]
+                    guard let index = self.fetchedPayments.firstIndex(of: payment) else {
+                        Log.exception(message: "Mismatch in arrays \"fetchedPayments\" and \"cardTableSections\"")
+                        return
+                    }
+                    let updatedPayment = self.database.update(payment: payment, with: paymentTuple)
+                    self.fetchedPayments[index] = updatedPayment.payment
+                    self.amountAnimation.animateCircle(from: updatedPayment.totalBefore, to: updatedPayment.totalAfter)
             }
             
+            
+//            let fetchedPayments = self.database.fetchSortedData(by: self.sortByOption, and: self.paymentStatusSort)
+            self.cardTableSections = self.cardTableViewModel.getSections(for: self.fetchedPayments, sortedBy: self.sortByOption)
             self.tblView.reloadData()
         }
     }
