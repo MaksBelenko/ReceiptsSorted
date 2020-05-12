@@ -83,6 +83,7 @@ class PDFPreviewViewController: UIViewController {
         let pdfCreator = PDFCreator(payments: passedPayments)
         pdfData = pdfCreator.createPDF()
         pdfView.document = PDFDocument(data: pdfData)
+//        pdfView.interpolationQuality = .low // for images
     }
     
     

@@ -51,7 +51,7 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(true)        
         cameraSession!.stopCaptureSession()
-//        navigationController?.delegate = nil
+        navigationController?.delegate = nil
     }
     
     

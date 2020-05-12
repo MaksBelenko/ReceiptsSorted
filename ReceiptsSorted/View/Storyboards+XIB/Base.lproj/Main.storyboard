@@ -378,6 +378,7 @@
                         <outlet property="addButton" destination="Ixh-la-Ku8" id="qrg-y9-ddK"/>
                         <outlet property="amountPaidTextField" destination="Ruu-6h-88t" id="0du-yy-7eS"/>
                         <outlet property="bottomView" destination="Kx1-zs-gVJ" id="WiJ-qT-ggB"/>
+                        <outlet property="bottomViewBottomConstraint" destination="hCE-Jp-kGx" id="iVO-Ai-Aib"/>
                         <outlet property="dateTextField" destination="4L5-nO-PLR" id="lQa-2G-kso"/>
                         <outlet property="placeOfPurchaseTextField" destination="mHb-vD-WSY" id="dDQ-fj-5co"/>
                         <outlet property="receiptImageView" destination="6yn-5r-fWK" id="Wlg-wr-oMh"/>
@@ -386,7 +387,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KCc-YS-UoZ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="268" y="51.724137931034484"/>
+            <point key="canvasLocation" x="436" y="52"/>
         </scene>
     </scenes>
     <resources>

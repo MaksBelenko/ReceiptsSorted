@@ -20,7 +20,6 @@ extension Float {
 
 
 extension Float {
-    
     /**
      Creates postfix for showing thousands, millions, etc. as "k", "m", etc
      */

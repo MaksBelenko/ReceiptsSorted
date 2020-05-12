@@ -15,11 +15,6 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIViewCo
     //MARK: - Fields
     @IBOutlet weak var emailButton: UIButton!
     
-    var amountSum: UILabel!
-    
-    var emailContainerViewHeight = NSLayoutConstraint()
-    var emailContainerViewWidth = NSLayoutConstraint()
-    
     var visualEffectView : UIVisualEffectView!  //For blur
     var cardViewController : CardViewController!
     var cardHeight: CGFloat = 0
@@ -28,11 +23,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIViewCo
     var buttonView: AddButtonView!
     var cardGesturesViewModel = CardGesturesViewModel()
     let circularTransition = CircularTransition()
-    
     var topGraphicsView: TopGraphicsView!
-    
-    let cameraVC = CameraViewController(nibName: "CameraViewController", bundle: nil)
-    
     
     
     
@@ -88,8 +79,10 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIViewCo
     
     //MARK: - Setup Button
     func setupAddButton(withSize buttonSize: CGFloat) {
-        buttonView = AddButtonView(self, action: #selector(ViewController.addButtonPressed))
-                
+        buttonView = AddButtonView()
+        buttonView.addButton.addTarget(self, action: #selector(ViewController.addButtonPressed), for: UIControl.Event.touchUpInside)
+        buttonView.addButton.addTarget(self, action: #selector(ViewController.addButtunTouchDown), for: UIControl.Event.touchDown)
+        
         self.view.addSubview(buttonView)
         
         buttonView.translatesAutoresizingMaskIntoConstraints = false
@@ -111,6 +104,9 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIViewCo
         navigationController?.pushViewController(cameraVC, animated: true)
     }
     
+    @objc func addButtunTouchDown() {
+        Vibration.light.vibrate()
+    }
     
     
     

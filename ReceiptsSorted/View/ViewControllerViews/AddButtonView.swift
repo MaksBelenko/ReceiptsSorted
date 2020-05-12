@@ -16,10 +16,10 @@ class AddButtonView: UIView {
     
     
     
-    init(_ target: Any?, action: Selector) {
+    override init(frame: CGRect) {
         super.init(frame: CGRect())
         
-        configureAddButton(target, action: action)
+        configureAddButton()
         configureView()
     }
     
@@ -29,14 +29,14 @@ class AddButtonView: UIView {
     
     
     
-    private func configureAddButton(_ target: Any?, action: Selector) {
+    private func configureAddButton() {
         addButton = UIButton(type: .system)
         addButton.backgroundColor = UIColor.flatOrange //orange Flat UI
         addButton.setTitle("+", for: .normal)
         addButton.titleLabel?.font = UIFont.systemFont(ofSize: 45)
         addButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 7, right: 0)
         addButton.setTitleColor(.white, for: .normal)
-        addButton.addTarget(target, action: action, for: UIControl.Event.touchUpInside)
+//        addButton.addTarget(target, action: action, for: UIControl.Event.touchUpInside)
         addButton.layer.applyShadow(color: .flatOrange, alpha: 0.5, x: 1, y: 2, blur: 4)
         addButton.layer.cornerRadius = 18
         addButton.layer.transform = CATransform3DMakeRotation(0, 1, 0, 0)

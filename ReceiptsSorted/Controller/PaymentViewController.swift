@@ -19,8 +19,8 @@ class PaymentViewController: UIViewController, UITextFieldDelegate {
     var place: String = ""
     var date: Date = Date()
     
-    var bottomViewBottomContraint: NSLayoutConstraint!
     
+    @IBOutlet weak var bottomViewBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var topNavigationBar: UINavigationBar!
     @IBOutlet weak var bottomView: UIView!
     @IBOutlet weak var receiptImageView: UIImageView!
@@ -86,11 +86,11 @@ class PaymentViewController: UIViewController, UITextFieldDelegate {
     
     //MARK: - BottomView
     
-    func configureBottomView() {
-        bottomView.translatesAutoresizingMaskIntoConstraints = false
-        bottomViewBottomContraint = bottomView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-        bottomViewBottomContraint.isActive = true
-    }
+//    func configureBottomView() {
+//        bottomView.translatesAutoresizingMaskIntoConstraints = false
+//        bottomViewBottomContraint = bottomView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+//        bottomViewBottomContraint.isActive = true
+//    }
     
     
     
@@ -111,13 +111,15 @@ class PaymentViewController: UIViewController, UITextFieldDelegate {
     @objc func keyboardAppearanceChanged(notification: Notification) {
         guard let keyboardRect = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else { return }
         
+        bottomViewBottomConstraint.isActive = false
+        let newConstatnt = (notification.name == UIResponder.keyboardWillShowNotification) ? (-keyboardRect.height + 110) : 0
+        bottomViewBottomConstraint = bottomView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: newConstatnt)
+        bottomViewBottomConstraint.isActive = true
         
-        if (notification.name == UIResponder.keyboardWillShowNotification ) {
-            view.frame.origin.y = -keyboardRect.height + amountPaidTextField.superview!.frame.origin.y
-        } else {
-            view.frame.origin.y = 0
+        
+        UIView.animate(withDuration: 0) {
+            self.view.layoutIfNeeded()
         }
-        
     }
     
     
@@ -282,6 +284,8 @@ class PaymentViewController: UIViewController, UITextFieldDelegate {
     
     
     private func showTextFieldsAlert() {
+        Vibration.error.vibrate()
+        
         let ac = UIAlertController(title: "Fill all data", message: "Some of the information is not filled", preferredStyle: .alert)
         let okayAction = UIAlertAction(title: "OK", style: .default, handler: nil)
         ac.addAction(okayAction)

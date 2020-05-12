@@ -60,6 +60,8 @@ class Alert {
     
     /// Dismiss alert for PDFPreviewVC
     func showDismissPdfAlert(for controller: UIViewController) {
+        Vibration.light.vibrate()
+        
         let optionMenu = UIAlertController(title: "Are you sure you want to dismiss the pdf?", message: nil , preferredStyle: .actionSheet)
 
         let dismissAction = UIAlertAction(title: "Dismiss", style: .destructive, handler: { alert in
