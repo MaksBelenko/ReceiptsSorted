@@ -265,25 +265,64 @@ extension CardViewController: UITableViewDataSource, UITableViewDelegate, SwipeA
     }
     
     //Delegate method
-    func onSwipeClicked(indexPath: IndexPath) {
-        if (paymentStatusSort != .All) {
+    func onSwipeClicked(indexPath: IndexPath, action: SwipeCommandType) {
+        let payment = cardTableSections[indexPath.section].payments[indexPath.row]
+        switch action
+        {
+        case .Remove:
+            removePaymentAlert(indexPath: indexPath, action: action)
+//            database.delete(item: payment)
+            return
+        case .Tick:
+            database.updateDetail(for: payment, detailType: .PaymentReceived, with: true)
+        case .Untick:
+            database.updateDetail(for: payment, detailType: .PaymentReceived, with: false)
+        }
+        
+        removeFromTableVeiw(indexPath: indexPath, action: action)
+    }
+    
+    
+    private func removeFromTableVeiw(indexPath: IndexPath, action: SwipeCommandType) {
+        if (paymentStatusSort != .All || action == .Remove) {
             cardTableSections[indexPath.section].payments.remove(at: indexPath.row)
-            tblView.deleteRows(at: [indexPath], with: .fade)
+            removeSectionIfEmpty(indexPath: indexPath)
         } else {
             tblView.reloadRows(at: [indexPath], with: .left)
         }
     }
     
-    func removeEntryOrSection(indexPath: IndexPath) {
-        if (cardTableSections[indexPath.section].payments.count == 1) {  //One payments in section
-//            cardTableSections.remove(at: indexPath.section)
-            cardTableSections[indexPath.section].payments.remove(at: indexPath.row)
-            tblView.reloadData()//deleteSections(IndexSet([indexPath.section]), with: .fade)
+    
+    private func removeSectionIfEmpty(indexPath: IndexPath) {
+        if (cardTableSections[indexPath.section].payments.count == 0) {  //One payments in section
+            cardTableSections.remove(at: indexPath.section)
+            tblView.deleteSections(IndexSet([indexPath.section]), with: .fade)
         } else {
-            cardTableSections[indexPath.section].payments.remove(at: indexPath.row)
             tblView.deleteRows(at: [indexPath], with: .fade)
         }
     }
+    
+    
+    // MARK: - CardView Alerts
+    
+    func removePaymentAlert(indexPath: IndexPath, action: SwipeCommandType) {
+        Vibration.light.vibrate()
+        
+        let optionMenu = UIAlertController(title: "Are you sure you want to delete the payment?", message: nil , preferredStyle: .actionSheet)
+
+        let deleteAction = UIAlertAction(title: "Yes, delete", style: .destructive, handler: { alert in
+            let payment = self.cardTableSections[indexPath.section].payments[indexPath.row]
+            self.database.delete(item: payment)
+            self.cardTableSections[indexPath.section].payments.remove(at: indexPath.row)
+            self.removeSectionIfEmpty(indexPath: indexPath)
+        })
+
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        optionMenu.addAction(deleteAction)
+        optionMenu.addAction(cancelAction)
+        self.present(optionMenu, animated: true, completion: nil)
+    }
+    
 }
 
 

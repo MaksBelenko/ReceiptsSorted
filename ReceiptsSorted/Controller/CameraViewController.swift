@@ -9,7 +9,7 @@
 import UIKit
 import AVFoundation
 
-class CameraViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class CameraViewController: UIViewController, UINavigationControllerDelegate {
 
     @IBOutlet weak var takePhotoButton: UIButton!
     @IBOutlet weak var cameraView: UIView!
@@ -17,11 +17,11 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
     var controllerFrame: CGRect?
     var photoOutput: AVCapturePhotoOutput?
     var cameraSession: CameraSession?
-    var image: UIImage?
     let imagePicker = UIImagePickerController()
     
+    
+    private let circularTransition = CircularTransition()
     var cardVC: CardViewController?
-    let circularTransition = CircularTransition()
     var addButtonCenter: CGPoint?
     
     override var preferredStatusBarStyle: UIStatusBarStyle { return .lightContent }
@@ -110,6 +110,11 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
         imagePicker.sourceType = .photoLibrary
         present(imagePicker, animated: true, completion: nil)
     }
+}
+
+
+// MARK: - UIImagePickerControllerDelegate
+extension CameraViewController: UIImagePickerControllerDelegate {
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         dismiss(animated: true, completion: nil)
@@ -124,15 +129,16 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
 }
 
 
-
-
 //MARK: - Extension for photo capture methods
 extension CameraViewController: AVCapturePhotoCaptureDelegate {
     
     func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
         if let imageData = photo.fileDataRepresentation() {
-            image = UIImage(data: imageData)
-            showPaymentVC(withImage: image!)
+            guard let image = UIImage(data: imageData) else {
+                Log.exception(message: "Couldn't create image from data")
+                return
+            }
+            showPaymentVC(withImage: image)
         }
         
     }

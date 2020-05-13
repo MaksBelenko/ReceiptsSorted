@@ -25,5 +25,5 @@ protocol SortButtonLabelDelegate: AnyObject {
 }
 
 protocol SwipeActionDelegate: AnyObject {
-    func onSwipeClicked(indexPath: IndexPath)
+    func onSwipeClicked(indexPath: IndexPath, action: SwipeCommandType)
 }

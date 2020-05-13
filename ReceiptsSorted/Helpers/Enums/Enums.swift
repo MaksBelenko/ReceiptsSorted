@@ -22,3 +22,7 @@ enum PaymentDetail {
 enum TableColumn {
     case Date, Place, Price
 }
+
+enum SwipeCommandType {
+    case Remove, Tick, Untick
+}

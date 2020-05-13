@@ -13,9 +13,9 @@ class SwipeActionsViewModel {
     weak var swipeActionDelegate: SwipeActionDelegate?
     var database: Database!
     
-    enum SwipeCommandType {
-        case Remove, Tick, Untick
-    }
+//    enum SwipeCommandType {
+//        case Remove, Tick, Untick
+//    }
     
     
     
@@ -62,17 +62,17 @@ class SwipeActionsViewModel {
     
     
     func actionClicked(for swipeCommand: SwipeCommandType, indexPath: IndexPath, payment: Payments) {
-            switch swipeCommand
-            {
-            case .Remove:
-                database.delete(item: payment)
-            case .Tick:
-                database.updateDetail(for: payment, detailType: .PaymentReceived, with: true)
-            case .Untick:
-                database.updateDetail(for: payment, detailType: .PaymentReceived, with: false)
-            }
+//            switch swipeCommand
+//            {
+//            case .Remove:
+//                database.delete(item: payment)
+//            case .Tick:
+//                database.updateDetail(for: payment, detailType: .PaymentReceived, with: true)
+//            case .Untick:
+//                database.updateDetail(for: payment, detailType: .PaymentReceived, with: false)
+//            }
         
-        swipeActionDelegate?.onSwipeClicked(indexPath: indexPath)
+        swipeActionDelegate?.onSwipeClicked(indexPath: indexPath, action: swipeCommand)
     }
     
     
