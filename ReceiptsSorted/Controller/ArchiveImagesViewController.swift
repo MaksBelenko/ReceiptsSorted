@@ -17,6 +17,18 @@ class ArchiveImagesViewController: UIViewController {
     private var zipURL: URL!
     
     
+    private lazy var cancelBarButton: UIBarButtonItem = {
+        guard let closeImage = UIImage(systemName: "xmark") else { return UIBarButtonItem() }
+        return UIBarButtonItem(image: closeImage, style: .plain, target: self, action: #selector(cancelButtonPressed))
+    }()
+
+    private lazy var shareBarButton: UIBarButtonItem = {
+        guard let shareImage = UIImage(systemName: "square.and.arrow.up") else { return UIBarButtonItem() }
+        return UIBarButtonItem(image: shareImage, style: .plain, target: self, action: #selector(shareButtonPressed))
+    }()
+
+    
+    
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,6 +49,7 @@ class ArchiveImagesViewController: UIViewController {
     }
 
     
+    // MARK: - Configure UI
     
     private func setupNavigationBar() {
         if #available(iOS 13.0, *) {
@@ -49,7 +62,6 @@ class ArchiveImagesViewController: UIViewController {
             navigationController?.navigationBar.compactAppearance = appearance // For iPhone small navigation bar in landscape.
         } else {
             navigationController?.navigationBar.barTintColor = UIColor.wetAsphalt
-            navigationController?.navigationBar.tintColor = UIColor.white
             navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
         }
     }
@@ -58,32 +70,23 @@ class ArchiveImagesViewController: UIViewController {
     private func setupBarButtons() {
         navigationController?.navigationBar.tintColor = UIColor.white
         
-        guard let closeImage = UIImage(systemName: "xmark") else { return }
-        let cancelButton = UIBarButtonItem(image: closeImage, style: .plain, target: self, action: #selector(cancelButtonPressed))
-        navigationItem.leftBarButtonItem = cancelButton
-        
-        guard let shareImage = UIImage(systemName: "square.and.arrow.up") else { return }
-        let shareButton = UIBarButtonItem(image: shareImage, style: .plain, target: self, action: #selector(shareButtonPressed))
-        navigationItem.rightBarButtonItem = shareButton
+        navigationItem.leftBarButtonItem = cancelBarButton
+        navigationItem.rightBarButtonItem = shareBarButton
     }
     
     
     
     
+    // MARK: - Buttons actions
     
     @objc private func cancelButtonPressed() {
         Alert.shared.showDismissPdfAlert(for: self)
     }
     
+    
     @objc private func shareButtonPressed() {
-        
         guard let url = zipURL else { return }
         let activityViewController = UIActivityViewController(activityItems: [url], applicationActivities: nil)
-//        activityViewController.completionWithItemsHandler = {(activityType: UIActivity.ActivityType?, completed: Bool, returnedItems: [Any]?, error: Error?) in
-//            if completed {
-//                self.dismiss(animated: true, completion: nil)// User completed activity
-//            }
-//        }
         present(activityViewController, animated: true, completion: nil)
     }
     
@@ -120,18 +123,22 @@ class ArchiveImagesViewController: UIViewController {
     
     
     private func addPhotosToDirectory(withPath path: String) {
-        var photoCounter = 1
+        var namesDictionary = Dictionary<String, Int>()
+        
         for payment in passedPayments {
             guard let receiptPhotoData = payment.receiptPhoto else { return }
-            //            guard let date = payment.date else { return }
-            //
-            //            let image = UIImage(data: receiptPhotoData)
-            let fileName = "Image\(photoCounter).jpg"
-            photoCounter += 1
+            guard let placeName = payment.place else { return }
             
-            let fileURL = URL(fileURLWithPath: path).appendingPathComponent(fileName)//dataPath.appendingPathComponent(fileName)
-            print("FileURL = \(fileURL.path)")
+            if !namesDictionary.contains(where: {$0.key == placeName} ) {
+                namesDictionary[placeName] = 0
+            } else {
+                namesDictionary[placeName]! += 1
+            }
             
+            let count = (namesDictionary[placeName] == 0) ? "" : "_\(namesDictionary[placeName]!)"
+            let fileName = "\(placeName)\(count).jpg"//"Image\(photoCounter).jpg"
+            
+            let fileURL = URL(fileURLWithPath: path).appendingPathComponent(fileName)
             do {
                 try receiptPhotoData.write(to: fileURL)  // writes the image data to disk
                 print("file saved")
@@ -144,14 +151,10 @@ class ArchiveImagesViewController: UIViewController {
     
     private func zipDirectory(withPath directoryPath: String) -> URL? {
         do {
-            let documentsDirectory = FileManager.default.urls(for:.documentDirectory, in: .userDomainMask)[0]
             let directoryURL = URL(fileURLWithPath: directoryPath)
-            
             return try Zip.quickZipFiles([directoryURL], fileName: directoryName) // Zip
-            //            print("zipFilePath = \(zipFileURL.path)")
-        }
-        catch {
-            print("Something went wrong")
+        } catch {
+            print("Zip failed with error: \(error.localizedDescription)")
             return nil
         }
     }
