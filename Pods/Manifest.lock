@@ -1,16 +1,20 @@
 PODS:
   - CropViewController (2.5.2)
+  - Zip (1.1.0)
 
 DEPENDENCIES:
   - CropViewController
+  - Zip (~> 1.1)
 
 SPEC REPOS:
   trunk:
     - CropViewController
+    - Zip
 
 SPEC CHECKSUMS:
   CropViewController: 1aac40093c5739e60d992b04724a55d12a689a4c
+  Zip: 8877eede3dda76bcac281225c20e71c25270774c
 
-PODFILE CHECKSUM: 687f04ba70b8a0b65e1059d4d2c51288a9b5f488
+PODFILE CHECKSUM: 732cdb2887f18a06100047d673accdb34b802daf
 
 COCOAPODS: 1.8.4

@@ -33,7 +33,7 @@
                     <color key="barTintColor" systemColor="systemIndigoColor" red="0.34509803919999998" green="0.33725490200000002" blue="0.83921568629999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <items>
                         <navigationItem title="PDF Preview" id="9yB-Bv-WsM">
-                            <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="eN6-pB-rxH">
+                            <barButtonItem key="leftBarButtonItem" image="xmark" catalog="system" id="eN6-pB-rxH">
                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <connections>
                                     <action selector="closeButtonPressed:" destination="-1" id="gX6-hR-pk3"/>
@@ -70,5 +70,6 @@
     </objects>
     <resources>
         <image name="square.and.arrow.up" catalog="system" width="115" height="128"/>
+        <image name="xmark" catalog="system" width="128" height="113"/>
     </resources>
 </document>

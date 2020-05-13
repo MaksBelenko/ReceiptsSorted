@@ -26,10 +26,7 @@ class PDFPreviewViewController: UIViewController {
     }
 
     
-    
-    
-    
-    
+    // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,6 +40,7 @@ class PDFPreviewViewController: UIViewController {
 
     
     
+    // MARK: - Configuring UI
     private func setupNavigationBar() {
         if #available(iOS 13.0, *) {
             let appearance = UINavigationBarAppearance()
@@ -79,6 +77,10 @@ class PDFPreviewViewController: UIViewController {
     }
     
     
+    
+    
+    // MARK: - Helpers
+    
     private func createPDFPreviewDocument() {
         let pdfCreator = PDFCreator(payments: passedPayments)
         pdfData = pdfCreator.createPDF()
@@ -90,6 +92,7 @@ class PDFPreviewViewController: UIViewController {
     
     
     
+    // MARK: - IBActions
     @IBAction func closeButtonPressed(_ sender: UIBarButtonItem) {
         Alert.shared.showDismissPdfAlert(for: self)
     }
@@ -99,33 +102,6 @@ class PDFPreviewViewController: UIViewController {
         let temporaryFolder = FileManager.default.temporaryDirectory
         let fileName = "Receipts \(dateToday).pdf"
         
-        
-//        let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
-//        let documentsDirectory = paths[0]
-//        let docURL = URL(string: documentsDirectory)!
-//        let dataPath = docURL.appendingPathComponent("Receipts")
-////        let dataPath = temporaryFolder.appendingPathComponent("MyFolder")
-//        
-//        if FileManager.default.fileExists(atPath: dataPath.absoluteString) {
-//            do {
-//                print("Removing directory \(dataPath.path)")
-//                try FileManager.default.removeItem(at: dataPath)
-//            } catch {
-//                print(error.localizedDescription)
-//            }
-//        }
-//        
-//        
-//        do {
-//            print("Creating directory in \(dataPath.path)")
-//            try FileManager.default.createDirectory(atPath: dataPath.absoluteString, withIntermediateDirectories: true, attributes: nil)
-//        } catch {
-//            print(error.localizedDescription)
-//        }
-        
-        
-        
-//
         let temporaryFileURL = temporaryFolder.appendingPathComponent(fileName)
         Log.debug(message: "Files are saved to: \(temporaryFileURL.path)")
 
@@ -149,6 +125,9 @@ class PDFPreviewViewController: UIViewController {
     
 }
 
+
+
+// MARK: - UIAdaptivePresentationControllerDelegate
 extension PDFPreviewViewController: UIAdaptivePresentationControllerDelegate {
     
     func presentationControllerDidAttemptToDismiss(_ presentationController: UIPresentationController) {

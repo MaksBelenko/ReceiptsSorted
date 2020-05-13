@@ -44,6 +44,8 @@ class Alert {
         })
         let archiveAction = UIAlertAction(title: "Archive (Only photos)", style: .default, handler: { alert in
             //TODO: Implement
+            guard let controller = controller as? ViewController else { return }
+            controller.showArchivedImagesViewer()
         })
 
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)

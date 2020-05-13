@@ -1,4 +1,4 @@
-module Pods_ReceiptsSorted {
+framework module Pods_ReceiptsSorted {
   umbrella header "Pods-ReceiptsSorted-umbrella.h"
 
   export *

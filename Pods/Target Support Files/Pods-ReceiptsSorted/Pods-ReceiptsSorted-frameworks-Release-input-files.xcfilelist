@@ -1,2 +1,3 @@
 ${PODS_ROOT}/Target Support Files/Pods-ReceiptsSorted/Pods-ReceiptsSorted-frameworks.sh
 ${BUILT_PRODUCTS_DIR}/CropViewController/CropViewController.framework
+${BUILT_PRODUCTS_DIR}/Zip/Zip.framework

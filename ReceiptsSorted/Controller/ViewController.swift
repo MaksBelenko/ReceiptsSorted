@@ -42,7 +42,9 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIViewCo
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        FileManager.default.cleanTmpDirectory()
+        DispatchQueue.global(qos: .background).async {
+            FileManager.default.cleanTmpDirectory()
+        }
         
         setupCard()
         setupCardHandle()
@@ -217,6 +219,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIViewCo
     
     
     
+    
+    // MARK: - Showing controllers
     func showPDFPreview() {
         let payments = self.cardViewController.database.fetchSortedData(by: .NewestDateAdded, and: .Pending)
         
@@ -225,6 +229,17 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIViewCo
         pdfPreviewVC.isModalInPresentation = true
 //        pdfPreviewVC.modalPresentationStyle = .overFullScreen
         self.present(pdfPreviewVC, animated: true)
+    }
+    
+    
+    func showArchivedImagesViewer() {
+        let payments = self.cardViewController.database.fetchSortedData(by: .NewestDateAdded, and: .Pending)
+        
+        let archiveVC = ArchiveImagesViewController()
+        let navController = UINavigationController(rootViewController: archiveVC)
+        archiveVC.passedPayments = payments
+        navController.isModalInPresentation = true
+        self.present(navController, animated: true)
     }
     
 }
