@@ -42,6 +42,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIViewCo
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        FileManager.default.cleanTmpDirectory()
+        
         setupCard()
         setupCardHandle()
         setupTopViewWithGraphics()

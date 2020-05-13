@@ -313,6 +313,11 @@ extension CardViewController: UITableViewDataSource, UITableViewDelegate, SwipeA
         let deleteAction = UIAlertAction(title: "Yes, delete", style: .destructive, handler: { alert in
             let payment = self.cardTableSections[indexPath.section].payments[indexPath.row]
             self.database.delete(item: payment)
+            guard let index = self.fetchedPayments.firstIndex(of: payment) else {
+                Log.exception(message: "Mismatch in arrays \"fetchedPayments\" and \"cardTableSections\"")
+                return
+            }
+            self.fetchedPayments.remove(at: index)
             self.cardTableSections[indexPath.section].payments.remove(at: indexPath.row)
             self.removeSectionIfEmpty(indexPath: indexPath)
         })

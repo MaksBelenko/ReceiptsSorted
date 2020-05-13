@@ -99,9 +99,36 @@ class PDFPreviewViewController: UIViewController {
         let temporaryFolder = FileManager.default.temporaryDirectory
         let fileName = "Receipts \(dateToday).pdf"
         
+        
+//        let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
+//        let documentsDirectory = paths[0]
+//        let docURL = URL(string: documentsDirectory)!
+//        let dataPath = docURL.appendingPathComponent("Receipts")
+////        let dataPath = temporaryFolder.appendingPathComponent("MyFolder")
+//        
+//        if FileManager.default.fileExists(atPath: dataPath.absoluteString) {
+//            do {
+//                print("Removing directory \(dataPath.path)")
+//                try FileManager.default.removeItem(at: dataPath)
+//            } catch {
+//                print(error.localizedDescription)
+//            }
+//        }
+//        
+//        
+//        do {
+//            print("Creating directory in \(dataPath.path)")
+//            try FileManager.default.createDirectory(atPath: dataPath.absoluteString, withIntermediateDirectories: true, attributes: nil)
+//        } catch {
+//            print(error.localizedDescription)
+//        }
+        
+        
+        
+//
         let temporaryFileURL = temporaryFolder.appendingPathComponent(fileName)
         Log.debug(message: "Files are saved to: \(temporaryFileURL.path)")
-        
+
 //        do {
 //            let temporaryFileURL = temporaryFolder.appendingPathComponent("test.zlib")
 //            let compressedData = try (pdfData as NSData).compressed(using: .zlib)
@@ -109,10 +136,10 @@ class PDFPreviewViewController: UIViewController {
 //        } catch {
 //            LogHelper.exception(message: "Error with compressed data: Error = \(error.localizedDescription)")
 //        }
-        
+
         do {
             try pdfData!.write(to: temporaryFileURL) //Write document to defaults storage
-            
+
             let activityViewController = UIActivityViewController(activityItems: [temporaryFileURL], applicationActivities: nil)
             present(activityViewController, animated: true, completion: nil)
         } catch {
