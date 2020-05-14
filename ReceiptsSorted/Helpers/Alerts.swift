@@ -42,7 +42,7 @@ class Alert {
             guard let controller = controller as? ViewController else { return }
             controller.showPDFPreview()
         })
-        let archiveAction = UIAlertAction(title: "Archive (Only photos)", style: .default, handler: { alert in
+        let archiveAction = UIAlertAction(title: "Photos only", style: .default, handler: { alert in
             //TODO: Implement
             guard let controller = controller as? ViewController else { return }
             controller.showArchivedImagesViewer()
@@ -72,6 +72,29 @@ class Alert {
 
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
         optionMenu.addAction(dismissAction)
+        optionMenu.addAction(cancelAction)
+        controller.present(optionMenu, animated: true, completion: nil)
+    }
+    
+    
+    // MARK: - Share Images Alerts
+    
+    func showShareSelector(for controller: UIViewController) {
+        let optionMenu = UIAlertController(title: "How do you want to send images?", message: nil , preferredStyle: .actionSheet)
+
+        let photosAction = UIAlertAction(title: "Just images", style: .default, handler: { alert in
+            guard let controller = controller as? ShareImagesViewController else { return }
+            controller.showActivityVC(for: .RawImages)
+        })
+        
+        let archiveAction = UIAlertAction(title: "Zip Archive", style: .default, handler: { alert in
+            guard let controller = controller as? ShareImagesViewController else { return }
+            controller.showActivityVC(for: .Zip)
+        })
+
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        optionMenu.addAction(archiveAction)
+        optionMenu.addAction(photosAction)
         optionMenu.addAction(cancelAction)
         controller.present(optionMenu, animated: true, completion: nil)
     }

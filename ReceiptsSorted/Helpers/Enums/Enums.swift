@@ -26,3 +26,7 @@ enum TableColumn {
 enum SwipeCommandType {
     case Remove, Tick, Untick
 }
+
+enum ShareImagesType {
+    case RawImages, Zip
+}

@@ -9,13 +9,22 @@
 import UIKit
 import Zip
 
-class ArchiveImagesViewController: UIViewController {
+private let cellReuseIdentifier = "Cell"
+
+class ShareImagesViewController: UIViewController {
 
     var passedPayments: [Payments]!
+    private var paymentsCount: Int = 1
+    
+    private var imageCount: Int = 0 {
+        didSet {
+            imageCountLabel.text = "\(imageCount)/\(paymentsCount)"
+        }
+    }
     
     private let directoryName = "Receipts"
     private var zipURL: URL!
-    
+    var photosURLs = [URL]()
     
     private lazy var cancelBarButton: UIBarButtonItem = {
         guard let closeImage = UIImage(systemName: "xmark") else { return UIBarButtonItem() }
@@ -26,6 +35,26 @@ class ArchiveImagesViewController: UIViewController {
         guard let shareImage = UIImage(systemName: "square.and.arrow.up") else { return UIBarButtonItem() }
         return UIBarButtonItem(image: shareImage, style: .plain, target: self, action: #selector(shareButtonPressed))
     }()
+    
+    
+    private let collectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        cv.decelerationRate = .fast
+        cv.contentInsetAdjustmentBehavior = .always
+        cv.showsHorizontalScrollIndicator = false
+        cv.register(ImageViewerCell.self, forCellWithReuseIdentifier: cellReuseIdentifier)
+        return cv
+    }()
+    
+    private let imageCountLabel: UILabel = {
+        let label = UILabel()
+        label.text = "1/0"
+        label.font = UIFont(name: "Arial", size: 16)!
+        label.tintColor = .black
+        return label
+    }()
 
     
     
@@ -33,13 +62,13 @@ class ArchiveImagesViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.presentationController?.delegate = self
-        
-        self.title = "Archived Images Viewer"
+        self.title = "Images Viewer"
         view.backgroundColor = .white
-        navigationController?.setNavigationBarHidden(false, animated: true)
         setupNavigationBar()
         setupBarButtons()
+        
+        setupCollectionView()
+        setupLCountLabel()
         
         DispatchQueue.global(qos: .utility).async {
             let directoryPath = self.createDirectory()
@@ -52,6 +81,8 @@ class ArchiveImagesViewController: UIViewController {
     // MARK: - Configure UI
     
     private func setupNavigationBar() {
+        navigationController?.setNavigationBarHidden(false, animated: true)
+        
         if #available(iOS 13.0, *) {
             let appearance = UINavigationBarAppearance()
             appearance.configureWithOpaqueBackground()
@@ -75,6 +106,34 @@ class ArchiveImagesViewController: UIViewController {
     }
     
     
+    private func setupCollectionView() {
+        collectionView.backgroundColor = .clear
+
+        view.addSubview(collectionView)
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor).isActive = true
+        collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
+        collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
+        collectionView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.75).isActive = true
+        view.layoutIfNeeded()
+        
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        collectionView.collectionViewLayout = CollectionViewFlowLayout(size: CGSize(width: collectionView.frame.width/2,
+                                                                                    height: collectionView.frame.height * 0.7))
+    }
+    
+    
+    private func setupLCountLabel() {
+        paymentsCount = passedPayments.count
+        imageCountLabel.text = "1/\(paymentsCount)"
+        
+        view.addSubview(imageCountLabel)
+        imageCountLabel.translatesAutoresizingMaskIntoConstraints = false
+        imageCountLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        imageCountLabel.bottomAnchor.constraint(equalTo: collectionView.topAnchor, constant: -5).isActive = true
+    }
+    
     
     
     // MARK: - Buttons actions
@@ -83,11 +142,22 @@ class ArchiveImagesViewController: UIViewController {
         Alert.shared.showDismissPdfAlert(for: self)
     }
     
-    
     @objc private func shareButtonPressed() {
-        guard let url = zipURL else { return }
-        let activityViewController = UIActivityViewController(activityItems: [url], applicationActivities: nil)
-        present(activityViewController, animated: true, completion: nil)
+        Alert.shared.showShareSelector(for: self)
+    }
+    
+    func showActivityVC(for shareType: ShareImagesType) {
+        let activityVC: UIActivityViewController
+        
+        switch shareType {
+        case .RawImages:
+            activityVC = UIActivityViewController(activityItems: photosURLs, applicationActivities: nil)
+        case .Zip:
+            guard let url = zipURL else { return }
+            activityVC = UIActivityViewController(activityItems: [url], applicationActivities: nil)
+        }
+        
+        present(activityVC, animated: true, completion: nil)
     }
     
     
@@ -139,6 +209,8 @@ class ArchiveImagesViewController: UIViewController {
             let fileName = "\(placeName)\(count).jpg"//"Image\(photoCounter).jpg"
             
             let fileURL = URL(fileURLWithPath: path).appendingPathComponent(fileName)
+            photosURLs.append(fileURL)
+            
             do {
                 try receiptPhotoData.write(to: fileURL)  // writes the image data to disk
                 print("file saved")
@@ -161,12 +233,33 @@ class ArchiveImagesViewController: UIViewController {
 }
 
 
+// MARK: - UICollectionViewDelegate
+extension ShareImagesViewController: UICollectionViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let point = CGPoint(x: collectionView.center.x + collectionView.contentOffset.x,
+                            y: collectionView.center.y + collectionView.contentOffset.y)
+        
+        guard let indexPath = collectionView.indexPathForItem(at: point) else { return }
+        imageCount = indexPath.row + 1
+    }
+}
 
 
-// MARK: - UIAdaptivePresentationControllerDelegate
-extension ArchiveImagesViewController: UIAdaptivePresentationControllerDelegate {
-    
-    func presentationControllerDidAttemptToDismiss(_ presentationController: UIPresentationController) {
-        Alert.shared.showDismissPdfAlert(for: self)
+// MARK: - UICollectionViewDataSource
+extension ShareImagesViewController: UICollectionViewDataSource  {
+
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return passedPayments.count
+    }
+
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellReuseIdentifier, for: indexPath) as! ImageViewerCell
+        
+        guard let imageData = passedPayments[indexPath.row].receiptPhoto,
+            let receiptImage = UIImage(data: imageData) else { return cell }
+        
+        cell.picture = receiptImage
+
+        return cell
     }
 }

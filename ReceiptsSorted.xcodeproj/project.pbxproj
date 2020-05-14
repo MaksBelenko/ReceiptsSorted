@@ -41,6 +41,8 @@
 		B573FAAE23BA815F005473D2 /* CameraSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = B573FAAD23BA815F005473D2 /* CameraSession.swift */; };
 		B57419BE245F1BAB001228A1 /* DetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57419BD245F1BAB001228A1 /* DetailsViewController.swift */; };
 		B57ECC572454A6BA003E9598 /* UITextFieldExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57ECC562454A6BA003E9598 /* UITextFieldExtensions.swift */; };
+		B58CC90A246DACE1006FEF00 /* ImageViewerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58CC909246DACE1006FEF00 /* ImageViewerCell.swift */; };
+		B58CC932246DB9B5006FEF00 /* CollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58CC931246DB9B5006FEF00 /* CollectionViewFlowLayout.swift */; };
 		B59E3E2323B44DE80017D474 /* CardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59E3E2123B44DE80017D474 /* CardViewController.swift */; };
 		B59E3E2423B44DE80017D474 /* CardViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B59E3E2223B44DE80017D474 /* CardViewController.xib */; };
 		B59E3E2723B50D9F0017D474 /* PaymentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59E3E2523B50D9F0017D474 /* PaymentTableViewCell.swift */; };
@@ -51,7 +53,7 @@
 		B5AD17E32404757300BB3069 /* CardGesturesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5AD17E22404757300BB3069 /* CardGesturesViewModel.swift */; };
 		B5B6758023CF70F400291D31 /* TextRecogniser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B6757F23CF70F400291D31 /* TextRecogniser.swift */; };
 		B5B6758223CF724000291D31 /* ImageManipulator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B6758123CF724000291D31 /* ImageManipulator.swift */; };
-		B5C42C2C246C8E9900238F68 /* ArchiveImagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C42C2B246C8E9900238F68 /* ArchiveImagesViewController.swift */; };
+		B5C42C2C246C8E9900238F68 /* ShareImagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C42C2B246C8E9900238F68 /* ShareImagesViewController.swift */; };
 		B5CCE49B2403195200CA0CB5 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CCE49A2403195200CA0CB5 /* Settings.swift */; };
 		B5D70A6B245338530080BF81 /* TopGraphicsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D70A6A245338530080BF81 /* TopGraphicsView.swift */; };
 		B5D70A6D24534DCA0080BF81 /* AddButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D70A6C24534DCA0080BF81 /* AddButtonView.swift */; };
@@ -108,6 +110,8 @@
 		B573FAAD23BA815F005473D2 /* CameraSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraSession.swift; sourceTree = "<group>"; };
 		B57419BD245F1BAB001228A1 /* DetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsViewController.swift; sourceTree = "<group>"; };
 		B57ECC562454A6BA003E9598 /* UITextFieldExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextFieldExtensions.swift; sourceTree = "<group>"; };
+		B58CC909246DACE1006FEF00 /* ImageViewerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewerCell.swift; sourceTree = "<group>"; };
+		B58CC931246DB9B5006FEF00 /* CollectionViewFlowLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewFlowLayout.swift; sourceTree = "<group>"; };
 		B59E3E2123B44DE80017D474 /* CardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardViewController.swift; sourceTree = "<group>"; };
 		B59E3E2223B44DE80017D474 /* CardViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CardViewController.xib; sourceTree = "<group>"; };
 		B59E3E2523B50D9F0017D474 /* PaymentTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentTableViewCell.swift; sourceTree = "<group>"; };
@@ -118,7 +122,7 @@
 		B5AD17E22404757300BB3069 /* CardGesturesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardGesturesViewModel.swift; sourceTree = "<group>"; };
 		B5B6757F23CF70F400291D31 /* TextRecogniser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextRecogniser.swift; sourceTree = "<group>"; };
 		B5B6758123CF724000291D31 /* ImageManipulator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageManipulator.swift; sourceTree = "<group>"; };
-		B5C42C2B246C8E9900238F68 /* ArchiveImagesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveImagesViewController.swift; sourceTree = "<group>"; };
+		B5C42C2B246C8E9900238F68 /* ShareImagesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareImagesViewController.swift; sourceTree = "<group>"; };
 		B5CCE49A2403195200CA0CB5 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		B5D70A6A245338530080BF81 /* TopGraphicsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopGraphicsView.swift; sourceTree = "<group>"; };
 		B5D70A6C24534DCA0080BF81 /* AddButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddButtonView.swift; sourceTree = "<group>"; };
@@ -200,6 +204,7 @@
 			isa = PBXGroup;
 			children = (
 				B59E3E2623B50D9F0017D474 /* PaymentTableViewCell.xib */,
+				B58CC909246DACE1006FEF00 /* ImageViewerCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -331,7 +336,7 @@
 				B573FAA123B94BB2005473D2 /* TextPopupViewController.swift */,
 				B50BAADC242BB8E000EAFECA /* SettingsViewController.swift */,
 				B516CF12243BF1F0003D09E1 /* PDFPreviewViewController.swift */,
-				B5C42C2B246C8E9900238F68 /* ArchiveImagesViewController.swift */,
+				B5C42C2B246C8E9900238F68 /* ShareImagesViewController.swift */,
 				B566605124311384003DD15B /* Cells */,
 			);
 			path = Controller;
@@ -345,6 +350,7 @@
 				B5FD65FA242EC9C7002C5C48 /* CardTableViewModel.swift */,
 				B5FDDC02241443950037BA7E /* SwipeActionsViewModel.swift */,
 				B54967AC241167C000684A2F /* SortingDropDownMenu.swift */,
+				B58CC931246DB9B5006FEF00 /* CollectionViewFlowLayout.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -515,6 +521,7 @@
 				B5076BCF2457A28400C2BE34 /* Alerts.swift in Sources */,
 				B50BAADB242B7DC200EAFECA /* AmountAnimation.swift in Sources */,
 				B564470B241027EB00B08AD3 /* AddButtonAnimations.swift in Sources */,
+				B58CC90A246DACE1006FEF00 /* ImageViewerCell.swift in Sources */,
 				B550E150245B2F0F000294B1 /* SortEnums+Ext.swift in Sources */,
 				B573FA9A23B81EC8005473D2 /* PaymentViewController.swift in Sources */,
 				B5AD17DD240464CB00BB3069 /* TopGraphicsShapes.swift in Sources */,
@@ -534,9 +541,10 @@
 				B5B6758223CF724000291D31 /* ImageManipulator.swift in Sources */,
 				B535A1C0244BC320005585F0 /* Log.swift in Sources */,
 				B561B38F243BFBAD00F7B29B /* PDFCreator.swift in Sources */,
+				B58CC932246DB9B5006FEF00 /* CollectionViewFlowLayout.swift in Sources */,
 				B5D70A6D24534DCA0080BF81 /* AddButtonView.swift in Sources */,
 				B54967AD241167C000684A2F /* SortingDropDownMenu.swift in Sources */,
-				B5C42C2C246C8E9900238F68 /* ArchiveImagesViewController.swift in Sources */,
+				B5C42C2C246C8E9900238F68 /* ShareImagesViewController.swift in Sources */,
 				B5F54E85241E783C0016DCED /* UIViewExtensions.swift in Sources */,
 				B526B4E2241B09A10031F629 /* Observable.swift in Sources */,
 				B50BAADD242BB8E000EAFECA /* SettingsViewController.swift in Sources */,

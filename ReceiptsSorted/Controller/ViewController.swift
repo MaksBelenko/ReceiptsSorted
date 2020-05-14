@@ -235,7 +235,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIViewCo
     func showArchivedImagesViewer() {
         let payments = self.cardViewController.database.fetchSortedData(by: .NewestDateAdded, and: .Pending)
         
-        let archiveVC = ArchiveImagesViewController()
+        let archiveVC = ShareImagesViewController()
         let navController = UINavigationController(rootViewController: archiveVC)
         archiveVC.passedPayments = payments
         navController.isModalInPresentation = true
