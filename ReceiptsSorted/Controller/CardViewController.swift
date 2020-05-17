@@ -315,7 +315,7 @@ extension CardViewController: UITableViewDataSource, UITableViewDelegate, SwipeA
     
     //Alert calls this
     func deletePayment(payment: Payments, indexPath: IndexPath) {
-        self.database.delete(payment: payment)
+        self.database.delete(item: payment)
         removeFromTableVeiw(indexPath: indexPath, action: .Remove)
     }
     

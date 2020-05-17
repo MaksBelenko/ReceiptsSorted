@@ -23,6 +23,7 @@
 		B5377C0723A82E280010B144 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B5377C0523A82E280010B144 /* Main.storyboard */; };
 		B5377C0923A82E2A0010B144 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B5377C0823A82E2A0010B144 /* Assets.xcassets */; };
 		B5377C0C23A82E2A0010B144 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B5377C0A23A82E2A0010B144 /* LaunchScreen.storyboard */; };
+		B546A7A62471F77C00FB551D /* UIImageExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B546A7A52471F77C00FB551D /* UIImageExtensions.swift */; };
 		B548CE0D246469C200342613 /* VibrationEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = B548CE0C246469C200342613 /* VibrationEnum.swift */; };
 		B54967A824104E3500684A2F /* ImageCompression.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54967A724104E3500684A2F /* ImageCompression.swift */; };
 		B54967AD241167C000684A2F /* SortingDropDownMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54967AC241167C000684A2F /* SortingDropDownMenu.swift */; };
@@ -91,6 +92,7 @@
 		B5377C0823A82E2A0010B144 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B5377C0B23A82E2A0010B144 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B5377C0D23A82E2A0010B144 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B546A7A52471F77C00FB551D /* UIImageExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageExtensions.swift; sourceTree = "<group>"; };
 		B5470F2B20BCB16126F229BA /* Pods-ReceiptsSorted.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReceiptsSorted.release.xcconfig"; path = "Target Support Files/Pods-ReceiptsSorted/Pods-ReceiptsSorted.release.xcconfig"; sourceTree = "<group>"; };
 		B548CE0C246469C200342613 /* VibrationEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VibrationEnum.swift; sourceTree = "<group>"; };
 		B54967A724104E3500684A2F /* ImageCompression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCompression.swift; sourceTree = "<group>"; };
@@ -377,6 +379,7 @@
 				B5AC4AAE2453940E00D6F6D3 /* UISegmentedControlExtensions.swift */,
 				B57ECC562454A6BA003E9598 /* UITextFieldExtensions.swift */,
 				B5217ECD246C870B00CC31AB /* FileManagerExtensions.swift */,
+				B546A7A52471F77C00FB551D /* UIImageExtensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -545,6 +548,7 @@
 				B5D70A6D24534DCA0080BF81 /* AddButtonView.swift in Sources */,
 				B54967AD241167C000684A2F /* SortingDropDownMenu.swift in Sources */,
 				B5C42C2C246C8E9900238F68 /* ShareImagesViewController.swift in Sources */,
+				B546A7A62471F77C00FB551D /* UIImageExtensions.swift in Sources */,
 				B5F54E85241E783C0016DCED /* UIViewExtensions.swift in Sources */,
 				B526B4E2241B09A10031F629 /* Observable.swift in Sources */,
 				B50BAADD242BB8E000EAFECA /* SettingsViewController.swift in Sources */,

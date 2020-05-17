@@ -11,5 +11,5 @@ import UIKit
 class Settings {
     
     ///0 is maximum compression, 1 is no compression
-    var compression : CGFloat = 0.3
+    var compression : CGFloat = 0.0
 }

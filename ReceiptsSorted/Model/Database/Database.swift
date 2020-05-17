@@ -36,7 +36,7 @@ class Database {
      Deletes an item in the database
      - Parameter item: Item to delete from database
      */
-    private func delete(item: NSManagedObject) {
+    func delete(item: NSManagedObject) {
         context.delete(item)
         saveContext()
     }
@@ -119,7 +119,7 @@ class Database {
     
     
     
-    //MARK: - Add/Update/Delete Payment methods
+    //MARK: - Add & Update Payment methods
     
     /**
      Adds a payments to database and returns a tuple of the totals before and after the payment
@@ -188,22 +188,6 @@ class Database {
         
         saveContext()
     }
-    
-    
-    /**
-     Deletes payment and associated receiptData
-     - Parameter payment: Payment to delete from database
-     */
-    func delete(payment: Payments) {
-        guard let receiptData = payment.receiptPhoto else {
-            Log.exception(message: "No receiptData is for the Payment")
-            return
-        }
-        context.delete(receiptData)
-        context.delete(payment)
-        saveContext()
-    }
-    
     
     
     // MARK: - Get Total

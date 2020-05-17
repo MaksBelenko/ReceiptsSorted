@@ -259,8 +259,8 @@ extension ShareImagesViewController: UICollectionViewDataSource  {
         guard let imageData = passedPayments[indexPath.row].receiptPhoto?.imageData,
             let receiptImage = UIImage(data: imageData) else { return cell }
         
-        cell.picture = receiptImage
-
+        cell.picture = receiptImage.roundCorners(proportion: 20)
+        
         return cell
     }
 }

@@ -5,7 +5,7 @@
         <attribute name="date" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="paymentReceived" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="place" attributeType="String"/>
-        <relationship name="receiptPhoto" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ReceiptPhoto" inverseName="payment" inverseEntity="ReceiptPhoto"/>
+        <relationship name="receiptPhoto" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ReceiptPhoto" inverseName="payment" inverseEntity="ReceiptPhoto"/>
     </entity>
     <entity name="ReceiptPhoto" representedClassName=".ReceiptPhoto" syncable="YES" codeGenerationType="class">
         <attribute name="imageData" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES"/>
