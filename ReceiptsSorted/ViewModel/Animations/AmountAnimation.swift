@@ -18,7 +18,7 @@ class AmountAnimation {
     private var startValue: Float = 0
     private var endValue: Float = 100
     private var animationStartTime = Date()
-    
+    private var trackStartValue: Float = 0.0
     
     
     
@@ -33,12 +33,18 @@ class AmountAnimation {
      - Parameter startValue: Value from which the animation should start (in £)
      - Parameter endValue: Value at which animation should end (in £)
      */
-    func animateCircle(from startValue: Float = 0, to endValue: Float ) {
-        animationStartTime = Date()
-        overallAmount.value = startValue //before animation executed
-        self.startValue = startValue
-        self.endValue = endValue
+    func animateCircle(from startValue: Float = -1 , to endValue: Float ) {
+        let beginValue = (startValue == -1) ? trackStartValue : startValue
         
+        animationStartTime = Date()
+        overallAmount.value = beginValue //before animation executed
+        self.startValue = beginValue
+        self.endValue = endValue
+        trackStartValue = endValue
+        
+        if endValue != 0.0 {
+            animationCircle.opacity = 1.0
+        }
         
         createCircleAnimation()
         createDisplayLink()
@@ -87,6 +93,7 @@ class AmountAnimation {
             overallAmount.value = value
         } else {
             overallAmount.value = endValue
+            animationCircle.opacity = (endValue == 0) ? 0.0 : 1.0
             displaylink.remove(from: .current, forMode: .default)
         }
         

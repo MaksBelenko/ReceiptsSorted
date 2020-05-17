@@ -5,9 +5,14 @@
         <attribute name="date" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="paymentReceived" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="place" attributeType="String"/>
-        <attribute name="receiptPhoto" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES"/>
+        <relationship name="receiptPhoto" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ReceiptPhoto" inverseName="payment" inverseEntity="ReceiptPhoto"/>
+    </entity>
+    <entity name="ReceiptPhoto" representedClassName=".ReceiptPhoto" syncable="YES" codeGenerationType="class">
+        <attribute name="imageData" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES"/>
+        <relationship name="payment" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Payments" inverseName="receiptPhoto" inverseEntity="Payments"/>
     </entity>
     <elements>
         <element name="Payments" positionX="-1531.578125" positionY="-2979.62890625" width="201.9765625" height="118"/>
+        <element name="ReceiptPhoto" positionX="-1228.33203125" positionY="-2934.21875" width="128" height="73"/>
     </elements>
 </model>

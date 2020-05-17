@@ -140,7 +140,6 @@ extension CameraViewController: AVCapturePhotoCaptureDelegate {
             }
             showPaymentVC(withImage: image)
         }
-        
     }
 }
 

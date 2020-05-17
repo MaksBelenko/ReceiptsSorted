@@ -212,7 +212,8 @@ class ShareImagesViewController: UIViewController {
             photosURLs.append(fileURL)
             
             do {
-                try receiptPhotoData.write(to: fileURL)  // writes the image data to disk
+                guard let imageData = receiptPhotoData.imageData else { fatalError("No ImageDaa to write to directory") }
+                try imageData.write(to: fileURL)  // writes the image data to disk
                 print("file saved")
             } catch {
                 print("error saving file:", error)
@@ -255,7 +256,7 @@ extension ShareImagesViewController: UICollectionViewDataSource  {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellReuseIdentifier, for: indexPath) as! ImageViewerCell
         
-        guard let imageData = passedPayments[indexPath.row].receiptPhoto,
+        guard let imageData = passedPayments[indexPath.row].receiptPhoto?.imageData,
             let receiptImage = UIImage(data: imageData) else { return cell }
         
         cell.picture = receiptImage

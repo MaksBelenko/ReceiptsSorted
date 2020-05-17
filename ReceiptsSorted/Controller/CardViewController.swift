@@ -39,7 +39,7 @@ class CardViewController: UIViewController {
     
     
     
-    //MARK: - Lyfecycle
+    //MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -213,8 +213,8 @@ extension CardViewController: UITableViewDataSource, UITableViewDelegate, SwipeA
         
         if let paymentVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "PaymentDetails") as? PaymentViewController
         {
-            paymentVC.passedImage = UIImage(data: selectedPayment.receiptPhoto ?? Data())
-            Log.debug(message: "size in MB = \(Float(selectedPayment.receiptPhoto!.count) / powf(10, 6))")
+            paymentVC.passedImage = UIImage(data: selectedPayment.receiptPhoto?.imageData ?? Data())
+            Log.debug(message: "size in MB = \(Float((selectedPayment.receiptPhoto?.imageData?.count)!) / powf(10, 6))")
             
             paymentVC.amountPaid = selectedPayment.amountPaid
             paymentVC.place = selectedPayment.place!
@@ -270,8 +270,7 @@ extension CardViewController: UITableViewDataSource, UITableViewDelegate, SwipeA
         switch action
         {
         case .Remove:
-            removePaymentAlert(indexPath: indexPath, action: action)
-//            database.delete(item: payment)
+            Alert.shared.removePaymentAlert(for: self, payment: payment, indexPath: indexPath)
             return
         case .Tick:
             database.updateDetail(for: payment, detailType: .PaymentReceived, with: true)
@@ -284,12 +283,22 @@ extension CardViewController: UITableViewDataSource, UITableViewDelegate, SwipeA
     
     
     private func removeFromTableVeiw(indexPath: IndexPath, action: SwipeCommandType) {
+        let payment = cardTableSections[indexPath.section].payments[indexPath.row]
+        
+        guard let index = fetchedPayments.firstIndex(of: payment) else {
+            Log.exception(message: "Mismatch in arrays \"fetchedPayments\" and \"cardTableSections\"")
+            return
+        }
+        
         if (paymentStatusSort != .All || action == .Remove) {
+            fetchedPayments.remove(at: index)
             cardTableSections[indexPath.section].payments.remove(at: indexPath.row)
             removeSectionIfEmpty(indexPath: indexPath)
         } else {
             tblView.reloadRows(at: [indexPath], with: .left)
         }
+        
+        updateCircularBar()
     }
     
     
@@ -303,31 +312,19 @@ extension CardViewController: UITableViewDataSource, UITableViewDelegate, SwipeA
     }
     
     
-    // MARK: - CardView Alerts
     
-    func removePaymentAlert(indexPath: IndexPath, action: SwipeCommandType) {
-        Vibration.light.vibrate()
-        
-        let optionMenu = UIAlertController(title: "Are you sure you want to delete the payment?", message: nil , preferredStyle: .actionSheet)
-
-        let deleteAction = UIAlertAction(title: "Yes, delete", style: .destructive, handler: { alert in
-            let payment = self.cardTableSections[indexPath.section].payments[indexPath.row]
-            self.database.delete(item: payment)
-            guard let index = self.fetchedPayments.firstIndex(of: payment) else {
-                Log.exception(message: "Mismatch in arrays \"fetchedPayments\" and \"cardTableSections\"")
-                return
-            }
-            self.fetchedPayments.remove(at: index)
-            self.cardTableSections[indexPath.section].payments.remove(at: indexPath.row)
-            self.removeSectionIfEmpty(indexPath: indexPath)
-        })
-
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-        optionMenu.addAction(deleteAction)
-        optionMenu.addAction(cancelAction)
-        self.present(optionMenu, animated: true, completion: nil)
+    //Alert calls this
+    func deletePayment(payment: Payments, indexPath: IndexPath) {
+        self.database.delete(payment: payment)
+        removeFromTableVeiw(indexPath: indexPath, action: .Remove)
     }
     
+    
+    
+    private func updateCircularBar() {
+        let totalAmount = database.getTotalAmount(of: .Pending)
+        amountAnimation.animateCircle(to: totalAmount)
+    }
 }
 
 
@@ -348,7 +345,7 @@ extension CardViewController: PaymentDelegate {
                     if (self.paymentStatusSort != .Received) {
                         self.fetchedPayments.append(addPayment.payment)
                     }
-                    self.amountAnimation.animateCircle(from: addPayment.totalBefore, to: addPayment.totalAfter)
+                    self.amountAnimation.animateCircle(to: addPayment.totalAfter)
                 case .UpdatePayment:
                     let payment = self.cardTableSections[self.paymentUpdateIndex.section].payments[self.paymentUpdateIndex.row]
                     guard let index = self.fetchedPayments.firstIndex(of: payment) else {
@@ -357,7 +354,7 @@ extension CardViewController: PaymentDelegate {
                     }
                     let updatedPayment = self.database.update(payment: payment, with: paymentTuple)
                     self.fetchedPayments[index] = updatedPayment.payment
-                    self.amountAnimation.animateCircle(from: updatedPayment.totalBefore, to: updatedPayment.totalAfter)
+                    self.amountAnimation.animateCircle(to: updatedPayment.totalAfter)
             }
             
             

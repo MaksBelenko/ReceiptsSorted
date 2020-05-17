@@ -18,14 +18,12 @@ class Database {
     
     
     
-    
-    
     //MARK: - Basic methods
     
     /**
      Attempts to commit unsaved changes to registered objects to the context’s parent store.
      */
-    func saveContext() {
+    private func saveContext() {
         do {
             try context.save()
         } catch {
@@ -38,11 +36,11 @@ class Database {
      Deletes an item in the database
      - Parameter item: Item to delete from database
      */
-    func delete(item: NSManagedObject) {
+    private func delete(item: NSManagedObject) {
         context.delete(item)
         saveContext()
     }
-    
+        
     
     /**
      Get all payments from database
@@ -59,7 +57,6 @@ class Database {
     
     
     //MARK: - Fetch methods
-    
     
     /**
      Fetch all payments from database which contain the passed place name
@@ -87,7 +84,6 @@ class Database {
             let compareSelector = #selector(NSString.localizedStandardCompare(_:))
             let sd = NSSortDescriptor(key: #keyPath(Payments.place), ascending: true, selector: compareSelector)
             request.sortDescriptors = [sd]
-            
             
             return loadPayments(with: request)
             
@@ -123,7 +119,7 @@ class Database {
     
     
     
-    //MARK: - Add & Update Payment methods
+    //MARK: - Add/Update/Delete Payment methods
     
     /**
      Adds a payments to database and returns a tuple of the totals before and after the payment
@@ -136,9 +132,13 @@ class Database {
         newPayment.amountPaid = payment.amountPaid
         newPayment.place = payment.place
         newPayment.date = payment.date
-        newPayment.receiptPhoto = imageCompression.compressImage(for: payment.receiptImage)
+//        newPayment.receiptPhoto?.imageData = imageCompression.compressImage(for: payment.receiptImage)
         newPayment.paymentReceived = false
 
+        let receiptPhoto = ReceiptPhoto(context: context)
+        receiptPhoto.imageData = imageCompression.compressImage(for: payment.receiptImage)
+        newPayment.receiptPhoto = receiptPhoto
+        
         saveContext()
        
         let totalAfter = getTotalAmount(of: .Pending)
@@ -154,7 +154,7 @@ class Database {
     func update(payment: Payments, with dataTuple: (amountPaid: Float, place: String, date: Date, receiptImage: UIImage)) -> PaymentTotalInfo {
         let totalBefore = getTotalAmount(of: .Pending)
         
-        payment.receiptPhoto = dataTuple.receiptImage.jpegData(compressionQuality: 1)
+        payment.receiptPhoto?.imageData = dataTuple.receiptImage.jpegData(compressionQuality: 1)
         payment.amountPaid = dataTuple.amountPaid
         payment.place = dataTuple.place
         payment.date = dataTuple.date
@@ -181,11 +181,26 @@ class Database {
         case .Place:
             payment.place = newDetail as? String
         case .Image:
-            payment.receiptPhoto = newDetail as? Data
+            payment.receiptPhoto?.imageData = newDetail as? Data
         case .PaymentReceived:
             payment.paymentReceived = newDetail as! Bool
         }
         
+        saveContext()
+    }
+    
+    
+    /**
+     Deletes payment and associated receiptData
+     - Parameter payment: Payment to delete from database
+     */
+    func delete(payment: Payments) {
+        guard let receiptData = payment.receiptPhoto else {
+            Log.exception(message: "No receiptData is for the Payment")
+            return
+        }
+        context.delete(receiptData)
+        context.delete(payment)
         saveContext()
     }
     

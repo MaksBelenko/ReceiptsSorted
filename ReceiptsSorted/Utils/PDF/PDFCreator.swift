@@ -108,7 +108,11 @@ class PDFCreator: NSObject {
         // Draw photos of the receipts at the end
         for p in payments {
             startNewPage(context: context, pageRect: pageRect)
-            drawImage(image: UIImage(data: p.receiptPhoto!)!, pageRect: pageRect, imageTop: pageOffset.top, width: pageRect.width*0.7, alignment: .centre)
+            guard let receiptPhoto = p.receiptPhoto,
+                let imageData = receiptPhoto.imageData,
+                let image = UIImage(data: imageData) else { continue }
+            
+            let _ = drawImage(image: image, pageRect: pageRect, imageTop: pageOffset.top, width: pageRect.width*0.7, alignment: .centre)
         }
         
         //Number last page
@@ -131,7 +135,7 @@ class PDFCreator: NSObject {
      Numbers the page and increases the page counter
      */
     private func numberThePage(pageRect: CGRect) {
-        addSingleLineText(text: "Page: \(pageNumber)", font: PDFCreator.tableRowsFont, pageRect: pageRect, alignment: .right, top: pageRect.height - pageOffset.bottom + 7)
+        let _ = addSingleLineText(text: "Page: \(pageNumber)", font: PDFCreator.tableRowsFont, pageRect: pageRect, alignment: .right, top: pageRect.height - pageOffset.bottom + 7)
         pageNumber += 1
     }
 
