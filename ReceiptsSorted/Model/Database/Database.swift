@@ -16,6 +16,7 @@ class Database {
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     let imageCompression = ImageCompression()
     
+    let settings = Settings()
     
     
     //MARK: - Basic methods
@@ -154,7 +155,7 @@ class Database {
     func update(payment: Payments, with dataTuple: (amountPaid: Float, place: String, date: Date, receiptImage: UIImage)) -> PaymentTotalInfo {
         let totalBefore = getTotalAmount(of: .Pending)
         
-        payment.receiptPhoto?.imageData = dataTuple.receiptImage.jpegData(compressionQuality: 1)
+        payment.receiptPhoto?.imageData = dataTuple.receiptImage.jpegData(compressionQuality: settings.compression)
         payment.amountPaid = dataTuple.amountPaid
         payment.place = dataTuple.place
         payment.date = dataTuple.date
@@ -187,6 +188,16 @@ class Database {
         }
         
         saveContext()
+    }
+    
+    // MARK: - Fault the entity
+    func refault(object: NSManagedObject?) {
+        guard let object = object else {
+            Log.exception(message: "Refaulting object is nil")
+            return
+        }
+        
+        context.refresh(object, mergeChanges: true)
     }
     
     

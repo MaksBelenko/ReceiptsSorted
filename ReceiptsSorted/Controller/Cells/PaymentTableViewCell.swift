@@ -53,7 +53,7 @@ class PaymentTableViewCell: UITableViewCell {
     
     
     
-    func setCell(for payment: Payments) {
+    func setCell(for payment: Payments, selectionEnabled: Bool = false) {
         
         let p = payment
         
@@ -72,7 +72,25 @@ class PaymentTableViewCell: UITableViewCell {
 //            self.tickLabel.backgroundColor = tickColor.withAlphaComponent(0)
 //            self.tickLabel.text = ""
         }
+        
+//        if (selectionEnabled) {
+//            self.tickLabel.backgroundColor = tickColor.withAlphaComponent(0)
+//            self.tickLabel.text = ""
+//            animateTick()
+//        }
     }
+    
+    
+//    private func animateTick() {
+//        tickLabelLeadingConstraint.isActive = false
+//        let constant: CGFloat = 15 //() ? 15 : -21
+//        tickLabelLeadingConstraint = tickLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: constant)
+//        tickLabelLeadingConstraint.isActive = true
+//        
+//        UIView.animate(withDuration: 0.3) {
+//            self.layoutIfNeeded()
+//        }
+//    }
     
     
     

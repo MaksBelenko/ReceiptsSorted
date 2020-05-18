@@ -37,6 +37,8 @@ class CardViewController: UIViewController {
     
     var noReceiptsImage: UIImageView?
     
+    var isSelectionEnabled: Bool = false
+    
     
     
     //MARK: - Lifecycle
@@ -195,7 +197,7 @@ extension CardViewController: UITableViewDataSource, UITableViewDelegate, SwipeA
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "paymentCell", for: indexPath) as! PaymentTableViewCell
-        cell.setCell(for: cardTableSections[indexPath.section].payments[indexPath.row])
+        cell.setCell(for: cardTableSections[indexPath.section].payments[indexPath.row], selectionEnabled: isSelectionEnabled)
         return cell
     }
     
@@ -325,6 +327,12 @@ extension CardViewController: UITableViewDataSource, UITableViewDelegate, SwipeA
         let totalAmount = database.getTotalAmount(of: .Pending)
         amountAnimation.animateCircle(to: totalAmount)
     }
+    
+    
+//    // MARK: - Enabling Selection
+//    func enablePaymentSelection() {
+//        
+//    }
 }
 
 
@@ -355,6 +363,8 @@ extension CardViewController: PaymentDelegate {
                     let updatedPayment = self.database.update(payment: payment, with: paymentTuple)
                     self.fetchedPayments[index] = updatedPayment.payment
                     self.amountAnimation.animateCircle(to: updatedPayment.totalAfter)
+                
+                    self.database.refault(object: payment.receiptPhoto) // fault receiptData to remove from memory
             }
             
             

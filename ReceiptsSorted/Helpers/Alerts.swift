@@ -24,6 +24,9 @@ class Alert {
         })
         let selecteReceiptsAction = UIAlertAction(title: "Select receipts", style: .default, handler: { alert in
             //TODO: Implement expantion and selection
+            guard let controller = controller as? ViewController else { return }
+            controller.cardViewController.isSelectionEnabled = true
+            controller.cardViewController.tblView.reloadData()
         })
 
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
@@ -43,14 +46,13 @@ class Alert {
             controller.showPDFPreview()
         })
         let archiveAction = UIAlertAction(title: "Photos only", style: .default, handler: { alert in
-            //TODO: Implement
             guard let controller = controller as? ViewController else { return }
             controller.showArchivedImagesViewer()
         })
 
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-        optionMenu.addAction(pdfAction)
         optionMenu.addAction(archiveAction)
+        optionMenu.addAction(pdfAction)
         optionMenu.addAction(cancelAction)
         controller.present(optionMenu, animated: true, completion: nil)
     }
