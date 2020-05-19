@@ -27,6 +27,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIViewCo
     
     var onStartup = true
     
+    var selectButton: PaymentSelectionButtonView?
+    var cancelButton: PaymentSelectionButtonView?
     
     
     //MARK: - Status Bar
@@ -101,15 +103,9 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIViewCo
     }
     
     
-    
+
     @objc func addButtonPressed () {
-        let cameraVC = CameraViewController(nibName: "CameraViewController", bundle: nil)
-        cameraVC.transitioningDelegate = self
-        cameraVC.modalPresentationStyle = .custom
-        cameraVC.controllerFrame = self.view.frame
-        cameraVC.cardVC = cardViewController
-        
-        navigationController?.pushViewController(cameraVC, animated: true)
+        Navigation.shared.showCameraVC(for: self)
     }
     
     
@@ -219,28 +215,69 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIViewCo
     
     
     
-    
-    // MARK: - Showing controllers
-    func showPDFPreview() {
-        let payments = self.cardViewController.database.fetchSortedData(by: .NewestDateAdded, and: .Pending)
+    // MARK: - Selecting payments
+    func selectingPaymentsClicked() {
+        if nextState == .Expanded {
+            cardGesturesViewModel.animateTransitionIfNeeded(with: .Expanded, for: 0.6, withDampingRatio: 0.8)
+        }
         
-        let pdfPreviewVC = PDFPreviewViewController(nibName: "PDFPreviewViewController", bundle: nil)
-        pdfPreviewVC.passedPayments = payments
-        pdfPreviewVC.isModalInPresentation = true
-//        pdfPreviewVC.modalPresentationStyle = .overFullScreen
-        self.present(pdfPreviewVC, animated: true)
+        cardViewController.paymentSelection(is: .Enable)
+        addSelectionButtons()
+    }
+
+    private func addSelectionButtons() {
+        selectButton = PaymentSelectionButtonView(text: "Select", self, action: #selector(selectButtonPressed))
+        cancelButton = PaymentSelectionButtonView(text: "Cancel", self, action: #selector(cancelButtonPressed))
+        cancelButton?.backgroundColor = .wetAsphalt
+        cancelButton?.layer.shadowColor = UIColor.wetAsphalt.cgColor
+        
+        view.addSubview(cancelButton!)
+        cancelButton?.translatesAutoresizingMaskIntoConstraints = false
+        cancelButton?.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
+        cancelButton?.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -15).isActive = true
+        cancelButton?.widthAnchor.constraint(equalToConstant: 100).isActive = true
+        cancelButton?.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        
+        view.addSubview(selectButton!)
+        selectButton?.translatesAutoresizingMaskIntoConstraints = false
+        selectButton?.bottomAnchor.constraint(equalTo: cancelButton!.topAnchor, constant: -15).isActive = true
+        selectButton?.rightAnchor.constraint(equalTo: cancelButton!.rightAnchor).isActive = true
+        selectButton?.widthAnchor.constraint(equalTo: cancelButton!.widthAnchor).isActive = true
+        selectButton?.heightAnchor.constraint(equalTo: cancelButton!.heightAnchor).isActive = true
+
+        selectButton?.alpha = 0
+        cancelButton?.alpha = 0
+        UIView.animate(withDuration: 0.6) {
+            self.selectButton?.alpha = 1
+            self.cancelButton?.alpha = 1
+        }
+    }
+    
+    private func clearSelectionButtons() {
+        if nextState == .Collapsed {
+            cardGesturesViewModel.animateTransitionIfNeeded(with: nextState, for: 0.6, withDampingRatio: 0.8)
+        }
+        
+        UIView.animate(withDuration: 0.1, animations: {
+            self.selectButton?.alpha = 0
+            self.cancelButton?.alpha = 0
+        }) { _ in
+            self.selectButton?.removeFromSuperview()
+            self.cancelButton?.removeFromSuperview()
+        }
+        
+        cardViewController.selectedPayments = []
     }
     
     
-    func showArchivedImagesViewer() {
-        let payments = self.cardViewController.database.fetchSortedData(by: .NewestDateAdded, and: .Pending)
-        
-        let archiveVC = ShareImagesViewController()
-        let navController = UINavigationController(rootViewController: archiveVC)
-        archiveVC.passedPayments = payments
-        navController.isModalInPresentation = true
-        self.present(navController, animated: true)
+    
+    @objc private func selectButtonPressed() {
+        print("Select clicked")
     }
     
+    @objc private func cancelButtonPressed() {
+        clearSelectionButtons()
+        cardViewController.paymentSelection(is: .Disable)
+    }
 }
 

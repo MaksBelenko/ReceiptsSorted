@@ -130,6 +130,7 @@ class Database {
         let totalBefore = getTotalAmount(of: .Pending)
         
         let newPayment = Payments(context: context)
+        newPayment.uid = UUID()
         newPayment.amountPaid = payment.amountPaid
         newPayment.place = payment.place
         newPayment.date = payment.date

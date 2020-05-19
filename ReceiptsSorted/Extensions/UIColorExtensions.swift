@@ -33,6 +33,8 @@ extension UIColor {
 //MARK: - Custom App Colours
 extension UIColor {
     
+    static let lightRed = UIColor(rgb: 0xFF6060)
+    
     static let superLightFlatOrange = UIColor(rgb: 0xF39C12).withAlphaComponent(0.1)
     static let lightFlatOrange = UIColor(rgb: 0xF39C12).withAlphaComponent(0.8)
     

@@ -30,3 +30,11 @@ enum SwipeCommandType {
 enum ShareImagesType {
     case RawImages, Zip
 }
+
+enum SelectionMode {
+    case Enable, Disable
+}
+
+enum SelectionAction {
+    case Tick, Untick
+}

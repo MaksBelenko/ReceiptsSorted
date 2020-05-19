@@ -60,19 +60,20 @@ class CardGesturesViewModel: NSObject {
     //MARK: - Public methods
     
     @objc func handleCardPan(recogniser: UIPanGestureRecognizer) {
+        
+//        if cardViewController.isSelectionEnabled == true { return }
+        
         switch recogniser.state {
             case .began:
-//                print("Recogniser velocity: \(recogniser.velocity(in: recogniser.view).y)")
-//                print("next state = \(nextState)")
                 let direction = getMovementDirection(for: recogniser.velocity(in: recogniser.view).y)
                         
-                if ((cardVisible == true && direction == .Up) || (cardVisible == false && direction == .Down) /*|| cardViewController.tblView.contentOffset.y > 0*/) {
+                if ((cardVisible == true && direction == .Up) || (cardVisible == false && direction == .Down)) {
                     ignoreCardAnimation = true
                     fractionComplete = 0
                 } else {
                     ignoreCardAnimation = false
                 }
-//                print("Ignore card animation = \(ignoreCardAnimation)")
+                
                 if (!ignoreCardAnimation) {
                     startInteractiveTransition(forState: nextState, duration: 0.5)
                 }
@@ -251,16 +252,8 @@ class CardGesturesViewModel: NSObject {
     }
     
     
-    
-    
-    
-    
     private func getMovementDirection(for velocity: CGFloat) -> MovementDirection {
-        if (velocity >= 0) {
-            return .Down
-        } else {
-            return .Up
-        }
+        return (velocity >= 0) ? .Down : .Up
     }
 }
 
@@ -269,6 +262,9 @@ extension CardGesturesViewModel: UIGestureRecognizerDelegate {
 
     //Deactivates PanGesture for TableView if the movement is horizontal
     func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        
+        if cardViewController.isSelectionEnabled { return false }
+        
         if let panGestureRecognizer = gestureRecognizer as? UIPanGestureRecognizer {
             let translation = panGestureRecognizer.translation(in: self.cardViewController.tblView)
             if (abs(translation.x) < abs(translation.y)) {

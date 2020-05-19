@@ -38,7 +38,7 @@ class CardViewController: UIViewController {
     var noReceiptsImage: UIImageView?
     
     var isSelectionEnabled: Bool = false
-    
+    var selectedPayments: [UUID] = []
     
     
     //MARK: - Lifecycle
@@ -208,26 +208,32 @@ extension CardViewController: UITableViewDataSource, UITableViewDelegate, SwipeA
     
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
         tableView.deselectRow(at: indexPath, animated: true)
         
-        let selectedPayment = cardTableSections[indexPath.section].payments[indexPath.row]
-        paymentUpdateIndex = (section: indexPath.section, row: indexPath.row)
+        if isSelectionEnabled {
+            cellSelectedAction(indexPath: indexPath)
+            return
+        }
         
-        if let paymentVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "PaymentDetails") as? PaymentViewController
-        {
-            paymentVC.passedImage = UIImage(data: selectedPayment.receiptPhoto?.imageData ?? Data())
-            Log.debug(message: "size in MB = \(Float((selectedPayment.receiptPhoto?.imageData?.count)!) / powf(10, 6))")
-            
-            paymentVC.amountPaid = selectedPayment.amountPaid
-            paymentVC.place = selectedPayment.place!
-            paymentVC.date = selectedPayment.date!
-            paymentVC.pageType = .UpdatePayment
-            
-            paymentVC.paymentDelegate = self
-            
-            paymentVC.modalPresentationStyle = .fullScreen
-            navigationController?.pushViewController(paymentVC, animated: true)
-//            self.present(paymentVC, animated: true, completion: nil)
+        // Show PaymentVC
+        paymentUpdateIndex = (section: indexPath.section, row: indexPath.row)
+        let selectedPayment = cardTableSections[indexPath.section].payments[indexPath.row]
+        Navigation.shared.showPaymentVC(for: self, payment: selectedPayment)
+    }
+    
+    
+    private func cellSelectedAction(indexPath: IndexPath) {
+        let cell = tblView.cellForRow(at: indexPath) as! PaymentTableViewCell
+        guard let paymentUID = cardTableSections[indexPath.section].payments[indexPath.row].uid else { return }
+        
+        if selectedPayments.contains(paymentUID) == false {
+            cell.selectCell(with: .Tick)
+            selectedPayments.append(paymentUID)
+        } else {
+            cell.selectCell(with: .Untick)
+            let index = selectedPayments.firstIndex(of: paymentUID)!
+            selectedPayments.remove(at: index)
         }
     }
     
@@ -329,10 +335,11 @@ extension CardViewController: UITableViewDataSource, UITableViewDelegate, SwipeA
     }
     
     
-//    // MARK: - Enabling Selection
-//    func enablePaymentSelection() {
-//        
-//    }
+    // MARK: - Enabling Selection
+    func paymentSelection(is status: SelectionMode) {
+        isSelectionEnabled = (status == .Enable) ? true : false
+        tblView.reloadData()
+    }
 }
 
 

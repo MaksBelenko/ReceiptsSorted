@@ -34,7 +34,7 @@ class SwipeActionsViewModel {
         
         let checkAction:UIContextualAction?
         
-        let deleteAction = createContextualAction(title: "Remove", colour: UIColor(rgb: 0xFF6060), indexPath: indexPath) { (indexPath) in
+        let deleteAction = createContextualAction(title: "Remove", colour: .lightRed, indexPath: indexPath) { (indexPath) in
             self.actionClicked(for: .Remove, indexPath: indexPath, payment: payment)
         }
         

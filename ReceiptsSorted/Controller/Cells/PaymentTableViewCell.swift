@@ -13,7 +13,6 @@ class PaymentTableViewCell: UITableViewCell {
     var receivedPayment = true
     var tickColor = UIColor(rgb: 0x425C76)
     
-    
     @IBOutlet weak var tickLabelLeadingConstraint: NSLayoutConstraint!
     
     @IBOutlet weak var amountPaidText: UILabel!
@@ -32,13 +31,6 @@ class PaymentTableViewCell: UITableViewCell {
         tickLabel.layer.borderWidth = 1
         tickLabel.layer.cornerRadius = tickLabel.frame.size.height/2
         tickLabel.layer.masksToBounds = true
-        
-        
-//        let bottomLine = CALayer()
-//        bottomLine.frame = CGRect(x: 15, y: self.frame.size.height - 0.5, width: self.frame.size.width - 50, height: 0.5)
-//        bottomLine.backgroundColor = UIColor(rgb: 0xbdc3c7).cgColor
-//        self.layer.addSublayer(bottomLine)
-        
     }
 
     
@@ -52,54 +44,57 @@ class PaymentTableViewCell: UITableViewCell {
     
     
     
-    
+    /**
+     Configures cell
+     - Parameter payment: Payment which data is used to populate cell
+     - Parameter selectionEnabled: Shows weather tickbox should be shown
+     */
     func setCell(for payment: Payments, selectionEnabled: Bool = false) {
+        self.amountPaidText.text = "£" + payment.amountPaid.ToString(decimals: 2)
+        self.placeText.text = payment.place!
+        self.dateText.text = "Paid on " + payment.date!.ToString(as: .long) //parseDate(date: p.date!)
+        self.receivedPayment = payment.paymentReceived
         
-        let p = payment
+        receivedLabel.alpha = (payment.paymentReceived) ? 1 : 0
         
-        self.amountPaidText.text = "£" + p.amountPaid.ToString(decimals: 2)
-        self.placeText.text = p.place!
-        self.dateText.text = "Paid on " + p.date!.ToString(as: .long) //parseDate(date: p.date!)
-        self.receivedPayment = p.paymentReceived
-        
-        
-        if (p.paymentReceived == true) {
-            receivedLabel.alpha = 1
-//            self.tickLabel.backgroundColor = tickColor.withAlphaComponent(1)
-//            self.tickLabel.text = "✓"
-        } else {
-            receivedLabel.alpha = 0
-//            self.tickLabel.backgroundColor = tickColor.withAlphaComponent(0)
-//            self.tickLabel.text = ""
+        if (selectionEnabled) {
+            self.tickLabel.backgroundColor = tickColor.withAlphaComponent(0)
+            self.tickLabel.text = ""
         }
         
-//        if (selectionEnabled) {
-//            self.tickLabel.backgroundColor = tickColor.withAlphaComponent(0)
-//            self.tickLabel.text = ""
-//            animateTick()
-//        }
+        animateTick(show: selectionEnabled)
     }
     
     
-//    private func animateTick() {
-//        tickLabelLeadingConstraint.isActive = false
-//        let constant: CGFloat = 15 //() ? 15 : -21
-//        tickLabelLeadingConstraint = tickLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: constant)
-//        tickLabelLeadingConstraint.isActive = true
-//        
-//        UIView.animate(withDuration: 0.3) {
-//            self.layoutIfNeeded()
-//        }
-//    }
+    /**
+     Changes the tickbox status
+     - Parameter action: Used to show weather it should be ticked or empty
+     */
+    func selectCell(with action: SelectionAction) {
+        switch action
+        {
+        case .Tick:
+            tickLabel.backgroundColor = tickColor.withAlphaComponent(1)
+            tickLabel.text = "✓"
+        case .Untick:
+            tickLabel.backgroundColor = tickColor.withAlphaComponent(0)
+            tickLabel.text = ""
+        }
+    }
     
     
     
-    func parseDate(date: Date) -> String {
-        let calendar = Calendar.current
-        let year = calendar.component(.year, from: date)
-        let month = calendar.component(.month, from: date)
-        let day = calendar.component(.day, from: date)
-        
-        return "Paid on \(day) of \(month) \(year)"
+    
+    // MARK: - Private methods
+    
+    private func animateTick(show: Bool) {
+        tickLabelLeadingConstraint.isActive = false
+        let constant: CGFloat = (show) ? 15 : -21
+        tickLabelLeadingConstraint = tickLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: constant)
+        tickLabelLeadingConstraint.isActive = true
+
+        UIView.animate(withDuration: 0.3) {
+            self.layoutIfNeeded()
+        }
     }
 }

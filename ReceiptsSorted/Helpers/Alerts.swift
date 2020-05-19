@@ -22,16 +22,15 @@ class Alert {
         let allPendingAction = UIAlertAction(title: "All pending", style: .default, handler: { alert in
             self.showFileFormatAlert(for: controller)
         })
-        let selecteReceiptsAction = UIAlertAction(title: "Select receipts", style: .default, handler: { alert in
+        let selectReceiptsAction = UIAlertAction(title: "Select receipts", style: .default, handler: { alert in
             //TODO: Implement expantion and selection
             guard let controller = controller as? ViewController else { return }
-            controller.cardViewController.isSelectionEnabled = true
-            controller.cardViewController.tblView.reloadData()
+            controller.selectingPaymentsClicked()
         })
 
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
         optionMenu.addAction(allPendingAction)
-        optionMenu.addAction(selecteReceiptsAction)
+        optionMenu.addAction(selectReceiptsAction)
         optionMenu.addAction(cancelAction)
         controller.present(optionMenu, animated: true, completion: nil)
     }
@@ -42,12 +41,10 @@ class Alert {
         let optionMenu = UIAlertController(title: "Send receipts as:", message: nil , preferredStyle: .actionSheet)
 
         let pdfAction = UIAlertAction(title: "PDF (Table & photos)", style: .default, handler: { alert in
-            guard let controller = controller as? ViewController else { return }
-            controller.showPDFPreview()
+            Navigation.shared.showPDFPreview(for: controller)
         })
         let archiveAction = UIAlertAction(title: "Photos only", style: .default, handler: { alert in
-            guard let controller = controller as? ViewController else { return }
-            controller.showArchivedImagesViewer()
+            Navigation.shared.showArchivedImagesViewer(for: controller)
         })
 
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
