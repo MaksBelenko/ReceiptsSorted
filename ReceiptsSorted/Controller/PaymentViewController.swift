@@ -232,21 +232,7 @@ class PaymentViewController: UIViewController, UITextFieldDelegate {
         }
         self.dateTextField.resignFirstResponder()
     }
-    
-    
-    
-    
-//    func showTextPopup(popupType: PopupType, numericText: String) {
-//        if let textPopupVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "TextPopupViewController") as? TextPopupViewController
-//        {
-//            textPopupVC.popupType = popupType
-//            textPopupVC.passedNumericText = numericText
-//            
-//            textPopupVC.delegate = self
-//            textPopupVC.modalPresentationStyle = .overCurrentContext
-//            self.present(textPopupVC, animated: true, completion: nil)
-//        }
-//    }
+  
     
     
     
@@ -361,27 +347,6 @@ class PaymentViewController: UIViewController, UITextFieldDelegate {
 
 
 
-
-//MARK:- PopupDelegate
-//extension PaymentViewController: PopupDelegate {
-//
-//    func setAmountPaidValue(value: Float) {
-//        amountPaid = value
-//        amountPaidTextField.text = "£" + value.ToString(decimals: 2)
-//    }
-//
-//    func setPlaceValue(value: String) {
-//        place = value
-//        placeOfPurchaseTextField.text = value
-//    }
-//
-//    func setDatepopupValue(value: Date) {
-//        date = value
-//        dateTextField.text = value.ToString(as: .long)
-//    }
-//}
-
-
 //MARK: - CropViewController Pod implementation
 extension PaymentViewController: CropViewControllerDelegate {
     
@@ -393,17 +358,17 @@ extension PaymentViewController: CropViewControllerDelegate {
 
 
     func cropViewController(_ cropViewController: CropViewController, didCropToImage image: UIImage, withRect cropRect: CGRect, angle: Int) {
-        let viewController = cropViewController.children.first!
-        viewController.modalTransitionStyle = .coverVertical
-        viewController.presentingViewController?.dismiss(animated: true, completion: nil)
+        let vc = cropViewController.children.first!
+        vc.modalTransitionStyle = .coverVertical
+        vc.presentingViewController?.dismiss(animated: true, completion: nil)
         
         receiptImageView.image = image
     }
 
 
     func cropViewController(_ cropViewController: CropViewController, didFinishCancelled cancelled: Bool) {
-        let viewController = cropViewController.children.first!
-        viewController.modalTransitionStyle = .coverVertical
-        viewController.presentingViewController?.dismiss(animated: true, completion: nil)
+        let vc = cropViewController.children.first!
+        vc.modalTransitionStyle = .coverVertical
+        vc.presentingViewController?.dismiss(animated: true, completion: nil)
     }
 }

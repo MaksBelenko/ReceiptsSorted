@@ -17,6 +17,8 @@ class CardViewController: UIViewController {
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var tblView: UITableView!
     
+    @IBOutlet weak var selectionHelperView: UIView!
+    @IBOutlet weak var bottomSHViewConstraint: NSLayoutConstraint!
     
     var cardHeight: CGFloat = 0
     var cardStartPointY: CGFloat = 0
@@ -29,16 +31,18 @@ class CardViewController: UIViewController {
     var sortByOption: SortBy = .NewestDateAdded
     var paymentStatusSort: PaymentStatusSort = .Pending
     
+    
     var database = Database()
     let dropDownMenu = SortingDropDownMenu()
     var swipeActions: SwipeActionsViewModel!
     var cardTableViewModel = CardTableViewModel()
     var amountAnimation: AmountAnimation!
+    var cardGesturesViewModel: CardGesturesViewModel!
     
     var noReceiptsImage: UIImageView?
     
     var isSelectionEnabled: Bool = false
-    var selectedPayments: [UUID] = []
+    var selectedPaymentsUIDs: [UUID] = []
     
     
     //MARK: - Lifecycle
@@ -56,9 +60,9 @@ class CardViewController: UIViewController {
         
         fetchedPayments = database.fetchSortedData(by: sortByOption, and: paymentStatusSort)
         cardTableSections = cardTableViewModel.getSections(for: fetchedPayments, sortedBy: sortByOption)
-//        setButtonTitle(for: sortByOption)
-        
+
         setupNoReceiptsImage()
+        setupSelectionHelperView()
     }
 
     
@@ -98,7 +102,6 @@ class CardViewController: UIViewController {
         
         image.contentMode = .scaleAspectFit
         view.addSubview(image)
-        
         image.translatesAutoresizingMaskIntoConstraints = false
         image.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         image.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.5).isActive = true
@@ -109,6 +112,16 @@ class CardViewController: UIViewController {
         noReceiptImageCenterYAnchor?.isActive = true
     }
     
+    
+    func setupSelectionHelperView() {
+        selectionHelperView.layer.cornerRadius = 25
+        selectionHelperView.layer.applyShadow(color: .black, alpha: 0.1, x: 0, y: -3, blur: 3)
+        selectionHelperView.clipsToBounds = false
+        
+        bottomSHViewConstraint.isActive = false
+        bottomSHViewConstraint = selectionHelperView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: selectionHelperView.frame.height)
+        bottomSHViewConstraint.isActive = true
+    }
     
     
     //MARK: - TableVew Scrolling
@@ -128,7 +141,7 @@ class CardViewController: UIViewController {
     
     
     
-    //MARK: - Segmented Control
+    //MARK: - @IBActions
     
     @IBAction func segmentedControlValueChanged(_ sender: UISegmentedControl) {
         paymentStatusSort = sender.getCurrentPosition()
@@ -139,6 +152,63 @@ class CardViewController: UIViewController {
     }
     
     
+    // ---------------- Selection Helper View ------------------
+    @IBAction func nextButtonPressed(_ sender: Any) {
+        let selectedPayments = database.fetchData(containsUIDs: selectedPaymentsUIDs)
+        Alert.shared.showFileFormatAlert(for: self, withPayments: selectedPayments)
+        selectedPaymentsUIDs.removeAll()
+    }
+    
+    
+    @IBAction func selectAllPressed(_ sender: UIButton) {
+        selectedPaymentsUIDs.removeAll()
+        
+        for section in 0..<cardTableSections.count {
+            for row in 0..<cardTableSections[section].payments.count {
+                cellSelectedAction(indexPath: IndexPath(row: row, section: section))
+            }
+        }
+        
+    }
+    
+    
+    @IBAction func cancelSelectingPressed(_ sender: UIButton) {
+        deselectPaymentsClicked()
+    }
+    
+    
+    // MARK: - Selecting payments
+    func selectingPaymentsClicked() {
+        if nextState == .Expanded {
+            cardGesturesViewModel.animateTransitionIfNeeded(with: nextState, for: 0.6, withDampingRatio: 1)
+        }
+        
+        paymentSelection(is: .Enable)
+    }
+    
+    func deselectPaymentsClicked() {
+        if nextState == .Collapsed {
+            cardGesturesViewModel.animateTransitionIfNeeded(with: nextState, for: 0.6, withDampingRatio: 1)
+        }
+        
+        selectedPaymentsUIDs.removeAll()
+        paymentSelection(is: .Disable)
+    }
+    
+    
+    // MARK: - Enabling Selection
+    func paymentSelection(is status: SelectionMode) {
+        isSelectionEnabled = (status == .Enable) ? true : false
+        tblView.reloadData()
+        
+        bottomSHViewConstraint.isActive = false
+        if status == .Enable {
+            bottomSHViewConstraint = selectionHelperView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+        } else {
+            bottomSHViewConstraint = selectionHelperView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: selectionHelperView.frame.height)
+        }
+        bottomSHViewConstraint.isActive = true
+    }
 }
 
 
@@ -196,8 +266,14 @@ extension CardViewController: UISearchBarDelegate {
 extension CardViewController: UITableViewDataSource, UITableViewDelegate, SwipeActionDelegate {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let payment = cardTableSections[indexPath.section].payments[indexPath.row]
+        
         let cell = tableView.dequeueReusableCell(withIdentifier: "paymentCell", for: indexPath) as! PaymentTableViewCell
-        cell.setCell(for: cardTableSections[indexPath.section].payments[indexPath.row], selectionEnabled: isSelectionEnabled)
+        cell.setCell(for: payment, selectionEnabled: isSelectionEnabled)
+        
+        if selectedPaymentsUIDs.contains(payment.uid!) {
+            cell.selectCell(with: .Tick)
+        }
         return cell
     }
     
@@ -227,13 +303,13 @@ extension CardViewController: UITableViewDataSource, UITableViewDelegate, SwipeA
         let cell = tblView.cellForRow(at: indexPath) as! PaymentTableViewCell
         guard let paymentUID = cardTableSections[indexPath.section].payments[indexPath.row].uid else { return }
         
-        if selectedPayments.contains(paymentUID) == false {
+        if selectedPaymentsUIDs.contains(paymentUID) == false {
             cell.selectCell(with: .Tick)
-            selectedPayments.append(paymentUID)
+            selectedPaymentsUIDs.append(paymentUID)
         } else {
             cell.selectCell(with: .Untick)
-            let index = selectedPayments.firstIndex(of: paymentUID)!
-            selectedPayments.remove(at: index)
+            let index = selectedPaymentsUIDs.firstIndex(of: paymentUID)!
+            selectedPaymentsUIDs.remove(at: index)
         }
     }
     
@@ -332,13 +408,6 @@ extension CardViewController: UITableViewDataSource, UITableViewDelegate, SwipeA
     private func updateCircularBar() {
         let totalAmount = database.getTotalAmount(of: .Pending)
         amountAnimation.animateCircle(to: totalAmount)
-    }
-    
-    
-    // MARK: - Enabling Selection
-    func paymentSelection(is status: SelectionMode) {
-        isSelectionEnabled = (status == .Enable) ? true : false
-        tblView.reloadData()
     }
 }
 

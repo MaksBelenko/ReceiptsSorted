@@ -117,6 +117,17 @@ class Database {
     }
     
     
+    /**
+     Fetches data from the array of UIDs of the payments
+     - Parameter uidArray: Array of UIDs
+     */
+    func fetchData(containsUIDs uidArray: [UUID]) -> [Payments] {
+        let request: NSFetchRequest<Payments> = Payments.fetchRequest()
+        request.predicate = NSPredicate(format: "%K IN %@", #keyPath(Payments.uid), uidArray)
+        
+        return loadPayments(with: request)
+    }
+    
     
     
     

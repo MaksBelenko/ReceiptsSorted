@@ -30,40 +30,10 @@ class Navigation {
         vc.navigationController?.pushViewController(cameraVC, animated: true)
     }
     
-    func showPDFPreview(for controller: UIViewController) {
-        guard let vc = controller as? ViewController else {
-            NSLog("Controller requested cameraVC is not ViewController")
-            return
-        }
-        
-        let payments = vc.cardViewController.database.fetchSortedData(by: .NewestDateAdded, and: .Pending)
-        let pdfPreviewVC = PDFPreviewViewController(nibName: "PDFPreviewViewController", bundle: nil)
-        pdfPreviewVC.passedPayments = payments
-        pdfPreviewVC.isModalInPresentation = true
-//        pdfPreviewVC.modalPresentationStyle = .overFullScreen
-        vc.present(pdfPreviewVC, animated: true)
-    }
-    
-    
-    func showArchivedImagesViewer(for controller: UIViewController) {
-        guard let vc = controller as? ViewController else {
-            NSLog("Controller requested cameraVC is not ViewController")
-            return
-        }
-        
-        let payments = vc.cardViewController.database.fetchSortedData(by: .NewestDateAdded, and: .Pending)
-        let archiveVC = ShareImagesViewController()
-        let navController = UINavigationController(rootViewController: archiveVC)
-        archiveVC.passedPayments = payments
-        navController.isModalInPresentation = true
-        vc.present(navController, animated: true)
-    }
-    
-    
     
     
     // MARK: - CardViewController
-    func showPaymentVC(for controller: UIViewController, payment selectedPayment: Payments) {
+    func showPaymentVC(for controller: CardViewController, payment selectedPayment: Payments) {
         if let paymentVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "PaymentDetails") as? PaymentViewController
         {
             paymentVC.passedImage = UIImage(data: selectedPayment.receiptPhoto?.imageData ?? Data())
@@ -74,14 +44,57 @@ class Navigation {
             paymentVC.date = selectedPayment.date!
             paymentVC.pageType = .UpdatePayment
             
-            if let cardVC = controller as? CardViewController {
-                paymentVC.paymentDelegate = cardVC
-            }
+            paymentVC.paymentDelegate = controller
             
             paymentVC.modalPresentationStyle = .fullScreen
             controller.navigationController?.pushViewController(paymentVC, animated: true)
         } else {
-            NSLog("Error showing PaymentViewControllersss")
+            NSLog("Error showing PaymentViewController")
+        }
+    }
+    
+    
+    func showPDFPreview(for controller: UIViewController, withPayments payments: [Payments]) {
+        guard let cardVC = controller as? CardViewController else {
+            NSLog("Controller requested cameraVC is not CardViewController")
+            Log.exception(message: "Controller requested cameraVC is not CardViewController")
+            return
+        }
+        
+        let pdfPreviewVC = PDFPreviewViewController(nibName: "PDFPreviewViewController", bundle: nil)
+        pdfPreviewVC.passedPayments = payments
+        pdfPreviewVC.isModalInPresentation = true
+        cardVC.present(pdfPreviewVC, animated: true) {
+            cardVC.deselectPaymentsClicked()
+        }
+    }
+    
+    
+    func showArchivedImagesViewer(for controller: UIViewController, withPayments payments: [Payments]) {
+        guard let cardVC = controller as? CardViewController else {
+            NSLog("Controller requested cameraVC is not CardViewController")
+            Log.exception(message: "Controller requested cameraVC is not CardViewController")
+            return
+        }
+        
+        let archiveVC = ShareImagesViewController()
+        let navController = UINavigationController(rootViewController: archiveVC)
+        archiveVC.passedPayments = payments
+        navController.isModalInPresentation = true
+        cardVC.present(navController, animated: true) {
+            cardVC.deselectPaymentsClicked()
+        }
+    }
+    
+    
+    // MARK: - CameraViewController
+    func showPaymentVC(for controller: CameraViewController, withImage image: UIImage) {
+        if let paymentVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "PaymentDetails") as? PaymentViewController
+        {
+            paymentVC.passedImage = image
+            paymentVC.paymentDelegate = controller.cardVC
+            paymentVC.modalPresentationStyle = .fullScreen
+            controller.navigationController?.pushViewController(paymentVC, animated: true)
         }
     }
     

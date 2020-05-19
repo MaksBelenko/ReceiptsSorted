@@ -10,8 +10,10 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CardViewController" customModule="WorkReceipts" customModuleProvider="target">
             <connections>
                 <outlet property="SortSegmentedControl" destination="cOg-BH-ggV" id="hHR-aR-6zV"/>
+                <outlet property="bottomSHViewConstraint" destination="kpo-Cl-pxK" id="qvL-j7-gzA"/>
                 <outlet property="searchAndSortView" destination="CUx-DJ-xt5" id="gmU-se-PpO"/>
                 <outlet property="searchBar" destination="6Hk-WJ-MAr" id="pkn-08-oYk"/>
+                <outlet property="selectionHelperView" destination="pgg-HW-fbX" id="H2h-bc-uly"/>
                 <outlet property="sortButton" destination="uB3-D3-tJh" id="GrU-0K-CNc"/>
                 <outlet property="tblView" destination="qpD-v6-aLx" id="8bj-sh-zn2"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -58,20 +60,67 @@
                     </connections>
                 </segmentedControl>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="qpD-v6-aLx">
-                    <rect key="frame" x="0.0" y="132" width="414" height="543"/>
+                    <rect key="frame" x="0.0" y="132" width="414" height="486"/>
                     <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                 </tableView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pgg-HW-fbX" userLabel="Selection Helper View">
+                    <rect key="frame" x="0.0" y="627" width="414" height="48"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pXG-7W-59M">
+                            <rect key="frame" x="334" y="8" width="54" height="30"/>
+                            <fontDescription key="fontDescription" name="ArialMT" family="Arial" pointSize="16"/>
+                            <state key="normal" title="Next →">
+                                <color key="titleColor" red="0.22745098039215686" green="0.32549019607843138" blue="0.41568627450980389" alpha="1" colorSpace="calibratedRGB"/>
+                            </state>
+                            <connections>
+                                <action selector="nextButtonPressed:" destination="-1" eventType="touchUpInside" id="PcW-6I-X93"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="A1B-4a-56p">
+                            <rect key="frame" x="174" y="9" width="66" height="30"/>
+                            <fontDescription key="fontDescription" name="ArialMT" family="Arial" pointSize="16"/>
+                            <state key="normal" title="Select All">
+                                <color key="titleColor" red="0.2274509804" green="0.32549019610000002" blue="0.41568627450000001" alpha="1" colorSpace="calibratedRGB"/>
+                            </state>
+                            <connections>
+                                <action selector="selectAllPressed:" destination="-1" eventType="touchUpInside" id="nwt-9b-4Ln"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gLK-Ik-FBt">
+                            <rect key="frame" x="26" y="9" width="50" height="30"/>
+                            <fontDescription key="fontDescription" name="ArialMT" family="Arial" pointSize="16"/>
+                            <state key="normal" title="Cancel">
+                                <color key="titleColor" red="0.97254901960784312" green="0.23921568627450979" blue="0.22352941176470587" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </state>
+                            <connections>
+                                <action selector="cancelSelectingPressed:" destination="-1" eventType="touchUpInside" id="cGG-oz-Uni"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="48" id="0oP-Pq-tqO"/>
+                        <constraint firstItem="pXG-7W-59M" firstAttribute="top" secondItem="pgg-HW-fbX" secondAttribute="top" constant="8" id="3aW-KI-UnF"/>
+                        <constraint firstItem="A1B-4a-56p" firstAttribute="centerX" secondItem="pgg-HW-fbX" secondAttribute="centerX" id="F6T-4q-e9l"/>
+                        <constraint firstItem="gLK-Ik-FBt" firstAttribute="top" secondItem="pgg-HW-fbX" secondAttribute="top" constant="9" id="eJE-j5-wq1"/>
+                        <constraint firstItem="gLK-Ik-FBt" firstAttribute="leading" secondItem="pgg-HW-fbX" secondAttribute="leading" constant="26" id="lG7-64-moU"/>
+                        <constraint firstAttribute="trailing" secondItem="pXG-7W-59M" secondAttribute="trailing" constant="26" id="wKS-c2-8gW"/>
+                        <constraint firstItem="A1B-4a-56p" firstAttribute="top" secondItem="pgg-HW-fbX" secondAttribute="top" constant="9" id="wrf-8c-G8G"/>
+                    </constraints>
+                </view>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
+                <constraint firstItem="pgg-HW-fbX" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="BNd-1q-nzW"/>
                 <constraint firstItem="CUx-DJ-xt5" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="HgC-ZM-0h0"/>
                 <constraint firstItem="CUx-DJ-xt5" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="Xp9-aS-X8P"/>
                 <constraint firstItem="qpD-v6-aLx" firstAttribute="top" secondItem="cOg-BH-ggV" secondAttribute="bottom" id="eVh-KB-USk"/>
-                <constraint firstItem="qpD-v6-aLx" firstAttribute="top" secondItem="cOg-BH-ggV" secondAttribute="bottom" id="mkG-Hv-cU0"/>
+                <constraint firstItem="pgg-HW-fbX" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="hnb-QN-3kD"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="pgg-HW-fbX" secondAttribute="bottom" id="kpo-Cl-pxK"/>
                 <constraint firstItem="cOg-BH-ggV" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="10" id="rfB-X9-j0E"/>
                 <constraint firstItem="qpD-v6-aLx" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="sUI-kN-LbG"/>
-                <constraint firstAttribute="bottom" secondItem="qpD-v6-aLx" secondAttribute="bottom" id="sdP-nM-1Wn"/>
                 <constraint firstItem="qpD-v6-aLx" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="seV-uA-58Z"/>
+                <constraint firstItem="pgg-HW-fbX" firstAttribute="top" secondItem="qpD-v6-aLx" secondAttribute="bottom" id="uHy-55-b1r"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="cOg-BH-ggV" secondAttribute="trailing" constant="10" id="yac-sX-VGY"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>

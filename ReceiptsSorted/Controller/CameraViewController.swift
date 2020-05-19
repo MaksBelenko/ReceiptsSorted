@@ -72,20 +72,6 @@ class CameraViewController: UIViewController, UINavigationControllerDelegate {
     
     
     
-    // MARK: - Show PaymentVC
-    
-    func showPaymentVC(withImage image: UIImage) {
-        if let paymentVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "PaymentDetails") as? PaymentViewController
-        {
-            paymentVC.passedImage = image
-            paymentVC.paymentDelegate = cardVC
-            paymentVC.modalPresentationStyle = .fullScreen
-            navigationController?.pushViewController(paymentVC, animated: true)
-        }
-    }
-
-    
-    
     //MARK: - Buttons actions
     @IBAction func pressedTakePhotoButton(_ sender: UIButton) {
         cameraSession?.setCapturePhoto(delegate: self)
@@ -119,7 +105,7 @@ extension CameraViewController: UIImagePickerControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         dismiss(animated: true, completion: nil)
         if let pickedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
-            showPaymentVC(withImage: pickedImage)
+            Navigation.shared.showPaymentVC(for: self, withImage: pickedImage)
         }
     }
     
@@ -138,7 +124,8 @@ extension CameraViewController: AVCapturePhotoCaptureDelegate {
                 Log.exception(message: "Couldn't create image from data")
                 return
             }
-            showPaymentVC(withImage: image)
+            
+            Navigation.shared.showPaymentVC(for: self, withImage: image)
         }
     }
 }

@@ -36,7 +36,6 @@
 		B5666050242FB65F003DD15B /* IntExtensins.swift in Sources */ = {isa = PBXBuildFile; fileRef = B566604F242FB65F003DD15B /* IntExtensins.swift */; };
 		B57145182474100800E0720C /* Navigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57145172474100800E0720C /* Navigation.swift */; };
 		B573FA9A23B81EC8005473D2 /* PaymentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B573FA9923B81EC8005473D2 /* PaymentViewController.swift */; };
-		B573FAA223B94BB2005473D2 /* TextPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B573FAA123B94BB2005473D2 /* TextPopupViewController.swift */; };
 		B573FAA423B95F57005473D2 /* Delegates.swift in Sources */ = {isa = PBXBuildFile; fileRef = B573FAA323B95F57005473D2 /* Delegates.swift */; };
 		B573FAA823B98061005473D2 /* CircularTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = B573FAA723B98061005473D2 /* CircularTransition.swift */; };
 		B573FAAB23B98285005473D2 /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B573FAA923B98285005473D2 /* CameraViewController.swift */; };
@@ -108,7 +107,6 @@
 		B566604F242FB65F003DD15B /* IntExtensins.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntExtensins.swift; sourceTree = "<group>"; };
 		B57145172474100800E0720C /* Navigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Navigation.swift; sourceTree = "<group>"; };
 		B573FA9923B81EC8005473D2 /* PaymentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentViewController.swift; sourceTree = "<group>"; };
-		B573FAA123B94BB2005473D2 /* TextPopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextPopupViewController.swift; sourceTree = "<group>"; };
 		B573FAA323B95F57005473D2 /* Delegates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Delegates.swift; sourceTree = "<group>"; };
 		B573FAA723B98061005473D2 /* CircularTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularTransition.swift; sourceTree = "<group>"; };
 		B573FAA923B98285005473D2 /* CameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
@@ -341,7 +339,6 @@
 				B573FAA923B98285005473D2 /* CameraViewController.swift */,
 				B573FA9923B81EC8005473D2 /* PaymentViewController.swift */,
 				B57419BD245F1BAB001228A1 /* DetailsViewController.swift */,
-				B573FAA123B94BB2005473D2 /* TextPopupViewController.swift */,
 				B50BAADC242BB8E000EAFECA /* SettingsViewController.swift */,
 				B516CF12243BF1F0003D09E1 /* PDFPreviewViewController.swift */,
 				B5C42C2B246C8E9900238F68 /* ShareImagesViewController.swift */,
@@ -515,7 +512,6 @@
 				B5217ECE246C870B00CC31AB /* FileManagerExtensions.swift in Sources */,
 				B5666050242FB65F003DD15B /* IntExtensins.swift in Sources */,
 				B5F54E8B241E78C70016DCED /* DateExtensions.swift in Sources */,
-				B573FAA223B94BB2005473D2 /* TextPopupViewController.swift in Sources */,
 				B59E3E2723B50D9F0017D474 /* PaymentTableViewCell.swift in Sources */,
 				B5D70A6B245338530080BF81 /* TopGraphicsView.swift in Sources */,
 				B573FAA423B95F57005473D2 /* Delegates.swift in Sources */,

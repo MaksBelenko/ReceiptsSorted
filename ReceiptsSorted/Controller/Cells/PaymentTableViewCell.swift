@@ -31,6 +31,9 @@ class PaymentTableViewCell: UITableViewCell {
         tickLabel.layer.borderWidth = 1
         tickLabel.layer.cornerRadius = tickLabel.frame.size.height/2
         tickLabel.layer.masksToBounds = true
+        
+        tickLabel.backgroundColor = tickColor.withAlphaComponent(0)
+        tickLabel.text = ""
     }
 
     
@@ -52,16 +55,13 @@ class PaymentTableViewCell: UITableViewCell {
     func setCell(for payment: Payments, selectionEnabled: Bool = false) {
         self.amountPaidText.text = "£" + payment.amountPaid.ToString(decimals: 2)
         self.placeText.text = payment.place!
-        self.dateText.text = "Paid on " + payment.date!.ToString(as: .long) //parseDate(date: p.date!)
+        self.dateText.text = "Paid on " + payment.date!.ToString(as: .long)
         self.receivedPayment = payment.paymentReceived
         
         receivedLabel.alpha = (payment.paymentReceived) ? 1 : 0
         
-        if (selectionEnabled) {
-            self.tickLabel.backgroundColor = tickColor.withAlphaComponent(0)
-            self.tickLabel.text = ""
-        }
-        
+        tickLabel.backgroundColor = tickColor.withAlphaComponent(0)
+        tickLabel.text = ""
         animateTick(show: selectionEnabled)
     }
     

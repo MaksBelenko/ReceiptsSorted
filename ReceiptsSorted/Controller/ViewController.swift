@@ -52,6 +52,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIViewCo
         setupCardHandle()
         setupTopViewWithGraphics()
         cardViewController.amountAnimation = topGraphicsView.amountAnimation
+        cardViewController.cardGesturesViewModel = cardGesturesViewModel
         
         setupAddButton(withSize: 55)
         
@@ -210,74 +211,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIViewCo
     //MARK: - Email button
     
     @IBAction func emailButtonPressed(_ sender: UIButton) {
-        Alert.shared.showEmailOptionAlert(for: self)
-    }
-    
-    
-    
-    // MARK: - Selecting payments
-    func selectingPaymentsClicked() {
-        if nextState == .Expanded {
-            cardGesturesViewModel.animateTransitionIfNeeded(with: .Expanded, for: 0.6, withDampingRatio: 0.8)
-        }
-        
-        cardViewController.paymentSelection(is: .Enable)
-        addSelectionButtons()
-    }
-
-    private func addSelectionButtons() {
-        selectButton = PaymentSelectionButtonView(text: "Select", self, action: #selector(selectButtonPressed))
-        cancelButton = PaymentSelectionButtonView(text: "Cancel", self, action: #selector(cancelButtonPressed))
-        cancelButton?.backgroundColor = .wetAsphalt
-        cancelButton?.layer.shadowColor = UIColor.wetAsphalt.cgColor
-        
-        view.addSubview(cancelButton!)
-        cancelButton?.translatesAutoresizingMaskIntoConstraints = false
-        cancelButton?.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
-        cancelButton?.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -15).isActive = true
-        cancelButton?.widthAnchor.constraint(equalToConstant: 100).isActive = true
-        cancelButton?.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        
-        view.addSubview(selectButton!)
-        selectButton?.translatesAutoresizingMaskIntoConstraints = false
-        selectButton?.bottomAnchor.constraint(equalTo: cancelButton!.topAnchor, constant: -15).isActive = true
-        selectButton?.rightAnchor.constraint(equalTo: cancelButton!.rightAnchor).isActive = true
-        selectButton?.widthAnchor.constraint(equalTo: cancelButton!.widthAnchor).isActive = true
-        selectButton?.heightAnchor.constraint(equalTo: cancelButton!.heightAnchor).isActive = true
-
-        selectButton?.alpha = 0
-        cancelButton?.alpha = 0
-        UIView.animate(withDuration: 0.6) {
-            self.selectButton?.alpha = 1
-            self.cancelButton?.alpha = 1
-        }
-    }
-    
-    private func clearSelectionButtons() {
-        if nextState == .Collapsed {
-            cardGesturesViewModel.animateTransitionIfNeeded(with: nextState, for: 0.6, withDampingRatio: 0.8)
-        }
-        
-        UIView.animate(withDuration: 0.1, animations: {
-            self.selectButton?.alpha = 0
-            self.cancelButton?.alpha = 0
-        }) { _ in
-            self.selectButton?.removeFromSuperview()
-            self.cancelButton?.removeFromSuperview()
-        }
-        
-        cardViewController.selectedPayments = []
-    }
-    
-    
-    
-    @objc private func selectButtonPressed() {
-        print("Select clicked")
-    }
-    
-    @objc private func cancelButtonPressed() {
-        clearSelectionButtons()
-        cardViewController.paymentSelection(is: .Disable)
+        cardViewController.selectingPaymentsClicked()
     }
 }
 
