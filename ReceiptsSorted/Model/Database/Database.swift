@@ -202,7 +202,11 @@ class Database {
         saveContext()
     }
     
+    
+    
+    
     // MARK: - Fault the entity
+    
     func refault(object: NSManagedObject?) {
         guard let object = object else {
             Log.exception(message: "Refaulting object is nil")
@@ -211,6 +215,8 @@ class Database {
         
         context.refresh(object, mergeChanges: true)
     }
+    
+    
     
     
     // MARK: - Get Total

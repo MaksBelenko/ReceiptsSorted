@@ -6,22 +6,13 @@
 //  Copyright © 2020 Maksim. All rights reserved.
 //
 
-import UIKit
-import CoreData
+import UIKit.UIView
 
-class CardTableViewModel {
+class CardTableHeader {
     
     var headerHeight: CGFloat = 40
     private var sections = [PaymentTableSection]()
     
-    
-    
- 
-    // MARK: - Add update
-    
-    func addPayment() {
-        
-    }
     
     
     //MARK: - Public methods
@@ -53,8 +44,6 @@ class CardTableViewModel {
      - Parameter width: Width of the section header view
      */
     func getSectionHeaderView(for section: Int, sortedBy: SortBy, width: CGFloat) -> UIView {
-        
-        headerHeight = 40 //(section == 0) ? 20 : 30
         
         let sectionView = UIView(frame: CGRect(x: 0, y: 0, width: width, height: headerHeight)) //set these values as necessary
         sectionView.backgroundColor = .white

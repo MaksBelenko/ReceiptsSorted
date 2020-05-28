@@ -180,7 +180,6 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIViewCo
         handleView.backgroundColor = .white
         
         self.view.addSubview(handleView)
-        
         handleView.translatesAutoresizingMaskIntoConstraints = false
         handleView.centerXAnchor.constraint(equalTo: cardViewController.view.centerXAnchor).isActive = true
         handleView.bottomAnchor.constraint(equalTo: cardViewController.view.topAnchor, constant: -10).isActive = true

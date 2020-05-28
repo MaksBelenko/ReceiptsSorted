@@ -8,20 +8,18 @@
 
 import UIKit
 
-var cardVisible = false
-var nextState: CardState {
+internal var cardVisible = false
+internal var nextState: CardState {
     return cardVisible ? .Collapsed : .Expanded
 }
-var fractionComplete: CGFloat = 0.0
+internal var fractionComplete: CGFloat = 0.0
 
-var searchTopAnchor: NSLayoutConstraint?
-var searchBottomAnchor: NSLayoutConstraint?
-var noReceiptImageCenterYAnchor: NSLayoutConstraint?
+internal var searchTopAnchor: NSLayoutConstraint?
+internal var searchBottomAnchor: NSLayoutConstraint?
+internal var noReceiptImageCenterYAnchor: NSLayoutConstraint?
 
-var cardCollapsedProportion = 0.70
-var cardExpandedProportion = 0.94
-
-
+internal var cardCollapsedProportion = 0.70
+internal var cardExpandedProportion = 0.94
 
 
 

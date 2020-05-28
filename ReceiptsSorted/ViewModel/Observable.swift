@@ -8,7 +8,7 @@
 
 import Foundation
 
-class Observable<T> {
+final class Observable<T> {
     
     typealias Listener = (T) -> Void
     var listener: Listener?
@@ -29,8 +29,3 @@ class Observable<T> {
     }
 }
 
-/*
- viewModel.variable.bind { [weak self] in
-    self.Label.text = $0
- }
- */

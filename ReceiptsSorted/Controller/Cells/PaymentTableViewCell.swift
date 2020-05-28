@@ -93,6 +93,10 @@ class PaymentTableViewCell: UITableViewCell {
         tickLabelLeadingConstraint = tickLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: constant)
         tickLabelLeadingConstraint.isActive = true
 
+//        UIView.animate(withDuration: 0.6, delay: 0, options: .curveEaseIn, animations: {
+//            self.layoutIfNeeded()
+//        }, completion: nil)
+        
         UIView.animate(withDuration: 0.3) {
             self.layoutIfNeeded()
         }

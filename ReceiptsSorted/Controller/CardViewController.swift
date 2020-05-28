@@ -34,12 +34,23 @@ class CardViewController: UIViewController {
     
     var database = Database()
     let dropDownMenu = SortingDropDownMenu()
-    var swipeActions: SwipeActionsViewModel!
-    var cardTableViewModel = CardTableViewModel()
+    var swipeActions = SwipeActionsViewModel()
+    var cardTableHeader = CardTableHeader()
     var amountAnimation: AmountAnimation!
     var cardGesturesViewModel: CardGesturesViewModel!
     
     var noReceiptsImage: UIImageView?
+    
+    private let noReceiptImage: UIImageView = {
+        guard let optImage = UIImage(named: "NoReceipts") else {
+            Log.debug(message: "Image not found")
+            return UIImageView()
+        }
+        let imageView = UIImageView(image: UIImage(named: "NoReceipts"))
+        imageView.contentMode = .scaleAspectFit
+        
+        return imageView
+    }()
     
     var isSelectionEnabled: Bool = false
     var selectedPaymentsUIDs: [UUID] = []
@@ -51,18 +62,14 @@ class CardViewController: UIViewController {
         super.viewDidLoad()
         print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
         
-        //Initialise ViewModels
-        swipeActions = SwipeActionsViewModel(database: database)
-        
         configureTableView()
         setupSearchBar()
         sortButton.setTitle(dropDownMenu.getButtonTitle(for: sortByOption), for: .normal)
-        
-        fetchedPayments = database.fetchSortedData(by: sortByOption, and: paymentStatusSort)
-        cardTableSections = cardTableViewModel.getSections(for: fetchedPayments, sortedBy: sortByOption)
-
         setupNoReceiptsImage()
         setupSelectionHelperView()
+        
+        fetchedPayments = database.fetchSortedData(by: sortByOption, and: paymentStatusSort)
+        cardTableSections = cardTableHeader.getSections(for: fetchedPayments, sortedBy: sortByOption)
     }
 
     
@@ -74,10 +81,9 @@ class CardViewController: UIViewController {
         tblView.delegate = self
         tblView.register(UINib(nibName: "PaymentTableViewCell", bundle: nil), forCellReuseIdentifier: "paymentCell")
         
-        tblView.separatorInset = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15) //separator lines full width
+        tblView.separatorInset = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15) //separator lines
         tblView.tableFooterView = UIView() //Removes uneeded separator lines at the end of TableView
     }
-    
     
     
     private func setupSearchBar() {
@@ -87,28 +93,19 @@ class CardViewController: UIViewController {
         searchAndSortView.translatesAutoresizingMaskIntoConstraints = false
         searchTopAnchor = searchAndSortView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: -(searchAndSortView.frame.size.height))
         searchBottomAnchor = searchAndSortView.bottomAnchor.constraint(equalTo: self.SortSegmentedControl.topAnchor, constant: -25)
-        
         NSLayoutConstraint.activate([searchTopAnchor!, searchBottomAnchor!])
     }
     
     
     private func setupNoReceiptsImage() {
-        noReceiptsImage = UIImageView(image: UIImage(named: "NoReceipts"))
-        
-        guard let image = noReceiptsImage else {
-            Log.debug(message: "Image not found")
-            return
-        }
-        
-        image.contentMode = .scaleAspectFit
-        view.addSubview(image)
-        image.translatesAutoresizingMaskIntoConstraints = false
-        image.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        image.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.5).isActive = true
-        image.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.5).isActive = true
+        view.addSubview(noReceiptImage)
+        noReceiptImage.translatesAutoresizingMaskIntoConstraints = false
+        noReceiptImage.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        noReceiptImage.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.5).isActive = true
+        noReceiptImage.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.5).isActive = true
         
         let offsetY: CGFloat = cardStartPointY/2
-        noReceiptImageCenterYAnchor = image.centerYAnchor.constraint(equalTo: tblView.centerYAnchor, constant: -offsetY)
+        noReceiptImageCenterYAnchor = noReceiptImage.centerYAnchor.constraint(equalTo: tblView.centerYAnchor, constant: -offsetY)
         noReceiptImageCenterYAnchor?.isActive = true
     }
     
@@ -129,7 +126,7 @@ class CardViewController: UIViewController {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if (fractionComplete > 0 && fractionComplete < 1) ||
                (nextState == .Expanded && fractionComplete < 1) ||
-                (nextState == .Collapsed && fractionComplete < 0) {
+               (nextState == .Collapsed && fractionComplete < 0) {
             tblView.contentOffset.y = 0
         }
         
@@ -147,7 +144,7 @@ class CardViewController: UIViewController {
         paymentStatusSort = sender.getCurrentPosition()
         
         fetchedPayments = database.fetchSortedData(by: sortByOption, and: paymentStatusSort)
-        cardTableSections = cardTableViewModel.getSections(for: fetchedPayments, sortedBy: sortByOption)
+        cardTableSections = cardTableHeader.getSections(for: fetchedPayments, sortedBy: sortByOption)
         tblView.reloadData()
     }
     
@@ -237,7 +234,7 @@ extension CardViewController: UIPopoverPresentationControllerDelegate, SortButto
             sortButton.setTitle(buttonTitle, for: .normal)
             
             fetchedPayments = database.fetchSortedData(by: sortByOption, and: paymentStatusSort)
-            cardTableSections = cardTableViewModel.getSections(for: fetchedPayments, sortedBy: sortByOption)
+            cardTableSections = cardTableHeader.getSections(for: fetchedPayments, sortedBy: sortByOption)
             tblView.reloadData()
         }
     }
@@ -254,8 +251,8 @@ extension CardViewController: UISearchBarDelegate {
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        fetchedPayments = database.fetchData(forName: searchText, by: sortByOption, and: paymentStatusSort)  //fetchSortedData(by: sortByOption, and: paymentStatusSort)
-        cardTableSections = cardTableViewModel.getSections(for: fetchedPayments, sortedBy: sortByOption)
+        fetchedPayments = database.fetchData(forName: searchText, by: sortByOption, and: paymentStatusSort)
+        cardTableSections = cardTableHeader.getSections(for: fetchedPayments, sortedBy: sortByOption)
         tblView.reloadData()
     }
 }
@@ -266,9 +263,9 @@ extension CardViewController: UISearchBarDelegate {
 extension CardViewController: UITableViewDataSource, UITableViewDelegate, SwipeActionDelegate {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let payment = cardTableSections[indexPath.section].payments[indexPath.row]
-        
         let cell = tableView.dequeueReusableCell(withIdentifier: "paymentCell", for: indexPath) as! PaymentTableViewCell
+        
+        let payment = cardTableSections[indexPath.section].payments[indexPath.row]
         cell.setCell(for: payment, selectionEnabled: isSelectionEnabled)
         
         if selectedPaymentsUIDs.contains(payment.uid!) {
@@ -326,11 +323,11 @@ extension CardViewController: UITableViewDataSource, UITableViewDelegate, SwipeA
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        return cardTableViewModel.getSectionHeaderView(for: section, sortedBy: sortByOption, width: view.frame.width)
+        return cardTableHeader.getSectionHeaderView(for: section, sortedBy: sortByOption, width: view.frame.width)
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 40
+        return cardTableHeader.headerHeight
     }
     
 
@@ -445,7 +442,7 @@ extension CardViewController: PaymentDelegate {
             
             
 //            let fetchedPayments = self.database.fetchSortedData(by: self.sortByOption, and: self.paymentStatusSort)
-            self.cardTableSections = self.cardTableViewModel.getSections(for: self.fetchedPayments, sortedBy: self.sortByOption)
+            self.cardTableSections = self.cardTableHeader.getSections(for: self.fetchedPayments, sortedBy: self.sortByOption)
             self.tblView.reloadData()
         }
     }
