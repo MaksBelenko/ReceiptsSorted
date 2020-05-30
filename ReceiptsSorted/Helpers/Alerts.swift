@@ -33,6 +33,13 @@ class Alert {
         controller.present(optionMenu, animated: true, completion: nil)
     }
     
+    func showNoPaymentsErrorAlert(for controller: UIViewController) {
+        Vibration.error.vibrate()
+        let optionMenu = UIAlertController(title: "No receipts selected!", message: "Please select the receipts that you would like to send" , preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+        optionMenu.addAction(okAction)
+        controller.present(optionMenu, animated: true, completion: nil)
+    }
     
     
     

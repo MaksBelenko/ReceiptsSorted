@@ -52,7 +52,7 @@ class PaymentTableViewCell: UITableViewCell {
      - Parameter payment: Payment which data is used to populate cell
      - Parameter selectionEnabled: Shows weather tickbox should be shown
      */
-    func setCell(for payment: Payments, selectionEnabled: Bool = false) {
+    func setCell(for payment: Payments, selectionEnabled: Bool = false, animate: Bool = true) {
         self.amountPaidText.text = "£" + payment.amountPaid.ToString(decimals: 2)
         self.placeText.text = payment.place!
         self.dateText.text = "Paid on " + payment.date!.ToString(as: .long)
@@ -62,7 +62,7 @@ class PaymentTableViewCell: UITableViewCell {
         
         tickLabel.backgroundColor = tickColor.withAlphaComponent(0)
         tickLabel.text = ""
-        animateTick(show: selectionEnabled)
+        animateTick(show: selectionEnabled, animation: animate)
     }
     
     
@@ -85,20 +85,20 @@ class PaymentTableViewCell: UITableViewCell {
     
     
     
-    // MARK: - Private methods
+    // MARK: - Animate methods
     
-    private func animateTick(show: Bool) {
+    func animateTick(show: Bool, animation: Bool = false) {
         tickLabelLeadingConstraint.isActive = false
         let constant: CGFloat = (show) ? 15 : -21
         tickLabelLeadingConstraint = tickLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: constant)
         tickLabelLeadingConstraint.isActive = true
-
-//        UIView.animate(withDuration: 0.6, delay: 0, options: .curveEaseIn, animations: {
-//            self.layoutIfNeeded()
-//        }, completion: nil)
         
-        UIView.animate(withDuration: 0.3) {
-            self.layoutIfNeeded()
+        if (animation) {
+            UIView.animate(withDuration: 0.3) {
+                self.layoutIfNeeded()
+            }
+        } else {
+            layoutIfNeeded()
         }
     }
 }

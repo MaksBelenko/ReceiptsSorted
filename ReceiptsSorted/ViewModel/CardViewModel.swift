@@ -24,7 +24,14 @@ class CardViewModel {
     var amountAnimation: AmountAnimation!
     
     // Selection enabled
+    var selectAllButtonText: Observable<String> = Observable("Select All")
+    var allSelected = false {
+        didSet {
+            selectAllButtonText.value = (allSelected) ? "Unselect All" : "Select All"
+        }
+    }
     var isSelectionEnabled: Observable<Bool> = Observable(false)
+    var firstVisibleCells: [PaymentTableViewCell] = []
     var selectedPaymentsUIDs: [UUID] = []
     
     weak var delegate: RefreshTableDelegate?
@@ -48,6 +55,8 @@ class CardViewModel {
         if (reloadTable) {
             delegate?.reloadTable()
         }
+        
+        checkThatAllSelected()
     }
     
     /**
@@ -96,7 +105,7 @@ class CardViewModel {
      */
     func set(cell: PaymentTableViewCell, indexPath: IndexPath) -> PaymentTableViewCell {
         let payment = getPayment(indexPath: indexPath)
-        cell.setCell(for: payment, selectionEnabled: isSelectionEnabled.value)
+        cell.setCell(for: payment, selectionEnabled: isSelectionEnabled.value, animate: firstVisibleCells.contains(cell))
         
         if selectedPaymentsUIDs.contains(payment.uid!) {
             cell.selectCell(with: .Tick)
@@ -129,7 +138,7 @@ class CardViewModel {
      Either ticks or unticks the cell when in "selectionEnabled" mode
      */
     func cellSelectedAction(for cell: PaymentTableViewCell, indexPath: IndexPath) {
-        guard let paymentUID = cardTableSections[indexPath.section].payments[indexPath.row].uid else { return }
+        guard let paymentUID = getPayment(indexPath: indexPath).uid else { return }
         
         if selectedPaymentsUIDs.contains(paymentUID) == false {
             cell.selectCell(with: .Tick)
@@ -139,10 +148,60 @@ class CardViewModel {
             let index = selectedPaymentsUIDs.firstIndex(of: paymentUID)!
             selectedPaymentsUIDs.remove(at: index)
         }
+        
+        checkThatAllSelected()
     }
     
     
-
+    /**
+     Marks all showing payments as selected
+     */
+    func markAllPayments() {
+        let option: PaymentsSelectionOption = (allSelected) ? .DeselectAll : .SelectAll
+        
+        switch option {
+        case .SelectAll:
+            fetchedPayments.forEach {
+                if !selectedPaymentsUIDs.contains($0.uid!) {
+                    selectedPaymentsUIDs.append($0.uid!)
+                }
+            }
+            selectAllButtonText.value = "Unselect All"
+        
+        case .DeselectAll:
+            fetchedPayments.forEach {
+                if selectedPaymentsUIDs.contains($0.uid!) {
+                    let index = selectedPaymentsUIDs.firstIndex(of: $0.uid!)
+                    selectedPaymentsUIDs.remove(at: index!)
+                }
+            }
+            selectAllButtonText.value = "Select All"
+        }
+        
+        allSelected = !allSelected
+        delegate?.reloadTable()
+    }
+    
+    
+    private func checkThatAllSelected() {
+        if selectedPaymentsUIDs.count < fetchedPayments.count {
+            allSelected = false
+            return
+        }
+        
+        var count = 0
+        for fetchedPayment in fetchedPayments {
+            for selectedUid in selectedPaymentsUIDs {
+                if fetchedPayment.uid == selectedUid {
+                    count += 1
+                }
+            }
+        }
+        
+        allSelected = (count == fetchedPayments.count) ? true : false
+       
+    }
+    
 }
 
 

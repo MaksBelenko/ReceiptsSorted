@@ -17,6 +17,7 @@ class CardViewController: UIViewController {
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var tblView: UITableView!
     
+    @IBOutlet weak var selectAllButton: UIButton!
     @IBOutlet weak var selectionHelperView: UIView!
     @IBOutlet weak var bottomSHViewConstraint: NSLayoutConstraint!
     
@@ -60,8 +61,12 @@ class CardViewController: UIViewController {
         
         cardViewModel.delegate = self
         cardViewModel.isSelectionEnabled.bind { [weak self] selectionEnabled in
-            self?.tblView.isScrollEnabled = (selectionEnabled) ? true : false
+            self?.cardViewModel.allSelected = false
             self?.tblView.reloadData()
+        }
+        
+        cardViewModel.selectAllButtonText.bind { [weak self] (buttonText) in
+            self?.selectAllButton.setTitle(buttonText, for: .normal)
         }
     }
 
@@ -141,27 +146,23 @@ class CardViewController: UIViewController {
     
     // ---------------- Selection Helper View ------------------
     @IBAction func nextButtonPressed(_ sender: Any) {
-        let selectedPayments = cardViewModel.getSelectedPayments()//database.fetchData(containsUIDs: selectedPaymentsUIDs)
+        let selectedPayments = cardViewModel.getSelectedPayments()
+        if selectedPayments.count == 0 {
+            Alert.shared.showNoPaymentsErrorAlert(for: self)
+            return
+        }
         Alert.shared.showFileFormatAlert(for: self, withPayments: selectedPayments)
         cardViewModel.selectedPaymentsUIDs.removeAll()
     }
     
     
     @IBAction func selectAllPressed(_ sender: UIButton) {
-        cardViewModel.selectedPaymentsUIDs.removeAll()
-        
-        for section in 0..<cardViewModel.cardTableSections.count {
-            for row in 0..<cardViewModel.cardTableSections[section].payments.count {
-                let indexPath = IndexPath(row: row, section: section)
-                guard let cell = tblView.cellForRow(at: indexPath) as? PaymentTableViewCell else { return }
-                cardViewModel.cellSelectedAction(for: cell, indexPath: indexPath)
-            }
-        }
-        
+        cardViewModel.markAllPayments()
     }
     
     
     @IBAction func cancelSelectingPressed(_ sender: UIButton) {
+        tblView.contentOffset.y = 0
         selectingPayments(mode: .Disable)
         cardViewModel.selectedPaymentsUIDs.removeAll()
     }
@@ -171,6 +172,7 @@ class CardViewController: UIViewController {
     func selectingPayments(mode: SelectionMode) {
         cardGesturesViewModel.animateTransitionIfNeeded(with: nextState, for: 0.6, withDampingRatio: 1)
     
+        cardViewModel.firstVisibleCells = tblView.visibleCells.map{ $0 as! PaymentTableViewCell }
         cardViewModel.isSelectionEnabled.value = (mode == .Enable) ? true : false
         
         bottomSHViewConstraint.isActive = false

@@ -13,6 +13,7 @@
                 <outlet property="bottomSHViewConstraint" destination="kpo-Cl-pxK" id="qvL-j7-gzA"/>
                 <outlet property="searchAndSortView" destination="CUx-DJ-xt5" id="gmU-se-PpO"/>
                 <outlet property="searchBar" destination="6Hk-WJ-MAr" id="pkn-08-oYk"/>
+                <outlet property="selectAllButton" destination="A1B-4a-56p" id="DJJ-dC-L3A"/>
                 <outlet property="selectionHelperView" destination="pgg-HW-fbX" id="H2h-bc-uly"/>
                 <outlet property="sortButton" destination="uB3-D3-tJh" id="GrU-0K-CNc"/>
                 <outlet property="tblView" destination="qpD-v6-aLx" id="8bj-sh-zn2"/>

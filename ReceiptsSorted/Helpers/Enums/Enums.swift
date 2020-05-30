@@ -38,3 +38,7 @@ enum SelectionMode {
 enum SelectionAction {
     case Tick, Untick
 }
+
+enum PaymentsSelectionOption {
+    case SelectAll, DeselectAll
+}
