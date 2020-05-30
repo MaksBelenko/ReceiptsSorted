@@ -82,7 +82,7 @@ class PDFPreviewViewController: UIViewController {
     // MARK: - Helpers
     
     private func createPDFPreviewDocument() {
-        let pdfCreator = PDFCreator(payments: passedPayments)
+        let pdfCreator = PdfFactory(payments: passedPayments)
         pdfData = pdfCreator.createPDF()
         pdfView.document = PDFDocument(data: pdfData)
 //        pdfView.interpolationQuality = .low // for images

@@ -9,7 +9,7 @@
 import UIKit
 import PDFKit
 
-class PDFCreator: NSObject {
+class PdfFactory: NSObject {
 
     private var payments: [Payments]!
     private var pageNumber = 1
@@ -135,7 +135,7 @@ class PDFCreator: NSObject {
      Numbers the page and increases the page counter
      */
     private func numberThePage(pageRect: CGRect) {
-        let _ = addSingleLineText(text: "Page: \(pageNumber)", font: PDFCreator.tableRowsFont, pageRect: pageRect, alignment: .right, top: pageRect.height - pageOffset.bottom + 7)
+        let _ = addSingleLineText(text: "Page: \(pageNumber)", font: PdfFactory.tableRowsFont, pageRect: pageRect, alignment: .right, top: pageRect.height - pageOffset.bottom + 7)
         pageNumber += 1
     }
 

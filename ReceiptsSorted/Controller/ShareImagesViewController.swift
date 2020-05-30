@@ -15,6 +15,7 @@ class ShareImagesViewController: UIViewController {
 
     var passedPayments: [Payments]!
     private var paymentsCount: Int = 1
+    private let zipAdapter = ZipAdapter()
     
     private var imageCount: Int = 0 {
         didSet {
@@ -225,7 +226,7 @@ class ShareImagesViewController: UIViewController {
     private func zipDirectory(withPath directoryPath: String) -> URL? {
         do {
             let directoryURL = URL(fileURLWithPath: directoryPath)
-            return try Zip.quickZipFiles([directoryURL], fileName: directoryName) // Zip
+            return try zipAdapter.zipFiles([directoryURL], fileName: directoryName)//Zip.quickZipFiles([directoryURL], fileName: directoryName) // Zip
         } catch {
             print("Zip failed with error: \(error.localizedDescription)")
             return nil
