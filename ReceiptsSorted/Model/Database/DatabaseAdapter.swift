@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class Database {
+class DatabaseAdapter {
     
     let paymentsEntityName: String = "Payments"
     
@@ -137,7 +137,7 @@ class Database {
      Adds a payments to database and returns a tuple of the totals before and after the payment
      - Parameter payment: Tuple that is used to create a new entry in the database
      */
-    func add (payment: (amountPaid: Float, place: String, date: Date, receiptImage: UIImage)) -> PaymentTotalInfo{
+    func add (payment: PaymentInformation) -> PaymentTotalInfo{
         let totalBefore = getTotalAmount(of: .Pending)
         
         let newPayment = Payments(context: context)
@@ -162,15 +162,15 @@ class Database {
     /**
      Updates a payments with the information passed in tuple
      - Parameter payment: Payment from the database to be updated
-     - Parameter dataTuple: Tuple used to update the payment information
+     - Parameter paymentInfo: Tuple used to update the payment information
      */
-    func update(payment: Payments, with dataTuple: (amountPaid: Float, place: String, date: Date, receiptImage: UIImage)) -> PaymentTotalInfo {
+    func update(payment: Payments, with paymentInfo: PaymentInformation) -> PaymentTotalInfo {
         let totalBefore = getTotalAmount(of: .Pending)
         
-        payment.receiptPhoto?.imageData = dataTuple.receiptImage.jpegData(compressionQuality: settings.compression)
-        payment.amountPaid = dataTuple.amountPaid
-        payment.place = dataTuple.place
-        payment.date = dataTuple.date
+        payment.receiptPhoto?.imageData = paymentInfo.receiptImage.jpegData(compressionQuality: settings.compression)
+        payment.amountPaid = paymentInfo.amountPaid
+        payment.place = paymentInfo.place
+        payment.date = paymentInfo.date
         
         saveContext()
         

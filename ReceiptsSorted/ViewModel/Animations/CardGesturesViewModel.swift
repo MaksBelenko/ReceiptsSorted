@@ -169,11 +169,11 @@ class CardGesturesViewModel: NSObject {
         case .Expanded:
             searchTopAnchor = self.cardViewController.searchAndSortView.topAnchor.constraint(equalTo: self.cardViewController.view.topAnchor, constant: 15)
             searchBottomAnchor = self.cardViewController.searchAndSortView.bottomAnchor.constraint(equalTo: self.cardViewController.SortSegmentedControl.topAnchor, constant: -15)
-            noReceiptImageCenterYAnchor = self.cardViewController.noReceiptsImage?.centerYAnchor.constraint(equalTo: self.cardViewController.tblView.centerYAnchor)
+            noReceiptImageCenterYAnchor = self.cardViewController.noReceiptsImage.centerYAnchor.constraint(equalTo: self.cardViewController.tblView.centerYAnchor)
         case .Collapsed:
             searchTopAnchor = self.cardViewController.searchAndSortView.topAnchor.constraint(equalTo: self.cardViewController.view.topAnchor, constant: -(self.cardViewController.searchAndSortView.frame.size.height))
             searchBottomAnchor = self.cardViewController.searchAndSortView.bottomAnchor.constraint(equalTo: self.cardViewController.SortSegmentedControl.topAnchor, constant: -25)
-            noReceiptImageCenterYAnchor = self.cardViewController.noReceiptsImage?.centerYAnchor.constraint(equalTo: self.cardViewController.tblView.centerYAnchor, constant: -cardStartPointY/2)
+            noReceiptImageCenterYAnchor = self.cardViewController.noReceiptsImage.centerYAnchor.constraint(equalTo: self.cardViewController.tblView.centerYAnchor, constant: -cardStartPointY/2)
         }
         NSLayoutConstraint.activate([searchTopAnchor!, searchBottomAnchor!, noReceiptImageCenterYAnchor!])
         
@@ -261,7 +261,7 @@ extension CardGesturesViewModel: UIGestureRecognizerDelegate {
     //Deactivates PanGesture for TableView if the movement is horizontal
     func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
         
-        if cardViewController.isSelectionEnabled { return false }
+        if cardViewController.cardViewModel.isSelectionEnabled.value { return false }
         
         if let panGestureRecognizer = gestureRecognizer as? UIPanGestureRecognizer {
             let translation = panGestureRecognizer.translation(in: self.cardViewController.tblView)

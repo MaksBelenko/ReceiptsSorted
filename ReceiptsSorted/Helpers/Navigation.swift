@@ -25,7 +25,7 @@ class Navigation {
         cameraVC.transitioningDelegate = vc
         cameraVC.modalPresentationStyle = .custom
         cameraVC.controllerFrame = vc.view.frame
-        cameraVC.cardVC = vc.cardViewController
+        cameraVC.cardVM = vc.cardViewController.cardViewModel
         
         vc.navigationController?.pushViewController(cameraVC, animated: true)
     }
@@ -44,7 +44,7 @@ class Navigation {
             paymentVC.date = selectedPayment.date!
             paymentVC.pageType = .UpdatePayment
             
-            paymentVC.paymentDelegate = controller
+            paymentVC.paymentDelegate = controller.cardViewModel
             
             paymentVC.modalPresentationStyle = .fullScreen
             controller.navigationController?.pushViewController(paymentVC, animated: true)
@@ -65,7 +65,7 @@ class Navigation {
         pdfPreviewVC.passedPayments = payments
         pdfPreviewVC.isModalInPresentation = true
         cardVC.present(pdfPreviewVC, animated: true) {
-            cardVC.deselectPaymentsClicked()
+            cardVC.selectingPayments(mode: .Disable)
         }
     }
     
@@ -82,7 +82,7 @@ class Navigation {
         archiveVC.passedPayments = payments
         navController.isModalInPresentation = true
         cardVC.present(navController, animated: true) {
-            cardVC.deselectPaymentsClicked()
+            cardVC.selectingPayments(mode: .Disable)
         }
     }
     
@@ -92,7 +92,7 @@ class Navigation {
         if let paymentVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "PaymentDetails") as? PaymentViewController
         {
             paymentVC.passedImage = image
-            paymentVC.paymentDelegate = controller.cardVC
+            paymentVC.paymentDelegate = controller.cardVM
             paymentVC.modalPresentationStyle = .fullScreen
             controller.navigationController?.pushViewController(paymentVC, animated: true)
         }

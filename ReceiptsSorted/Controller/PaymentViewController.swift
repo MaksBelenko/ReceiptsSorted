@@ -248,9 +248,8 @@ class PaymentViewController: UIViewController, UITextFieldDelegate {
         amountPaid = amountPaidTextField.text!.floatValue
         place = placeOfPurchaseTextField.text!
         
-        
-        let paymentTuple = (amountPaid: amountPaid, place: place, date: date, receiptImage: receiptImageView.image ?? UIImage())
-        paymentDelegate?.passData(as: pageType, paymentTuple: paymentTuple)
+        let paymentInfo = PaymentInformation(amountPaid: amountPaid, place: place, date: date, receiptImage: receiptImageView.image ?? UIImage())
+        paymentDelegate?.passData(as: pageType, paymentInfo: paymentInfo)
         
         if (pageType == .AddPayment) {
             navigationController?.popToRootViewController(animated: true)

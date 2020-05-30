@@ -75,7 +75,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIViewCo
         
         if onStartup {
             onStartup = false
-            let totalAmount = cardViewController.database.getTotalAmount(of: .Pending)
+            let totalAmount = cardViewController.cardViewModel.database.getTotalAmount(of: .Pending)
             topGraphicsView.amountAnimation.animateCircle(to: totalAmount)
         }
     }
@@ -210,7 +210,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIViewCo
     //MARK: - Email button
     
     @IBAction func emailButtonPressed(_ sender: UIButton) {
-        cardViewController.selectingPaymentsClicked()
+        cardViewController.selectingPayments(mode: .Enable)
     }
 }
 

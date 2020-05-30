@@ -17,7 +17,7 @@ protocol PopupDelegate: AnyObject {
 
 
 protocol PaymentDelegate: AnyObject {
-    func passData(as showPayment: ShowPaymentAs, paymentTuple:(amountPaid: Float, place: String, date: Date, receiptImage: UIImage))
+    func passData(as showPayment: ShowPaymentAs, paymentInfo: PaymentInformation)
 }
 
 protocol SortButtonLabelDelegate: AnyObject {
@@ -26,4 +26,11 @@ protocol SortButtonLabelDelegate: AnyObject {
 
 protocol SwipeActionDelegate: AnyObject {
     func onSwipeClicked(indexPath: IndexPath, action: SwipeCommandType)
+}
+
+protocol RefreshTableDelegate: AnyObject {
+    func reloadTable()
+    func updateRows(indexPaths: [IndexPath])
+    func removeRows(indexPaths: [IndexPath])
+    func removeSection(indexSet: IndexSet)
 }

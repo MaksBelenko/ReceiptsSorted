@@ -21,7 +21,7 @@ class CameraViewController: UIViewController, UINavigationControllerDelegate {
     
     
     private let circularTransition = CircularTransition()
-    var cardVC: CardViewController?
+    weak var cardVM: CardViewModel?
     var addButtonCenter: CGPoint?
     
     override var preferredStatusBarStyle: UIStatusBarStyle { return .lightContent }

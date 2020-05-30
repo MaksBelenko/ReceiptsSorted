@@ -22,26 +22,19 @@ class CardViewController: UIViewController {
     
     var cardHeight: CGFloat = 0
     var cardStartPointY: CGFloat = 0
-    var tableRowsHeight: CGFloat = 60
-
-    var fetchedPayments: [Payments] = []
-    var cardTableSections: [PaymentTableSection] = []
-    var paymentUpdateIndex = (section: 0, row: 0)
     
-    var sortByOption: SortBy = .NewestDateAdded
-    var paymentStatusSort: PaymentStatusSort = .Pending
-    
-    
-    var database = Database()
+    let cardViewModel = CardViewModel()
     let dropDownMenu = SortingDropDownMenu()
-    var swipeActions = SwipeActionsViewModel()
-    var cardTableHeader = CardTableHeader()
-    var amountAnimation: AmountAnimation!
+    let swipeActions = SwipeActionsViewModel()
     var cardGesturesViewModel: CardGesturesViewModel!
     
-    var noReceiptsImage: UIImageView?
-    
-    private let noReceiptImage: UIImageView = {
+    var amountAnimation: AmountAnimation? = nil {
+        didSet {
+            cardViewModel.amountAnimation = amountAnimation
+        }
+    }
+        
+    let noReceiptsImage: UIImageView = {
         guard let optImage = UIImage(named: "NoReceipts") else {
             Log.debug(message: "Image not found")
             return UIImageView()
@@ -52,9 +45,6 @@ class CardViewController: UIViewController {
         return imageView
     }()
     
-    var isSelectionEnabled: Bool = false
-    var selectedPaymentsUIDs: [UUID] = []
-    
     
     //MARK: - Lifecycle
     
@@ -64,12 +54,15 @@ class CardViewController: UIViewController {
         
         configureTableView()
         setupSearchBar()
-        sortButton.setTitle(dropDownMenu.getButtonTitle(for: sortByOption), for: .normal)
         setupNoReceiptsImage()
         setupSelectionHelperView()
+        sortButton.setTitle(dropDownMenu.getButtonTitle(for: cardViewModel.sortByOption), for: .normal)
         
-        fetchedPayments = database.fetchSortedData(by: sortByOption, and: paymentStatusSort)
-        cardTableSections = cardTableHeader.getSections(for: fetchedPayments, sortedBy: sortByOption)
+        cardViewModel.delegate = self
+        cardViewModel.isSelectionEnabled.bind { [weak self] selectionEnabled in
+            self?.tblView.isScrollEnabled = (selectionEnabled) ? true : false
+            self?.tblView.reloadData()
+        }
     }
 
     
@@ -98,14 +91,14 @@ class CardViewController: UIViewController {
     
     
     private func setupNoReceiptsImage() {
-        view.addSubview(noReceiptImage)
-        noReceiptImage.translatesAutoresizingMaskIntoConstraints = false
-        noReceiptImage.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        noReceiptImage.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.5).isActive = true
-        noReceiptImage.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.5).isActive = true
+        view.addSubview(noReceiptsImage)
+        noReceiptsImage.translatesAutoresizingMaskIntoConstraints = false
+        noReceiptsImage.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        noReceiptsImage.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.5).isActive = true
+        noReceiptsImage.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.5).isActive = true
         
         let offsetY: CGFloat = cardStartPointY/2
-        noReceiptImageCenterYAnchor = noReceiptImage.centerYAnchor.constraint(equalTo: tblView.centerYAnchor, constant: -offsetY)
+        noReceiptImageCenterYAnchor = noReceiptsImage.centerYAnchor.constraint(equalTo: tblView.centerYAnchor, constant: -offsetY)
         noReceiptImageCenterYAnchor?.isActive = true
     }
     
@@ -141,28 +134,27 @@ class CardViewController: UIViewController {
     //MARK: - @IBActions
     
     @IBAction func segmentedControlValueChanged(_ sender: UISegmentedControl) {
-        paymentStatusSort = sender.getCurrentPosition()
-        
-        fetchedPayments = database.fetchSortedData(by: sortByOption, and: paymentStatusSort)
-        cardTableSections = cardTableHeader.getSections(for: fetchedPayments, sortedBy: sortByOption)
-        tblView.reloadData()
+        cardViewModel.paymentStatusSort = sender.getCurrentPosition()
+        cardViewModel.refreshPayments()
     }
     
     
     // ---------------- Selection Helper View ------------------
     @IBAction func nextButtonPressed(_ sender: Any) {
-        let selectedPayments = database.fetchData(containsUIDs: selectedPaymentsUIDs)
+        let selectedPayments = cardViewModel.getSelectedPayments()//database.fetchData(containsUIDs: selectedPaymentsUIDs)
         Alert.shared.showFileFormatAlert(for: self, withPayments: selectedPayments)
-        selectedPaymentsUIDs.removeAll()
+        cardViewModel.selectedPaymentsUIDs.removeAll()
     }
     
     
     @IBAction func selectAllPressed(_ sender: UIButton) {
-        selectedPaymentsUIDs.removeAll()
+        cardViewModel.selectedPaymentsUIDs.removeAll()
         
-        for section in 0..<cardTableSections.count {
-            for row in 0..<cardTableSections[section].payments.count {
-                cellSelectedAction(indexPath: IndexPath(row: row, section: section))
+        for section in 0..<cardViewModel.cardTableSections.count {
+            for row in 0..<cardViewModel.cardTableSections[section].payments.count {
+                let indexPath = IndexPath(row: row, section: section)
+                guard let cell = tblView.cellForRow(at: indexPath) as? PaymentTableViewCell else { return }
+                cardViewModel.cellSelectedAction(for: cell, indexPath: indexPath)
             }
         }
         
@@ -170,42 +162,26 @@ class CardViewController: UIViewController {
     
     
     @IBAction func cancelSelectingPressed(_ sender: UIButton) {
-        deselectPaymentsClicked()
+        selectingPayments(mode: .Disable)
+        cardViewModel.selectedPaymentsUIDs.removeAll()
     }
     
     
     // MARK: - Selecting payments
-    func selectingPaymentsClicked() {
-        if nextState == .Expanded {
-            cardGesturesViewModel.animateTransitionIfNeeded(with: nextState, for: 0.6, withDampingRatio: 1)
-        }
-        
-        paymentSelection(is: .Enable)
-    }
+    func selectingPayments(mode: SelectionMode) {
+        cardGesturesViewModel.animateTransitionIfNeeded(with: nextState, for: 0.6, withDampingRatio: 1)
     
-    func deselectPaymentsClicked() {
-        if nextState == .Collapsed {
-            cardGesturesViewModel.animateTransitionIfNeeded(with: nextState, for: 0.6, withDampingRatio: 1)
-        }
-        
-        selectedPaymentsUIDs.removeAll()
-        paymentSelection(is: .Disable)
-    }
-    
-    
-    // MARK: - Enabling Selection
-    func paymentSelection(is status: SelectionMode) {
-        isSelectionEnabled = (status == .Enable) ? true : false
-        tblView.reloadData()
+        cardViewModel.isSelectionEnabled.value = (mode == .Enable) ? true : false
         
         bottomSHViewConstraint.isActive = false
-        if status == .Enable {
+        if mode == .Enable {
             bottomSHViewConstraint = selectionHelperView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         } else {
             bottomSHViewConstraint = selectionHelperView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: selectionHelperView.frame.height)
         }
         bottomSHViewConstraint.isActive = true
     }
+    
 }
 
 
@@ -229,13 +205,11 @@ extension CardViewController: UIPopoverPresentationControllerDelegate, SortButto
     
     //Delegate method
     func changeButtonLabel(sortByOption: SortBy, buttonTitle: String) {
-        if (self.sortByOption != sortByOption) {
-            self.sortByOption = sortByOption
+        if (cardViewModel.sortByOption != sortByOption) {
+            cardViewModel.sortByOption = sortByOption
             sortButton.setTitle(buttonTitle, for: .normal)
             
-            fetchedPayments = database.fetchSortedData(by: sortByOption, and: paymentStatusSort)
-            cardTableSections = cardTableHeader.getSections(for: fetchedPayments, sortedBy: sortByOption)
-            tblView.reloadData()
+            cardViewModel.refreshPayments()
         }
     }
 
@@ -251,62 +225,33 @@ extension CardViewController: UISearchBarDelegate {
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        fetchedPayments = database.fetchData(forName: searchText, by: sortByOption, and: paymentStatusSort)
-        cardTableSections = cardTableHeader.getSections(for: fetchedPayments, sortedBy: sortByOption)
-        tblView.reloadData()
+        cardViewModel.getPayments(forSearchName: searchText)
     }
 }
 
 
 
 //MARK: - TableView extension
-extension CardViewController: UITableViewDataSource, UITableViewDelegate, SwipeActionDelegate {
+extension CardViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "paymentCell", for: indexPath) as! PaymentTableViewCell
-        
-        let payment = cardTableSections[indexPath.section].payments[indexPath.row]
-        cell.setCell(for: payment, selectionEnabled: isSelectionEnabled)
-        
-        if selectedPaymentsUIDs.contains(payment.uid!) {
-            cell.selectCell(with: .Tick)
-        }
-        return cell
+        return cardViewModel.set(cell: cell, indexPath: indexPath)
     }
     
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return tableRowsHeight
+        return cardViewModel.tableRowsHeight
     }
     
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
         tableView.deselectRow(at: indexPath, animated: true)
+        guard let cell = tblView.cellForRow(at: indexPath) as? PaymentTableViewCell else { return }
         
-        if isSelectionEnabled {
-            cellSelectedAction(indexPath: indexPath)
-            return
-        }
-        
-        // Show PaymentVC
-        paymentUpdateIndex = (section: indexPath.section, row: indexPath.row)
-        let selectedPayment = cardTableSections[indexPath.section].payments[indexPath.row]
-        Navigation.shared.showPaymentVC(for: self, payment: selectedPayment)
-    }
-    
-    
-    private func cellSelectedAction(indexPath: IndexPath) {
-        let cell = tblView.cellForRow(at: indexPath) as! PaymentTableViewCell
-        guard let paymentUID = cardTableSections[indexPath.section].payments[indexPath.row].uid else { return }
-        
-        if selectedPaymentsUIDs.contains(paymentUID) == false {
-            cell.selectCell(with: .Tick)
-            selectedPaymentsUIDs.append(paymentUID)
-        } else {
-            cell.selectCell(with: .Untick)
-            let index = selectedPaymentsUIDs.firstIndex(of: paymentUID)!
-            selectedPaymentsUIDs.remove(at: index)
+        if cardViewModel.selectCellActionShowVC(for: cell, indexPath: indexPath) {
+            let selectedPayment = cardViewModel.getPayment(indexPath: indexPath)
+            Navigation.shared.showPaymentVC(for: self, payment: selectedPayment)
         }
     }
     
@@ -314,20 +259,20 @@ extension CardViewController: UITableViewDataSource, UITableViewDelegate, SwipeA
     //MARK: - Sections
 
     func numberOfSections(in tableView: UITableView) -> Int {
-        noReceiptsImage?.alpha = (cardTableSections.count == 0) ? 1 : 0
-        return cardTableSections.count
+        noReceiptsImage.alpha = (cardViewModel.cardTableSections.count == 0) ? 1 : 0
+        return cardViewModel.cardTableSections.count
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return cardTableSections[section].payments.count
+        return cardViewModel.cardTableSections[section].payments.count
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        return cardTableHeader.getSectionHeaderView(for: section, sortedBy: sortByOption, width: view.frame.width)
+        return cardViewModel.getSectionHeaderView(for: section, width: view.frame.width)
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return cardTableHeader.headerHeight
+        return cardViewModel.cardTableHeader.headerHeight
     }
     
 
@@ -342,111 +287,63 @@ extension CardViewController: UITableViewDataSource, UITableViewDelegate, SwipeA
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         swipeActions.swipeActionDelegate = self
         tblView.setEditing(false, animated: true)
-        return swipeActions.createTrailingActions(for: indexPath, in: cardTableSections[indexPath.section].payments[indexPath.row])
+        let payment = cardViewModel.getPayment(indexPath: indexPath)
+        return swipeActions.createTrailingActions(for: indexPath, in: payment)
     }
+    
+}
+
+// MARK: - RefreshTableDelegate
+extension CardViewController: RefreshTableDelegate {
+    func reloadTable() {
+        tblView.reloadData()
+    }
+    
+    func updateRows(indexPaths: [IndexPath]) {
+        tblView.reloadRows(at: indexPaths, with: .left)
+    }
+    
+    func removeRows(indexPaths: [IndexPath]) {
+        tblView.deleteRows(at: indexPaths, with: .right)
+    }
+    
+    func removeSection(indexSet: IndexSet) {
+        tblView.deleteSections(indexSet, with: .fade)
+    }
+    
+    
+}
+
+// MARK: - SwipeActionDelegate
+extension CardViewController: SwipeActionDelegate {
     
     //Delegate method
     func onSwipeClicked(indexPath: IndexPath, action: SwipeCommandType) {
-        let payment = cardTableSections[indexPath.section].payments[indexPath.row]
+        let payment = cardViewModel.getPayment(indexPath: indexPath)
         switch action
         {
         case .Remove:
             Alert.shared.removePaymentAlert(for: self, payment: payment, indexPath: indexPath)
             return
         case .Tick:
-            database.updateDetail(for: payment, detailType: .PaymentReceived, with: true)
+            cardViewModel.database.updateDetail(for: payment, detailType: .PaymentReceived, with: true)
         case .Untick:
-            database.updateDetail(for: payment, detailType: .PaymentReceived, with: false)
+            cardViewModel.database.updateDetail(for: payment, detailType: .PaymentReceived, with: false)
         }
-        
-        removeFromTableVeiw(indexPath: indexPath, action: action)
+
+        cardViewModel.removeFromTableVeiw(indexPath: indexPath, action: action)
     }
     
     
-    private func removeFromTableVeiw(indexPath: IndexPath, action: SwipeCommandType) {
-        let payment = cardTableSections[indexPath.section].payments[indexPath.row]
-        
-        guard let index = fetchedPayments.firstIndex(of: payment) else {
-            Log.exception(message: "Mismatch in arrays \"fetchedPayments\" and \"cardTableSections\"")
-            return
-        }
-        
-        if (paymentStatusSort != .All || action == .Remove) {
-            fetchedPayments.remove(at: index)
-            cardTableSections[indexPath.section].payments.remove(at: indexPath.row)
-            removeSectionIfEmpty(indexPath: indexPath)
-        } else {
-            tblView.reloadRows(at: [indexPath], with: .left)
-        }
-        
-        updateCircularBar()
-    }
-    
-    
-    private func removeSectionIfEmpty(indexPath: IndexPath) {
-        if (cardTableSections[indexPath.section].payments.count == 0) {  //One payments in section
-            cardTableSections.remove(at: indexPath.section)
-            tblView.deleteSections(IndexSet([indexPath.section]), with: .fade)
-        } else {
-            tblView.deleteRows(at: [indexPath], with: .fade)
-        }
-    }
-    
-    
-    
-    //Alert calls this
+    //Remove payment Alert calls this
     func deletePayment(payment: Payments, indexPath: IndexPath) {
-        self.database.delete(item: payment)
-        removeFromTableVeiw(indexPath: indexPath, action: .Remove)
+        self.cardViewModel.database.delete(item: payment)
+        cardViewModel.removeFromTableVeiw(indexPath: indexPath, action: .Remove)
     }
     
-    
-    
-    private func updateCircularBar() {
-        let totalAmount = database.getTotalAmount(of: .Pending)
-        amountAnimation.animateCircle(to: totalAmount)
-    }
 }
 
 
-
-
-
-
-
-//MARK: - PaymentDelegate extension
-extension CardViewController: PaymentDelegate {
-    
-    func passData(as showPayment: ShowPaymentAs, paymentTuple:(amountPaid: Float, place: String, date: Date, receiptImage: UIImage)) {
-        DispatchQueue.main.async {
-            switch showPayment
-            {
-                case .AddPayment:
-                    let addPayment = self.database.add(payment: paymentTuple)
-                    if (self.paymentStatusSort != .Received) {
-                        self.fetchedPayments.append(addPayment.payment)
-                    }
-                    self.amountAnimation.animateCircle(to: addPayment.totalAfter)
-                case .UpdatePayment:
-                    let payment = self.cardTableSections[self.paymentUpdateIndex.section].payments[self.paymentUpdateIndex.row]
-                    guard let index = self.fetchedPayments.firstIndex(of: payment) else {
-                        Log.exception(message: "Mismatch in arrays \"fetchedPayments\" and \"cardTableSections\"")
-                        return
-                    }
-                    let updatedPayment = self.database.update(payment: payment, with: paymentTuple)
-                    self.fetchedPayments[index] = updatedPayment.payment
-                    self.amountAnimation.animateCircle(to: updatedPayment.totalAfter)
-                
-                    self.database.refault(object: payment.receiptPhoto) // fault receiptData to remove from memory
-            }
-            
-            
-//            let fetchedPayments = self.database.fetchSortedData(by: self.sortByOption, and: self.paymentStatusSort)
-            self.cardTableSections = self.cardTableHeader.getSections(for: self.fetchedPayments, sortedBy: self.sortByOption)
-            self.tblView.reloadData()
-        }
-    }
-}
 
 
 
