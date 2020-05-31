@@ -11,7 +11,7 @@ import PDFKit
 
 class PdfFactory: NSObject {
 
-    private var payments: [Payments]!
+    private var payments: [Payment]!
     private var pageNumber = 1
     
     var companyLogo: UIImage = #imageLiteral(resourceName: "NameLogo")
@@ -41,7 +41,7 @@ class PdfFactory: NSObject {
     
     
     //MARK: - Initialiser
-    init(payments: [Payments]) {
+    init(payments: [Payment]) {
         self.payments = payments
         shapes = SimpleShapes(tableRowHeight: tableRowHeight, pageOffset: pageOffset)
     }
@@ -185,7 +185,7 @@ class PdfFactory: NSObject {
      - Parameter pageRect: Page size rectangle
      - Parameter top: Top Offset
      */
-    private func drawTableRow(payment: Payments, even: Bool, drawContext: CGContext, pageRect: CGRect, top: CGFloat) -> CGFloat {
+    private func drawTableRow(payment: Payment, even: Bool, drawContext: CGContext, pageRect: CGRect, top: CGFloat) -> CGFloat {
         if even == true {
             shapes.drawRectWithCornerRadius(drawContext: drawContext, pageRect: pageRect, top: top, colour: .superLightFlatOrange)
         }

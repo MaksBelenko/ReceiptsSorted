@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="16119" systemVersion="19E266" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <entity name="Payments" representedClassName=".Payments" syncable="YES" codeGenerationType="class">
+    <entity name="Payment" representedClassName=".Payment" syncable="YES">
         <attribute name="amountPaid" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="date" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="paymentReceived" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="place" attributeType="String"/>
-        <attribute name="uid" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="uid" attributeType="UUID" usesScalarValueType="NO"/>
         <relationship name="receiptPhoto" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ReceiptPhoto" inverseName="payment" inverseEntity="ReceiptPhoto"/>
     </entity>
-    <entity name="ReceiptPhoto" representedClassName=".ReceiptPhoto" syncable="YES" codeGenerationType="class">
+    <entity name="ReceiptPhoto" representedClassName=".ReceiptPhoto" syncable="YES">
         <attribute name="imageData" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES"/>
-        <relationship name="payment" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Payments" inverseName="receiptPhoto" inverseEntity="Payments"/>
+        <relationship name="payment" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Payment" inverseName="receiptPhoto" inverseEntity="Payment"/>
     </entity>
     <elements>
-        <element name="Payments" positionX="-1531.578125" positionY="-2979.62890625" width="201.9765625" height="133"/>
+        <element name="Payment" positionX="160" positionY="192" width="128" height="133"/>
         <element name="ReceiptPhoto" positionX="-1228.33203125" positionY="-2934.21875" width="128" height="73"/>
     </elements>
 </model>

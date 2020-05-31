@@ -33,7 +33,7 @@ class Navigation {
     
     
     // MARK: - CardViewController
-    func showPaymentVC(for controller: CardViewController, payment selectedPayment: Payments) {
+    func showPaymentVC(for controller: CardViewController, payment selectedPayment: Payment) {
         if let paymentVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "PaymentDetails") as? PaymentViewController
         {
             paymentVC.passedImage = UIImage(data: selectedPayment.receiptPhoto?.imageData ?? Data())
@@ -54,7 +54,7 @@ class Navigation {
     }
     
     
-    func showPDFPreview(for controller: UIViewController, withPayments payments: [Payments]) {
+    func showPDFPreview(for controller: UIViewController, withPayments payments: [Payment]) {
         guard let cardVC = controller as? CardViewController else {
             NSLog("Controller requested cameraVC is not CardViewController")
             Log.exception(message: "Controller requested cameraVC is not CardViewController")
@@ -70,7 +70,7 @@ class Navigation {
     }
     
     
-    func showArchivedImagesViewer(for controller: UIViewController, withPayments payments: [Payments]) {
+    func showArchivedImagesViewer(for controller: UIViewController, withPayments payments: [Payment]) {
         guard let cardVC = controller as? CardViewController else {
             NSLog("Controller requested cameraVC is not CardViewController")
             Log.exception(message: "Controller requested cameraVC is not CardViewController")

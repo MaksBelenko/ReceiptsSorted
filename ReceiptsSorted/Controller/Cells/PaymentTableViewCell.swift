@@ -52,7 +52,7 @@ class PaymentTableViewCell: UITableViewCell {
      - Parameter payment: Payment which data is used to populate cell
      - Parameter selectionEnabled: Shows weather tickbox should be shown
      */
-    func setCell(for payment: Payments, selectionEnabled: Bool = false, animate: Bool = true) {
+    func setCell(for payment: Payment, selectionEnabled: Bool = false, animate: Bool = true) {
         self.amountPaidText.text = "£" + payment.amountPaid.ToString(decimals: 2)
         self.placeText.text = payment.place!
         self.dateText.text = "Paid on " + payment.date!.ToString(as: .long)

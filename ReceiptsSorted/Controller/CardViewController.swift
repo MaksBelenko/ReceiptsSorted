@@ -338,7 +338,7 @@ extension CardViewController: SwipeActionDelegate {
     
     
     //Remove payment Alert calls this
-    func deletePayment(payment: Payments, indexPath: IndexPath) {
+    func deletePayment(payment: Payment, indexPath: IndexPath) {
         self.cardViewModel.database.delete(item: payment)
         cardViewModel.removeFromTableVeiw(indexPath: indexPath, action: .Remove)
     }

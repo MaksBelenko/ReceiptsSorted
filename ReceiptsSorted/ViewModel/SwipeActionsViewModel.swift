@@ -18,7 +18,7 @@ class SwipeActionsViewModel {
      - Parameter itemNumber: Index of the item to perform trailing actions for
      - Parameter payments: List of payments
      */
-    func createTrailingActions(for indexPath: IndexPath, in payment: Payments) -> UISwipeActionsConfiguration {
+    func createTrailingActions(for indexPath: IndexPath, in payment: Payment) -> UISwipeActionsConfiguration {
         
         let checkAction:UIContextualAction?
         
@@ -46,7 +46,7 @@ class SwipeActionsViewModel {
 
     
     
-    func actionClicked(for swipeCommand: SwipeCommandType, indexPath: IndexPath, payment: Payments) {
+    func actionClicked(for swipeCommand: SwipeCommandType, indexPath: IndexPath, payment: Payment) {
         swipeActionDelegate?.onSwipeClicked(indexPath: indexPath, action: swipeCommand)
     }
     

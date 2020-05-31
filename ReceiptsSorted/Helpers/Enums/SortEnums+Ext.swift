@@ -32,11 +32,11 @@ extension SortBy {
         {
         case .Place:
             let compareSelector = #selector(NSString.localizedStandardCompare(_:))
-            sortDescriptor = NSSortDescriptor(key: #keyPath(Payments.place), ascending: true, selector: compareSelector)
+            sortDescriptor = NSSortDescriptor(key: #keyPath(Payment.place), ascending: true, selector: compareSelector)
         case .NewestDateAdded:
-            sortDescriptor = NSSortDescriptor(key: #keyPath(Payments.date), ascending: false)
+            sortDescriptor = NSSortDescriptor(key: #keyPath(Payment.date), ascending: false)
         case .OldestDateAdded:
-            sortDescriptor = NSSortDescriptor(key: #keyPath(Payments.date), ascending: true)
+            sortDescriptor = NSSortDescriptor(key: #keyPath(Payment.date), ascending: true)
         case .None:
             break
         }
@@ -57,9 +57,9 @@ extension PaymentStatusSort {
         switch self
         {
         case .Pending:
-            predicate = NSPredicate(format: "%K == %@", #keyPath(Payments.paymentReceived), NSNumber(value: false))
+            predicate = NSPredicate(format: "%K == %@", #keyPath(Payment.paymentReceived), NSNumber(value: false))
         case .Received:
-            predicate = NSPredicate(format: "%K == %@", #keyPath(Payments.paymentReceived), NSNumber(value: true))
+            predicate = NSPredicate(format: "%K == %@", #keyPath(Payment.paymentReceived), NSNumber(value: true))
         case .All:
             break
         }

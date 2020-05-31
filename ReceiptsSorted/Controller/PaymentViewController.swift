@@ -200,7 +200,7 @@ class PaymentViewController: UIViewController, UITextFieldDelegate {
         addButton.layer.cornerRadius = addButton.frame.size.height/4
         addButton.layer.applyShadow(color: .flatOrange, alpha: 0.5, x: 1, y: 4, blur: 6)
         
-        let buttonTitle = (pageType == .AddPayment) ? "Add" : "Save"
+        let buttonTitle = (pageType == .AddPayment) ? "Add" : "Update"
         addButton.setTitle( buttonTitle, for: .normal)
         
         buttonAnimations.startAnimatingPressActions(for: addButton)
@@ -299,7 +299,7 @@ class PaymentViewController: UIViewController, UITextFieldDelegate {
     }
     
     @objc func image(_ image: UIImage, didFinishSavingWithError error: Error?, contextInfo: UnsafeRawPointer) {
-        if let error = error {
+        if let _ = error {
             let ac = UIAlertController(title: "Error saving an image", message: "Go to Settings -> WorkReceipts -> Photos -> Enable \"Add Photos Only\" in order to use this function", preferredStyle: .alert)
             ac.addAction(UIAlertAction(title: "OK", style: .default))
             present(ac, animated: true)

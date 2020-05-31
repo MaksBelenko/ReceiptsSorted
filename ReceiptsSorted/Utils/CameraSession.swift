@@ -188,8 +188,7 @@ class CameraSession  {
     
     
     
-    
-    
+    // MARK: - Camera Focus
     /**
      Focuses camera on the tapped point in the view
      - Parameter recogniser: Tap recogniser
@@ -212,14 +211,31 @@ class CameraSession  {
 
                 device.unlockForConfiguration()
                 
-                //For test purposes
-//                let image = UIImage(systemName: "circle")
-////                image?.withTintColor(UIColor(rgb: 0xEDB200))
-//                let imageView = UIImageView(image: image)
-//                imageView.frame = CGRect(x: focusPoint.x - 30, y: focusPoint.y - 30, width: 60, height: 60)
-//                recogniser.view?.addSubview(imageView)
+                
+                
+                let squareView = UIView(frame: CGRect(x: focusPoint.x - 30, y: focusPoint.y - 30, width: 60, height: 60))
+                squareView.layer.borderWidth = 2
+                squareView.layer.borderColor = UIColor.flatOrange.cgColor
+                recogniser.view?.insertSubview(squareView, at: 1)// addSubview(squareView)
+                
+                squareView.transform = CGAffineTransform(scaleX: 0.85, y: 0.85)
+                squareView.alpha = 0
+
+                UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseOut, animations: {
+                    squareView.transform = .identity
+                    squareView.alpha = 1
+                }) { _ in
+                    UIView.animate(withDuration: 0.2, delay: 0.2, options: .curveEaseIn, animations: {
+                        squareView.alpha = 0
+                    }) { _ in
+                        squareView.removeFromSuperview()
+                    }
+                }
             }
         }
     }
+    
+    
+    
     
 }

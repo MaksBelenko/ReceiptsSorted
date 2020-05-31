@@ -210,6 +210,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIViewCo
     //MARK: - Email button
     
     @IBAction func emailButtonPressed(_ sender: UIButton) {
+        fractionComplete = 0
         cardViewController.selectingPayments(mode: .Enable)
     }
 }

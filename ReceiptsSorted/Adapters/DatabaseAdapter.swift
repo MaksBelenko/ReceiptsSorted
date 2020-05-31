@@ -11,7 +11,7 @@ import CoreData
 
 class DatabaseAdapter {
     
-    let paymentsEntityName: String = "Payments"
+    let paymentsEntityName: String = "Payment"
     
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     let imageCompression = ImageCompression()
@@ -47,7 +47,7 @@ class DatabaseAdapter {
      Get all payments from database
      - Parameter request: NSFetchRequest that is used to fetch data from database
      */
-    private func loadPayments(with request: NSFetchRequest<Payments> = Payments.fetchRequest()) -> [Payments] {
+    private func loadPayments(with request: NSFetchRequest<Payment> = Payment.fetchRequest()) -> [Payment] {
         do {
             return try context.fetch(request)
         } catch {
@@ -64,8 +64,8 @@ class DatabaseAdapter {
      - Parameter name: Place's name that is used to filter and fetch data
                        from database
      */
-    func fetchData(forName name: String, by sort: SortBy, and paymentStatus: PaymentStatusSort) -> [Payments]{
-        let request: NSFetchRequest<Payments> = Payments.fetchRequest()
+    func fetchData(forName name: String, by sort: SortBy, and paymentStatus: PaymentStatusSort) -> [Payment]{
+        let request: NSFetchRequest<Payment> = Payment.fetchRequest()
         
         if (name != "") {
             //[cd] is to make it non-casesensitive and non-diacritic
@@ -83,7 +83,7 @@ class DatabaseAdapter {
             
             
             let compareSelector = #selector(NSString.localizedStandardCompare(_:))
-            let sd = NSSortDescriptor(key: #keyPath(Payments.place), ascending: true, selector: compareSelector)
+            let sd = NSSortDescriptor(key: #keyPath(Payment.place), ascending: true, selector: compareSelector)
             request.sortDescriptors = [sd]
             
             return loadPayments(with: request)
@@ -100,8 +100,8 @@ class DatabaseAdapter {
      Fetch sorted data from database
      - Parameter type: by what parameter should the data be sorted
      */
-    func fetchSortedData(by sort: SortBy, and paymentStatus: PaymentStatusSort) -> [Payments] {
-        let request: NSFetchRequest<Payments> = Payments.fetchRequest()
+    func fetchSortedData(by sort: SortBy, and paymentStatus: PaymentStatusSort) -> [Payment] {
+        let request: NSFetchRequest<Payment> = Payment.fetchRequest()
         
         // Set predicate for fetch request
         if let predicate = paymentStatus.getPredicate() {
@@ -121,9 +121,9 @@ class DatabaseAdapter {
      Fetches data from the array of UIDs of the payments
      - Parameter uidArray: Array of UIDs
      */
-    func fetchData(containsUIDs uidArray: [UUID]) -> [Payments] {
-        let request: NSFetchRequest<Payments> = Payments.fetchRequest()
-        request.predicate = NSPredicate(format: "%K IN %@", #keyPath(Payments.uid), uidArray)
+    func fetchData(containsUIDs uidArray: [UUID]) -> [Payment] {
+        let request: NSFetchRequest<Payment> = Payment.fetchRequest()
+        request.predicate = NSPredicate(format: "%K IN %@", #keyPath(Payment.uid), uidArray)
         
         return loadPayments(with: request)
     }
@@ -140,7 +140,7 @@ class DatabaseAdapter {
     func add (payment: PaymentInformation) -> PaymentTotalInfo{
         let totalBefore = getTotalAmount(of: .Pending)
         
-        let newPayment = Payments(context: context)
+        let newPayment = Payment(context: context)
         newPayment.uid = UUID()
         newPayment.amountPaid = payment.amountPaid
         newPayment.place = payment.place
@@ -164,7 +164,7 @@ class DatabaseAdapter {
      - Parameter payment: Payment from the database to be updated
      - Parameter paymentInfo: Tuple used to update the payment information
      */
-    func update(payment: Payments, with paymentInfo: PaymentInformation) -> PaymentTotalInfo {
+    func update(payment: Payment, with paymentInfo: PaymentInformation) -> PaymentTotalInfo {
         let totalBefore = getTotalAmount(of: .Pending)
         
         payment.receiptPhoto?.imageData = paymentInfo.receiptImage.jpegData(compressionQuality: settings.compression)
@@ -187,7 +187,7 @@ class DatabaseAdapter {
                             AmountPaid -> Float; Place -> String; ReceiptPhoto -> Data;
                             PaymentReceived -> Bool
      */
-    func updateDetail(for payment: Payments, detailType: PaymentDetail, with newDetail: Any) {
+    func updateDetail(for payment: Payment, detailType: PaymentDetail, with newDetail: Any) {
         switch detailType {
         case .AmountPaid:
             payment.amountPaid = newDetail as! Float
@@ -233,7 +233,7 @@ class DatabaseAdapter {
         let sumExpressionDescr = NSExpressionDescription()
         sumExpressionDescr.name = dictSumName
         
-        let amountSumExp = NSExpression(forKeyPath: #keyPath(Payments.amountPaid))
+        let amountSumExp = NSExpression(forKeyPath: #keyPath(Payment.amountPaid))
         sumExpressionDescr.expression = NSExpression(forFunction: "sum:", arguments: [amountSumExp])
         sumExpressionDescr.expressionResultType = .floatAttributeType
         

@@ -10,6 +10,8 @@ import UIKit
 
 class ImageViewerCell: UICollectionViewCell {
     
+    var imageGestures = ImageGestures()
+    
     var picture: UIImage? {
         didSet {
             guard let picture = picture else { return }
@@ -24,6 +26,7 @@ class ImageViewerCell: UICollectionViewCell {
         image.contentMode = .scaleAspectFit
         image.clipsToBounds = true
         image.layer.cornerRadius = 0
+        image.isUserInteractionEnabled = true
         return image
     }()
     
@@ -33,6 +36,9 @@ class ImageViewerCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
+        imageView.addGestureRecognizer(imageGestures.createPinchGesture()) //Pinch Gesture
+        imageView.addGestureRecognizer(imageGestures.createPanGesture()) //Pan Gesture
         
         contentView.addSubview(imageView)
         imageView.translatesAutoresizingMaskIntoConstraints = false

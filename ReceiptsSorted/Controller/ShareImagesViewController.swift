@@ -13,7 +13,7 @@ private let cellReuseIdentifier = "Cell"
 
 class ShareImagesViewController: UIViewController {
 
-    var passedPayments: [Payments]!
+    var passedPayments: [Payment]!
     private var paymentsCount: Int = 1
     private let zipAdapter = ZipAdapter()
     

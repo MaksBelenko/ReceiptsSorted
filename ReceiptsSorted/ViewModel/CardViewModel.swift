@@ -12,7 +12,7 @@ class CardViewModel {
     
     var tableRowsHeight: CGFloat = 60
     
-    var fetchedPayments: [Payments] = []
+    var fetchedPayments: [Payment] = []
     var cardTableSections: [PaymentTableSection] = []
     var paymentUpdateIndex = (section: 0, row: 0)
     
@@ -72,14 +72,14 @@ class CardViewModel {
     /**
      Fetches payments from database that returns selected earlier payments from UIDs
      */
-    func getSelectedPayments() -> [Payments] {
+    func getSelectedPayments() -> [Payment] {
         return database.fetchData(containsUIDs: selectedPaymentsUIDs)
     }
     
     /**
      Gets payment for indexPath
      */
-    func getPayment(indexPath: IndexPath) -> Payments {
+    func getPayment(indexPath: IndexPath) -> Payment {
         return cardTableSections[indexPath.section].payments[indexPath.row]
     }
     

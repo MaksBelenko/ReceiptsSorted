@@ -9,7 +9,7 @@
 import Foundation
 
 struct PaymentTotalInfo {
-    var payment: Payments
+    var payment: Payment
     var totalBefore: Float
     var totalAfter: Float
 }

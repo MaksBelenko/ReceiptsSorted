@@ -11,7 +11,7 @@ import PDFKit
 
 class PDFPreviewViewController: UIViewController {
     
-    var passedPayments: [Payments]!
+    var passedPayments: [Payment]!
     
     @IBOutlet weak var topNavigationBar: UINavigationBar!
     @IBOutlet weak var previewView: UIView!

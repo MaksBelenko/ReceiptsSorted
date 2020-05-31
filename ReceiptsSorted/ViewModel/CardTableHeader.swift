@@ -24,7 +24,7 @@ class CardTableHeader {
                             then sections will capital letters of the places; if sorted by
                             "Date" then sections will be name of Months)
      */
-    func getSections(for payments: [Payments], sortedBy sortMethod: SortBy) -> [PaymentTableSection] {
+    func getSections(for payments: [Payment], sortedBy sortMethod: SortBy) -> [PaymentTableSection] {
         if (sortMethod == .Place) {
             sections = getSectionsSortedByPlace(for: payments)
         } else {
@@ -87,7 +87,7 @@ class CardTableHeader {
      Creates an array of PaymentTableSection sorted by place from "A" to "Z"
      - Parameter payments: Payments that are to be sorted
      */
-    private func getSectionsSortedByPlace(for payments: [Payments]) -> [PaymentTableSection] {
+    private func getSectionsSortedByPlace(for payments: [Payment]) -> [PaymentTableSection] {
            let groupedDictionary = Dictionary(grouping: payments, by: { (String($0.place!.prefix(1))).uppercased() })
            let keys = groupedDictionary.keys.sorted()
            return keys.map{ PaymentTableSection(key: $0, payments: groupedDictionary[$0]!) }
@@ -100,9 +100,9 @@ class CardTableHeader {
      - Parameter payments: Payments that are to be sorted
      - Parameter sortedBy: Sorting method (only Newest and Oldest date are used)
      */
-    private func getSectionsSortedByDate(for payments: [Payments], sortedBy: SortBy) -> [PaymentTableSection] {
+    private func getSectionsSortedByDate(for payments: [Payment], sortedBy: SortBy) -> [PaymentTableSection] {
         let calendar = Calendar.current
-        var tupleArray: [(month: Int, year: Int, payments: [Payments])] = []
+        var tupleArray: [(month: Int, year: Int, payments: [Payment])] = []
 
         //Creating a dictionary with "Year" to be a key
         let yearGroupedPayments = Dictionary(grouping: payments, by: { calendar.component(.year, from: $0.date!) })

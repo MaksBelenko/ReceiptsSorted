@@ -16,7 +16,7 @@ class Alert {
     
     // MARK: - Email button alerts
     
-    func showFileFormatAlert(for controller: UIViewController, withPayments payments: [Payments]) {
+    func showFileFormatAlert(for controller: UIViewController, withPayments payments: [Payment]) {
         let optionMenu = UIAlertController(title: "Send receipts as:", message: nil , preferredStyle: .actionSheet)
 
         let pdfAction = UIAlertAction(title: "PDF (Table & photos)", style: .default, handler: { alert in
@@ -88,7 +88,7 @@ class Alert {
     
     // MARK: - Card Alerts
     
-    func removePaymentAlert(for controller: UIViewController, payment: Payments, indexPath: IndexPath) {
+    func removePaymentAlert(for controller: UIViewController, payment: Payment, indexPath: IndexPath) {
         Vibration.light.vibrate()
         
         let optionMenu = UIAlertController(title: "Are you sure you want to delete the payment?", message: nil , preferredStyle: .actionSheet)
