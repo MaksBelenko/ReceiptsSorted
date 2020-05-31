@@ -78,6 +78,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIViewCo
             let totalAmount = cardViewController.cardViewModel.database.getTotalAmount(of: .Pending)
             topGraphicsView.amountAnimation.animateCircle(to: totalAmount)
         }
+        
+        presentOnboardingIfNeeded()
     }
     
     
@@ -87,6 +89,21 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIViewCo
     }
     
 
+    // MARK: - Onboarding
+    
+    private func presentOnboardingIfNeeded() {
+        let onboardingVC = OnboardingViewController()
+        
+        var segmentedViewFrame = cardViewController.SortSegmentedControl.frame
+        segmentedViewFrame.origin.y += cardStartPointY
+        onboardingVC.elementsRect.append(segmentedViewFrame)
+        
+        onboardingVC.elementsRect.append(buttonView.frame)
+        
+        onboardingVC.modalPresentationStyle = .overFullScreen
+        present(onboardingVC, animated: true)
+    }
+    
     
     //MARK: - Setup Button
     func setupAddButton(withSize buttonSize: CGFloat) {

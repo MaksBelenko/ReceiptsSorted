@@ -67,6 +67,8 @@
 		B5D70A6B245338530080BF81 /* TopGraphicsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D70A6A245338530080BF81 /* TopGraphicsView.swift */; };
 		B5D70A6D24534DCA0080BF81 /* AddButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D70A6C24534DCA0080BF81 /* AddButtonView.swift */; };
 		B5DB922323BE929F0081E8D7 /* PaymentsData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B5DB922123BE929F0081E8D7 /* PaymentsData.xcdatamodeld */; };
+		B5DFF55724842629003CEDA3 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5DFF55624842629003CEDA3 /* OnboardingViewController.swift */; };
+		B5DFF55C24843B02003CEDA3 /* ShowElementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5DFF55B24843B02003CEDA3 /* ShowElementView.swift */; };
 		B5E3C3782445403B00AD59AC /* ImageGestures.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E3C3772445403B00AD59AC /* ImageGestures.swift */; };
 		B5E5E5C923C106E7006A14EE /* DatabaseAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E5E5C823C106E7006A14EE /* DatabaseAdapter.swift */; };
 		B5F54E85241E783C0016DCED /* UIViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F54E84241E783C0016DCED /* UIViewExtensions.swift */; };
@@ -145,6 +147,8 @@
 		B5D70A6A245338530080BF81 /* TopGraphicsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopGraphicsView.swift; sourceTree = "<group>"; };
 		B5D70A6C24534DCA0080BF81 /* AddButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddButtonView.swift; sourceTree = "<group>"; };
 		B5DB922223BE929F0081E8D7 /* PaymentsData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = PaymentsData.xcdatamodel; sourceTree = "<group>"; };
+		B5DFF55624842629003CEDA3 /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
+		B5DFF55B24843B02003CEDA3 /* ShowElementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowElementView.swift; sourceTree = "<group>"; };
 		B5E3C3772445403B00AD59AC /* ImageGestures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageGestures.swift; sourceTree = "<group>"; };
 		B5E5E5C823C106E7006A14EE /* DatabaseAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseAdapter.swift; sourceTree = "<group>"; };
 		B5F54E84241E783C0016DCED /* UIViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtensions.swift; sourceTree = "<group>"; };
@@ -352,6 +356,7 @@
 				B5035568245792F3000C09DC /* Storyboards+XIB */,
 				B516804D244634360057DF7C /* Cells */,
 				B53F42DB245DEC72006F4D02 /* ViewControllerViews */,
+				B5DFF55B24843B02003CEDA3 /* ShowElementView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -368,6 +373,7 @@
 				B516CF12243BF1F0003D09E1 /* PDFPreviewViewController.swift */,
 				B5C42C2B246C8E9900238F68 /* ShareImagesViewController.swift */,
 				B566605124311384003DD15B /* Cells */,
+				B5DFF55624842629003CEDA3 /* OnboardingViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -560,6 +566,7 @@
 				B593962F2483D50600B1E895 /* Payment+CoreDataProperties.swift in Sources */,
 				B564470B241027EB00B08AD3 /* AddButtonAnimations.swift in Sources */,
 				B554F963247718BA007C486A /* CardViewModel.swift in Sources */,
+				B5DFF55724842629003CEDA3 /* OnboardingViewController.swift in Sources */,
 				B58CC90A246DACE1006FEF00 /* ImageViewerCell.swift in Sources */,
 				B550E150245B2F0F000294B1 /* SortEnums+Ext.swift in Sources */,
 				B573FA9A23B81EC8005473D2 /* PaymentViewController.swift in Sources */,
@@ -588,6 +595,7 @@
 				B5C42C2C246C8E9900238F68 /* ShareImagesViewController.swift in Sources */,
 				B546A7A62471F77C00FB551D /* UIImageExtensions.swift in Sources */,
 				B593962D2483D50600B1E895 /* ReceiptPhoto+CoreDataClass.swift in Sources */,
+				B5DFF55C24843B02003CEDA3 /* ShowElementView.swift in Sources */,
 				B5F54E85241E783C0016DCED /* UIViewExtensions.swift in Sources */,
 				B526B4E2241B09A10031F629 /* Observable.swift in Sources */,
 				B50BAADD242BB8E000EAFECA /* SettingsViewController.swift in Sources */,
