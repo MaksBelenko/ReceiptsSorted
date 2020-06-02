@@ -52,7 +52,7 @@ class ShareImagesViewController: UIViewController {
     private let imageCountLabel: UILabel = {
         let label = UILabel()
         label.text = "1/0"
-        label.font = UIFont(name: "Arial", size: 16)!
+        label.font = UIFont.arial(ofSize: 16)
         label.tintColor = .black
         return label
     }()

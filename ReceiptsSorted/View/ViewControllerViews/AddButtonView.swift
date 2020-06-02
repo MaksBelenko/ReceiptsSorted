@@ -38,7 +38,7 @@ class AddButtonView: UIView {
         addButton.setTitleColor(.white, for: .normal)
 //        addButton.addTarget(target, action: action, for: UIControl.Event.touchUpInside)
         addButton.layer.applyShadow(color: .flatOrange, alpha: 0.5, x: 1, y: 2, blur: 4)
-        addButton.layer.cornerRadius = 18
+        addButton.layer.cornerRadius = 16
         addButton.layer.transform = CATransform3DMakeRotation(0, 1, 0, 0)
         buttonAnimations.startAnimatingPressActions(for: addButton)
     }

@@ -79,7 +79,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIViewCo
             topGraphicsView.amountAnimation.animateCircle(to: totalAmount)
         }
         
-        presentOnboardingIfNeeded()
+        presentOnboardingIfNeeded(animated: false)
     }
     
     
@@ -91,17 +91,31 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIViewCo
 
     // MARK: - Onboarding
     
-    private func presentOnboardingIfNeeded() {
+    private func presentOnboardingIfNeeded(animated: Bool) {
         let onboardingVC = OnboardingViewController()
+        var onboardTexts = OnboardingText() // texts
         
         var segmentedViewFrame = cardViewController.SortSegmentedControl.frame
         segmentedViewFrame.origin.y += cardStartPointY
-        onboardingVC.elementsRect.append(segmentedViewFrame)
         
-        onboardingVC.elementsRect.append(buttonView.frame)
+        let indicatorsYOffset = emailButton.frame.origin.y + emailButton.frame.height
+        let indicatorsHeight = buttonView.frame.origin.y - indicatorsYOffset
+        let indicatorsFrame = CGRect(origin: CGPoint(x: 0, y: indicatorsYOffset), size: CGSize(width: view.frame.width, height: indicatorsHeight))
+        
+        onboardingVC.add(info: OnboardingInfo(showRect: segmentedViewFrame,
+                                              text: onboardTexts.segmentedControlText))
+        
+        onboardingVC.add(info: OnboardingInfo(showRect: buttonView.frame,
+                                              text: onboardTexts.addReceiptsText))
+        
+        onboardingVC.add(info: OnboardingInfo(showRect: emailButton.frame,
+                                              text: onboardTexts.sendReceiptsText))
+        
+        onboardingVC.add(info: OnboardingInfo(showRect: indicatorsFrame,
+                                              text: onboardTexts.indicatorsText))
         
         onboardingVC.modalPresentationStyle = .overFullScreen
-        present(onboardingVC, animated: true)
+        present(onboardingVC, animated: animated)
     }
     
     

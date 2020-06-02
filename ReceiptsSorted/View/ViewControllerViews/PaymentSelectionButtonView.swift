@@ -17,7 +17,7 @@ class PaymentSelectionButtonView: UIButton {
         
         self.backgroundColor = UIColor.flatOrange //orange Flat UI
         self.setTitle(text, for: .normal)
-        self.titleLabel?.font = UIFont(name: "Arial", size: 16) ?? UIFont.systemFont(ofSize: 16)
+        self.titleLabel?.font = UIFont.arial(ofSize: 16)
         self.titleLabel?.textAlignment = .center
         self.setTitleColor(.white, for: .normal)
         self.addTarget(target, action: action, for: UIControl.Event.touchUpInside)

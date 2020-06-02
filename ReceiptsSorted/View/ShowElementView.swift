@@ -8,11 +8,13 @@
 
 import UIKit
 
-class ShowElementView: UIView {
-
-//    var showArea: CGRect!
-    var borderWidth: CGFloat!
+class ShowElementView: UIView, IPresentationView {
+    
+    weak var delegate: OnboardingButtonProtocol?
+    
     var shapeView: UIView!
+    private var borderWidth: CGFloat!
+    private let buttonAnimations = AddButtonAnimations()
     
     private let infoLabel: UILabel = {
         let label = UILabel()
@@ -21,13 +23,36 @@ class ShowElementView: UIView {
     }()
     
     
+    let nextButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Next →", for: .normal)
+        button.titleLabel?.font = UIFont.arialBold(ofSize: 19)
+        button.backgroundColor = .flatOrange
+        button.layer.cornerRadius = 10
+        button.layer.applyShadow(color: .flatOrange, alpha: 0.5, x: 1, y: 4, blur: 6)
+        return button
+    }()
+    
+    private let backButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Back", for: .normal)
+        button.titleLabel?.font = UIFont.arial(ofSize: 19)
+        return button
+    }()
+
+    
+    
     // MARK: - Initialisation
-    init(showArea: CGRect, /*text: NSMutableAttributedString,*/ frame: CGRect) {
+    init(showArea: CGRect, text: NSMutableAttributedString, frame: CGRect) {
         super.init(frame: frame)
         
-        borderWidth = frame.height
+        self.clipsToBounds = true
+        
+        borderWidth = frame.height*2
         createView(showArea: showArea)
-        createText()
+        createText(text: text, showArea: showArea)
+        setupNextButton()
+        setupBackButton()
     }
     
     required init?(coder: NSCoder) {
@@ -42,44 +67,58 @@ class ShowElementView: UIView {
         shapeView.frame = shapeView.frame.insetBy(dx: -borderWidth, dy: -borderWidth);
         shapeView.backgroundColor = .clear
         shapeView.layer.borderWidth = borderWidth
-        shapeView.layer.cornerRadius = borderWidth + showArea.height/4
-        shapeView.layer.borderColor = UIColor.wetAsphalt.withAlphaComponent(0.75).cgColor
+        shapeView.layer.cornerRadius = borderWidth + showArea.height/4 + 2
+        shapeView.layer.borderColor = UIColor.wetAsphalt.withAlphaComponent(0.8).cgColor
         
         self.addSubview(shapeView)
-//        layoutIfNeeded()
     }
     
-    private func createText() {
-        var attrText = setupLabel(inBold: "Pending", text: "tab shows payments which were paid by you but the company has not paid you back yet.")
-        let attrText2 = setupLabel(inBold: "\n\nReceived", text: "tab shows the received from the company payments.")
-        attrText.append(attrText2)
-        infoLabel.attributedText = attrText
-        
+    private func createText(text: NSAttributedString, showArea: CGRect) {
+        infoLabel.attributedText = text
         
         self.addSubview(infoLabel)
         infoLabel.translatesAutoresizingMaskIntoConstraints = false
-        infoLabel.topAnchor.constraint(equalTo: shapeView.centerYAnchor, constant: 50).isActive = true
+        infoLabel.topAnchor.constraint(equalTo: shapeView.centerYAnchor, constant: showArea.size.height/2 + 30).isActive = true
         infoLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
         infoLabel.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.8).isActive = true
 
     }
     
+    private func setupNextButton() {
+        self.addSubview(nextButton)
+        nextButton.translatesAutoresizingMaskIntoConstraints = false
+        nextButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -30).isActive = true
+        nextButton.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -20).isActive = true
+        nextButton.widthAnchor.constraint(equalToConstant: 90).isActive = true
+        nextButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        
+        nextButton.addTarget(self, action: #selector(nextButtonPressed), for: .touchUpInside)
+        buttonAnimations.startAnimatingPressActions(for: nextButton)
+    }
+    
+    private func setupBackButton() {
+        self.addSubview(backButton)
+        backButton.translatesAutoresizingMaskIntoConstraints = false
+        backButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20).isActive = true
+        backButton.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -20).isActive = true
+        backButton.widthAnchor.constraint(equalToConstant: 90).isActive = true
+        backButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        
+        backButton.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
+        buttonAnimations.startAnimatingPressActions(for: backButton)
+    }
+    
+    @objc private func nextButtonPressed() {
+        delegate?.showNextPage()
+    }
+    
+    @objc private func backButtonPressed() {
+        delegate?.showPreviousPage()
+    }
+    
     
     
     // MARK: - Helpers
-    private func setupLabel(inBold boldText: String, text: String) -> NSMutableAttributedString {
-        let attributedTitle = NSMutableAttributedString(string: "\(boldText) ",attributes:
-                                [NSAttributedString.Key.font : UIFont(name: "Arial-BoldMT", size: 18) ?? UIFont.boldSystemFont(ofSize: 19),
-                                 NSAttributedString.Key.foregroundColor : UIColor.white])
-        
-        attributedTitle.append(NSAttributedString(string: text, attributes:
-                                [NSAttributedString.Key.font : UIFont(name: "Arial", size: 18) ?? UIFont.systemFont(ofSize: 19),
-                                 NSAttributedString.Key.foregroundColor : UIColor.white]))
-        
-        return attributedTitle
-//        setAttributedTitle(attributedTitle, for: .normal)
-    }
-    
     
     
     private func createBeatingBorder(showArea: CGRect) {

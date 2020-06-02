@@ -86,7 +86,7 @@ class TopGraphicsShapes {
         let currencyLabel = UILabel()
         currencyLabel.text = "£"
         currencyLabel.textColor = .flatOrange
-        currencyLabel.font = UIFont(name: "Arial", size: 46)
+        currencyLabel.font = UIFont.arial(ofSize: 46)
         currencyLabel.textAlignment = .center
         currencyLabel.frame.size.height = 50
         currencyLabel.frame.size.width = 50
@@ -103,7 +103,7 @@ class TopGraphicsShapes {
         let label = UILabel()
         label.text = text
         label.textColor = UIColor(rgb: 0xC6CACE)
-        label.font = UIFont(name: "Arial", size: 25)
+        label.font = UIFont.arial(ofSize: 25)
         label.textAlignment = textAlignment
 
         return label

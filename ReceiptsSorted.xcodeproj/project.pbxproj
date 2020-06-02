@@ -62,6 +62,8 @@
 		B5AD17E32404757300BB3069 /* CardGesturesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5AD17E22404757300BB3069 /* CardGesturesViewModel.swift */; };
 		B5B6758023CF70F400291D31 /* TextRecogniser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B6757F23CF70F400291D31 /* TextRecogniser.swift */; };
 		B5B6758223CF724000291D31 /* ImageManipulator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B6758123CF724000291D31 /* ImageManipulator.swift */; };
+		B5BA07662485A4FE00097E2C /* UIFontExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5BA07652485A4FE00097E2C /* UIFontExtensions.swift */; };
+		B5BA07682486E81900097E2C /* OnboardingText.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5BA07672486E81800097E2C /* OnboardingText.swift */; };
 		B5C42C2C246C8E9900238F68 /* ShareImagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C42C2B246C8E9900238F68 /* ShareImagesViewController.swift */; };
 		B5CCE49B2403195200CA0CB5 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CCE49A2403195200CA0CB5 /* Settings.swift */; };
 		B5D70A6B245338530080BF81 /* TopGraphicsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D70A6A245338530080BF81 /* TopGraphicsView.swift */; };
@@ -71,6 +73,9 @@
 		B5DFF55C24843B02003CEDA3 /* ShowElementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5DFF55B24843B02003CEDA3 /* ShowElementView.swift */; };
 		B5E3C3782445403B00AD59AC /* ImageGestures.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E3C3772445403B00AD59AC /* ImageGestures.swift */; };
 		B5E5E5C923C106E7006A14EE /* DatabaseAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E5E5C823C106E7006A14EE /* DatabaseAdapter.swift */; };
+		B5ED9A3A248595BC00FA7A7B /* OnboardingInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5ED9A39248595BC00FA7A7B /* OnboardingInfo.swift */; };
+		B5ED9A3C2485A10300FA7A7B /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5ED9A3B2485A10300FA7A7B /* WelcomeView.swift */; };
+		B5ED9A3E2485A21300FA7A7B /* TextHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5ED9A3D2485A21300FA7A7B /* TextHelper.swift */; };
 		B5F54E85241E783C0016DCED /* UIViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F54E84241E783C0016DCED /* UIViewExtensions.swift */; };
 		B5F54E87241E78750016DCED /* UIColorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F54E86241E78750016DCED /* UIColorExtensions.swift */; };
 		B5F54E89241E789D0016DCED /* CALayerExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F54E88241E789D0016DCED /* CALayerExtensions.swift */; };
@@ -142,6 +147,8 @@
 		B5AD17E22404757300BB3069 /* CardGesturesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardGesturesViewModel.swift; sourceTree = "<group>"; };
 		B5B6757F23CF70F400291D31 /* TextRecogniser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextRecogniser.swift; sourceTree = "<group>"; };
 		B5B6758123CF724000291D31 /* ImageManipulator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageManipulator.swift; sourceTree = "<group>"; };
+		B5BA07652485A4FE00097E2C /* UIFontExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFontExtensions.swift; sourceTree = "<group>"; };
+		B5BA07672486E81800097E2C /* OnboardingText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingText.swift; sourceTree = "<group>"; };
 		B5C42C2B246C8E9900238F68 /* ShareImagesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareImagesViewController.swift; sourceTree = "<group>"; };
 		B5CCE49A2403195200CA0CB5 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		B5D70A6A245338530080BF81 /* TopGraphicsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopGraphicsView.swift; sourceTree = "<group>"; };
@@ -151,6 +158,9 @@
 		B5DFF55B24843B02003CEDA3 /* ShowElementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowElementView.swift; sourceTree = "<group>"; };
 		B5E3C3772445403B00AD59AC /* ImageGestures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageGestures.swift; sourceTree = "<group>"; };
 		B5E5E5C823C106E7006A14EE /* DatabaseAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseAdapter.swift; sourceTree = "<group>"; };
+		B5ED9A39248595BC00FA7A7B /* OnboardingInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingInfo.swift; sourceTree = "<group>"; };
+		B5ED9A3B2485A10300FA7A7B /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
+		B5ED9A3D2485A21300FA7A7B /* TextHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextHelper.swift; sourceTree = "<group>"; };
 		B5F54E84241E783C0016DCED /* UIViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtensions.swift; sourceTree = "<group>"; };
 		B5F54E86241E78750016DCED /* UIColorExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtensions.swift; sourceTree = "<group>"; };
 		B5F54E88241E789D0016DCED /* CALayerExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CALayerExtensions.swift; sourceTree = "<group>"; };
@@ -239,6 +249,7 @@
 				B561B390243BFBBA00F7B29B /* SimpleShapes.swift */,
 				B550E14E245B230E000294B1 /* Enums */,
 				B535A1BF244BC320005585F0 /* Log.swift */,
+				B5ED9A3D2485A21300FA7A7B /* TextHelper.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -345,6 +356,8 @@
 				B517DD5E246B394B004B3B2C /* PaymentTotalInfo.swift */,
 				B566604D242FA955003DD15B /* PaymentTableSection.swift */,
 				B5CCE49A2403195200CA0CB5 /* Settings.swift */,
+				B5ED9A39248595BC00FA7A7B /* OnboardingInfo.swift */,
+				B5BA07672486E81800097E2C /* OnboardingText.swift */,
 				B5AD17E4240482CA00BB3069 /* Database */,
 			);
 			path = Model;
@@ -357,6 +370,7 @@
 				B516804D244634360057DF7C /* Cells */,
 				B53F42DB245DEC72006F4D02 /* ViewControllerViews */,
 				B5DFF55B24843B02003CEDA3 /* ShowElementView.swift */,
+				B5ED9A3B2485A10300FA7A7B /* WelcomeView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -418,6 +432,7 @@
 				B57ECC562454A6BA003E9598 /* UITextFieldExtensions.swift */,
 				B5217ECD246C870B00CC31AB /* FileManagerExtensions.swift */,
 				B546A7A52471F77C00FB551D /* UIImageExtensions.swift */,
+				B5BA07652485A4FE00097E2C /* UIFontExtensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -556,8 +571,10 @@
 				B573FAAE23BA815F005473D2 /* CameraSession.swift in Sources */,
 				B5F54E89241E789D0016DCED /* CALayerExtensions.swift in Sources */,
 				B57419BE245F1BAB001228A1 /* DetailsViewController.swift in Sources */,
+				B5ED9A3E2485A21300FA7A7B /* TextHelper.swift in Sources */,
 				B5377C0023A82E280010B144 /* AppDelegate.swift in Sources */,
 				B57ECC572454A6BA003E9598 /* UITextFieldExtensions.swift in Sources */,
+				B5BA07662485A4FE00097E2C /* UIFontExtensions.swift in Sources */,
 				B59E3E2323B44DE80017D474 /* CardViewController.swift in Sources */,
 				B566604E242FA955003DD15B /* PaymentTableSection.swift in Sources */,
 				B59E3E2C23B53FEF0017D474 /* Enums.swift in Sources */,
@@ -567,6 +584,8 @@
 				B564470B241027EB00B08AD3 /* AddButtonAnimations.swift in Sources */,
 				B554F963247718BA007C486A /* CardViewModel.swift in Sources */,
 				B5DFF55724842629003CEDA3 /* OnboardingViewController.swift in Sources */,
+				B5BA07682486E81900097E2C /* OnboardingText.swift in Sources */,
+				B5ED9A3A248595BC00FA7A7B /* OnboardingInfo.swift in Sources */,
 				B58CC90A246DACE1006FEF00 /* ImageViewerCell.swift in Sources */,
 				B550E150245B2F0F000294B1 /* SortEnums+Ext.swift in Sources */,
 				B573FA9A23B81EC8005473D2 /* PaymentViewController.swift in Sources */,
@@ -601,6 +620,7 @@
 				B50BAADD242BB8E000EAFECA /* SettingsViewController.swift in Sources */,
 				B5E3C3782445403B00AD59AC /* ImageGestures.swift in Sources */,
 				B57145182474100800E0720C /* Navigation.swift in Sources */,
+				B5ED9A3C2485A10300FA7A7B /* WelcomeView.swift in Sources */,
 				B5AD17E32404757300BB3069 /* CardGesturesViewModel.swift in Sources */,
 				B548CE0D246469C200342613 /* VibrationEnum.swift in Sources */,
 				B5FD65FB242EC9C7002C5C48 /* CardTableHeader.swift in Sources */,

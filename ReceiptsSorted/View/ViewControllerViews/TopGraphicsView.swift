@@ -107,7 +107,7 @@ class TopGraphicsView: UIView {
                                                   height: 17))
         daysLeftLabel.text = "1 out of 7 days left"
         daysLeftLabel.textColor = UIColor(rgb: 0xC6CACE)
-        daysLeftLabel.font = UIFont(name: "Arial", size: 15)
+        daysLeftLabel.font = UIFont.arial(ofSize: 15)
         daysLeftLabel.textAlignment = .center
         
         addSubview(daysLeftLabel)
