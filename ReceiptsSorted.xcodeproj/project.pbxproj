@@ -64,6 +64,7 @@
 		B5B6758223CF724000291D31 /* ImageManipulator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B6758123CF724000291D31 /* ImageManipulator.swift */; };
 		B5BA07662485A4FE00097E2C /* UIFontExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5BA07652485A4FE00097E2C /* UIFontExtensions.swift */; };
 		B5BA07682486E81900097E2C /* OnboardingText.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5BA07672486E81800097E2C /* OnboardingText.swift */; };
+		B5BA5F482489130500AC026A /* UserChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5BA5F472489130500AC026A /* UserChecker.swift */; };
 		B5C42C2C246C8E9900238F68 /* ShareImagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C42C2B246C8E9900238F68 /* ShareImagesViewController.swift */; };
 		B5CCE49B2403195200CA0CB5 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CCE49A2403195200CA0CB5 /* Settings.swift */; };
 		B5D70A6B245338530080BF81 /* TopGraphicsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D70A6A245338530080BF81 /* TopGraphicsView.swift */; };
@@ -149,6 +150,7 @@
 		B5B6758123CF724000291D31 /* ImageManipulator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageManipulator.swift; sourceTree = "<group>"; };
 		B5BA07652485A4FE00097E2C /* UIFontExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFontExtensions.swift; sourceTree = "<group>"; };
 		B5BA07672486E81800097E2C /* OnboardingText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingText.swift; sourceTree = "<group>"; };
+		B5BA5F472489130500AC026A /* UserChecker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserChecker.swift; sourceTree = "<group>"; };
 		B5C42C2B246C8E9900238F68 /* ShareImagesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareImagesViewController.swift; sourceTree = "<group>"; };
 		B5CCE49A2403195200CA0CB5 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		B5D70A6A245338530080BF81 /* TopGraphicsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopGraphicsView.swift; sourceTree = "<group>"; };
@@ -250,6 +252,7 @@
 				B550E14E245B230E000294B1 /* Enums */,
 				B535A1BF244BC320005585F0 /* Log.swift */,
 				B5ED9A3D2485A21300FA7A7B /* TextHelper.swift */,
+				B5BA5F472489130500AC026A /* UserChecker.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -369,8 +372,7 @@
 				B5035568245792F3000C09DC /* Storyboards+XIB */,
 				B516804D244634360057DF7C /* Cells */,
 				B53F42DB245DEC72006F4D02 /* ViewControllerViews */,
-				B5DFF55B24843B02003CEDA3 /* ShowElementView.swift */,
-				B5ED9A3B2485A10300FA7A7B /* WelcomeView.swift */,
+				B5B9E88D248903C6007743F4 /* OnboardingViews */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -416,6 +418,15 @@
 				B59396282483D50500B1E895 /* ReceiptPhoto+CoreDataProperties.swift */,
 			);
 			path = Database;
+			sourceTree = "<group>";
+		};
+		B5B9E88D248903C6007743F4 /* OnboardingViews */ = {
+			isa = PBXGroup;
+			children = (
+				B5DFF55B24843B02003CEDA3 /* ShowElementView.swift */,
+				B5ED9A3B2485A10300FA7A7B /* WelcomeView.swift */,
+			);
+			path = OnboardingViews;
 			sourceTree = "<group>";
 		};
 		B5F54E83241E78220016DCED /* Extensions */ = {
@@ -573,6 +584,7 @@
 				B57419BE245F1BAB001228A1 /* DetailsViewController.swift in Sources */,
 				B5ED9A3E2485A21300FA7A7B /* TextHelper.swift in Sources */,
 				B5377C0023A82E280010B144 /* AppDelegate.swift in Sources */,
+				B5BA5F482489130500AC026A /* UserChecker.swift in Sources */,
 				B57ECC572454A6BA003E9598 /* UITextFieldExtensions.swift in Sources */,
 				B5BA07662485A4FE00097E2C /* UIFontExtensions.swift in Sources */,
 				B59E3E2323B44DE80017D474 /* CardViewController.swift in Sources */,

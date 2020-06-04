@@ -13,7 +13,7 @@ private let cellReuseIdentifier = "Cell"
 
 class ShareImagesViewController: UIViewController {
 
-    var passedPayments: [Payment]!
+    var passedPayments: [Payment] = []
     private var paymentsCount: Int = 1
     private let zipAdapter = ZipAdapter()
     
@@ -25,7 +25,7 @@ class ShareImagesViewController: UIViewController {
     
     private let directoryName = "Receipts"
     private var zipURL: URL!
-    var photosURLs = [URL]()
+    private var photosURLs = [URL]()
     
     private lazy var cancelBarButton: UIBarButtonItem = {
         guard let closeImage = UIImage(systemName: "xmark") else { return UIBarButtonItem() }
@@ -71,10 +71,10 @@ class ShareImagesViewController: UIViewController {
         setupCollectionView()
         setupLCountLabel()
         
-        DispatchQueue.global(qos: .utility).async {
-            let directoryPath = self.createDirectory()
-            self.addPhotosToDirectory(withPath: directoryPath)
-            self.zipURL = self.zipDirectory(withPath: directoryPath)
+        DispatchQueue.global(qos: .utility).async { [weak self] in
+            guard let directoryPath = self?.createDirectory() else { return }
+            self?.addPhotosToDirectory(withPath: directoryPath)
+            self?.zipURL = self?.zipDirectory(withPath: directoryPath)
         }
     }
 

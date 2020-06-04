@@ -22,16 +22,17 @@ class SwipeActionsViewModel {
         
         let checkAction:UIContextualAction?
         
-        let deleteAction = createContextualAction(title: "Remove", colour: .lightRed, indexPath: indexPath) { (indexPath) in
+        //\u{2716}
+        let deleteAction = createContextualAction(title: "\u{2715}\nRemove", colour: .lightRed, indexPath: indexPath) { (indexPath) in
             self.actionClicked(for: .Remove, indexPath: indexPath, payment: payment)
         }
         
         if (payment.paymentReceived == false){
-            checkAction = createContextualAction(title: "\u{2713}\nReceived", colour: UIColor(rgb: 0x3C556E), indexPath: indexPath, onSelectAction: { (indexPath) in
+            checkAction = createContextualAction(title: "\u{2713}\nClaimed", colour: UIColor(rgb: 0x3C556E), indexPath: indexPath, onSelectAction: { (indexPath) in
                 self.actionClicked(for: .Tick, indexPath: indexPath, payment: payment)
             })
         } else {
-            checkAction = createContextualAction(title: "Not\n Received", colour: UIColor(rgb: 0x676767), indexPath: indexPath, onSelectAction: { (indexPath) in
+            checkAction = createContextualAction(title: "Not\n Claimed", colour: UIColor(rgb: 0x676767), indexPath: indexPath, onSelectAction: { (indexPath) in
                 self.actionClicked(for: .Untick, indexPath: indexPath, payment: payment)
             })
         }
@@ -65,9 +66,12 @@ class SwipeActionsViewModel {
     private func createContextualAction(title: String, colour: UIColor, indexPath: IndexPath, onSelectAction: @escaping (IndexPath) -> ()) -> UIContextualAction {
         
         let action = UIContextualAction(style: .normal, title: title) {  (action, view, complete) in
+            view.tintColor = .white
             complete(true)
             onSelectAction(indexPath)
         }
+        
+//        let a = action as! UIButton
         action.backgroundColor = colour
         
         return action

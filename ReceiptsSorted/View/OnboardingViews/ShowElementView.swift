@@ -131,14 +131,14 @@ class ShowElementView: UIView, IPresentationView {
 
         self.addSubview(beatingView)
         
-        DispatchQueue.main.async {
+//        DispatchQueue.main.async {
 //            let widthAnimation = CABasicAnimation(keyPath: #keyPath(CALayer.borderWidth))
 //            widthAnimation.fromValue = 10
 //            widthAnimation.toValue = 20
 //            widthAnimation.duration = 2
 //            widthAnimation.repeatCount = 1
 //            beatingView.layer.add(widthAnimation, forKey: "borderWidth")
-        }
+//        }
         
     }
     

@@ -24,8 +24,9 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIViewCo
     var cardGesturesViewModel = CardGesturesViewModel()
     let circularTransition = CircularTransition()
     var topGraphicsView: TopGraphicsView!
+    private let userChecker = UserChecker()
     
-    var onStartup = true
+    private var onStartup = true
     
     var selectButton: PaymentSelectionButtonView?
     var cancelButton: PaymentSelectionButtonView?
@@ -60,6 +61,10 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIViewCo
         cardGesturesViewModel.cardViewController = cardViewController
         cardGesturesViewModel.visualEffectView = visualEffectView
         cardGesturesViewModel.addButton = buttonView.addButton
+        
+        DispatchQueue.main.async { [weak self] in
+            self?.presentOnboardingIfNeeded(animated: false)
+        }
     }
 
     
@@ -78,8 +83,6 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIViewCo
             let totalAmount = cardViewController.cardViewModel.database.getTotalAmount(of: .Pending)
             topGraphicsView.amountAnimation.animateCircle(to: totalAmount)
         }
-        
-        presentOnboardingIfNeeded(animated: false)
     }
     
     
@@ -91,7 +94,11 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIViewCo
 
     // MARK: - Onboarding
     
-    private func presentOnboardingIfNeeded(animated: Bool) {
+    private func presentOnboardingIfNeeded(animated: Bool) {        
+        if userChecker.isOldUser() {
+            return
+        }
+        
         let onboardingVC = OnboardingViewController()
         var onboardTexts = OnboardingText() // texts
         

@@ -20,6 +20,8 @@ protocol IPresentationView: UIView {
 
 class OnboardingViewController: UIViewController {
 
+    private let userChecker = UserChecker()
+    
     private var elements: [OnboardingInfo] = []
     private var showingView: IPresentationView?
     private var allViews: [IPresentationView]! = []
@@ -47,6 +49,11 @@ class OnboardingViewController: UIViewController {
         
     }
     
+    
+    /**
+     Add onboarding info of frame and text to show in onboarding
+     - Parameter info: Info containing frame and text
+     */
     func add(info: OnboardingInfo) {
         elements.append(info)
     }
@@ -60,6 +67,7 @@ extension OnboardingViewController: OnboardingButtonProtocol {
         pageNumber += 1
         
         if pageNumber == allViews.count {
+            userChecker.setIsOldUser()
             self.dismiss(animated: true, completion: nil)
             return
         }

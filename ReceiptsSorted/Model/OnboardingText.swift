@@ -14,8 +14,8 @@ struct OnboardingText {
     lazy var segmentedControlText: NSMutableAttributedString = {
         let text = textHelper.setupLabel(inBold: "Pending",
                                          text: "tab shows payments paid by you but the company has not paid you back yet.")
-        text.append(textHelper.setupLabel(inBold: "\n\nReceived",
-                                          text: "tab shows the received from the company payments."))
+        text.append(textHelper.setupLabel(inBold: "\n\nClaimed",
+                                          text: "tab shows the expenses received back from the company."))
         return text
     }()
     
@@ -37,6 +37,6 @@ struct OnboardingText {
     
     lazy var indicatorsText: NSMutableAttributedString = {
         return textHelper.setupLabel(inBold: "Indicators",
-                                     text: "for tracking how many receipts are still pending as well as deadline of sending all receipts")
+                                     text: "for tracking how many receipts are still pending as well as deadlines of sending all receipts")
     }()
 }

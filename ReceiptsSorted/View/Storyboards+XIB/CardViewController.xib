@@ -53,7 +53,7 @@
                     <rect key="frame" x="10" y="93" width="394" height="32"/>
                     <segments>
                         <segment title="Pending"/>
-                        <segment title="Received"/>
+                        <segment title="Claimed"/>
                         <segment title="All"/>
                     </segments>
                     <connections>
