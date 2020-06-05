@@ -42,4 +42,7 @@ extension UIColor {
     static let wetAsphalt = UIColor(rgb: 0x34495E)
 
     static let contourFlatColour = UIColor(rgb: 0x4D6379)
+    
+    static let tickSwipeActionColour = UIColor(rgb: 0x3C556E)
+    static let graySwipeColour = UIColor(rgb: 0x676767)
 }

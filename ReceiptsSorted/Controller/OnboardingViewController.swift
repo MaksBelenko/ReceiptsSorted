@@ -20,6 +20,9 @@ protocol IPresentationView: UIView {
 
 class OnboardingViewController: UIViewController {
 
+    private var showWelcomePage = true
+    private var addCornerRadius = true
+    
     private let userChecker = UserChecker()
     
     private var elements: [OnboardingInfo] = []
@@ -27,6 +30,17 @@ class OnboardingViewController: UIViewController {
     private var allViews: [IPresentationView]! = []
     private var pageNumber = 0
 
+    
+    // MARK: - Initialisation
+    init(showWelcomePage: Bool = true, addCornerRadius: Bool = true) {
+        super.init(nibName: nil, bundle: nil)
+        self.showWelcomePage = showWelcomePage
+        self.addCornerRadius = addCornerRadius
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -39,12 +53,15 @@ class OnboardingViewController: UIViewController {
     
     
     private func generateSequenceOfViews() {
-        allViews.append(WelcomeView(frame: view.frame))
+        if showWelcomePage {
+            allViews.append(WelcomeView(frame: view.frame))
+        }
         
         for info in elements {
             allViews.append(ShowElementView(showArea: info.showRect,
                                             text: info.text,
-                                            frame: view.frame))
+                                            frame: view.frame,
+                                            addCornerRadius: addCornerRadius))
         }
         
     }
@@ -76,6 +93,12 @@ extension OnboardingViewController: OnboardingButtonProtocol {
     }
     
     func showPreviousPage() {
+        
+        if pageNumber == 0 {
+            self.dismiss(animated: true, completion: nil)
+            return
+        }
+        
         pageNumber -= 1
         showView(for: pageNumber)
     }
@@ -95,6 +118,8 @@ extension OnboardingViewController: OnboardingButtonProtocol {
             lastView.nextButton.backgroundColor = .clear
             lastView.nextButton.layer.removeShadow()
         }
+        
+        
         
         view.addSubview(showingView!)
     }

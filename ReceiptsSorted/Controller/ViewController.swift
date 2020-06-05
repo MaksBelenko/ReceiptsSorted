@@ -20,16 +20,13 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIViewCo
     var cardHeight: CGFloat = 0
     var cardStartPointY: CGFloat = 0
     
-    var buttonView: AddButtonView!
-    var cardGesturesViewModel = CardGesturesViewModel()
-    let circularTransition = CircularTransition()
-    var topGraphicsView: TopGraphicsView!
+    private var buttonView: AddButtonView!
+    private var cardGesturesViewModel = CardGesturesViewModel()
+    private let circularTransition = CircularTransition()
+    private var topGraphicsView: TopGraphicsView!
     private let userChecker = UserChecker()
     
     private var onStartup = true
-    
-    var selectButton: PaymentSelectionButtonView?
-    var cancelButton: PaymentSelectionButtonView?
     
     
     //MARK: - Status Bar
@@ -37,7 +34,6 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIViewCo
     //set Status Bar icons to white
     override var preferredStatusBarStyle: UIStatusBarStyle { return .lightContent }
 
-    
     
     
     //MARK: - Lifecycle
@@ -95,9 +91,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIViewCo
     // MARK: - Onboarding
     
     private func presentOnboardingIfNeeded(animated: Bool) {        
-        if userChecker.isOldUser() {
-            return
-        }
+        if userChecker.isOldUser() { return }
         
         let onboardingVC = OnboardingViewController()
         var onboardTexts = OnboardingText() // texts
@@ -109,17 +103,10 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIViewCo
         let indicatorsHeight = buttonView.frame.origin.y - indicatorsYOffset
         let indicatorsFrame = CGRect(origin: CGPoint(x: 0, y: indicatorsYOffset), size: CGSize(width: view.frame.width, height: indicatorsHeight))
         
-        onboardingVC.add(info: OnboardingInfo(showRect: segmentedViewFrame,
-                                              text: onboardTexts.segmentedControlText))
-        
-        onboardingVC.add(info: OnboardingInfo(showRect: buttonView.frame,
-                                              text: onboardTexts.addReceiptsText))
-        
-        onboardingVC.add(info: OnboardingInfo(showRect: emailButton.frame,
-                                              text: onboardTexts.sendReceiptsText))
-        
-        onboardingVC.add(info: OnboardingInfo(showRect: indicatorsFrame,
-                                              text: onboardTexts.indicatorsText))
+        onboardingVC.add(info: OnboardingInfo(showRect: segmentedViewFrame, text: onboardTexts.segmentedControlText))
+        onboardingVC.add(info: OnboardingInfo(showRect: buttonView.frame,   text: onboardTexts.addReceiptsText))
+        onboardingVC.add(info: OnboardingInfo(showRect: emailButton.frame,  text: onboardTexts.sendReceiptsText))
+        onboardingVC.add(info: OnboardingInfo(showRect: indicatorsFrame,    text: onboardTexts.indicatorsText))
         
         onboardingVC.modalPresentationStyle = .overFullScreen
         present(onboardingVC, animated: animated)
@@ -127,7 +114,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIViewCo
     
     
     //MARK: - Setup Button
-    func setupAddButton(withSize buttonSize: CGFloat) {
+    private func setupAddButton(withSize buttonSize: CGFloat) {
         buttonView = AddButtonView()
         buttonView.addButton.addTarget(self, action: #selector(ViewController.addButtonPressed), for: UIControl.Event.touchUpInside)
         buttonView.addButton.addTarget(self, action: #selector(ViewController.addButtonTouchDown), for: UIControl.Event.touchDown)
@@ -142,13 +129,11 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIViewCo
     }
     
     
-
-    @objc func addButtonPressed () {
+    @objc private func addButtonPressed () {
         Navigation.shared.showCameraVC(for: self)
     }
     
-    
-    @objc func addButtonTouchDown() {
+    @objc private func addButtonTouchDown() {
         Vibration.light.vibrate()
     }
     
@@ -167,13 +152,11 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIViewCo
         
         return circularTransition
     }
-
-    
     
     
     //MARK: - Card Setup
     
-    func setupCard() {
+    private func setupCard() {
         let viewHeight = self.view.frame.size.height
         cardStartPointY = viewHeight - viewHeight * CGFloat(cardCollapsedProportion)
         cardHeight = viewHeight * CGFloat(cardExpandedProportion)
@@ -201,7 +184,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIViewCo
     
     
     /// For multiple views to have the same PanGesture
-    func setPanGestureRecognizer() -> UIPanGestureRecognizer {
+    private func setPanGestureRecognizer() -> UIPanGestureRecognizer {
         let panGestureRecogniser = UIPanGestureRecognizer (target: cardGesturesViewModel, action: #selector(CardGesturesViewModel.handleCardPan(recogniser:)))
         panGestureRecogniser.delegate = cardGesturesViewModel
 
@@ -211,9 +194,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIViewCo
     }
     
     
-    
-    
-    func setupCardHandle() {
+    private func setupCardHandle() {
         let handleView = UIView(frame: CGRect(x: 0, y: 0, width: 50, height: 3))
         handleView.backgroundColor = .white
         
@@ -228,21 +209,18 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIViewCo
     }
     
     
-    
     //MARK: - Initialisation of Top graphics
     
     private func setupTopViewWithGraphics() {
         topGraphicsView = TopGraphicsView(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: cardStartPointY))//UIView()
         
         view.insertSubview(topGraphicsView, at: 0)
-        
         topGraphicsView.translatesAutoresizingMaskIntoConstraints = false
         topGraphicsView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
         topGraphicsView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         topGraphicsView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         topGraphicsView.heightAnchor.constraint(equalToConstant: cardStartPointY).isActive = true
     }
-    
     
     
     //MARK: - Email button

@@ -94,7 +94,7 @@ class WelcomeView: UIView, IPresentationView {
     }
     
     
-    // MARK: - Buttons Actions
+    // MARK: - Press Actions
     @objc private func nextButtonPressed() {
         delegate?.showNextPage()
     }

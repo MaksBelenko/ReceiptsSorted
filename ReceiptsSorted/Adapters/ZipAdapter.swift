@@ -13,6 +13,7 @@ class ZipAdapter {
     
     /**
      Used for zipping files without password creation
+     - Returns: URL of a zipped file
      */
     func zipFiles(_ paths: [URL], fileName: String) throws -> URL {
         return try Zip.quickZipFiles(paths, fileName: fileName)

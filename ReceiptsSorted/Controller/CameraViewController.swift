@@ -63,7 +63,6 @@ class CameraViewController: UIViewController, UINavigationControllerDelegate {
     }
     
     
-    
     func setupGestureRecognisers() {
         // Create gesture recognisers for focusing of camera
         let tapGestureRecogniser = UITapGestureRecognizer(target: cameraSession, action: #selector(cameraSession?.handleTapToFocus(recogniser:)))

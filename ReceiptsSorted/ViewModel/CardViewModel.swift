@@ -201,7 +201,6 @@ class CardViewModel {
         allSelected = (count == fetchedPayments.count) ? true : false
        
     }
-    
 }
 
 

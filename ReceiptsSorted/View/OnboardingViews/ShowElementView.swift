@@ -13,6 +13,8 @@ class ShowElementView: UIView, IPresentationView {
     weak var delegate: OnboardingButtonProtocol?
     
     var shapeView: UIView!
+    
+    private var addCornerRadius: Bool = true
     private var borderWidth: CGFloat!
     private let buttonAnimations = AddButtonAnimations()
     
@@ -43,10 +45,11 @@ class ShowElementView: UIView, IPresentationView {
     
     
     // MARK: - Initialisation
-    init(showArea: CGRect, text: NSMutableAttributedString, frame: CGRect) {
+    init(showArea: CGRect, text: NSMutableAttributedString, frame: CGRect, addCornerRadius: Bool) {
         super.init(frame: frame)
         
         self.clipsToBounds = true
+        self.addCornerRadius = addCornerRadius
         
         borderWidth = frame.height*2
         createView(showArea: showArea)
@@ -67,8 +70,10 @@ class ShowElementView: UIView, IPresentationView {
         shapeView.frame = shapeView.frame.insetBy(dx: -borderWidth, dy: -borderWidth);
         shapeView.backgroundColor = .clear
         shapeView.layer.borderWidth = borderWidth
-        shapeView.layer.cornerRadius = borderWidth + showArea.height/4 + 2
         shapeView.layer.borderColor = UIColor.wetAsphalt.withAlphaComponent(0.8).cgColor
+        
+        if addCornerRadius {
+            shapeView.layer.cornerRadius = borderWidth + showArea.height/4 + 2        }
         
         self.addSubview(shapeView)
     }
@@ -108,6 +113,8 @@ class ShowElementView: UIView, IPresentationView {
         buttonAnimations.startAnimatingPressActions(for: backButton)
     }
     
+    
+    // MARK: - Press Actions
     @objc private func nextButtonPressed() {
         delegate?.showNextPage()
     }
@@ -115,32 +122,5 @@ class ShowElementView: UIView, IPresentationView {
     @objc private func backButtonPressed() {
         delegate?.showPreviousPage()
     }
-    
-    
-    
-    // MARK: - Helpers
-    
-    
-    private func createBeatingBorder(showArea: CGRect) {
-        let beatingView = UIView(frame: showArea)
-        beatingView.frame = beatingView.frame.insetBy(dx: -5, dy: -5);
-        beatingView.backgroundColor = .clear
-        beatingView.layer.borderWidth = 5
-        beatingView.layer.cornerRadius = borderWidth/4
-        beatingView.layer.borderColor = UIColor.white.cgColor
-
-        self.addSubview(beatingView)
-        
-//        DispatchQueue.main.async {
-//            let widthAnimation = CABasicAnimation(keyPath: #keyPath(CALayer.borderWidth))
-//            widthAnimation.fromValue = 10
-//            widthAnimation.toValue = 20
-//            widthAnimation.duration = 2
-//            widthAnimation.repeatCount = 1
-//            beatingView.layer.add(widthAnimation, forKey: "borderWidth")
-//        }
-        
-    }
-    
 
 }

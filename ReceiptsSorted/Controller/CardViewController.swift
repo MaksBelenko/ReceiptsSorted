@@ -25,9 +25,11 @@ class CardViewController: UIViewController {
     var cardStartPointY: CGFloat = 0
     
     let cardViewModel = CardViewModel()
-    let dropDownMenu = SortingDropDownMenu()
-    let swipeActions = SwipeActionsViewModel()
     var cardGesturesViewModel: CardGesturesViewModel!
+    
+    private let dropDownMenu = SortingDropDownMenu()
+    private let swipeActions = SwipeActionsViewModel()
+    private let userChecker = UserChecker()
     
     var amountAnimation: AmountAnimation? = nil {
         didSet {
@@ -36,13 +38,9 @@ class CardViewController: UIViewController {
     }
         
     let noReceiptsImage: UIImageView = {
-        guard let optImage = UIImage(named: "NoReceipts") else {
-            Log.debug(message: "Image not found")
-            return UIImageView()
-        }
+        guard let optImage = UIImage(named: "NoReceipts") else { return UIImageView() }
         let imageView = UIImageView(image: UIImage(named: "NoReceipts"))
         imageView.contentMode = .scaleAspectFit
-        
         return imageView
     }()
     
@@ -69,7 +67,20 @@ class CardViewController: UIViewController {
             self?.selectAllButton.setTitle(buttonText, for: .normal)
         }
     }
-
+    
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        let cell = tblView.cellForRow(at: IndexPath(row: 0, section: 0)) as? PaymentTableViewCell
+    
+        if cell != nil && !userChecker.wasSwipeDemoShown() {
+            presentSwipeDemo(forCell: cell!, animated: false)
+            previewSwipeActions(for: cell!)
+            
+            userChecker.setSwipeDemoAsShown() // set UserDefaults as shown
+        }
+    }
     
     
     //MARK: - Configurations
@@ -78,11 +89,9 @@ class CardViewController: UIViewController {
         tblView.dataSource = self
         tblView.delegate = self
         tblView.register(UINib(nibName: "PaymentTableViewCell", bundle: nil), forCellReuseIdentifier: "paymentCell")
-        
         tblView.separatorInset = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15) //separator lines
         tblView.tableFooterView = UIView() //Removes uneeded separator lines at the end of TableView
     }
-    
     
     private func setupSearchBar() {
         searchBar.delegate = self
@@ -93,7 +102,6 @@ class CardViewController: UIViewController {
         searchBottomAnchor = searchAndSortView.bottomAnchor.constraint(equalTo: self.SortSegmentedControl.topAnchor, constant: -25)
         NSLayoutConstraint.activate([searchTopAnchor!, searchBottomAnchor!])
     }
-    
     
     private func setupNoReceiptsImage() {
         view.addSubview(noReceiptsImage)
@@ -107,8 +115,7 @@ class CardViewController: UIViewController {
         noReceiptImageCenterYAnchor?.isActive = true
     }
     
-    
-    func setupSelectionHelperView() {
+    private func setupSelectionHelperView() {
         selectionHelperView.layer.cornerRadius = 25
         selectionHelperView.layer.applyShadow(color: .black, alpha: 0.1, x: 0, y: -3, blur: 3)
         selectionHelperView.clipsToBounds = false
@@ -116,6 +123,77 @@ class CardViewController: UIViewController {
         bottomSHViewConstraint.isActive = false
         bottomSHViewConstraint = selectionHelperView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: selectionHelperView.frame.height)
         bottomSHViewConstraint.isActive = true
+    }
+    
+    
+    // MARK: - Swipe preview setup
+    
+    private func presentSwipeDemo(forCell cell: PaymentTableViewCell, animated: Bool) {
+        let onboardingVC = OnboardingViewController(showWelcomePage: false, addCornerRadius: false)
+        let textHelper = TextHelper()
+        
+        let text = textHelper.create(text: "← Swipe to mark receipt as ", bold: false, fontSize: 18)
+        text.append(textHelper.create(text: "Claimed ", bold: true, fontSize: 18))
+        text.append(textHelper.create(text: " or to Remove it completely", bold: false, fontSize: 18))
+        
+        let yOrigin = cell.frame.origin.y + cardStartPointY + SortSegmentedControl.frame.origin.y + SortSegmentedControl.frame.height
+        let showFrame = CGRect(x: cell.frame.origin.x,
+                               y: yOrigin,
+                               width: cell.frame.width,
+                               height: cell.frame.height - 1)
+        
+        onboardingVC.add(info: OnboardingInfo(showRect: showFrame,
+                                              text: text))
+        
+        onboardingVC.modalPresentationStyle = .overFullScreen
+        present(onboardingVC, animated: animated)
+    }
+    
+    
+    private func previewSwipeActions(for cell: PaymentTableViewCell) {
+
+        let tickSwipeLabel = createDemoSwipeLabel(text: "\u{2713}\nClaimed", backgroundColour: .tickSwipeActionColour)
+        let removeSwipeLabel = createDemoSwipeLabel(text: "\u{2715}\nRemove", backgroundColour: .lightRed)
+
+        let removeSwipeWidth: CGFloat = removeSwipeLabel.sizeThatFits(tickSwipeLabel.frame.size).width + 15
+        let tickSwipeWidth: CGFloat = tickSwipeLabel.sizeThatFits(tickSwipeLabel.frame.size).width + 15
+        
+        cell.insertSubview(removeSwipeLabel, belowSubview: cell.contentView)
+        removeSwipeLabel.translatesAutoresizingMaskIntoConstraints = false
+        removeSwipeLabel.widthAnchor.constraint(equalToConstant: removeSwipeWidth).isActive = true
+        removeSwipeLabel.heightAnchor.constraint(equalToConstant: cell.bounds.height).isActive = true
+        removeSwipeLabel.trailingAnchor.constraint(equalTo:  cell.trailingAnchor, constant: removeSwipeWidth).isActive = true
+        
+        cell.insertSubview(tickSwipeLabel, belowSubview: cell.contentView)
+        tickSwipeLabel.translatesAutoresizingMaskIntoConstraints = false
+        tickSwipeLabel.widthAnchor.constraint(equalToConstant: tickSwipeWidth).isActive = true
+        tickSwipeLabel.heightAnchor.constraint(equalToConstant: cell.bounds.height).isActive = true
+        tickSwipeLabel.trailingAnchor.constraint(equalTo: cell.trailingAnchor, constant: removeSwipeWidth + tickSwipeWidth).isActive = true
+        
+        cell.layoutIfNeeded()
+        
+        UIView.animate(withDuration: 0.3, animations: {
+            cell.transform = CGAffineTransform.identity.translatedBy(x: -(tickSwipeLabel.bounds.width + removeSwipeLabel.bounds.width),y: 0)
+        }) { _ in
+            UIView.animateKeyframes(withDuration: 0.3, delay: 3, options: [], animations: {
+                cell.transform = CGAffineTransform.identity
+            }, completion: { _ in
+                tickSwipeLabel.removeFromSuperview()
+                removeSwipeLabel.removeFromSuperview()
+            })
+        }
+    }
+    
+    
+    private func createDemoSwipeLabel(text: String, backgroundColour: UIColor) -> UILabel {
+        let label = UILabel(frame: CGRect.zero)
+        label.text = text
+        label.numberOfLines = 0
+        label.backgroundColor = backgroundColour
+        label.textColor = .white
+        label.font = UIFont.systemFont(ofSize: 15, weight: .medium)
+        label.textAlignment = .center
+        return label
     }
     
     
@@ -133,8 +211,6 @@ class CardViewController: UIViewController {
         }
     }
 
-    
-    
     
     //MARK: - @IBActions
     
@@ -155,11 +231,9 @@ class CardViewController: UIViewController {
         cardViewModel.selectedPaymentsUIDs.removeAll()
     }
     
-    
     @IBAction func selectAllPressed(_ sender: UIButton) {
         cardViewModel.markAllPayments()
     }
-    
     
     @IBAction func cancelSelectingPressed(_ sender: UIButton) {
         tblView.contentOffset.y = 0
@@ -169,6 +243,7 @@ class CardViewController: UIViewController {
     
     
     // MARK: - Selecting payments
+    
     func selectingPayments(mode: SelectionMode) {
         cardGesturesViewModel.animateTransitionIfNeeded(with: nextState, for: 0.6, withDampingRatio: 1)
     
@@ -187,7 +262,6 @@ class CardViewController: UIViewController {
 }
 
 
-
 //MARK: - Sort Popover
 extension CardViewController: UIPopoverPresentationControllerDelegate, SortButtonLabelDelegate {
     
@@ -203,7 +277,7 @@ extension CardViewController: UIPopoverPresentationControllerDelegate, SortButto
     func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
         return .none
     }
-    
+
     
     //Delegate method
     func changeButtonLabel(sortByOption: SortBy, buttonTitle: String) {
@@ -214,7 +288,6 @@ extension CardViewController: UIPopoverPresentationControllerDelegate, SortButto
             cardViewModel.refreshPayments()
         }
     }
-
 }
 
 
@@ -241,11 +314,9 @@ extension CardViewController: UITableViewDataSource, UITableViewDelegate {
         return cardViewModel.set(cell: cell, indexPath: indexPath)
     }
     
-    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return cardViewModel.tableRowsHeight
     }
-    
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
@@ -259,7 +330,7 @@ extension CardViewController: UITableViewDataSource, UITableViewDelegate {
     
     
     //MARK: - Sections
-
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         noReceiptsImage.alpha = (cardViewModel.cardTableSections.count == 0) ? 1 : 0
         return cardViewModel.cardTableSections.count
@@ -285,7 +356,6 @@ extension CardViewController: UITableViewDataSource, UITableViewDelegate {
         return true
     }
     
-
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         swipeActions.swipeActionDelegate = self
         tblView.setEditing(false, animated: true)
@@ -312,8 +382,6 @@ extension CardViewController: RefreshTableDelegate {
     func removeSection(indexSet: IndexSet) {
         tblView.deleteSections(indexSet, with: .fade)
     }
-    
-    
 }
 
 // MARK: - SwipeActionDelegate
@@ -342,10 +410,4 @@ extension CardViewController: SwipeActionDelegate {
         self.cardViewModel.database.delete(item: payment)
         cardViewModel.removeFromTableVeiw(indexPath: indexPath, action: .Remove)
     }
-    
 }
-
-
-
-
-

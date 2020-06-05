@@ -28,11 +28,11 @@ class SwipeActionsViewModel {
         }
         
         if (payment.paymentReceived == false){
-            checkAction = createContextualAction(title: "\u{2713}\nClaimed", colour: UIColor(rgb: 0x3C556E), indexPath: indexPath, onSelectAction: { (indexPath) in
+            checkAction = createContextualAction(title: "\u{2713}\nClaimed", colour: .tickSwipeActionColour, indexPath: indexPath, onSelectAction: { (indexPath) in
                 self.actionClicked(for: .Tick, indexPath: indexPath, payment: payment)
             })
         } else {
-            checkAction = createContextualAction(title: "Not\n Claimed", colour: UIColor(rgb: 0x676767), indexPath: indexPath, onSelectAction: { (indexPath) in
+            checkAction = createContextualAction(title: "Not\n Claimed", colour: .graySwipeColour, indexPath: indexPath, onSelectAction: { (indexPath) in
                 self.actionClicked(for: .Untick, indexPath: indexPath, payment: payment)
             })
         }
