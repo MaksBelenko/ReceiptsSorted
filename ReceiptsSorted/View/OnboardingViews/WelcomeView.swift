@@ -10,7 +10,7 @@ import UIKit
 
 class WelcomeView: UIView, IPresentationView {
     
-    weak var delegate: OnboardingButtonProtocol?
+    weak var delegate: OnboardingProtocol?
     
     private let titleText = "Welcome\nto\nWorkReceipts"
     private let sloganText = "\n\nAn app that allows you to\npainlessly track your receipts"

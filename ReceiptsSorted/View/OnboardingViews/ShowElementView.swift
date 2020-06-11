@@ -10,7 +10,7 @@ import UIKit
 
 class ShowElementView: UIView, IPresentationView {
     
-    weak var delegate: OnboardingButtonProtocol?
+    weak var delegate: OnboardingProtocol?
     
     var shapeView: UIView!
     

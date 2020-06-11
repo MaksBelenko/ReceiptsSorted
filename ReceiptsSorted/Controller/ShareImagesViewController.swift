@@ -77,6 +77,11 @@ class ShareImagesViewController: UIViewController {
             self?.zipURL = self?.zipDirectory(withPath: directoryPath)
         }
     }
+    
+    
+//    deinit {
+//        print("Removing shareImagesViewController from memory")
+//    }
 
     
     // MARK: - Configure UI

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6DD17AED02E9B45D8DEADFE5 /* libPods-ReceiptsSorted.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CF30740DF16DB5B0E3706AC /* libPods-ReceiptsSorted.a */; };
 		B504902424731A60009B4DA5 /* PaymentSelectionButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B504902324731A60009B4DA5 /* PaymentSelectionButtonView.swift */; };
 		B5076BCF2457A28400C2BE34 /* Alerts.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5076BCE2457A28400C2BE34 /* Alerts.swift */; };
 		B50BAADB242B7DC200EAFECA /* AmountAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50BAADA242B7DC200EAFECA /* AmountAnimation.swift */; };
@@ -84,12 +85,11 @@
 		B5F54E8D241E78E60016DCED /* FloatExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F54E8C241E78E60016DCED /* FloatExtensions.swift */; };
 		B5FD65FB242EC9C7002C5C48 /* CardTableHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FD65FA242EC9C7002C5C48 /* CardTableHeader.swift */; };
 		B5FDDC03241443950037BA7E /* SwipeActionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FDDC02241443950037BA7E /* SwipeActionsViewModel.swift */; };
-		D9CEB218D0099329CB726E1B /* Pods_ReceiptsSorted.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29F1C6FCD6AAFD1356507069 /* Pods_ReceiptsSorted.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		0684F8876FBD25DAACD5A6E3 /* Pods-ReceiptsSorted.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReceiptsSorted.debug.xcconfig"; path = "Target Support Files/Pods-ReceiptsSorted/Pods-ReceiptsSorted.debug.xcconfig"; sourceTree = "<group>"; };
-		29F1C6FCD6AAFD1356507069 /* Pods_ReceiptsSorted.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ReceiptsSorted.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		9CF30740DF16DB5B0E3706AC /* libPods-ReceiptsSorted.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ReceiptsSorted.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B504902324731A60009B4DA5 /* PaymentSelectionButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentSelectionButtonView.swift; sourceTree = "<group>"; };
 		B5076BCE2457A28400C2BE34 /* Alerts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alerts.swift; sourceTree = "<group>"; };
 		B50BAADA242B7DC200EAFECA /* AmountAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmountAnimation.swift; sourceTree = "<group>"; };
@@ -177,7 +177,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D9CEB218D0099329CB726E1B /* Pods_ReceiptsSorted.framework in Frameworks */,
+				6DD17AED02E9B45D8DEADFE5 /* libPods-ReceiptsSorted.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -196,7 +196,7 @@
 		803926E438852DAB4B27F83D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				29F1C6FCD6AAFD1356507069 /* Pods_ReceiptsSorted.framework */,
+				9CF30740DF16DB5B0E3706AC /* libPods-ReceiptsSorted.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -459,7 +459,7 @@
 				B5377BF823A82E280010B144 /* Sources */,
 				B5377BF923A82E280010B144 /* Frameworks */,
 				B5377BFA23A82E280010B144 /* Resources */,
-				A2DA7B1E6BD24E956D95D40E /* [CP] Embed Pods Frameworks */,
+				823DC00705679BAB8EAB91C6 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -543,21 +543,21 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		A2DA7B1E6BD24E956D95D40E /* [CP] Embed Pods Frameworks */ = {
+		823DC00705679BAB8EAB91C6 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-ReceiptsSorted/Pods-ReceiptsSorted-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-ReceiptsSorted/Pods-ReceiptsSorted-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			name = "[CP] Embed Pods Frameworks";
+			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-ReceiptsSorted/Pods-ReceiptsSorted-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-ReceiptsSorted/Pods-ReceiptsSorted-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ReceiptsSorted/Pods-ReceiptsSorted-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ReceiptsSorted/Pods-ReceiptsSorted-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */

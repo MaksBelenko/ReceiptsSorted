@@ -52,6 +52,7 @@ class Alert {
         let optionMenu = UIAlertController(title: "Are you sure you want to dismiss the pdf?", message: nil , preferredStyle: .actionSheet)
 
         let dismissAction = UIAlertAction(title: "Dismiss", style: .destructive, handler: { alert in
+//            controller.navigationController?.dismiss(animated: true, completion: nil)
             controller.dismiss(animated: true, completion: nil)
         })
 

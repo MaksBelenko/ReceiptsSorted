@@ -8,13 +8,13 @@
 
 import UIKit
 
-protocol OnboardingButtonProtocol: AnyObject {
+protocol OnboardingProtocol: AnyObject {
     func showNextPage()
     func showPreviousPage()
 }
 
 protocol IPresentationView: UIView {
-    var delegate: OnboardingButtonProtocol? { get set }
+    var delegate: OnboardingProtocol? { get set }
 }
 
 
@@ -51,7 +51,7 @@ class OnboardingViewController: UIViewController {
     }
     
     
-    
+    // MARK: - Views sequence
     private func generateSequenceOfViews() {
         if showWelcomePage {
             allViews.append(WelcomeView(frame: view.frame))
@@ -63,10 +63,10 @@ class OnboardingViewController: UIViewController {
                                             frame: view.frame,
                                             addCornerRadius: addCornerRadius))
         }
-        
     }
     
     
+    // MARK: - Public methods
     /**
      Add onboarding info of frame and text to show in onboarding
      - Parameter info: Info containing frame and text
@@ -77,8 +77,8 @@ class OnboardingViewController: UIViewController {
 }
 
 
-
-extension OnboardingViewController: OnboardingButtonProtocol {
+// MARK: - OnboardingProtocol
+extension OnboardingViewController: OnboardingProtocol {
     
     func showNextPage() {
         pageNumber += 1

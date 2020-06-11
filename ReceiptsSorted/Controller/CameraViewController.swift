@@ -83,7 +83,7 @@ class CameraViewController: UIViewController, UINavigationControllerDelegate {
     
     
     @IBAction func pressedFlashButton(_ sender: UIButton) {
-       let picName = cameraSession?.nextFlashMode()
+        let picName = cameraSession?.nextFlashMode()
         sender.setBackgroundImage(UIImage(systemName: picName!), for: UIControl.State.normal)
     }
     
@@ -118,14 +118,14 @@ extension CameraViewController: UIImagePickerControllerDelegate {
 extension CameraViewController: AVCapturePhotoCaptureDelegate {
     
     func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
-        if let imageData = photo.fileDataRepresentation() {
-            guard let image = UIImage(data: imageData) else {
+        guard let imageData = photo.fileDataRepresentation(),
+            let image = UIImage(data: imageData) else {
                 Log.exception(message: "Couldn't create image from data")
                 return
-            }
-            
-            Navigation.shared.showPaymentVC(for: self, withImage: image)
         }
+        
+        Navigation.shared.showPaymentVC(for: self, withImage: image)
+        
     }
 }
 
