@@ -15,17 +15,16 @@ class ShareImagesViewController: UIViewController {
 
     var passedPayments: [Payment] = []
     private var paymentsCount: Int = 1
-    private let zipAdapter = ZipAdapter()
+    private var viewModel: ShareImagesViewModel?
+
+    
+    // MARK: - Computed properties
     
     private var imageCount: Int = 0 {
         didSet {
             imageCountLabel.text = "\(imageCount)/\(paymentsCount)"
         }
     }
-    
-    private let directoryName = "Receipts"
-    private var zipURL: URL!
-    private var photosURLs = [URL]()
     
     private lazy var cancelBarButton: UIBarButtonItem = {
         guard let closeImage = UIImage(systemName: "xmark") else { return UIBarButtonItem() }
@@ -46,6 +45,7 @@ class ShareImagesViewController: UIViewController {
         cv.contentInsetAdjustmentBehavior = .always
         cv.showsHorizontalScrollIndicator = false
         cv.register(ImageViewerCell.self, forCellWithReuseIdentifier: cellReuseIdentifier)
+        cv.backgroundColor = .clear
         return cv
     }()
     
@@ -59,9 +59,12 @@ class ShareImagesViewController: UIViewController {
 
     
     
+    // MARK: - Deinit
     deinit {
-        let navStatus = (self.navigationController == nil)
-        print("DEBUG: ShareImagesViewController deinit, navController status is nil? \(navStatus)")
+        #if DEBUG
+            let navStatus = (self.navigationController == nil)
+            print("DEBUG: ShareImagesViewController deinit, navController status is nil? \(navStatus)")
+        #endif
     }
     
     // MARK: - Lifecycle
@@ -74,12 +77,13 @@ class ShareImagesViewController: UIViewController {
         setupBarButtons()
         
         setupCollectionView()
-        setupLCountLabel()
+        setupCountLabel()
+        
+        viewModel = ShareImagesViewModel(payments: passedPayments)
         
         DispatchQueue.global(qos: .utility).async { [weak self] in
-            guard let directoryPath = self?.createDirectory() else { return }
-            self?.addPhotosToDirectory(withPath: directoryPath)
-            self?.zipURL = self?.zipDirectory(withPath: directoryPath)
+            guard let viewModel = self?.viewModel else { return }
+            viewModel.createZipArchive()
         }
     }
 
@@ -106,15 +110,12 @@ class ShareImagesViewController: UIViewController {
     
     private func setupBarButtons() {
         navigationController?.navigationBar.tintColor = UIColor.white
-        
         navigationItem.leftBarButtonItem = cancelBarButton
         navigationItem.rightBarButtonItem = shareBarButton
     }
     
     
     private func setupCollectionView() {
-        collectionView.backgroundColor = .clear
-
         view.addSubview(collectionView)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor).isActive = true
@@ -130,7 +131,7 @@ class ShareImagesViewController: UIViewController {
     }
     
     
-    private func setupLCountLabel() {
+    private func setupCountLabel() {
         paymentsCount = passedPayments.count
         imageCountLabel.text = "1/\(paymentsCount)"
         
@@ -153,89 +154,8 @@ class ShareImagesViewController: UIViewController {
     }
     
     func showActivityVC(for shareType: ShareImagesType) {
-        let activityVC: UIActivityViewController
-        
-        switch shareType {
-        case .RawImages:
-            activityVC = UIActivityViewController(activityItems: photosURLs, applicationActivities: nil)
-        case .Zip:
-            guard let url = zipURL else { return }
-            activityVC = UIActivityViewController(activityItems: [url], applicationActivities: nil)
-        }
-        
+        guard let activityVC = viewModel?.createActivityVC(for: shareType) else { return }
         present(activityVC, animated: true, completion: nil)
-    }
-    
-    
-    
-    // MARK: - Helpers
-    
-    private func createDirectory() -> String {
-        let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
-        let documentsDirectory = paths[0]
-        let docURL = URL(string: documentsDirectory)!
-        let directoryURL = docURL.appendingPathComponent(directoryName)
-        
-        if FileManager.default.fileExists(atPath: directoryURL.absoluteString) {
-            do {
-                print("Removing directory \(directoryURL.path)")
-                try FileManager.default.removeItem(atPath: directoryURL.path)
-            } catch {
-                print(error.localizedDescription)
-            }
-        }
-        
-        // Create the directory again
-        do {
-            print("Creating directory in \(directoryURL.path)")
-            try FileManager.default.createDirectory(atPath: directoryURL.absoluteString, withIntermediateDirectories: true, attributes: nil)
-        } catch {
-            print(error.localizedDescription)
-        }
-        
-        
-        return directoryURL.path
-    }
-    
-    
-    private func addPhotosToDirectory(withPath path: String) {
-        var namesDictionary = Dictionary<String, Int>()
-        
-        for payment in passedPayments {
-            guard let receiptPhotoData = payment.receiptPhoto else { return }
-            guard let placeName = payment.place else { return }
-            
-            if !namesDictionary.contains(where: {$0.key == placeName} ) {
-                namesDictionary[placeName] = 0
-            } else {
-                namesDictionary[placeName]! += 1
-            }
-            
-            let count = (namesDictionary[placeName] == 0) ? "" : "_\(namesDictionary[placeName]!)"
-            let fileName = "\(placeName)\(count).jpg"//"Image\(photoCounter).jpg"
-            
-            let fileURL = URL(fileURLWithPath: path).appendingPathComponent(fileName)
-            photosURLs.append(fileURL)
-            
-            do {
-                guard let imageData = receiptPhotoData.imageData else { fatalError("No ImageDaa to write to directory") }
-                try imageData.write(to: fileURL)  // writes the image data to disk
-                print("file saved")
-            } catch {
-                print("error saving file:", error)
-            }
-        }
-    }
-    
-    
-    private func zipDirectory(withPath directoryPath: String) -> URL? {
-        do {
-            let directoryURL = URL(fileURLWithPath: directoryPath)
-            return try zipAdapter.zipFiles([directoryURL], fileName: directoryName)//Zip.quickZipFiles([directoryURL], fileName: directoryName) // Zip
-        } catch {
-            print("Zip failed with error: \(error.localizedDescription)")
-            return nil
-        }
     }
 }
 
@@ -264,7 +184,6 @@ extension ShareImagesViewController: UICollectionViewDataSource  {
         
         guard let imageData = passedPayments[indexPath.row].receiptPhoto?.imageData,
             let receiptImage = UIImage(data: imageData) else { return cell }
-        
         cell.picture = receiptImage.roundCorners(proportion: 20)
         
         return cell

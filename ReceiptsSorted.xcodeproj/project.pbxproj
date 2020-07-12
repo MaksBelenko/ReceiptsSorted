@@ -38,6 +38,7 @@
 		B565674024831619000A6639 /* ZipAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B565673F24831619000A6639 /* ZipAdapter.swift */; };
 		B566604E242FA955003DD15B /* PaymentTableSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = B566604D242FA955003DD15B /* PaymentTableSection.swift */; };
 		B5666050242FB65F003DD15B /* IntExtensins.swift in Sources */ = {isa = PBXBuildFile; fileRef = B566604F242FB65F003DD15B /* IntExtensins.swift */; };
+		B5689D7224BB61D5005C46C5 /* ShareImagesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5689D7124BB61D5005C46C5 /* ShareImagesViewModel.swift */; };
 		B57145182474100800E0720C /* Navigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57145172474100800E0720C /* Navigation.swift */; };
 		B573FA9A23B81EC8005473D2 /* PaymentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B573FA9923B81EC8005473D2 /* PaymentViewController.swift */; };
 		B573FAA423B95F57005473D2 /* Delegates.swift in Sources */ = {isa = PBXBuildFile; fileRef = B573FAA323B95F57005473D2 /* Delegates.swift */; };
@@ -123,6 +124,7 @@
 		B565673F24831619000A6639 /* ZipAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZipAdapter.swift; sourceTree = "<group>"; };
 		B566604D242FA955003DD15B /* PaymentTableSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentTableSection.swift; sourceTree = "<group>"; };
 		B566604F242FB65F003DD15B /* IntExtensins.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntExtensins.swift; sourceTree = "<group>"; };
+		B5689D7124BB61D5005C46C5 /* ShareImagesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareImagesViewModel.swift; sourceTree = "<group>"; };
 		B57145172474100800E0720C /* Navigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Navigation.swift; sourceTree = "<group>"; };
 		B573FA9923B81EC8005473D2 /* PaymentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentViewController.swift; sourceTree = "<group>"; };
 		B573FAA323B95F57005473D2 /* Delegates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Delegates.swift; sourceTree = "<group>"; };
@@ -404,6 +406,7 @@
 				B5FDDC02241443950037BA7E /* SwipeActionsViewModel.swift */,
 				B54967AC241167C000684A2F /* SortingDropDownMenu.swift */,
 				B58CC931246DB9B5006FEF00 /* CollectionViewFlowLayout.swift */,
+				B5689D7124BB61D5005C46C5 /* ShareImagesViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -610,6 +613,7 @@
 				B5377C0223A82E280010B144 /* SceneDelegate.swift in Sources */,
 				B5FDDC03241443950037BA7E /* SwipeActionsViewModel.swift in Sources */,
 				B5DB922323BE929F0081E8D7 /* PaymentsData.xcdatamodeld in Sources */,
+				B5689D7224BB61D5005C46C5 /* ShareImagesViewModel.swift in Sources */,
 				B5B6758023CF70F400291D31 /* TextRecogniser.swift in Sources */,
 				B5E5E5C923C106E7006A14EE /* DatabaseAdapter.swift in Sources */,
 				B5F54E8D241E78E60016DCED /* FloatExtensions.swift in Sources */,
