@@ -42,6 +42,13 @@ class PaymentViewController: UIViewController, UITextFieldDelegate {
     override var preferredStatusBarStyle: UIStatusBarStyle { return .lightContent }
     
     
+    // MARK: - Deinit
+    deinit {
+        #if DEBUG
+            print("DEBUG: PaymentViewController deinit")
+        #endif
+    }
+    
     
     
     //MARK: - Lifecycle

@@ -59,6 +59,11 @@ class ShareImagesViewController: UIViewController {
 
     
     
+    deinit {
+        let navStatus = (self.navigationController == nil)
+        print("DEBUG: ShareImagesViewController deinit, navController status is nil? \(navStatus)")
+    }
+    
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -77,11 +82,6 @@ class ShareImagesViewController: UIViewController {
             self?.zipURL = self?.zipDirectory(withPath: directoryPath)
         }
     }
-    
-    
-//    deinit {
-//        print("Removing shareImagesViewController from memory")
-//    }
 
     
     // MARK: - Configure UI

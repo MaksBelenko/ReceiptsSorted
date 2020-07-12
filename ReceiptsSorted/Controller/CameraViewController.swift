@@ -27,6 +27,14 @@ class CameraViewController: UIViewController, UINavigationControllerDelegate {
     override var preferredStatusBarStyle: UIStatusBarStyle { return .lightContent }
     
     
+    // MARK: - Deinit
+    deinit {
+        #if DEBUG
+            print("DEBUG: CameraViewController deinit")
+        #endif
+    }
+    
+    
     //MARK: - Lifecycle
     
     override func viewDidLoad() {

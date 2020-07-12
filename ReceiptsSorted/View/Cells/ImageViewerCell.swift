@@ -10,9 +10,9 @@ import UIKit
 
 class ImageViewerCell: UICollectionViewCell {
     
-    var imageGestures = ImageGestures()
+    private var imageGestures = ImageGestures()
     
-    var picture: UIImage? {
+    weak var picture: UIImage? {
         didSet {
             guard let picture = picture else { return }
             imageView.image = picture
@@ -31,6 +31,9 @@ class ImageViewerCell: UICollectionViewCell {
     }()
     
     
+    deinit {
+        print("DEBUG: ImageViewerCell deinit")
+    }
     
     // MARK: - Initialisation
     

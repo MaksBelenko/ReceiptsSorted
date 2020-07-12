@@ -31,6 +31,13 @@ class OnboardingViewController: UIViewController {
     private var pageNumber = 0
 
     
+    // MARK: - Deinit
+    deinit {
+        #if DEBUG
+            print("DEBUG: OnboardingViewController deinit")
+        #endif
+    }
+    
     // MARK: - Initialisation
     init(showWelcomePage: Bool = true, addCornerRadius: Bool = true) {
         super.init(nibName: nil, bundle: nil)

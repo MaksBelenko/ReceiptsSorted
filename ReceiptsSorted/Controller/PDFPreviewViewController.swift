@@ -24,6 +24,13 @@ class PDFPreviewViewController: UIViewController {
         dateFormatter.dateFormat = "dd-MM-yyyy"
         return dateFormatter.string(from: Date())
     }
+    
+    // MARK: - Deinit
+    deinit {
+        #if DEBUG
+            print("DEBUG: PDFPreviewViewController deinit")
+        #endif
+    }
 
     
     // MARK: - Lifecycle
