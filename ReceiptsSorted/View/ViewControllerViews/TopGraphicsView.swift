@@ -17,7 +17,6 @@ class TopGraphicsView: UIView {
     private var amountSumLabel: UILabel!
     
     var amountAnimation: AmountAnimation!
-
     
 
     override init(frame: CGRect) {
@@ -40,7 +39,7 @@ class TopGraphicsView: UIView {
     private func createBindings() {
         amountAnimation = AmountAnimation(animationCircle: indicatorCircle)
 
-        amountAnimation.overallAmount.bind {
+        amountAnimation.overallAmount.bind { [unowned self] in
             self.amountSumLabel.text = "£\($0.pendingNumberRepresentation())"
         }
     }

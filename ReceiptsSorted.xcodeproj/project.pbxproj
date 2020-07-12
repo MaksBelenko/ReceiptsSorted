@@ -13,6 +13,9 @@
 		B50BAADB242B7DC200EAFECA /* AmountAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50BAADA242B7DC200EAFECA /* AmountAnimation.swift */; };
 		B50BAADD242BB8E000EAFECA /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50BAADC242BB8E000EAFECA /* SettingsViewController.swift */; };
 		B50BAADF242BECEE00EAFECA /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50BAADE242BECEE00EAFECA /* StringExtensions.swift */; };
+		B514A36724BB74C00078E9A9 /* Currency.swift in Sources */ = {isa = PBXBuildFile; fileRef = B514A36624BB74C00078E9A9 /* Currency.swift */; };
+		B514A36924BB759E0078E9A9 /* Common-Currency.json in Resources */ = {isa = PBXBuildFile; fileRef = B514A36824BB759E0078E9A9 /* Common-Currency.json */; };
+		B514A36B24BB91990078E9A9 /* WorldCurrencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = B514A36A24BB91990078E9A9 /* WorldCurrencies.swift */; };
 		B516CF14243BF1F0003D09E1 /* PDFPreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B516CF12243BF1F0003D09E1 /* PDFPreviewViewController.swift */; };
 		B516CF15243BF1F1003D09E1 /* PDFPreviewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B516CF13243BF1F0003D09E1 /* PDFPreviewViewController.xib */; };
 		B517DD5F246B394B004B3B2C /* PaymentTotalInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = B517DD5E246B394B004B3B2C /* PaymentTotalInfo.swift */; };
@@ -96,6 +99,9 @@
 		B50BAADA242B7DC200EAFECA /* AmountAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmountAnimation.swift; sourceTree = "<group>"; };
 		B50BAADC242BB8E000EAFECA /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		B50BAADE242BECEE00EAFECA /* StringExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
+		B514A36624BB74C00078E9A9 /* Currency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Currency.swift; sourceTree = "<group>"; };
+		B514A36824BB759E0078E9A9 /* Common-Currency.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "Common-Currency.json"; sourceTree = "<group>"; };
+		B514A36A24BB91990078E9A9 /* WorldCurrencies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorldCurrencies.swift; sourceTree = "<group>"; };
 		B516CF12243BF1F0003D09E1 /* PDFPreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFPreviewViewController.swift; sourceTree = "<group>"; };
 		B516CF13243BF1F0003D09E1 /* PDFPreviewViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PDFPreviewViewController.xib; sourceTree = "<group>"; };
 		B517DD5E246B394B004B3B2C /* PaymentTotalInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentTotalInfo.swift; sourceTree = "<group>"; };
@@ -221,6 +227,7 @@
 				B573FAAD23BA815F005473D2 /* CameraSession.swift */,
 				B5B6757F23CF70F400291D31 /* TextRecogniser.swift */,
 				B5AD17DC240464CB00BB3069 /* TopGraphicsShapes.swift */,
+				B514A36A24BB91990078E9A9 /* WorldCurrencies.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -285,6 +292,7 @@
 				B5377C0A23A82E2A0010B144 /* LaunchScreen.storyboard */,
 				B5377BFF23A82E280010B144 /* AppDelegate.swift */,
 				B5377C0123A82E280010B144 /* SceneDelegate.swift */,
+				B514A36824BB759E0078E9A9 /* Common-Currency.json */,
 				B565673E24831554000A6639 /* Adapters */,
 				B56567412483196B000A6639 /* Factories */,
 				B5AD17D7240460E700BB3069 /* ViewModel */,
@@ -364,6 +372,7 @@
 				B5ED9A39248595BC00FA7A7B /* OnboardingInfo.swift */,
 				B5BA07672486E81800097E2C /* OnboardingText.swift */,
 				B5AD17E4240482CA00BB3069 /* Database */,
+				B514A36624BB74C00078E9A9 /* Currency.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -516,6 +525,7 @@
 				B5377C0C23A82E2A0010B144 /* LaunchScreen.storyboard in Resources */,
 				B5377C0923A82E2A0010B144 /* Assets.xcassets in Resources */,
 				B573FAAC23B98285005473D2 /* CameraViewController.xib in Resources */,
+				B514A36924BB759E0078E9A9 /* Common-Currency.json in Resources */,
 				B59E3E2423B44DE80017D474 /* CardViewController.xib in Resources */,
 				B5377C0723A82E280010B144 /* Main.storyboard in Resources */,
 			);
@@ -580,6 +590,7 @@
 				B59E3E2723B50D9F0017D474 /* PaymentTableViewCell.swift in Sources */,
 				B5D70A6B245338530080BF81 /* TopGraphicsView.swift in Sources */,
 				B573FAA423B95F57005473D2 /* Delegates.swift in Sources */,
+				B514A36B24BB91990078E9A9 /* WorldCurrencies.swift in Sources */,
 				B593962C2483D50600B1E895 /* ReceiptPhoto+CoreDataProperties.swift in Sources */,
 				B593962E2483D50600B1E895 /* Payment+CoreDataClass.swift in Sources */,
 				B573FAAE23BA815F005473D2 /* CameraSession.swift in Sources */,
@@ -606,6 +617,7 @@
 				B573FA9A23B81EC8005473D2 /* PaymentViewController.swift in Sources */,
 				B5443FF024829E2A0037AA38 /* PaymentInformation.swift in Sources */,
 				B5AD17DD240464CB00BB3069 /* TopGraphicsShapes.swift in Sources */,
+				B514A36724BB74C00078E9A9 /* Currency.swift in Sources */,
 				B517DD5F246B394B004B3B2C /* PaymentTotalInfo.swift in Sources */,
 				B573FAAB23B98285005473D2 /* CameraViewController.swift in Sources */,
 				B50BAADF242BECEE00EAFECA /* StringExtensions.swift in Sources */,

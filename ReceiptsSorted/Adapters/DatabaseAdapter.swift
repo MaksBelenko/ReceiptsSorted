@@ -16,7 +16,7 @@ class DatabaseAdapter {
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     let imageCompression = ImageCompression()
     
-    let settings = Settings()
+    let settings = Settings.shared
     
     
     //MARK: - Basic methods

@@ -8,9 +8,16 @@
 
 import UIKit
 
+enum ImageCompressionEnum: String {
+    case Best = "Best"
+    case Decent = "Decent"
+    case None = "None"
+}
+
+
 class ImageCompression {
     
-    var settings = Settings()
+    var settings = Settings.shared
     
     
     /**
