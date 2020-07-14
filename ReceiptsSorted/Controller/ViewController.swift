@@ -10,25 +10,23 @@ import UIKit
 import CoreData
 
 
-class ViewController: UIViewController, UINavigationControllerDelegate, UIViewControllerTransitioningDelegate  {
+class ViewController: UIViewController  {
     
     //MARK: - Fields
     @IBOutlet weak var emailButton: UIButton!
     
-    var visualEffectView : UIVisualEffectView!  //For blur
-    var cardViewController : CardViewController!
-    var cardHeight: CGFloat = 0
-    var cardStartPointY: CGFloat = 0
+    private var visualEffectView : UIVisualEffectView!  //For blur
+    private var cardHeight: CGFloat = 0
+    private var cardStartPointY: CGFloat = 0
     
     private var buttonView: AddButtonView!
+    private var cardViewController : CardViewController!
     private var cardGesturesViewModel = CardGesturesViewModel()
-    private let circularTransition = CircularTransition()
     private var topGraphicsView: TopGraphicsView!
     private let userChecker = UserChecker()
+    private var navControllerTransitions: NavControllerTransitions!
     
     private var onStartup = true
-    
-    private var navControllerTransitions: NavControllerTransitions!
     
     
     //MARK: - Status Bar
@@ -54,16 +52,18 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIViewCo
         cardViewController.cardGesturesViewModel = cardGesturesViewModel
         
         setupAddButton(withSize: 55)
-//        navControllerTransitions = NavControllerTransitions(animationCentre: buttonView.center)
-//        navigationController?.delegate = navControllerTransitions // for custom animation
         
         cardGesturesViewModel.MainView = self.view
         cardGesturesViewModel.cardViewController = cardViewController
         cardGesturesViewModel.visualEffectView = visualEffectView
         cardGesturesViewModel.addButton = buttonView.addButton
         
-        DispatchQueue.main.async { [weak self] in
-            self?.presentOnboardingIfNeeded(animated: false)
+        DispatchQueue.main.async { [unowned self] in
+            self.presentOnboardingIfNeeded(animated: false)
+            
+            self.view.layoutIfNeeded()
+            self.navControllerTransitions = NavControllerTransitions(animationCentre: self.buttonView.center)
+            self.navigationController?.delegate = self.navControllerTransitions // for custom animation
         }
     }
 
@@ -71,7 +71,6 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIViewCo
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
-        navigationController?.delegate = self // for custom animation
     }
 
     
@@ -88,7 +87,6 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIViewCo
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        navigationController?.delegate = nil // stop using custom transition
     }
     
 
@@ -140,23 +138,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIViewCo
     @objc private func addButtonTouchDown() {
         Vibration.light.vibrate()
     }
-    
-    
-    
-    //MARK: - Transition animation
-    
-    func navigationController(_ navigationController: UINavigationController, animationControllerFor operation: UINavigationController.Operation, from fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        
-        // Perform custom animation only if CameraViewController
-        guard let cameraVC = toVC as? CameraViewController else { return nil }
-
-        circularTransition.transitionMode = (operation == .push) ? .present : .pop
-        circularTransition.startingPoint = buttonView.center
-        cameraVC.addButtonCenter = buttonView.center
-
-        return circularTransition
-    }
-    
+ 
     
     //MARK: - Card Setup
     

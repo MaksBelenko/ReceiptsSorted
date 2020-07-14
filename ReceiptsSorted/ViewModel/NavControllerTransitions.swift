@@ -8,6 +8,7 @@
 
 import UIKit
 
+/// Class responsible for Navigation controller transitions
 class NavControllerTransitions: NSObject {
 
     private let circularTransition = CircularTransition()
@@ -20,17 +21,19 @@ class NavControllerTransitions: NSObject {
 }
 
 
-
+// MARK: - UINavigationControllerDelegate, UIViewControllerTransitioningDelegate
 extension NavControllerTransitions: UINavigationControllerDelegate, UIViewControllerTransitioningDelegate {
     
     func navigationController(_ navigationController: UINavigationController, animationControllerFor operation: UINavigationController.Operation, from fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        
-        // Perform custom animation only if CameraViewController
-        guard let _ = toVC as? CameraViewController else { return nil }
 
-        circularTransition.transitionMode = (operation == .push) ? .present : .pop
-        circularTransition.startingPoint = animationCentre
+        if ( (toVC is CameraViewController && fromVC is ViewController) ||
+            (toVC is ViewController && fromVC is CameraViewController)) {
+            
+            circularTransition.transitionMode = (operation == .push) ? .present : .pop
+            circularTransition.startingPoint = animationCentre
+            return circularTransition
+        }
 
-        return circularTransition
+        return nil
     }
 }

@@ -15,16 +15,13 @@ class CameraViewController: UIViewController, UINavigationControllerDelegate {
     @IBOutlet weak var cameraView: UIView!
     
     var controllerFrame: CGRect?
+    
     private var photoOutput: AVCapturePhotoOutput?
     private var cameraSession: CameraSession?
     private let imagePicker = UIImagePickerController()
     
-    
-    private let circularTransition = CircularTransition()
-//    weak var cardVM: CardViewModel?
-    var onAddReceipt: ((PaymentAction, PaymentInformation) -> ())?
-    var addButtonCenter: CGPoint?
-    
+    private var onAddReceipt: ((PaymentAction, PaymentInformation) -> ())?
+
     override var preferredStatusBarStyle: UIStatusBarStyle { return .lightContent }
     
     
@@ -60,13 +57,11 @@ class CameraViewController: UIViewController, UINavigationControllerDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         cameraSession!.startRunningCaptureSession()
-        navigationController?.delegate = self
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(true)        
         cameraSession!.stopCaptureSession()
-        navigationController?.delegate = nil
     }
     
     
@@ -140,26 +135,5 @@ extension CameraViewController: AVCapturePhotoCaptureDelegate {
         
         Navigation.shared.showPaymentVC(for: self, withImage: image, onAddReceipt: onAddReceipt!)
         
-    }
-}
-
-
-
-// MARK: - UIViewControllerTransitioningDelegate
-extension CameraViewController: UIViewControllerTransitioningDelegate {
-
-    func navigationController(_ navigationController: UINavigationController, animationControllerFor operation: UINavigationController.Operation, from fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-
-        // Perform custom animation only if CameraViewController
-        guard toVC is ViewController else { return nil }
-        guard let center = addButtonCenter else { return nil }
-
-        if operation == .pop {
-            circularTransition.transitionMode = .pop
-            circularTransition.startingPoint = center
-            return circularTransition
-        }
-
-        return nil
     }
 }
