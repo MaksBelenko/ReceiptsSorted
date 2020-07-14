@@ -208,7 +208,7 @@ class CardViewModel {
 extension CardViewModel: PaymentDelegate {
     
     // ----- Delegate method -----
-    func passData(as showPayment: ShowPaymentAs, paymentInfo: PaymentInformation) {
+    func passData(as showPayment: PaymentAction, paymentInfo: PaymentInformation) {
         DispatchQueue.main.async {
             switch showPayment
             {

@@ -89,14 +89,13 @@ class Alert {
     
     // MARK: - Card Alerts
     
-    func removePaymentAlert(for controller: UIViewController, payment: Payment, indexPath: IndexPath) {
+    func removePaymentAlert(for controller: UIViewController, onDelete: @escaping () -> ()) {
         Vibration.light.vibrate()
         
         let optionMenu = UIAlertController(title: "Are you sure you want to delete the payment?", message: nil , preferredStyle: .actionSheet)
 
         let deleteAction = UIAlertAction(title: "Yes, delete", style: .destructive, handler: { _ in
-            guard let controller = controller as? CardViewController else { return }
-            controller.deletePayment(payment: payment, indexPath: indexPath)
+            onDelete()
         })
 
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)

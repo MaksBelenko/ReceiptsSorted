@@ -324,7 +324,7 @@ extension CardViewController: UITableViewDataSource, UITableViewDelegate {
         
         if cardViewModel.selectCellActionShowVC(for: cell, indexPath: indexPath) {
             let selectedPayment = cardViewModel.getPayment(indexPath: indexPath)
-            Navigation.shared.showPaymentVC(for: self, payment: selectedPayment)
+            Navigation.shared.showPaymentVC(for: self, payment: selectedPayment, onUpdateReceipt: cardViewModel.passData(as:paymentInfo:))
         }
     }
     
@@ -393,7 +393,9 @@ extension CardViewController: SwipeActionDelegate {
         switch action
         {
         case .Remove:
-            Alert.shared.removePaymentAlert(for: self, payment: payment, indexPath: indexPath)
+            Alert.shared.removePaymentAlert(for: self, onDelete: { [unowned self] in
+                self.deletePayment(payment: payment, indexPath: indexPath)
+            })
             return
         case .Tick:
             cardViewModel.database.updateDetail(for: payment, detailType: .PaymentReceived, with: true)
@@ -405,6 +407,7 @@ extension CardViewController: SwipeActionDelegate {
     }
     
     
+    // TODO : Move to view model
     //Remove payment Alert calls this
     func deletePayment(payment: Payment, indexPath: IndexPath) {
         self.cardViewModel.database.delete(item: payment)

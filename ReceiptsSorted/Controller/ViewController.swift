@@ -28,6 +28,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIViewCo
     
     private var onStartup = true
     
+    private var navControllerTransitions: NavControllerTransitions!
+    
     
     //MARK: - Status Bar
     
@@ -52,6 +54,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIViewCo
         cardViewController.cardGesturesViewModel = cardGesturesViewModel
         
         setupAddButton(withSize: 55)
+//        navControllerTransitions = NavControllerTransitions(animationCentre: buttonView.center)
+//        navigationController?.delegate = navControllerTransitions // for custom animation
         
         cardGesturesViewModel.MainView = self.view
         cardGesturesViewModel.cardViewController = cardViewController
@@ -130,7 +134,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIViewCo
     
     
     @objc private func addButtonPressed () {
-        Navigation.shared.showCameraVC(for: self)
+        Navigation.shared.showCameraVC(for: self, onAddReceipt: cardViewController.cardViewModel.passData(as:paymentInfo:))
     }
     
     @objc private func addButtonTouchDown() {
@@ -145,11 +149,11 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIViewCo
         
         // Perform custom animation only if CameraViewController
         guard let cameraVC = toVC as? CameraViewController else { return nil }
-        
+
         circularTransition.transitionMode = (operation == .push) ? .present : .pop
         circularTransition.startingPoint = buttonView.center
         cameraVC.addButtonCenter = buttonView.center
-        
+
         return circularTransition
     }
     

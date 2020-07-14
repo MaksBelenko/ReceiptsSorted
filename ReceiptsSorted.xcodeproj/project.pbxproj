@@ -77,6 +77,7 @@
 		B5DB922323BE929F0081E8D7 /* PaymentsData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B5DB922123BE929F0081E8D7 /* PaymentsData.xcdatamodeld */; };
 		B5DFF55724842629003CEDA3 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5DFF55624842629003CEDA3 /* OnboardingViewController.swift */; };
 		B5DFF55C24843B02003CEDA3 /* ShowElementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5DFF55B24843B02003CEDA3 /* ShowElementView.swift */; };
+		B5E3086824BE532E003D5860 /* NavControllerTransitions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E3086724BE532E003D5860 /* NavControllerTransitions.swift */; };
 		B5E3C3782445403B00AD59AC /* ImageGestures.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E3C3772445403B00AD59AC /* ImageGestures.swift */; };
 		B5E5E5C923C106E7006A14EE /* DatabaseAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E5E5C823C106E7006A14EE /* DatabaseAdapter.swift */; };
 		B5ED9A3A248595BC00FA7A7B /* OnboardingInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5ED9A39248595BC00FA7A7B /* OnboardingInfo.swift */; };
@@ -166,6 +167,7 @@
 		B5DB922223BE929F0081E8D7 /* PaymentsData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = PaymentsData.xcdatamodel; sourceTree = "<group>"; };
 		B5DFF55624842629003CEDA3 /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
 		B5DFF55B24843B02003CEDA3 /* ShowElementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowElementView.swift; sourceTree = "<group>"; };
+		B5E3086724BE532E003D5860 /* NavControllerTransitions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavControllerTransitions.swift; sourceTree = "<group>"; };
 		B5E3C3772445403B00AD59AC /* ImageGestures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageGestures.swift; sourceTree = "<group>"; };
 		B5E5E5C823C106E7006A14EE /* DatabaseAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseAdapter.swift; sourceTree = "<group>"; };
 		B5ED9A39248595BC00FA7A7B /* OnboardingInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingInfo.swift; sourceTree = "<group>"; };
@@ -416,6 +418,7 @@
 				B54967AC241167C000684A2F /* SortingDropDownMenu.swift */,
 				B58CC931246DB9B5006FEF00 /* CollectionViewFlowLayout.swift */,
 				B5689D7124BB61D5005C46C5 /* ShareImagesViewModel.swift */,
+				B5E3086724BE532E003D5860 /* NavControllerTransitions.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -586,6 +589,7 @@
 				B5217ECE246C870B00CC31AB /* FileManagerExtensions.swift in Sources */,
 				B5666050242FB65F003DD15B /* IntExtensins.swift in Sources */,
 				B565674024831619000A6639 /* ZipAdapter.swift in Sources */,
+				B5E3086824BE532E003D5860 /* NavControllerTransitions.swift in Sources */,
 				B5F54E8B241E78C70016DCED /* DateExtensions.swift in Sources */,
 				B59E3E2723B50D9F0017D474 /* PaymentTableViewCell.swift in Sources */,
 				B5D70A6B245338530080BF81 /* TopGraphicsView.swift in Sources */,

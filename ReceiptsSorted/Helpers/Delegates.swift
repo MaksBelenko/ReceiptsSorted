@@ -17,7 +17,7 @@ protocol PopupDelegate: AnyObject {
 
 
 protocol PaymentDelegate: AnyObject {
-    func passData(as showPayment: ShowPaymentAs, paymentInfo: PaymentInformation)
+    func passData(as showPayment: PaymentAction, paymentInfo: PaymentInformation)
 }
 
 protocol SortButtonLabelDelegate: AnyObject {
@@ -34,3 +34,4 @@ protocol RefreshTableDelegate: AnyObject {
     func removeRows(indexPaths: [IndexPath])
     func removeSection(indexSet: IndexSet)
 }
+

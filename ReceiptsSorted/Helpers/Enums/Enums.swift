@@ -11,7 +11,7 @@ enum CardState {
     case Expanded, Collapsed
 }
 
-enum ShowPaymentAs {
+enum PaymentAction {
     case AddPayment, UpdatePayment
 }
 

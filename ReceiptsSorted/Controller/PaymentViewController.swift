@@ -12,7 +12,7 @@ import CropViewController
 
 class PaymentViewController: UIViewController, UITextFieldDelegate {
 
-    var pageType: ShowPaymentAs = .AddPayment
+    var pageType: PaymentAction = .AddPayment
     
     var passedImage: UIImage? = nil
     var amountPaid: Float = 0.0
@@ -32,8 +32,8 @@ class PaymentViewController: UIViewController, UITextFieldDelegate {
     let buttonAnimations = AddButtonAnimations()
     var imageGesturesViewModel = ImageGestures()
     
-    weak var paymentDelegate: PaymentDelegate?
-    
+//    weak var paymentDelegate: PaymentDelegate?
+    var onButtonAction: ((PaymentAction, PaymentInformation) -> ())?
     
     
     
@@ -256,7 +256,8 @@ class PaymentViewController: UIViewController, UITextFieldDelegate {
         place = placeOfPurchaseTextField.text!
         
         let paymentInfo = PaymentInformation(amountPaid: amountPaid, place: place, date: date, receiptImage: receiptImageView.image ?? UIImage())
-        paymentDelegate?.passData(as: pageType, paymentInfo: paymentInfo)
+        onButtonAction!(pageType, paymentInfo)
+//        paymentDelegate?.passData(as: pageType, paymentInfo: paymentInfo)
         
         if (pageType == .AddPayment) {
             navigationController?.popToRootViewController(animated: true)

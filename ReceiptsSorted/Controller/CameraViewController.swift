@@ -15,13 +15,14 @@ class CameraViewController: UIViewController, UINavigationControllerDelegate {
     @IBOutlet weak var cameraView: UIView!
     
     var controllerFrame: CGRect?
-    var photoOutput: AVCapturePhotoOutput?
-    var cameraSession: CameraSession?
-    let imagePicker = UIImagePickerController()
+    private var photoOutput: AVCapturePhotoOutput?
+    private var cameraSession: CameraSession?
+    private let imagePicker = UIImagePickerController()
     
     
     private let circularTransition = CircularTransition()
-    weak var cardVM: CardViewModel?
+//    weak var cardVM: CardViewModel?
+    var onAddReceipt: ((PaymentAction, PaymentInformation) -> ())?
     var addButtonCenter: CGPoint?
     
     override var preferredStatusBarStyle: UIStatusBarStyle { return .lightContent }
@@ -35,26 +36,32 @@ class CameraViewController: UIViewController, UINavigationControllerDelegate {
     }
     
     
+    // MARK: - Initialisation
+    init(onAddReceipt: @escaping (PaymentAction, PaymentInformation) -> ()) {
+        super.init(nibName: "CameraViewController", bundle: nil)
+        self.onAddReceipt = onAddReceipt
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    
     //MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
         imagePicker.delegate = self
         self.view.frame = controllerFrame ?? CGRect(x: 0, y: 0, width: 100, height: 100)
-        
         setupCameraSession()
         setupGestureRecognisers()
     }
         
-    
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         cameraSession!.startRunningCaptureSession()
         navigationController?.delegate = self
     }
-    
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(true)        
@@ -70,9 +77,8 @@ class CameraViewController: UIViewController, UINavigationControllerDelegate {
         cameraSession = CameraSession(forView: cameraView)
     }
     
-    
     func setupGestureRecognisers() {
-        // Create gesture recognisers for focusing of camera
+        // Create gesture recognisers for camera focusing
         let tapGestureRecogniser = UITapGestureRecognizer(target: cameraSession, action: #selector(cameraSession?.handleTapToFocus(recogniser:)))
         cameraView.addGestureRecognizer(tapGestureRecogniser)
     }
@@ -84,11 +90,9 @@ class CameraViewController: UIViewController, UINavigationControllerDelegate {
         cameraSession?.setCapturePhoto(delegate: self)
     }
     
-    
     @IBAction func pressedCloseCamera(_ sender: UIButton) {
         navigationController?.popViewController(animated: true)
     }
-    
     
     @IBAction func pressedFlashButton(_ sender: UIButton) {
         let picName = cameraSession?.nextFlashMode()
@@ -112,7 +116,9 @@ extension CameraViewController: UIImagePickerControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         dismiss(animated: true, completion: nil)
         if let pickedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
-            Navigation.shared.showPaymentVC(for: self, withImage: pickedImage)
+            Navigation.shared.showPaymentVC(for: self,
+                                            withImage: pickedImage,
+                                            onAddReceipt: onAddReceipt!)
         }
     }
     
@@ -132,7 +138,7 @@ extension CameraViewController: AVCapturePhotoCaptureDelegate {
                 return
         }
         
-        Navigation.shared.showPaymentVC(for: self, withImage: image)
+        Navigation.shared.showPaymentVC(for: self, withImage: image, onAddReceipt: onAddReceipt!)
         
     }
 }
