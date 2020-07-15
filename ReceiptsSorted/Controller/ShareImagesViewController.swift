@@ -150,7 +150,7 @@ class ShareImagesViewController: UIViewController {
     }
     
     @objc private func shareButtonPressed() {
-        Alert.shared.showShareSelector(for: self)
+        Alert.shared.showShareSelector(for: self, onShareClicked: showActivityVC(for:))
     }
     
     func showActivityVC(for shareType: ShareImagesType) {

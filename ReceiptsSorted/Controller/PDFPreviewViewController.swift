@@ -33,6 +33,15 @@ class PDFPreviewViewController: UIViewController {
     }
 
     
+    // MARK: - Initialisation
+    init() {
+        super.init(nibName: "PDFPreviewViewController", bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     // MARK: - Lifecycle
     
     override func viewDidLoad() {

@@ -33,6 +33,7 @@
 		B548CE0D246469C200342613 /* VibrationEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = B548CE0C246469C200342613 /* VibrationEnum.swift */; };
 		B54967A824104E3500684A2F /* ImageCompression.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54967A724104E3500684A2F /* ImageCompression.swift */; };
 		B54967AD241167C000684A2F /* SortingDropDownMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54967AC241167C000684A2F /* SortingDropDownMenu.swift */; };
+		B549C0B324BF0A1D003F148E /* AlertFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B549C0B224BF0A1D003F148E /* AlertFactory.swift */; };
 		B550E150245B2F0F000294B1 /* SortEnums+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = B550E14F245B2F0F000294B1 /* SortEnums+Ext.swift */; };
 		B554F963247718BA007C486A /* CardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B554F962247718BA007C486A /* CardViewModel.swift */; };
 		B561B38F243BFBAD00F7B29B /* PdfFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B561B38E243BFBAD00F7B29B /* PdfFactory.swift */; };
@@ -123,6 +124,7 @@
 		B548CE0C246469C200342613 /* VibrationEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VibrationEnum.swift; sourceTree = "<group>"; };
 		B54967A724104E3500684A2F /* ImageCompression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCompression.swift; sourceTree = "<group>"; };
 		B54967AC241167C000684A2F /* SortingDropDownMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortingDropDownMenu.swift; sourceTree = "<group>"; };
+		B549C0B224BF0A1D003F148E /* AlertFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertFactory.swift; sourceTree = "<group>"; };
 		B550E14F245B2F0F000294B1 /* SortEnums+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SortEnums+Ext.swift"; sourceTree = "<group>"; };
 		B554F962247718BA007C486A /* CardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardViewModel.swift; sourceTree = "<group>"; };
 		B561B38E243BFBAD00F7B29B /* PdfFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PdfFactory.swift; sourceTree = "<group>"; };
@@ -352,6 +354,7 @@
 			isa = PBXGroup;
 			children = (
 				B561B38E243BFBAD00F7B29B /* PdfFactory.swift */,
+				B549C0B224BF0A1D003F148E /* AlertFactory.swift */,
 			);
 			path = Factories;
 			sourceTree = "<group>";
@@ -594,6 +597,7 @@
 				B59E3E2723B50D9F0017D474 /* PaymentTableViewCell.swift in Sources */,
 				B5D70A6B245338530080BF81 /* TopGraphicsView.swift in Sources */,
 				B573FAA423B95F57005473D2 /* Delegates.swift in Sources */,
+				B549C0B324BF0A1D003F148E /* AlertFactory.swift in Sources */,
 				B514A36B24BB91990078E9A9 /* WorldCurrencies.swift in Sources */,
 				B593962C2483D50600B1E895 /* ReceiptPhoto+CoreDataProperties.swift in Sources */,
 				B593962E2483D50600B1E895 /* Payment+CoreDataClass.swift in Sources */,

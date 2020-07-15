@@ -227,7 +227,9 @@ class CardViewController: UIViewController {
             Alert.shared.showNoPaymentsErrorAlert(for: self)
             return
         }
-        Alert.shared.showFileFormatAlert(for: self, withPayments: selectedPayments)
+        Alert.shared.showFileFormatAlert(for: self, withPayments: selectedPayments, onComplete: { [unowned self] in
+            self.selectingPayments(mode: .Disable)
+        })
         cardViewModel.selectedPaymentsUIDs.removeAll()
     }
     

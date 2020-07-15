@@ -16,29 +16,25 @@ class Alert {
     
     // MARK: - Email button alerts
     
-    func showFileFormatAlert(for controller: UIViewController, withPayments payments: [Payment]) {
-        let optionMenu = UIAlertController(title: "Send receipts as:", message: nil , preferredStyle: .actionSheet)
-
-        let pdfAction = UIAlertAction(title: "PDF (Table & photos)", style: .default, handler: { alert in
-            Navigation.shared.showPDFPreview(for: controller, withPayments: payments)
+    func showFileFormatAlert(for controller: UIViewController, withPayments payments: [Payment], onComplete: (() -> ())? = nil) {
+        let pdfAction = UIAlertAction(title: "PDF (Table & photos)", style: .default, handler: { _ in
+            Navigation.shared.showPDFPreview(for: controller, withPayments: payments, onComplete: onComplete)
         })
-        let archiveAction = UIAlertAction(title: "Photos only", style: .default, handler: { alert in
-            Navigation.shared.showArchivedImagesViewer(for: controller, withPayments: payments)
+        let archiveAction = UIAlertAction(title: "Photos only", style: .default, handler: { _ in
+            Navigation.shared.showShareImagesVC(for: controller, withPayments: payments, onComplete: onComplete)
         })
-
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-        optionMenu.addAction(archiveAction)
-        optionMenu.addAction(pdfAction)
-        optionMenu.addAction(cancelAction)
-        controller.present(optionMenu, animated: true, completion: nil)
+        
+        let alert = AlertFactory(alertController: UIAlertController(title: "Send receipts as:", message: nil , preferredStyle: .actionSheet),
+                                 actions: [pdfAction, archiveAction, cancelAction])
+        alert.show(for: controller)
     }
     
     func showNoPaymentsErrorAlert(for controller: UIViewController) {
         Vibration.error.vibrate()
-        let optionMenu = UIAlertController(title: "No receipts selected!", message: "Please select the receipts that you would like to send" , preferredStyle: .alert)
-        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
-        optionMenu.addAction(okAction)
-        controller.present(optionMenu, animated: true, completion: nil)
+        let alert = AlertFactory(alertController: UIAlertController(title: "No receipts selected!", message: "Please select the receipts that you would like to send" , preferredStyle: .alert),
+                                 actions: [UIAlertAction(title: "OK", style: .default, handler: nil)])
+        alert.show(for: controller)
     }
     
     
@@ -49,40 +45,31 @@ class Alert {
     func showDismissPdfAlert(for controller: UIViewController) {
         Vibration.light.vibrate()
         
-        let optionMenu = UIAlertController(title: "Are you sure you want to dismiss the pdf?", message: nil , preferredStyle: .actionSheet)
-
-        let dismissAction = UIAlertAction(title: "Dismiss", style: .destructive, handler: { alert in
-//            controller.navigationController?.dismiss(animated: true, completion: nil)
+        let dismissAction = UIAlertAction(title: "Dismiss", style: .destructive, handler: { _ in
             controller.dismiss(animated: true, completion: nil)
         })
-
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-        optionMenu.addAction(dismissAction)
-        optionMenu.addAction(cancelAction)
-        controller.present(optionMenu, animated: true, completion: nil)
+        
+        let alert = AlertFactory(alertController: UIAlertController(title: "Are you sure you want to dismiss the pdf?", message: nil , preferredStyle: .actionSheet),
+                                 actions: [dismissAction, cancelAction])
+        alert.show(for: controller)
     }
     
     
     // MARK: - Share Images Alerts
     
-    func showShareSelector(for controller: UIViewController) {
-        let optionMenu = UIAlertController(title: "How do you want to send images?", message: nil , preferredStyle: .actionSheet)
-
-        let photosAction = UIAlertAction(title: "Just images", style: .default, handler: { alert in
-            guard let controller = controller as? ShareImagesViewController else { return }
-            controller.showActivityVC(for: .RawImages)
+    func showShareSelector(for controller: UIViewController, onShareClicked: @escaping (ShareImagesType) -> ()) {
+        let photosAction = UIAlertAction(title: "Just images", style: .default, handler: { _ in
+            onShareClicked(.RawImages)
         })
-        
-        let archiveAction = UIAlertAction(title: "Zip Archive", style: .default, handler: { alert in
-            guard let controller = controller as? ShareImagesViewController else { return }
-            controller.showActivityVC(for: .Zip)
+        let archiveAction = UIAlertAction(title: "Zip Archive", style: .default, handler: { _ in
+            onShareClicked(.Zip)
         })
-
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-        optionMenu.addAction(archiveAction)
-        optionMenu.addAction(photosAction)
-        optionMenu.addAction(cancelAction)
-        controller.present(optionMenu, animated: true, completion: nil)
+        
+        let alert = AlertFactory(alertController: UIAlertController(title: "How do you want to send images?", message: nil , preferredStyle: .actionSheet),
+                                 actions: [archiveAction, photosAction, cancelAction])
+        alert.show(for: controller)
     }
     
     
@@ -92,15 +79,13 @@ class Alert {
     func removePaymentAlert(for controller: UIViewController, onDelete: @escaping () -> ()) {
         Vibration.light.vibrate()
         
-        let optionMenu = UIAlertController(title: "Are you sure you want to delete the payment?", message: nil , preferredStyle: .actionSheet)
-
         let deleteAction = UIAlertAction(title: "Yes, delete", style: .destructive, handler: { _ in
             onDelete()
         })
-
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-        optionMenu.addAction(deleteAction)
-        optionMenu.addAction(cancelAction)
-        controller.present(optionMenu, animated: true, completion: nil)
+        
+        let alert = AlertFactory(alertController: UIAlertController(title: "Are you sure you want to delete the payment?", message: nil , preferredStyle: .actionSheet),
+                                 actions: [deleteAction, cancelAction])
+        alert.show(for: controller)
     }
 }

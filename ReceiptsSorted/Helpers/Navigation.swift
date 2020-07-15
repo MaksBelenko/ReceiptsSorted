@@ -19,7 +19,6 @@ class Navigation {
         let cameraVC = CameraViewController(onAddReceipt: onAddReceipt)
         cameraVC.modalPresentationStyle = .custom
         cameraVC.controllerFrame = controller.view.frame
-        
         controller.navigationController?.pushViewController(cameraVC, animated: true)
     }
     
@@ -27,35 +26,25 @@ class Navigation {
     
     // MARK: - CardViewController
     
-    func showPDFPreview(for controller: UIViewController, withPayments payments: [Payment]) {
-        guard let cardVC = controller as? CardViewController else {
-            NSLog("Controller requested cameraVC is not CardViewController")
-            Log.exception(message: "Controller requested cameraVC is not CardViewController")
-            return
-        }
-        
-        let pdfPreviewVC = PDFPreviewViewController(nibName: "PDFPreviewViewController", bundle: nil)
+    func showPDFPreview(for controller: UIViewController, withPayments payments: [Payment], onComplete: (() -> ())? = nil) {
+        let pdfPreviewVC = PDFPreviewViewController()
         pdfPreviewVC.passedPayments = payments
         pdfPreviewVC.isModalInPresentation = true
-        cardVC.present(pdfPreviewVC, animated: true) {
-            cardVC.selectingPayments(mode: .Disable)
+        controller.present(pdfPreviewVC, animated: true) {
+            guard let complete = onComplete else { return }
+            complete()
         }
     }
     
     
-    func showArchivedImagesViewer(for controller: UIViewController, withPayments payments: [Payment]) {
-        guard let cardVC = controller as? CardViewController else {
-            NSLog("Controller requested cameraVC is not CardViewController")
-            Log.exception(message: "Controller requested cameraVC is not CardViewController")
-            return
-        }
-        
+    func showShareImagesVC(for controller: UIViewController, withPayments payments: [Payment], onComplete: (() -> ())? = nil) {
         let archiveVC = ShareImagesViewController()
         let navController = UINavigationController(rootViewController: archiveVC)
         archiveVC.passedPayments = payments
         navController.isModalInPresentation = true
-        cardVC.present(navController, animated: true) {
-            cardVC.selectingPayments(mode: .Disable)
+        controller.present(navController, animated: true) {
+            guard let complete = onComplete else { return }
+            complete()
         }
     }
     
@@ -82,9 +71,7 @@ class Navigation {
             paymentVC.place = selectedPayment.place!
             paymentVC.date = selectedPayment.date!
             paymentVC.pageType = .UpdatePayment
-            
             paymentVC.onButtonAction = onUpdateReceipt
-//            paymentVC.paymentDelegate = controller.cardViewModel
             
             paymentVC.modalPresentationStyle = .fullScreen
             controller.navigationController?.pushViewController(paymentVC, animated: true)
