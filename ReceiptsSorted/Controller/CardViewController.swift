@@ -49,13 +49,11 @@ class CardViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
-        
         configureTableView()
         setupSearchBar()
         setupNoReceiptsImage()
         setupSelectionHelperView()
-        sortButton.setTitle(dropDownMenu.getButtonTitle(for: cardViewModel.sortByOption), for: .normal)
+        sortButton.setTitle(dropDownMenu.getButtonTitle(for: cardViewModel.sortType), for: .normal)
         
         cardViewModel.delegate = self
         cardViewModel.isSelectionEnabled.onValueChanged { [weak self] selectionEnabled in
@@ -215,7 +213,7 @@ class CardViewController: UIViewController {
     //MARK: - @IBActions
     
     @IBAction func segmentedControlValueChanged(_ sender: UISegmentedControl) {
-        cardViewModel.paymentStatusSort = sender.getCurrentPosition()
+        cardViewModel.paymentStatusType = sender.getCurrentPosition()
         cardViewModel.refreshPayments()
     }
     
@@ -282,8 +280,8 @@ extension CardViewController: UIPopoverPresentationControllerDelegate, SortButto
     
     //Delegate method
     func changeButtonLabel(sortByOption: SortType, buttonTitle: String) {
-        if (cardViewModel.sortByOption != sortByOption) {
-            cardViewModel.sortByOption = sortByOption
+        if (cardViewModel.sortType != sortByOption) {
+            cardViewModel.sortType = sortByOption
             sortButton.setTitle(buttonTitle, for: .normal)
             cardViewModel.refreshPayments()
         }

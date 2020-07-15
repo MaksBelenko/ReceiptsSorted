@@ -8,39 +8,52 @@
 
 import UIKit.UIView
 
-class CardViewModel {
+class CardViewModel: IPaymentsListener {
     
-    var tableRowsHeight: CGFloat = 60
-    
-    var fetchedPayments: [Payment] = []
-    var cardTableSections: [PaymentTableSection] = []
-    var paymentUpdateIndex = (section: 0, row: 0)
-    
-    var sortByOption: SortType = .NewestDateAdded
-    var paymentStatusSort: PaymentStatusType = .Pending
-    
-    var database = DatabaseAdapter()
-    var cardTableHeader = CardTableHeader()
-    var amountAnimation: AmountAnimation!
+    weak var delegate: RefreshTableDelegate?
     
     // Selection enabled
     var selectAllButtonText: Observable<String> = Observable("Select All")
+    var isSelectionEnabled: Observable<Bool> = Observable(false)
+    var firstVisibleCells: [PaymentTableViewCell] = []
+    var selectedPaymentsUIDs: [UUID] = []
+    
+    var tableRowsHeight: CGFloat = 60
+    
+    private var fetchedPayments: [Payment] = [] {
+        didSet {
+            cardTableSections = cardTableHeader.getSections(for: fetchedPayments, sortedBy: sortType)
+        }
+    }
+    var cardTableSections: [PaymentTableSection] = []
+    private var paymentUpdateIndex = (section: 0, row: 0)
+    var sortType: SortType = .NewestDateAdded
+    var paymentStatusType: PaymentStatusType = .Pending
+    var database = DatabaseAdapter()
+    var cardTableHeader = CardTableHeader()
+    var amountAnimation: AmountAnimation!
     var allSelected = false {
         didSet {
             selectAllButtonText.value = (allSelected) ? "Unselect All" : "Select All"
         }
     }
-    var isSelectionEnabled: Observable<Bool> = Observable(false)
-    var firstVisibleCells: [PaymentTableViewCell] = []
-    var selectedPaymentsUIDs: [UUID] = []
-    
-    weak var delegate: RefreshTableDelegate?
     
     
     
     // MARK: - Initiliation
     init() {
         refreshPayments(reloadTable: false)
+        
+//        database.payments.onValueChanged { [unowned self] updatedPayments in
+//            self.fetchedPayments = updatedPayments
+//            self.delegate?.reloadTable()
+//        }
+        database.subscribe(listener: self)
+    }
+    
+    func onPaymentsChanged(payments: [Payment]) {
+        fetchedPayments = payments
+        delegate?.reloadTable()
     }
     
     
@@ -50,8 +63,7 @@ class CardViewModel {
      - Parameter reloadTable: Causes to delegate reloadTable() method to be fired when set to true
      */
     func refreshPayments(reloadTable: Bool = true) {
-        fetchedPayments = database.fetchSortedData(by: sortByOption, and: paymentStatusSort)
-        cardTableSections = cardTableHeader.getSections(for: fetchedPayments, sortedBy: sortByOption)
+        fetchedPayments = database.fetchSortedData(by: sortType, and: paymentStatusType)
         if (reloadTable) {
             delegate?.reloadTable()
         }
@@ -64,8 +76,7 @@ class CardViewModel {
      - Parameter searchText: Name that is searched for
      */
     func getPayments(forSearchName searchText: String) {
-        fetchedPayments = database.fetchData(forName: searchText, by: sortByOption, and: paymentStatusSort)
-        cardTableSections = cardTableHeader.getSections(for: fetchedPayments, sortedBy: sortByOption)
+        fetchedPayments = database.fetchData(forName: searchText, by: sortType, and: paymentStatusType)
         delegate?.reloadTable()
     }
     
@@ -91,7 +102,7 @@ class CardViewModel {
      - Returns: UIView for the section header
      */
     func getSectionHeaderView(for section: Int, width: CGFloat) -> UIView {
-        return cardTableHeader.getSectionHeaderView(for: section, sortedBy: sortByOption, width: width)
+        return cardTableHeader.getSectionHeaderView(for: section, sortedBy: sortType, width: width)
     }
     
     
@@ -162,7 +173,7 @@ class CardViewModel {
         switch option {
         case .SelectAll:
             fetchedPayments.forEach {
-                if !selectedPaymentsUIDs.contains($0.uid!) {
+                if (!selectedPaymentsUIDs.contains($0.uid!)) {
                     selectedPaymentsUIDs.append($0.uid!)
                 }
             }
@@ -220,13 +231,13 @@ extension CardViewModel: PaymentDelegate {
         DispatchQueue.main.async {
             switch showPayment
             {
-                case .AddPayment:
-                    self.addNewPayment(paymentInfo: paymentInfo)
-                case .UpdatePayment:
-                    self.updatePayment(paymentInfo: paymentInfo)
+            case .AddPayment:
+                self.addNewPayment(paymentInfo: paymentInfo)
+            case .UpdatePayment:
+                self.updatePayment(paymentInfo: paymentInfo)
             }
             
-            self.cardTableSections = self.cardTableHeader.getSections(for: self.fetchedPayments, sortedBy: self.sortByOption)
+            self.cardTableSections = self.cardTableHeader.getSections(for: self.fetchedPayments, sortedBy: self.sortType)
             self.delegate?.reloadTable()
         }
     }
@@ -234,7 +245,7 @@ extension CardViewModel: PaymentDelegate {
     
     private func addNewPayment(paymentInfo: PaymentInformation) {
         let addPayment = database.add(payment: paymentInfo)
-        if (paymentStatusSort != .Received) {
+        if (paymentStatusType != .Received) {
             fetchedPayments.append(addPayment.payment)
         }
         amountAnimation.animateCircle(to: addPayment.totalAfter)
@@ -259,36 +270,38 @@ extension CardViewModel: PaymentDelegate {
 // MARK: - SwipeActionDelegate
 extension CardViewModel{
     
-       func removeFromTableVeiw(indexPath: IndexPath, action: SwipeCommandType) {
+    func removeFromTableVeiw(indexPath: IndexPath, action: SwipeCommandType) {
         let payment = getPayment(indexPath: indexPath)
-            
-            guard let index = fetchedPayments.firstIndex(of: payment) else {
-                Log.exception(message: "Mismatch in arrays \"fetchedPayments\" and \"cardTableSections\"")
-                return
-            }
-            
-            if (paymentStatusSort != .All || action == .Remove) {
-                fetchedPayments.remove(at: index)
-                cardTableSections[indexPath.section].payments.remove(at: indexPath.row)
-                removeSectionIfEmpty(indexPath: indexPath)
-            }
-            else {
-                delegate?.updateRows(indexPaths: [indexPath])
-            }
-            
-            updateCircularBar()
+        
+        guard let index = fetchedPayments.firstIndex(of: payment) else {
+            Log.exception(message: "Mismatch in arrays \"fetchedPayments\" and \"cardTableSections\"")
+            return
         }
         
-        
-        private func removeSectionIfEmpty(indexPath: IndexPath) {
-            if (cardTableSections[indexPath.section].payments.count == 0) {  //One payments in section
-                cardTableSections.remove(at: indexPath.section)
-                delegate?.removeSection(indexSet: IndexSet([indexPath.section]))
-            }
-            else {
-                delegate?.removeRows(indexPaths: [indexPath])
-            }
+        if (paymentStatusType != .All || action == .Remove) {
+            removeSectionIfEmpty(indexPath: indexPath, index: index)
+//                fetchedPayments.remove(at: index)
+//                cardTableSections[indexPath.section].payments.remove(at: indexPath.row)
         }
+        else {
+            delegate?.updateRows(indexPaths: [indexPath])
+        }
+        
+        updateCircularBar()
+    }
+    
+    
+    private func removeSectionIfEmpty(indexPath: IndexPath, index: Int) {
+        // Note: Check fist before removing from the fetchedPayments as it
+        //       changes cardTableSections in didSet
+        let sectionPaymentCount = cardTableSections[indexPath.section].payments.count
+        fetchedPayments.remove(at: index)
+        if (sectionPaymentCount == 1) {
+            delegate?.removeSection(indexSet: IndexSet([indexPath.section]))
+        } else {
+            delegate?.removeRows(indexPaths: [indexPath])
+        }
+    }
     
     
     func updateCircularBar() {

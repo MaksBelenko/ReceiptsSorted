@@ -9,14 +9,29 @@
 import UIKit
 import CoreData
 
+protocol IPaymentsListener {
+    func onPaymentsChanged(payments: [Payment])
+}
+
 class DatabaseAdapter {
     
-    let paymentsEntityName: String = "Payment"
+    private var subscribers: [IPaymentsListener] = []
     
-    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-    let imageCompression = ImageCompression()
+    private let paymentsEntityName: String = "Payment"
+    private let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    private let imageCompression = ImageCompression()
+    private let settings = Settings.shared
     
-    let settings = Settings.shared
+    
+    
+    // MARK: - Subscribe listener
+    /**
+     Subscribe to the payments changes in order to be notified
+     when asynchronous fetch finished
+     */
+    func subscribe(listener: IPaymentsListener) {
+        subscribers.append(listener)
+    }
     
     
     //MARK: - Basic methods
@@ -48,11 +63,41 @@ class DatabaseAdapter {
      - Parameter request: NSFetchRequest that is used to fetch data from database
      */
     private func loadPayments(with request: NSFetchRequest<Payment> = Payment.fetchRequest()) -> [Payment] {
+//        do {
+//            return try context.fetch(request)
+//        } catch {
+//            print("Error fetching data \(error)")
+//            return []
+//        }
+        
+        let asyncFetchRequest = NSAsynchronousFetchRequest<Payment>( fetchRequest: request) { [unowned self] (result: NSAsynchronousFetchResult) in
+            guard let pResults = result.finalResult else { return }
+            self.subscribers.forEach { $0.onPaymentsChanged(payments: pResults) }
+        }
+        
         do {
-            return try context.fetch(request)
+            try context.execute(asyncFetchRequest)
         } catch {
-            print("Error fetching data \(error)")
-            return []
+            Log.exception(message: "Error executing asynchronous fetch: \(error.localizedDescription)")
+        }
+        
+        return []
+    }
+    
+    
+    
+    
+    
+    func loadPaymentsAsync(with request: NSFetchRequest<Payment> = Payment.fetchRequest()) {
+        let asyncFetchRequest = NSAsynchronousFetchRequest<Payment>( fetchRequest: request) { [unowned self] (result: NSAsynchronousFetchResult) in
+            guard let pResults = result.finalResult else { return }
+            self.subscribers.forEach { $0.onPaymentsChanged(payments: pResults) }
+        }
+        
+        do {
+            try context.execute(asyncFetchRequest)
+        } catch {
+            Log.exception(message: "Error executing asynchronous fetch: \(error.localizedDescription)")
         }
     }
     
@@ -85,6 +130,8 @@ class DatabaseAdapter {
             let compareSelector = #selector(NSString.localizedStandardCompare(_:))
             let sd = NSSortDescriptor(key: #keyPath(Payment.place), ascending: true, selector: compareSelector)
             request.sortDescriptors = [sd]
+
+//            loadPaymentsAsync(with: request)
             
             return loadPayments(with: request)
             
@@ -137,7 +184,7 @@ class DatabaseAdapter {
      Adds a payments to database and returns a tuple of the totals before and after the payment
      - Parameter payment: Tuple that is used to create a new entry in the database
      */
-    func add (payment: PaymentInformation) -> PaymentTotalInfo{
+    func add (payment: PaymentInformation) -> PaymentTotalInfo {
         let totalBefore = getTotalAmount(of: .Pending)
         
         let newPayment = Payment(context: context)

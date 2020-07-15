@@ -98,6 +98,7 @@ class Alert {
     
     /**
      Presents an action sheet checking weather removing was intended
+     - Parameter controller: ViewController that should present the alarm
      - Parameter onDelete: Mthod that should be executed on delete confirmation
      */
     func showRemoveAlert(for controller: UIViewController, onDelete: @escaping () -> ()) {
@@ -117,6 +118,12 @@ class Alert {
     
     // MARK: - Save Photo to library alert
     
+    /**
+     Show action sheet when trying to save to the photo library
+     - Parameter controller: ViewController that should present the alarm
+     - Parameter image: Image that is to be saved to library
+     - Parameter savePhotoSelector: Selector to be executed on save
+     */
     func showSaveToLibAlert(for controller: UIViewController, image: UIImage, savePhotoSelector: Selector) {
         let deleteAction = UIAlertAction(title: "Yes, save", style: .default, handler: { _ in
             UIImageWriteToSavedPhotosAlbum(image, controller, savePhotoSelector, nil)
@@ -128,20 +135,28 @@ class Alert {
         alert.show(for: controller)
     }
     
+    
+    /**
+     After a try of saving a photo to the library show if it is a success or fail
+     - Parameter controller: ViewController that should present the alarm.
+     - Parameter error: Error depending in which the message is created
+     */
     func showSaveSuccessStatusAlert(for controller: UIViewController, error: Error?) {
+        let ac: UIAlertController
         if let err = error {
-            let ac = UIAlertController(title: "Error saving an image", message: "Go to Settings -> WorkReceipts -> Photos -> Enable \"Add Photos Only\" in order to use this function", preferredStyle: .alert)
-            ac.addAction(UIAlertAction(title: "OK", style: .default))
+            ac = UIAlertController(title: "Error saving an image", message: "Go to Settings -> WorkReceipts -> Photos -> Enable \"Add Photos Only\" in order to use this function", preferredStyle: .alert)
             Log.exception(message: "Failed to save the photo to Library. Error: \(err.localizedDescription)")
-            controller.present(ac, animated: true)
         } else {
-            let ac = UIAlertController(title: "Receipt image saved", message: "Your receipt image has been saved to your photos.", preferredStyle: .alert)
-            ac.addAction(UIAlertAction(title: "OK", style: .default))
-            controller.present(ac, animated: true)
+            ac = UIAlertController(title: "Receipt image saved", message: "Your receipt image has been saved to your photos.", preferredStyle: .alert)
         }
+        ac.addAction(UIAlertAction(title: "OK", style: .default))
+        controller.present(ac, animated: true)
     }
     
-    
+    /**
+     Shows an alert which indicates that some of the required dields are empty
+     - Parameter controller: ViewController that should present the alarm.
+     */
     func showEmptyFieldsAlert(for controller: UIViewController) {
         Vibration.error.vibrate()
         let alert = AlertFactory(alertController: UIAlertController(title: "Fill all data", message: "Some of the information is not filled", preferredStyle: .alert),
