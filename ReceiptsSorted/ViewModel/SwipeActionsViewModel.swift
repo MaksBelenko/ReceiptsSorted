@@ -12,23 +12,25 @@ class SwipeActionsViewModel {
 
     weak var swipeActionDelegate: SwipeActionDelegate?
     
+    private let xMarkSymbol = "\u{2715}"  //\u{2716}
+    private let tickSymbol = "\u{2713}"
+    
     
     /**
      Creates "Tick/Untick" and "Remove" trailing actions
-     - Parameter itemNumber: Index of the item to perform trailing actions for
+     - Parameter indexPath: Index of the item to perform trailing actions for
      - Parameter payments: List of payments
      */
     func createTrailingActions(for indexPath: IndexPath, in payment: Payment) -> UISwipeActionsConfiguration {
         
         let checkAction:UIContextualAction?
         
-        //\u{2716}
-        let deleteAction = createContextualAction(title: "\u{2715}\nRemove", colour: .lightRed, indexPath: indexPath) { (indexPath) in
+        let deleteAction = createContextualAction(title: "\(xMarkSymbol)\nRemove", colour: .lightRed, indexPath: indexPath) { (indexPath) in
             self.actionClicked(for: .Remove, indexPath: indexPath, payment: payment)
         }
         
         if (payment.paymentReceived == false){
-            checkAction = createContextualAction(title: "\u{2713}\nClaimed", colour: .tickSwipeActionColour, indexPath: indexPath, onSelectAction: { (indexPath) in
+            checkAction = createContextualAction(title: "\(tickSymbol)\nClaimed", colour: .tickSwipeActionColour, indexPath: indexPath, onSelectAction: { (indexPath) in
                 self.actionClicked(for: .Tick, indexPath: indexPath, payment: payment)
             })
         } else {
@@ -36,10 +38,6 @@ class SwipeActionsViewModel {
                 self.actionClicked(for: .Untick, indexPath: indexPath, payment: payment)
             })
         }
-        
-//        deleteAction.image = UIImage(named: "Remove_50x50")
-//        deleteAction.image = UIImage(systemName: "xmark")
-//        checkAction.image = UIImage(systemName: "checkmark.circle")
         
         return UISwipeActionsConfiguration(actions: [checkAction!, deleteAction])
     }
@@ -50,9 +48,6 @@ class SwipeActionsViewModel {
     func actionClicked(for swipeCommand: SwipeCommandType, indexPath: IndexPath, payment: Payment) {
         swipeActionDelegate?.onSwipeClicked(indexPath: indexPath, action: swipeCommand)
     }
-    
-    
-    
     
     
     

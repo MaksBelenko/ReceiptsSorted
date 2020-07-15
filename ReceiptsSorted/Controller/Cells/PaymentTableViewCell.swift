@@ -55,7 +55,7 @@ class PaymentTableViewCell: UITableViewCell {
     func setCell(for payment: Payment, selectionEnabled: Bool = false, animate: Bool = true) {
         self.amountPaidText.text = "£" + payment.amountPaid.ToString(decimals: 2)
         self.placeText.text = payment.place!
-        self.dateText.text = "Paid on " + payment.date!.ToString(as: .long)
+        self.dateText.text = "Paid on " + payment.date!.toString(as: .long)
         self.receivedPayment = payment.paymentReceived
         
         receivedLabel.alpha = (payment.paymentReceived) ? 1 : 0

@@ -15,7 +15,7 @@ enum PaymentAction {
     case AddPayment, UpdatePayment
 }
 
-enum PaymentDetail {
+enum PaymentField {
     case Image, AmountPaid, Place, PaymentReceived
 }
 

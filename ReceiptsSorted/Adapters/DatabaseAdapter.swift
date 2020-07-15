@@ -64,7 +64,7 @@ class DatabaseAdapter {
      - Parameter name: Place's name that is used to filter and fetch data
                        from database
      */
-    func fetchData(forName name: String, by sort: SortBy, and paymentStatus: PaymentStatusSort) -> [Payment]{
+    func fetchData(forName name: String, by sort: SortType, and paymentStatus: PaymentStatusType) -> [Payment]{
         let request: NSFetchRequest<Payment> = Payment.fetchRequest()
         
         if (name != "") {
@@ -100,7 +100,7 @@ class DatabaseAdapter {
      Fetch sorted data from database
      - Parameter type: by what parameter should the data be sorted
      */
-    func fetchSortedData(by sort: SortBy, and paymentStatus: PaymentStatusSort) -> [Payment] {
+    func fetchSortedData(by sort: SortType, and paymentStatus: PaymentStatusType) -> [Payment] {
         let request: NSFetchRequest<Payment> = Payment.fetchRequest()
         
         // Set predicate for fetch request
@@ -187,8 +187,8 @@ class DatabaseAdapter {
                             AmountPaid -> Float; Place -> String; ReceiptPhoto -> Data;
                             PaymentReceived -> Bool
      */
-    func updateDetail(for payment: Payment, detailType: PaymentDetail, with newDetail: Any) {
-        switch detailType {
+    func updateField(for payment: Payment, fieldType: PaymentField, with newDetail: Any) {
+        switch fieldType {
         case .AmountPaid:
             payment.amountPaid = newDetail as! Float
         case .Place:
@@ -207,6 +207,9 @@ class DatabaseAdapter {
     
     // MARK: - Fault the entity
     
+    /**
+     Faults the object in order to remoove it from memory
+     */
     func refault(object: NSManagedObject?) {
         guard let object = object else {
             Log.exception(message: "Refaulting object is nil")
@@ -225,7 +228,7 @@ class DatabaseAdapter {
      Gets total amount of payments
      - Parameter sortMethod: Allows to get a total either for all, pending or received payments
      */
-    func getTotalAmount(of sortMethod: PaymentStatusSort) -> Float {
+    func getTotalAmount(of sortMethod: PaymentStatusType) -> Float {
         let dictSumName = "sumAmount"
         
         let fetchRequest = NSFetchRequest<NSDictionary>(entityName: paymentsEntityName)

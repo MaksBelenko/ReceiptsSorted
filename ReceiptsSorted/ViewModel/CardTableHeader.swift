@@ -24,7 +24,7 @@ class CardTableHeader {
                             then sections will capital letters of the places; if sorted by
                             "Date" then sections will be name of Months)
      */
-    func getSections(for payments: [Payment], sortedBy sortMethod: SortBy) -> [PaymentTableSection] {
+    func getSections(for payments: [Payment], sortedBy sortMethod: SortType) -> [PaymentTableSection] {
         if (sortMethod == .Place) {
             sections = getSectionsSortedByPlace(for: payments)
         } else {
@@ -43,7 +43,7 @@ class CardTableHeader {
      - Parameter sortedBy: Sort method
      - Parameter width: Width of the section header view
      */
-    func getSectionHeaderView(for section: Int, sortedBy: SortBy, width: CGFloat) -> UIView {
+    func getSectionHeaderView(for section: Int, sortedBy: SortType, width: CGFloat) -> UIView {
         
         let sectionView = UIView(frame: CGRect(x: 0, y: 0, width: width, height: headerHeight)) //set these values as necessary
         sectionView.backgroundColor = .white
@@ -70,7 +70,7 @@ class CardTableHeader {
      - Parameter section: Section index
      - Parameter sortedBy: Sort method
      */
-    private func getSectionTitle(for section: Int, sortedBy: SortBy) -> String {
+    private func getSectionTitle(for section: Int, sortedBy: SortType) -> String {
         let calendar = Calendar.current
         let currentMonth = calendar.component(.month, from: Date()).mapToMonth()
 
@@ -100,7 +100,7 @@ class CardTableHeader {
      - Parameter payments: Payments that are to be sorted
      - Parameter sortedBy: Sorting method (only Newest and Oldest date are used)
      */
-    private func getSectionsSortedByDate(for payments: [Payment], sortedBy: SortBy) -> [PaymentTableSection] {
+    private func getSectionsSortedByDate(for payments: [Payment], sortedBy: SortType) -> [PaymentTableSection] {
         let calendar = Calendar.current
         var tupleArray: [(month: Int, year: Int, payments: [Payment])] = []
 

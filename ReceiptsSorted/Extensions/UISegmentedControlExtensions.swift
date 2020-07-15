@@ -10,7 +10,7 @@ import UIKit
 
 extension UISegmentedControl {
     
-    func getCurrentPosition() -> PaymentStatusSort {
+    func getCurrentPosition() -> PaymentStatusType {
         switch self.selectedSegmentIndex {
         case 0:
             return .Pending

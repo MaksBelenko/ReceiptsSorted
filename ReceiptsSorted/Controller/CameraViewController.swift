@@ -111,9 +111,7 @@ extension CameraViewController: UIImagePickerControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         dismiss(animated: true, completion: nil)
         if let pickedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
-            Navigation.shared.showPaymentVC(for: self,
-                                            withImage: pickedImage,
-                                            onAddReceipt: onAddReceipt!)
+            Navigation.shared.showPaymentVC(for: self, withImage: pickedImage, onAddReceipt: onAddReceipt!)
         }
     }
     

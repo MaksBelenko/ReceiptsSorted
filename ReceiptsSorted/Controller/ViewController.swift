@@ -195,7 +195,7 @@ class ViewController: UIViewController  {
     }
     
     
-    //MARK: - Initialisation of Top graphics
+    //MARK: - Initialisation of Top Indicators
     
     private func setupTopViewWithGraphics() {
         topGraphicsView = TopGraphicsView(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: cardStartPointY))//UIView()

@@ -58,12 +58,12 @@ class CardViewController: UIViewController {
         sortButton.setTitle(dropDownMenu.getButtonTitle(for: cardViewModel.sortByOption), for: .normal)
         
         cardViewModel.delegate = self
-        cardViewModel.isSelectionEnabled.bind { [weak self] selectionEnabled in
+        cardViewModel.isSelectionEnabled.onValueChanged { [weak self] selectionEnabled in
             self?.cardViewModel.allSelected = false
             self?.tblView.reloadData()
         }
         
-        cardViewModel.selectAllButtonText.bind { [weak self] (buttonText) in
+        cardViewModel.selectAllButtonText.onValueChanged { [weak self] (buttonText) in
             self?.selectAllButton.setTitle(buttonText, for: .normal)
         }
     }
@@ -271,7 +271,6 @@ extension CardViewController: UIPopoverPresentationControllerDelegate, SortButto
         let popoverPresentationController = dropDownMenu.createDropDownMenu(for: sender, ofSize: CGSize(width: 200, height: 130))
         popoverPresentationController?.delegate = self
         dropDownMenu.sortButtonLabelDelegate = self
-        
         self.present(dropDownMenu.tableViewController, animated: true, completion: nil)
     }
     
@@ -282,11 +281,10 @@ extension CardViewController: UIPopoverPresentationControllerDelegate, SortButto
 
     
     //Delegate method
-    func changeButtonLabel(sortByOption: SortBy, buttonTitle: String) {
+    func changeButtonLabel(sortByOption: SortType, buttonTitle: String) {
         if (cardViewModel.sortByOption != sortByOption) {
             cardViewModel.sortByOption = sortByOption
             sortButton.setTitle(buttonTitle, for: .normal)
-            
             cardViewModel.refreshPayments()
         }
     }
@@ -395,24 +393,16 @@ extension CardViewController: SwipeActionDelegate {
         switch action
         {
         case .Remove:
-            Alert.shared.removePaymentAlert(for: self, onDelete: { [unowned self] in
-                self.deletePayment(payment: payment, indexPath: indexPath)
+            Alert.shared.showRemoveAlert(for: self, onDelete: { [unowned self] in
+                self.cardViewModel.deletePayment(payment: payment, indexPath: indexPath)
             })
             return
         case .Tick:
-            cardViewModel.database.updateDetail(for: payment, detailType: .PaymentReceived, with: true)
+            cardViewModel.database.updateField(for: payment, fieldType: .PaymentReceived, with: true)
         case .Untick:
-            cardViewModel.database.updateDetail(for: payment, detailType: .PaymentReceived, with: false)
+            cardViewModel.database.updateField(for: payment, fieldType: .PaymentReceived, with: false)
         }
 
         cardViewModel.removeFromTableVeiw(indexPath: indexPath, action: action)
-    }
-    
-    
-    // TODO : Move to view model
-    //Remove payment Alert calls this
-    func deletePayment(payment: Payment, indexPath: IndexPath) {
-        self.cardViewModel.database.delete(item: payment)
-        cardViewModel.removeFromTableVeiw(indexPath: indexPath, action: .Remove)
     }
 }

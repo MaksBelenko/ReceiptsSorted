@@ -16,8 +16,8 @@ class CardViewModel {
     var cardTableSections: [PaymentTableSection] = []
     var paymentUpdateIndex = (section: 0, row: 0)
     
-    var sortByOption: SortBy = .NewestDateAdded
-    var paymentStatusSort: PaymentStatusSort = .Pending
+    var sortByOption: SortType = .NewestDateAdded
+    var paymentStatusSort: PaymentStatusType = .Pending
     
     var database = DatabaseAdapter()
     var cardTableHeader = CardTableHeader()
@@ -200,6 +200,14 @@ class CardViewModel {
         
         allSelected = (count == fetchedPayments.count) ? true : false
        
+    }
+    
+    
+    // MARK: - Delete Payment
+    
+    func deletePayment(payment: Payment, indexPath: IndexPath) {
+        database.delete(item: payment)
+        removeFromTableVeiw(indexPath: indexPath, action: .Remove)
     }
 }
 

@@ -11,9 +11,6 @@ import UIKit
 class DetailsViewController: UIViewController {
 
     
-    
-    
-    
     //set Status Bar icons to white
     override var preferredStatusBarStyle: UIStatusBarStyle { return .lightContent }
     

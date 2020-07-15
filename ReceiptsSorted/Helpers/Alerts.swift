@@ -16,6 +16,12 @@ class Alert {
     
     // MARK: - Email button alerts
     
+    /**
+     Shows an action sheet PDF or Photos selection is available
+     - Parameter controller: ViewController that should present the alarm
+     - Parameter payments: Payments that should be shown on the controller that will be selected to be shown
+     - Parameter onComplete: Method that should be executed after chosen View Controller is chosen
+     */
     func showFileFormatAlert(for controller: UIViewController, withPayments payments: [Payment], onComplete: (() -> ())? = nil) {
         let pdfAction = UIAlertAction(title: "PDF (Table & photos)", style: .default, handler: { _ in
             Navigation.shared.showPDFPreview(for: controller, withPayments: payments, onComplete: onComplete)
@@ -30,6 +36,11 @@ class Alert {
         alert.show(for: controller)
     }
     
+    
+    /**
+     An alert to be shown when user tries to dismiss when no receipts are selected
+     - Parameter controller: ViewController that should present the alarm
+     */
     func showNoPaymentsErrorAlert(for controller: UIViewController) {
         Vibration.error.vibrate()
         let alert = AlertFactory(alertController: UIAlertController(title: "No receipts selected!", message: "Please select the receipts that you would like to send" , preferredStyle: .alert),
@@ -41,7 +52,10 @@ class Alert {
     
     // MARK: - PDF Alerts
     
-    /// Dismiss alert for PDFPreviewVC
+    /**
+     Action sheet that should be presented when trying to dismiss View Controller
+     - Parameter controller: ViewController that should present the alarm
+    */
     func showDismissPdfAlert(for controller: UIViewController) {
         Vibration.light.vibrate()
         
@@ -56,8 +70,14 @@ class Alert {
     }
     
     
+    
     // MARK: - Share Images Alerts
     
+    /**
+     Action sheet that shows options of sending Images or Zip archive
+     - Parameter controller: ViewController that should present the alarm
+     - Parameter onShareClicked: Method that will be executed when one of the options clicked
+     */
     func showShareSelector(for controller: UIViewController, onShareClicked: @escaping (ShareImagesType) -> ()) {
         let photosAction = UIAlertAction(title: "Just images", style: .default, handler: { _ in
             onShareClicked(.RawImages)
@@ -76,7 +96,11 @@ class Alert {
     
     // MARK: - Card Alerts
     
-    func removePaymentAlert(for controller: UIViewController, onDelete: @escaping () -> ()) {
+    /**
+     Presents an action sheet checking weather removing was intended
+     - Parameter onDelete: Mthod that should be executed on delete confirmation
+     */
+    func showRemoveAlert(for controller: UIViewController, onDelete: @escaping () -> ()) {
         Vibration.light.vibrate()
         
         let deleteAction = UIAlertAction(title: "Yes, delete", style: .destructive, handler: { _ in
@@ -88,4 +112,41 @@ class Alert {
                                  actions: [deleteAction, cancelAction])
         alert.show(for: controller)
     }
+    
+    
+    
+    // MARK: - Save Photo to library alert
+    
+    func showSaveToLibAlert(for controller: UIViewController, image: UIImage, savePhotoSelector: Selector) {
+        let deleteAction = UIAlertAction(title: "Yes, save", style: .default, handler: { _ in
+            UIImageWriteToSavedPhotosAlbum(image, controller, savePhotoSelector, nil)
+        })
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        
+        let alert = AlertFactory(alertController: UIAlertController(title: "Do you want to save the receipt image to your photos?", message: nil , preferredStyle: .actionSheet),
+                                 actions: [deleteAction, cancelAction])
+        alert.show(for: controller)
+    }
+    
+    func showSaveSuccessStatusAlert(for controller: UIViewController, error: Error?) {
+        if let err = error {
+            let ac = UIAlertController(title: "Error saving an image", message: "Go to Settings -> WorkReceipts -> Photos -> Enable \"Add Photos Only\" in order to use this function", preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "OK", style: .default))
+            Log.exception(message: "Failed to save the photo to Library. Error: \(err.localizedDescription)")
+            controller.present(ac, animated: true)
+        } else {
+            let ac = UIAlertController(title: "Receipt image saved", message: "Your receipt image has been saved to your photos.", preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "OK", style: .default))
+            controller.present(ac, animated: true)
+        }
+    }
+    
+    
+    func showEmptyFieldsAlert(for controller: UIViewController) {
+        Vibration.error.vibrate()
+        let alert = AlertFactory(alertController: UIAlertController(title: "Fill all data", message: "Some of the information is not filled", preferredStyle: .alert),
+                                 actions: [UIAlertAction(title: "OK", style: .default, handler: nil)])
+        alert.show(for: controller)
+    }
+
 }

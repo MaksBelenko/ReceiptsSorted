@@ -13,11 +13,15 @@ import CropViewController
 class PaymentViewController: UIViewController, UITextFieldDelegate {
 
     var pageType: PaymentAction = .AddPayment
-    
     var passedImage: UIImage? = nil
     var amountPaid: Float = 0.0
     var place: String = ""
     var date: Date = Date()
+    var onButtonAction: ((PaymentAction, PaymentInformation) -> ())?
+    
+    
+    private let buttonAnimations = AddButtonAnimations()
+    private let imageGesturesViewModel = ImageGestures()
     
     
     @IBOutlet weak var bottomViewBottomConstraint: NSLayoutConstraint!
@@ -28,14 +32,6 @@ class PaymentViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var placeOfPurchaseTextField: UITextField!
     @IBOutlet weak var dateTextField: UITextField!
     @IBOutlet weak var addButton: UIButton!
-    
-    let buttonAnimations = AddButtonAnimations()
-    var imageGesturesViewModel = ImageGestures()
-    
-//    weak var paymentDelegate: PaymentDelegate?
-    var onButtonAction: ((PaymentAction, PaymentInformation) -> ())?
-    
-    
     
     
     //set Status Bar icons to black
@@ -70,11 +66,9 @@ class PaymentViewController: UIViewController, UITextFieldDelegate {
         
         amountPaidTextField.delegate = self
         placeOfPurchaseTextField.delegate = self
-        
+    
         self.dateTextField.setInputViewDatePicker(target: self, selector: #selector(pressedDoneDatePicker))
         self.amountPaidTextField.setInputAmountPaid()
-        
-//        configureBottomView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -87,18 +81,6 @@ class PaymentViewController: UIViewController, UITextFieldDelegate {
         super.viewWillDisappear(true)
         removeKeyboardObservers()
     }
-    
-    
-    
-    
-    //MARK: - BottomView
-    
-//    func configureBottomView() {
-//        bottomView.translatesAutoresizingMaskIntoConstraints = false
-//        bottomViewBottomContraint = bottomView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-//        bottomViewBottomContraint.isActive = true
-//    }
-    
     
     
     
@@ -165,23 +147,15 @@ class PaymentViewController: UIViewController, UITextFieldDelegate {
     }
     
     
-    
-
-    
 
     //MARK: - TextFields & Button
     
     func setTextFields() {
         placeOfPurchaseTextField.text = place
+        dateTextField.text = date.toString(as: .long)
         
         if (pageType == .UpdatePayment) {
             amountPaidTextField.text = amountPaid.ToString(decimals: 2)
-            dateTextField.text = date.ToString(as: .long)
-        }
-        
-        if (pageType == .AddPayment) {
-//            amountPaidTextField.text = ""
-            dateTextField.text = date.ToString(as: .long)
         }
     }
     
@@ -191,7 +165,7 @@ class PaymentViewController: UIViewController, UITextFieldDelegate {
         drawBottomLine(for: dateTextField)
     }
     
-    
+    /// Draws a line underneath the textfield
     func drawBottomLine(for textField: UITextField) {
         let bottomLine = CALayer()
         bottomLine.frame = CGRect(x: 0.0, y: textField.frame.height - 7, width: textField.frame.width, height: 1.0)
@@ -199,8 +173,6 @@ class PaymentViewController: UIViewController, UITextFieldDelegate {
         textField.borderStyle = UITextField.BorderStyle.none
         textField.layer.addSublayer(bottomLine)
     }
-    
-    
     
     
     func setupAddButton() {
@@ -248,7 +220,7 @@ class PaymentViewController: UIViewController, UITextFieldDelegate {
     @IBAction func pressedAddButton(_ sender: UIButton) {
         
         if !textFieldsHaveValues() {
-            showTextFieldsAlert()
+            Alert.shared.showEmptyFieldsAlert(for: self)
             return
         }
         
@@ -257,7 +229,6 @@ class PaymentViewController: UIViewController, UITextFieldDelegate {
         
         let paymentInfo = PaymentInformation(amountPaid: amountPaid, place: place, date: date, receiptImage: receiptImageView.image ?? UIImage())
         onButtonAction!(pageType, paymentInfo)
-//        paymentDelegate?.passData(as: pageType, paymentInfo: paymentInfo)
         
         if (pageType == .AddPayment) {
             navigationController?.popToRootViewController(animated: true)
@@ -267,22 +238,10 @@ class PaymentViewController: UIViewController, UITextFieldDelegate {
     }
     
     
-    
     private func textFieldsHaveValues() -> Bool {
         if amountPaidTextField.text == "" { return false }
         if placeOfPurchaseTextField.text == "" { return false }
-        
         return true
-    }
-    
-    
-    private func showTextFieldsAlert() {
-        Vibration.error.vibrate()
-        
-        let ac = UIAlertController(title: "Fill all data", message: "Some of the information is not filled", preferredStyle: .alert)
-        let okayAction = UIAlertAction(title: "OK", style: .default, handler: nil)
-        ac.addAction(okayAction)
-        self.present(ac, animated: true)
     }
     
     
@@ -293,31 +252,14 @@ class PaymentViewController: UIViewController, UITextFieldDelegate {
     }
     
     @IBAction func saveToLibraryBarButtonPressed(_ sender: UIBarButtonItem) {
-        let optionMenu = UIAlertController(title: "Do you want to save the receipt image to your photos?", message: nil , preferredStyle: .actionSheet)
-
-        let deleteAction = UIAlertAction(title: "Yes, save", style: .default, handler: { alert in
-            guard let image = self.receiptImageView.image else { return }
-            UIImageWriteToSavedPhotosAlbum(image, self, #selector(self.image(_:didFinishSavingWithError:contextInfo:)), nil)
-        })
-
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-        optionMenu.addAction(deleteAction)
-        optionMenu.addAction(cancelAction)
-        self.present(optionMenu, animated: true, completion: nil)
+        Alert.shared.showSaveToLibAlert(for: self,
+                                        image: receiptImageView.image!,
+                                        savePhotoSelector: #selector(self.image(_:didFinishSavingWithError:contextInfo:)))
     }
     
     @objc func image(_ image: UIImage, didFinishSavingWithError error: Error?, contextInfo: UnsafeRawPointer) {
-        if let _ = error {
-            let ac = UIAlertController(title: "Error saving an image", message: "Go to Settings -> WorkReceipts -> Photos -> Enable \"Add Photos Only\" in order to use this function", preferredStyle: .alert)
-            ac.addAction(UIAlertAction(title: "OK", style: .default))
-            present(ac, animated: true)
-        } else {
-            let ac = UIAlertController(title: "Receipt image saved", message: "Your receipt image has been saved to your photos.", preferredStyle: .alert)
-            ac.addAction(UIAlertAction(title: "OK", style: .default))
-            present(ac, animated: true)
-        }
+        Alert.shared.showSaveSuccessStatusAlert(for: self, error: error)
     }
-    
     
     
     @IBAction func editBarButtonPressed(_ sender: UIBarButtonItem) {
@@ -326,16 +268,9 @@ class PaymentViewController: UIViewController, UITextFieldDelegate {
     
     
     @IBAction func deleteBarButtonPressed(_ sender: UIBarButtonItem) {
-        let optionMenu = UIAlertController(title: "Are you sure you want to remove the payment?", message: nil , preferredStyle: .actionSheet)
-
-        let deleteAction = UIAlertAction(title: "Yes, remove", style: .destructive, handler: { alert in
-            self.view.window!.rootViewController?.dismiss(animated: true, completion: nil)
-        })
-
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-        optionMenu.addAction(deleteAction)
-        optionMenu.addAction(cancelAction)
-        self.present(optionMenu, animated: true, completion: nil)
+        Alert.shared.showRemoveAlert(for: self) { [unowned self] in
+            self.navigationController?.popToRootViewController(animated: true)
+        }
     }
     
     

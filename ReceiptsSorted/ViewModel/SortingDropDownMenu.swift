@@ -88,8 +88,8 @@ class SortingDropDownMenu: NSObject, UITableViewDelegate, UITableViewDataSource 
     
     
     
-    private func getSortType(for name: String) -> SortBy {
-        var sortOption: SortBy?
+    private func getSortType(for name: String) -> SortType {
+        var sortOption: SortType?
         
         switch name {
             case "Place":
@@ -108,7 +108,7 @@ class SortingDropDownMenu: NSObject, UITableViewDelegate, UITableViewDataSource 
     }
     
     
-    func getButtonTitle(for sortTitle: SortBy) -> String {
+    func getButtonTitle(for sortTitle: SortType) -> String {
         switch sortTitle
         {
         case .Place:

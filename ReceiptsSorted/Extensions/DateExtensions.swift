@@ -11,7 +11,7 @@ import UIKit
 
 //MARK: - Date extension
 extension Date {
-    func ToString(as format: DateFormatter.Style) -> String {
+    func toString(as format: DateFormatter.Style) -> String {
         let formatter = DateFormatter()
         formatter.dateStyle = format
         return formatter.string(from: self)

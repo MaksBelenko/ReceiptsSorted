@@ -23,7 +23,7 @@ final class Observable<T> {
         self.value = value
     }
     
-    func bind(listener: Listener?) {
+    func onValueChanged(listener: Listener?) {
         self.listener = listener
         listener?(value)
     }

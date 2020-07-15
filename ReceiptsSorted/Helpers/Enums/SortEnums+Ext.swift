@@ -9,11 +9,11 @@
 import Foundation
 
 
-enum SortBy {
+enum SortType {
     case OldestDateAdded, NewestDateAdded, Place, None
 }
 
-enum PaymentStatusSort {
+enum PaymentStatusType {
     case Pending, Received, All
 }
 
@@ -21,7 +21,7 @@ enum PaymentStatusSort {
 
 
 // MARK: - SortBy Extension
-extension SortBy {
+extension SortType {
     /**
     Returns SortDescriptor for payments for DB
     */
@@ -46,8 +46,8 @@ extension SortBy {
 }
 
 
-// MARK: - PaymentStatusSort extension
-extension PaymentStatusSort {
+// MARK: - PaymentStatusType extension
+extension PaymentStatusType {
     /**
      Returns predicate for payments for DB
      */
