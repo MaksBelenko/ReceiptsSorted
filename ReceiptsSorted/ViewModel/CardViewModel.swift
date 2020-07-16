@@ -8,7 +8,7 @@
 
 import UIKit.UIView
 
-class CardViewModel: IPaymentsListener {
+class CardViewModel {
     
     weak var delegate: RefreshTableDelegate?
     
@@ -43,18 +43,9 @@ class CardViewModel: IPaymentsListener {
     // MARK: - Initiliation
     init() {
         refreshPayments(reloadTable: false)
-        
-//        database.payments.onValueChanged { [unowned self] updatedPayments in
-//            self.fetchedPayments = updatedPayments
-//            self.delegate?.reloadTable()
-//        }
-        database.subscribe(listener: self)
+        database.delegate = self
     }
     
-    func onPaymentsChanged(payments: [Payment]) {
-        fetchedPayments = payments
-        delegate?.reloadTable()
-    }
     
     
     // MARK: - Helpers
@@ -309,4 +300,13 @@ extension CardViewModel{
         amountAnimation?.animateCircle(to: totalAmount)
     }
     
+}
+
+
+// MARK: - PaymentsFetchedDelegate
+extension CardViewModel: PaymentsFetchedDelegate {
+    func onPaymentsFetched(newPayments: [Payment]) {
+        fetchedPayments = newPayments
+        delegate?.reloadTable()
+    }
 }
