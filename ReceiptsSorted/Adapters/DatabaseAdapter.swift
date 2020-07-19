@@ -19,9 +19,10 @@ class DatabaseAdapter {
     weak var delegate: PaymentsFetchedDelegate?
     
     private let paymentsEntityName: String = "Payment"
-    private let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    private lazy var context = CoreDataStack(modelName: "PaymentsData").managedContext
     private let imageCompression = ImageCompression()
     private let settings = Settings.shared
+    
     
     
     //MARK: - Basic methods
@@ -59,7 +60,7 @@ class DatabaseAdapter {
             print("Error fetching data \(error)")
             return []
         }
-        
+         
 //        loadPaymentsAsync(with: request)
 //        return []
     }
@@ -68,10 +69,11 @@ class DatabaseAdapter {
     
     
     
-    func loadPaymentsAsync(with request: NSFetchRequest<Payment> = Payment.fetchRequest()) {
+    func loadPaymentsAsync(with request: NSFetchRequest<Payment> = Payment.fetchRequest(), completion: @escaping ([Payment]) -> ()) {
         let asyncFetchRequest = NSAsynchronousFetchRequest<Payment>( fetchRequest: request) { [unowned self] (result: NSAsynchronousFetchResult) in
-            guard let pResults = result.finalResult else { return }
-            self.delegate?.onPaymentsFetched(newPayments: pResults)
+            guard let fetchedPayments = result.finalResult else { return }
+            self.delegate?.onPaymentsFetched(newPayments: fetchedPayments)
+            completion(fetchedPayments)
         }
         
         do {
@@ -110,8 +112,6 @@ class DatabaseAdapter {
             let compareSelector = #selector(NSString.localizedStandardCompare(_:))
             let sd = NSSortDescriptor(key: #keyPath(Payment.place), ascending: true, selector: compareSelector)
             request.sortDescriptors = [sd]
-
-//            loadPaymentsAsync(with: request)
             
             return loadPayments(with: request)
             
@@ -120,7 +120,6 @@ class DatabaseAdapter {
         }
         
     }
-    
     
     
     /**
@@ -172,7 +171,6 @@ class DatabaseAdapter {
         newPayment.amountPaid = payment.amountPaid
         newPayment.place = payment.place
         newPayment.date = payment.date
-//        newPayment.receiptPhoto?.imageData = imageCompression.compressImage(for: payment.receiptImage)
         newPayment.paymentReceived = false
 
         let receiptPhoto = ReceiptPhoto(context: context)

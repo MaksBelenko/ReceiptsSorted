@@ -39,6 +39,8 @@ class CardViewModel {
     }
     
     
+    let db = DatabaseAsync()
+    
     
     // MARK: - Initiliation
     init() {
