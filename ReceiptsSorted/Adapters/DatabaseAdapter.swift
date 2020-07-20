@@ -66,24 +66,6 @@ class DatabaseAdapter {
     }
     
     
-    
-    
-    
-    func loadPaymentsAsync(with request: NSFetchRequest<Payment> = Payment.fetchRequest(), completion: @escaping ([Payment]) -> ()) {
-        let asyncFetchRequest = NSAsynchronousFetchRequest<Payment>( fetchRequest: request) { [unowned self] (result: NSAsynchronousFetchResult) in
-            guard let fetchedPayments = result.finalResult else { return }
-            self.delegate?.onPaymentsFetched(newPayments: fetchedPayments)
-            completion(fetchedPayments)
-        }
-        
-        do {
-            try context.execute(asyncFetchRequest)
-        } catch {
-            Log.exception(message: "Error executing asynchronous fetch: \(error.localizedDescription)")
-        }
-    }
-    
-    
     //MARK: - Fetch methods
     
     /**

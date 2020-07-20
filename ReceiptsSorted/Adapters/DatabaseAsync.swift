@@ -11,6 +11,8 @@ import CoreData
 
 class DatabaseAsync {
     
+    typealias CompletionHandler = ([Payment]) -> ()
+    
     private let paymentsEntityName: String = "Payment"
     private let coreDataStack = CoreDataStack(modelName: "PaymentsData")
     private lazy var context = coreDataStack.managedContext
@@ -19,11 +21,12 @@ class DatabaseAsync {
     private let imageCompression = ImageCompression()
     private let settings = Settings.shared
     
+
     
     
     // MARK: - Basic Methods
-    func loadPaymentsAsync(with request: NSFetchRequest<Payment> = Payment.fetchRequest(), completion: @escaping ([Payment]) -> ()) {
-        let asyncFetchRequest = NSAsynchronousFetchRequest<Payment>( fetchRequest: request) { [unowned self] (result: NSAsynchronousFetchResult) in
+    func loadPaymentsAsync(with request: NSFetchRequest<Payment> = Payment.fetchRequest(), completion: @escaping CompletionHandler) {
+        let asyncFetchRequest = NSAsynchronousFetchRequest<Payment>( fetchRequest: request) { /*[unowned self]*/ (result: NSAsynchronousFetchResult) in
             guard let fetchedPayments = result.finalResult else { return }
             completion(fetchedPayments)
         }
@@ -36,13 +39,74 @@ class DatabaseAsync {
     }
     
     
+    // MARK: - Fetch
+    
+    /**
+     Fetch sorted data from database
+     - Parameter type: by what parameter should the data be sorted
+     */
+    func fetchSortedDataAsync(by sort: SortType, and paymentStatus: PaymentStatusType, completion: @escaping CompletionHandler) {
+        let request: NSFetchRequest<Payment> = Payment.fetchRequest()
+        
+        // Set predicate for fetch request
+        request.predicate = paymentStatus.getPredicate()
+    
+        // Set sortDescriptor for fetch request
+        if let sortDescriptor = sort.getSortDescriptor() {
+            request.sortDescriptors = [sortDescriptor]
+        }
+        
+        loadPaymentsAsync(with: request, completion: completion)
+    }
+    
+    
+    /**
+     Fetch all payments from database which contain the passed place name
+     - Parameter name: Place's name that is used to filter and fetch data
+                       from database
+     */
+    func fetchDataAsync(forName name: String?, by sort: SortType, and paymentStatus: PaymentStatusType, completion: @escaping CompletionHandler){
+        let request: NSFetchRequest<Payment> = Payment.fetchRequest()
+        
+        if (name != "" && name != nil) {
+            //[cd] is to make it non-casesensitive and non-diacritic
+            let predicateSearchName = NSPredicate(format: "place CONTAINS[cd] %@", name!)
+
+            // Set predicate for fetch request
+            let predicatePaymentReceived = paymentStatus.getPredicate()
+
+            
+            if let secondPredicate = predicatePaymentReceived {
+                request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicateSearchName, secondPredicate])
+            } else {
+                request.predicate = predicateSearchName
+            }
+            
+            
+            let compareSelector = #selector(NSString.localizedStandardCompare(_:))
+            let sd = NSSortDescriptor(key: #keyPath(Payment.place), ascending: true, selector: compareSelector)
+            request.sortDescriptors = [sd]
+            
+            loadPaymentsAsync(with: request, completion: completion)
+            
+        } else {
+            fetchSortedDataAsync(by: sort, and: paymentStatus, completion: completion)
+        }
+        
+    }
+    
+    
+    
+    
     // MARK: - Get Total
     
     /**
-     Gets total amount of payments
+     Gets total amount of payments asynchronously
      - Parameter sortMethod: Allows to get a total either for all, pending or received payments
+     - Parameter completion: Completion handler which will be executied on main thread asynchronously
      */
-    func getTotalAmount(of sortMethod: PaymentStatusType, completion: @escaping (Float) -> ()) {
+    func getTotalAmountAsync(of sortMethod: PaymentStatusType, completion: @escaping (Float) -> ()) {
+        
         persistentContainer.performBackgroundTask { [weak self] context in
             guard let self = self else { return }
             
@@ -85,3 +149,4 @@ class DatabaseAsync {
         }
     }
 }
+

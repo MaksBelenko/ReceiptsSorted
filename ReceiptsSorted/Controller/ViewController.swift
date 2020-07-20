@@ -81,7 +81,7 @@ class ViewController: UIViewController  {
         
         if onStartup {
             onStartup = false
-            cardViewController.cardViewModel.db.getTotalAmount(of: .Pending) { totalAmount in
+            cardViewController.cardViewModel.dbAsync.getTotalAmountAsync(of: .Pending) { totalAmount in
                 self.topGraphicsView.amountAnimation.animateCircle(to: totalAmount)
             }
         }

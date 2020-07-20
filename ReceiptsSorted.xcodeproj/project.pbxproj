@@ -51,6 +51,8 @@
 		B573FAAC23B98285005473D2 /* CameraViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B573FAAA23B98285005473D2 /* CameraViewController.xib */; };
 		B573FAAE23BA815F005473D2 /* CameraSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = B573FAAD23BA815F005473D2 /* CameraSession.swift */; };
 		B57419BE245F1BAB001228A1 /* DetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57419BD245F1BAB001228A1 /* DetailsViewController.swift */; };
+		B57BCD1024C6305E0019D85A /* CardVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57BCD0F24C6305E0019D85A /* CardVM.swift */; };
+		B57BCD1224C63EA50019D85A /* DatabaseFetchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57BCD1124C63EA50019D85A /* DatabaseFetchController.swift */; };
 		B57ECC572454A6BA003E9598 /* UITextFieldExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57ECC562454A6BA003E9598 /* UITextFieldExtensions.swift */; };
 		B58CC90A246DACE1006FEF00 /* ImageViewerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58CC909246DACE1006FEF00 /* ImageViewerCell.swift */; };
 		B58CC932246DB9B5006FEF00 /* CollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58CC931246DB9B5006FEF00 /* CollectionViewFlowLayout.swift */; };
@@ -144,6 +146,8 @@
 		B573FAAA23B98285005473D2 /* CameraViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CameraViewController.xib; sourceTree = "<group>"; };
 		B573FAAD23BA815F005473D2 /* CameraSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraSession.swift; sourceTree = "<group>"; };
 		B57419BD245F1BAB001228A1 /* DetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsViewController.swift; sourceTree = "<group>"; };
+		B57BCD0F24C6305E0019D85A /* CardVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardVM.swift; sourceTree = "<group>"; };
+		B57BCD1124C63EA50019D85A /* DatabaseFetchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseFetchController.swift; sourceTree = "<group>"; };
 		B57ECC562454A6BA003E9598 /* UITextFieldExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextFieldExtensions.swift; sourceTree = "<group>"; };
 		B58CC909246DACE1006FEF00 /* ImageViewerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewerCell.swift; sourceTree = "<group>"; };
 		B58CC931246DB9B5006FEF00 /* CollectionViewFlowLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewFlowLayout.swift; sourceTree = "<group>"; };
@@ -349,9 +353,10 @@
 		B565673E24831554000A6639 /* Adapters */ = {
 			isa = PBXGroup;
 			children = (
-				B5E5E5C823C106E7006A14EE /* DatabaseAdapter.swift */,
 				B565673F24831619000A6639 /* ZipAdapter.swift */,
+				B5E5E5C823C106E7006A14EE /* DatabaseAdapter.swift */,
 				B5977E7B24C4729400F3E589 /* DatabaseAsync.swift */,
+				B57BCD1124C63EA50019D85A /* DatabaseFetchController.swift */,
 			);
 			path = Adapters;
 			sourceTree = "<group>";
@@ -422,6 +427,7 @@
 			children = (
 				B526B4E1241B09A10031F629 /* Observable.swift */,
 				B554F962247718BA007C486A /* CardViewModel.swift */,
+				B57BCD0F24C6305E0019D85A /* CardVM.swift */,
 				B5FD65FA242EC9C7002C5C48 /* CardTableHeader.swift */,
 				B5FDDC02241443950037BA7E /* SwipeActionsViewModel.swift */,
 				B54967AC241167C000684A2F /* SortingDropDownMenu.swift */,
@@ -602,6 +608,7 @@
 				B5F54E8B241E78C70016DCED /* DateExtensions.swift in Sources */,
 				B59E3E2723B50D9F0017D474 /* PaymentTableViewCell.swift in Sources */,
 				B5D70A6B245338530080BF81 /* TopGraphicsView.swift in Sources */,
+				B57BCD1224C63EA50019D85A /* DatabaseFetchController.swift in Sources */,
 				B573FAA423B95F57005473D2 /* Delegates.swift in Sources */,
 				B549C0B324BF0A1D003F148E /* AlertFactory.swift in Sources */,
 				B514A36B24BB91990078E9A9 /* WorldCurrencies.swift in Sources */,
@@ -622,6 +629,7 @@
 				B50BAADB242B7DC200EAFECA /* AmountAnimation.swift in Sources */,
 				B5977E7E24C47F0400F3E589 /* CoreDataStack.swift in Sources */,
 				B593962F2483D50600B1E895 /* Payment+CoreDataProperties.swift in Sources */,
+				B57BCD1024C6305E0019D85A /* CardVM.swift in Sources */,
 				B564470B241027EB00B08AD3 /* AddButtonAnimations.swift in Sources */,
 				B554F963247718BA007C486A /* CardViewModel.swift in Sources */,
 				B5DFF55724842629003CEDA3 /* OnboardingViewController.swift in Sources */,

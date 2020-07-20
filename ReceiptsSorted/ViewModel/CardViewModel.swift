@@ -39,7 +39,7 @@ class CardViewModel {
     }
     
     
-    let db = DatabaseAsync()
+    let dbAsync = DatabaseAsync()
     
     
     // MARK: - Initiliation
@@ -56,12 +56,17 @@ class CardViewModel {
      - Parameter reloadTable: Causes to delegate reloadTable() method to be fired when set to true
      */
     func refreshPayments(reloadTable: Bool = true) {
-        fetchedPayments = database.fetchSortedData(by: sortType, and: paymentStatusType)
-        if (reloadTable) {
-            delegate?.reloadTable()
+        dbAsync.fetchSortedDataAsync(by: sortType, and: paymentStatusType) { [weak self] payments in
+            self?.updateData(with: payments)
         }
-        
-        checkThatAllSelected()
+    }
+    
+    private func updateData(with payments: [Payment]) {
+        fetchedPayments = payments
+        delegate?.reloadTable()
+        if (isSelectionEnabled.value == true) {
+            checkThatAllSelected()
+        }
     }
     
     /**

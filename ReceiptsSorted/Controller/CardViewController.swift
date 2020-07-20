@@ -45,6 +45,14 @@ class CardViewController: UIViewController {
     }()
     
     
+    
+    
+    fileprivate let paymentCellIdentifier = "paymentCell"
+//    private let cardVM = CardVM()
+    
+    
+    
+    
     //MARK: - Lifecycle
     
     override func viewDidLoad() {
@@ -90,6 +98,17 @@ class CardViewController: UIViewController {
         tblView.separatorInset = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15) //separator lines
         tblView.tableFooterView = UIView() //Removes uneeded separator lines at the end of TableView
     }
+    
+    
+//    func setupDataSource() -> UITableViewDiffableDataSource<String, Payment> {
+//      return UITableViewDiffableDataSource(tableView: tblView) { [unowned self] (tableView, indexPath, payment) -> UITableViewCell? in
+//        let cell = tableView.dequeueReusableCell(withIdentifier: self.paymentCellIdentifier, for: indexPath) as! PaymentTableViewCell
+//        return self.cardVM.set(cell: cell, with: payment)
+//      }
+//    }
+    
+    
+    
     
     private func setupSearchBar() {
         searchBar.delegate = self
@@ -308,7 +327,7 @@ extension CardViewController: UISearchBarDelegate {
 extension CardViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "paymentCell", for: indexPath) as! PaymentTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: paymentCellIdentifier, for: indexPath) as! PaymentTableViewCell
         return cardViewModel.set(cell: cell, indexPath: indexPath)
     }
     
