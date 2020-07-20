@@ -60,9 +60,6 @@ class DatabaseAdapter {
             print("Error fetching data \(error)")
             return []
         }
-         
-//        loadPaymentsAsync(with: request)
-//        return []
     }
     
     

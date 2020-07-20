@@ -33,6 +33,28 @@ class DatabaseAsync {
     
     
     // MARK: - Basic Methods
+    
+    /**
+     Attempts to commit unsaved changes to registered objects to the context’s parent store.
+     */
+    private func saveContext() {
+        do {
+            try context.save()
+        } catch {
+            print("Error found when saving context: \(error)")
+        }
+    }
+    
+    private func save(_ context: NSManagedObjectContext) {
+        do {
+            try context.save()
+        } catch {
+            Log.exception(message: "Error found when saving context: \(error.localizedDescription)")
+        }
+    }
+    
+    
+    
     func loadPaymentsAsync(with request: NSFetchRequest<Payment> = Payment.fetchRequest(), completion: @escaping CompletionHandler) {
         let asyncFetchRequest = NSAsynchronousFetchRequest<Payment>( fetchRequest: request) { /*[unowned self]*/ (result: NSAsynchronousFetchResult) in
             guard let fetchedPayments = result.finalResult else { return }
@@ -53,7 +75,7 @@ class DatabaseAsync {
      Fetch sorted data from database
      - Parameter type: by what parameter should the data be sorted
      */
-    func fetchSortedDataAsync(by sort: SortType, and paymentStatus: PaymentStatusType, completion: @escaping CompletionHandler) {
+    private func fetchSortedDataAsync(by sort: SortType, and paymentStatus: PaymentStatusType, completion: @escaping CompletionHandler) {
         let request: NSFetchRequest<Payment> = Payment.fetchRequest()
         
         // Set predicate for fetch request
@@ -70,23 +92,72 @@ class DatabaseAsync {
     
     /**
      Fetch all payments from database which contain the passed place name
-     - Parameter name: Place's name that is used to filter and fetch data
-                       from database
+     - Parameter name: Optional string that is used to search payments in
+                       the database (Default value is nil)
+     - Parameter sort: General sorting of all payments (eg. sort by .NewestDate)
+     - Parameter paymentStatus: Payment status (eg. .Pending)
+     - Parameter completion: Completion handler to be executed after the payments
+                             are fetched asynchronously
      */
-    func fetchDataAsync(forName name: String?, by sort: SortType, and paymentStatus: PaymentStatusType, completion: @escaping CompletionHandler){
+    func fetchDataAsync(forName name: String? = nil, by sort: SortType, and paymentStatus: PaymentStatusType, completion: @escaping CompletionHandler) {
         let request: NSFetchRequest<Payment> = Payment.fetchRequest()
         
-        if (name != "" && name != nil) {
-            //[cd] is to make it non-casesensitive and non-diacritic
-            request.predicate = NSPredicate(format: "place CONTAINS[cd] %@", name!)
-            request.predicate! += paymentStatus.getPredicate()
-            
-            request.sortDescriptors = [placeSortDescriptor]
-            loadPaymentsAsync(with: request, completion: completion)
-        } else {
+        if (name == "" || name == nil) {
             fetchSortedDataAsync(by: sort, and: paymentStatus, completion: completion)
+            return
+        }
+        
+        //[cd] is to make it non-casesensitive and non-diacritic
+        request.predicate = NSPredicate(format: "place CONTAINS[cd] %@", name!)
+        request.predicate! += paymentStatus.getPredicate()
+        
+        request.sortDescriptors = [placeSortDescriptor]
+        loadPaymentsAsync(with: request, completion: completion)
+    }
+    
+    
+    
+    //MARK: - Add & Update Payment methods
+    
+    /**
+     Adds a payments to database and returns a tuple of the totals before and after the payment
+     - Parameter payment: Tuple that is used to create a new entry in the database
+     */
+    func add (payment: PaymentInformation, completion: @escaping (PaymentTotalInfo) -> ()) {
+        
+        getTotalAmountAsync(of: .Pending) { [unowned self] totalBefore in
+            self.persistentContainer.performBackgroundTask { [weak self] context in
+                
+                let newPayment = Payment(context: context)
+                newPayment.uid = UUID()
+                newPayment.amountPaid = payment.amountPaid
+                newPayment.place = payment.place
+                newPayment.date = payment.date
+                newPayment.paymentReceived = false
+                
+                let receiptPhoto = ReceiptPhoto(context: context)
+                receiptPhoto.imageData = self?.imageCompression.compressImage(for: payment.receiptImage)
+                newPayment.receiptPhoto = receiptPhoto
+                
+//                self?.saveContext()
+                self?.save(context)
+                
+                let totalAfter = totalBefore + payment.amountPaid
+                
+                let paymentInfo = PaymentTotalInfo(payment: newPayment, totalBefore: totalBefore, totalAfter: totalAfter)
+                
+                DispatchQueue.main.async {
+                    completion(paymentInfo)
+                }
+            }
         }
     }
+    
+//    private func runOnMainThread(_ closure: @escaping () ->() ) {
+//        DispatchQueue.main.async {
+//            closure()
+//        }
+//    }
     
     
     

@@ -44,7 +44,7 @@ class CardViewModel {
     
     // MARK: - Initiliation
     init() {
-        refreshPayments(reloadTable: false)
+        refreshPayments()
         database.delegate = self
     }
     
@@ -53,14 +53,17 @@ class CardViewModel {
     // MARK: - Helpers
     /**
      Fetches the payments from database and separates them into sections
-     - Parameter reloadTable: Causes to delegate reloadTable() method to be fired when set to true
      */
-    func refreshPayments(reloadTable: Bool = true) {
-        dbAsync.fetchSortedDataAsync(by: sortType, and: paymentStatusType) { [weak self] payments in
+    func refreshPayments() {
+        dbAsync.fetchDataAsync(by: sortType, and: paymentStatusType) { [weak self] payments in
             self?.updateData(with: payments)
         }
     }
     
+    /**
+     Updates current payments array with bew array
+     - Parameter payments: Payments to be updated with
+     */
     private func updateData(with payments: [Payment]) {
         fetchedPayments = payments
         delegate?.reloadTable()
@@ -237,18 +240,20 @@ extension CardViewModel: PaymentDelegate {
                 self.updatePayment(paymentInfo: paymentInfo)
             }
             
-            self.cardTableSections = self.cardTableHeader.getSections(for: self.fetchedPayments, sortedBy: self.sortType)
-            self.delegate?.reloadTable()
+//            self.cardTableSections = self.cardTableHeader.getSections(for: self.fetchedPayments, sortedBy: self.sortType)
+//            self.delegate?.reloadTable()
         }
     }
     
     
     private func addNewPayment(paymentInfo: PaymentInformation) {
-        let addPayment = database.add(payment: paymentInfo)
-        if (paymentStatusType != .Received) {
-            fetchedPayments.append(addPayment.payment)
+        dbAsync.add(payment: paymentInfo) { [weak self] paymentTotalInfo in
+            if (self?.paymentStatusType != .Received) {
+                self?.fetchedPayments.append(paymentTotalInfo.payment)
+            }
+            self?.amountAnimation.animateCircle(to: paymentTotalInfo.totalAfter)
+            self?.delegate?.reloadTable()
         }
-        amountAnimation.animateCircle(to: addPayment.totalAfter)
     }
     
     
@@ -262,7 +267,7 @@ extension CardViewModel: PaymentDelegate {
         fetchedPayments[index] = updatedPayment.payment
         amountAnimation.animateCircle(to: updatedPayment.totalAfter)
         
-        database.refault(object: payment.receiptPhoto) // fault receiptData to remove from memory
+        database.refault(object: payment.receiptPhoto) // fault receiptData to remove image from memory
     }
 }
 
