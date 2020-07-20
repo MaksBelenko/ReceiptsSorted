@@ -74,8 +74,10 @@ class CardViewModel {
      - Parameter searchText: Name that is searched for
      */
     func getPayments(forSearchName searchText: String) {
-        fetchedPayments = database.fetchData(forName: searchText, by: sortType, and: paymentStatusType)
-        delegate?.reloadTable()
+        dbAsync.fetchDataAsync(forName: searchText, by: sortType, and: paymentStatusType) { [unowned self] payments in
+            self.fetchedPayments = payments
+            self.delegate?.reloadTable()
+        }
     }
     
     /**

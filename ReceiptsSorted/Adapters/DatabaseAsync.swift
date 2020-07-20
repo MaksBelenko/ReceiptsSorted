@@ -23,6 +23,14 @@ class DatabaseAsync {
     
 
     
+    /// Sort descriptor for places in alphabetical order
+    private let placeSortDescriptor: NSSortDescriptor = {
+        let compareSelector = #selector(NSString.localizedStandardCompare(_:))
+        return NSSortDescriptor(key: #keyPath(Payment.place), ascending: true, selector: compareSelector)
+    }()
+    
+    
+    
     
     // MARK: - Basic Methods
     func loadPaymentsAsync(with request: NSFetchRequest<Payment> = Payment.fetchRequest(), completion: @escaping CompletionHandler) {
@@ -70,29 +78,14 @@ class DatabaseAsync {
         
         if (name != "" && name != nil) {
             //[cd] is to make it non-casesensitive and non-diacritic
-            let predicateSearchName = NSPredicate(format: "place CONTAINS[cd] %@", name!)
-
-            // Set predicate for fetch request
-            let predicatePaymentReceived = paymentStatus.getPredicate()
-
+            request.predicate = NSPredicate(format: "place CONTAINS[cd] %@", name!)
+            request.predicate! += paymentStatus.getPredicate()
             
-            if let secondPredicate = predicatePaymentReceived {
-                request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicateSearchName, secondPredicate])
-            } else {
-                request.predicate = predicateSearchName
-            }
-            
-            
-            let compareSelector = #selector(NSString.localizedStandardCompare(_:))
-            let sd = NSSortDescriptor(key: #keyPath(Payment.place), ascending: true, selector: compareSelector)
-            request.sortDescriptors = [sd]
-            
+            request.sortDescriptors = [placeSortDescriptor]
             loadPaymentsAsync(with: request, completion: completion)
-            
         } else {
             fetchSortedDataAsync(by: sort, and: paymentStatus, completion: completion)
         }
-        
     }
     
     
