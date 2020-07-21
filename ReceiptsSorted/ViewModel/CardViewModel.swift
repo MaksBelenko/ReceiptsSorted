@@ -247,13 +247,16 @@ extension CardViewModel: PaymentDelegate {
     
     
     private func addNewPayment(paymentInfo: PaymentInformation) {
-        dbAsync.add(paymentInfo: paymentInfo) { [weak self] paymentTotalInfo in
-//            if (self?.paymentStatusType != .Received) {
-//                self?.fetchedPayments.append(paymentTotalInfo.payment)
-//            }
-            self?.refreshPayments()
+        dbAsync.addAsync(paymentInfo: paymentInfo) { [weak self] paymentTotalInfo in
+
+            // After concurrently saving context, fetch the payment with the new uid
+            self?.dbAsync.fetchPaymentAsync(with: paymentTotalInfo.uid) { payment in
+                if (self?.paymentStatusType != .Received) {
+                    self?.fetchedPayments.append(payment)
+                }
+                self?.delegate?.reloadTable()
+            }
             self?.amountAnimation.animateCircle(to: paymentTotalInfo.totalAfter)
-            self?.delegate?.reloadTable()
         }
     }
     
@@ -264,11 +267,15 @@ extension CardViewModel: PaymentDelegate {
             Log.exception(message: "Mismatch in arrays \"fetchedPayments\" and \"cardTableSections\"")
             return
         }
-        let updatedPayment = database.update(payment: payment, with: paymentInfo)
-        fetchedPayments[index] = updatedPayment.payment
-        amountAnimation.animateCircle(to: updatedPayment.totalAfter)
         
-        database.refault(object: payment.receiptPhoto) // fault receiptData to remove image from memory
+        dbAsync.updateAsync(payment: payment, with: paymentInfo, completion: { info in
+            self.dbAsync.fetchPaymentAsync(with: info.uid) { payment in
+                self.fetchedPayments[index] = payment
+                self.dbAsync.refault(object: payment.receiptPhoto) // fault receiptData to remove image from memory
+                self.delegate?.reloadTable()
+            }
+            self.amountAnimation.animateCircle(to: info.totalAfter)
+        })
     }
 }
 

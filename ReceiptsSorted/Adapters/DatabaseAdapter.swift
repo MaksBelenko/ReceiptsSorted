@@ -142,45 +142,45 @@ class DatabaseAdapter {
      Adds a payments to database and returns a tuple of the totals before and after the payment
      - Parameter payment: Tuple that is used to create a new entry in the database
      */
-    func add (payment: PaymentInformation) -> PaymentTotalInfo {
-        let totalBefore = getTotalAmount(of: .Pending)
-        
-        let newPayment = Payment(context: context)
-        newPayment.uid = UUID()
-        newPayment.amountPaid = payment.amountPaid
-        newPayment.place = payment.place
-        newPayment.date = payment.date
-        newPayment.paymentReceived = false
-
-        let receiptPhoto = ReceiptPhoto(context: context)
-        receiptPhoto.imageData = imageCompression.compressImage(for: payment.receiptImage)
-        newPayment.receiptPhoto = receiptPhoto
-        
-        saveContext()
-       
-        let totalAfter = getTotalAmount(of: .Pending)
-        return PaymentTotalInfo(payment: newPayment, totalBefore: totalBefore, totalAfter: totalAfter)
-    }
+//    func add (payment: PaymentInformation) -> PaymentTotalInfo {
+//        let totalBefore = getTotalAmount(of: .Pending)
+//
+//        let newPayment = Payment(context: context)
+//        newPayment.uid = UUID()
+//        newPayment.amountPaid = payment.amountPaid
+//        newPayment.place = payment.place
+//        newPayment.date = payment.date
+//        newPayment.paymentReceived = false
+//
+//        let receiptPhoto = ReceiptPhoto(context: context)
+//        receiptPhoto.imageData = imageCompression.compressImage(for: payment.receiptImage)
+//        newPayment.receiptPhoto = receiptPhoto
+//
+//        saveContext()
+//
+//        let totalAfter = getTotalAmount(of: .Pending)
+//        return PaymentTotalInfo(payment: newPayment, totalBefore: totalBefore, totalAfter: totalAfter)
+//    }
     
     
-    /**
-     Updates a payments with the information passed in tuple
-     - Parameter payment: Payment from the database to be updated
-     - Parameter paymentInfo: Tuple used to update the payment information
-     */
-    func update(payment: Payment, with paymentInfo: PaymentInformation) -> PaymentTotalInfo {
-        let totalBefore = getTotalAmount(of: .Pending)
-        
-        payment.receiptPhoto?.imageData = paymentInfo.receiptImage.jpegData(compressionQuality: settings.compression)
-        payment.amountPaid = paymentInfo.amountPaid
-        payment.place = paymentInfo.place
-        payment.date = paymentInfo.date
-        
-        saveContext()
-        
-        let totalAfter = getTotalAmount(of: .Pending)
-        return PaymentTotalInfo(payment: payment, totalBefore: totalBefore, totalAfter: totalAfter)
-    }
+//    /**
+//     Updates a payments with the information passed in tuple
+//     - Parameter payment: Payment from the database to be updated
+//     - Parameter paymentInfo: Tuple used to update the payment information
+//     */
+//    func update(payment: Payment, with paymentInfo: PaymentInformation) -> PaymentTotalInfo {
+//        let totalBefore = getTotalAmount(of: .Pending)
+//        
+//        payment.receiptPhoto?.imageData = paymentInfo.receiptImage.jpegData(compressionQuality: settings.compression)
+//        payment.amountPaid = paymentInfo.amountPaid
+//        payment.place = paymentInfo.place
+//        payment.date = paymentInfo.date
+//        
+//        saveContext()
+//        
+//        let totalAfter = getTotalAmount(of: .Pending)
+//        return PaymentTotalInfo(payment: payment, totalBefore: totalBefore, totalAfter: totalAfter)
+//    }
     
     
     /**

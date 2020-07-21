@@ -37,19 +37,36 @@ class DatabaseAsync {
     /**
      Attempts to commit unsaved changes to registered objects to the context’s parent store.
      */
-    private func saveContext() {
-        do {
-            try context.save()
-        } catch {
-            print("Error found when saving context: \(error)")
+    private func saveMainContext() {
+        if context.hasChanges {
+            do {
+                try context.save()
+            } catch {
+                print("Error found when saving context: \(error)")
+            }
         }
     }
     
+    
+    /**
+     Save specified context. It ensures that it will be saved in the same thread on which it was
+     created.
+     - Parameter context: Context to be saved
+     */
     private func save(_ context: NSManagedObjectContext) {
-        do {
-            try context.save()
-        } catch {
-            Log.exception(message: "Error found when saving context: \(error.localizedDescription)")
+        if context.hasChanges {
+            context.performAndWait {
+                do {
+                    try context.save()
+                } catch {
+                    var message = "Error found when saving context: \(error.localizedDescription)"
+                    message += "\n Callstack:"
+                    for symbol: String in Thread.callStackSymbols {
+                        message += "\n > \(symbol)"
+                    }
+                    Log.exception(message: message)
+                }
+            }
         }
     }
     
@@ -117,94 +134,50 @@ class DatabaseAsync {
     
     
     
+    /**
+     Fetch the payment with matches single uid
+     - Parameter uid: UID used to find in database
+     - Parameter completion: Completion handler to be executed after the payment
+                             is fetched asynchronously
+     */
+    func fetchPaymentAsync(with uid: UUID, completion: @escaping (Payment) -> ()) {
+        let request: NSFetchRequest<Payment> = Payment.fetchRequest()
+        request.predicate = NSPredicate(format: "%K == %@", #keyPath(Payment.uid), uid as CVarArg)
+        
+        loadPaymentsAsync(with: request) { payments in
+            completion(payments.first!)
+        }
+    }
+    
+    
+    /**
+     Fetches data from the array of UIDs of the payments
+     - Parameter uidArray: Array of UIDs
+     */
+    func fetchDataAsync(containingUIDs uidArray: [UUID], completion: @escaping CompletionHandler){
+        let request: NSFetchRequest<Payment> = Payment.fetchRequest()
+        request.predicate = NSPredicate(format: "%K IN %@", #keyPath(Payment.uid), uidArray)
+        
+        loadPaymentsAsync(with: request, completion: completion)
+    }
+    
+    
     //MARK: - Add & Update Payment methods
     
     /**
      Adds a payments to database and returns a tuple of the totals before and after the payment
      - Parameter paymentInfo: Tuple that is used to create a new entry in the database
      */
-    func add (paymentInfo: PaymentInformation, completion: @escaping (PaymentTotalInfo) -> ()) {
+    func addAsync (paymentInfo: PaymentInformation, completion: @escaping (PaymentTotalInfo) -> ()) {
         
         getTotalAmountAsync(of: .Pending) { [unowned self] totalBefore in
             
-//            let privateMOC = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
-//            privateMOC.parent = self.context
-//
-//            privateMOC.perform {
-//
-//                let newPayment = Payment(context: privateMOC)
-//                newPayment.uid = UUID()
-//                newPayment.amountPaid = paymentInfo.amountPaid
-//                newPayment.place = paymentInfo.place
-//                newPayment.date = paymentInfo.date
-//                newPayment.paymentReceived = false
-//
-//                let receiptPhoto = ReceiptPhoto(context: privateMOC)
-//                receiptPhoto.imageData = self.imageCompression.compressImage(for: paymentInfo.receiptImage)
-//                newPayment.receiptPhoto = receiptPhoto
-//
-//                do {
-//                    try privateMOC.save()
-//                    self.context.performAndWait {
-//                        do {
-//                            try self.context.save()
-//                        } catch {
-//                            fatalError("Failure to save context: \(error)")
-//                        }
-//                    }
-//
-//                    DispatchQueue.main.async {
-//                        let totalAfter = totalBefore + paymentInfo.amountPaid
-//                        let paymentTotalInfo = PaymentTotalInfo(payment: newPayment, totalBefore: totalBefore, totalAfter: totalAfter)
-//
-//                        completion(paymentTotalInfo)
-//                    }
-//                } catch {
-//                    fatalError("Failure to save context: \(error)")
-//                }
-//            }
-            
-            
-            
-//            self.persistentContainer.performBackgroundTask { [weak self] context in
-                
-//            let newContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
-//            newContext.parent = self.context
-//
-//            newContext.performAndWait {
-//                let newPayment = Payment(context: newContext)
-//                newPayment.uid = UUID()
-//                newPayment.amountPaid = paymentInfo.amountPaid
-//                newPayment.place = paymentInfo.place
-//                newPayment.date = paymentInfo.date
-//                newPayment.paymentReceived = false
-//
-//                let receiptPhoto = ReceiptPhoto(context: newContext)
-//                receiptPhoto.imageData = self.imageCompression.compressImage(for: paymentInfo.receiptImage)
-//                newPayment.receiptPhoto = receiptPhoto
-//
-//                //                self?.saveContext()
-//                self.save(newContext)
-//
-//                let totalAfter = totalBefore + paymentInfo.amountPaid
-//
-//                let paymentTotalInfo = PaymentTotalInfo(payment: newPayment, totalBefore: totalBefore, totalAfter: totalAfter)
-//
-//                print("----Payment: \(newPayment)")
-//
-//                DispatchQueue.main.async {
-//                    completion(paymentTotalInfo)
-//                }
-//            }
-            
-            
-            
-            
             self.persistentContainer.performBackgroundTask { [unowned self] context in
-                defer { print("Exiting persistentContainer background task") }
+//                defer { print("Exiting persistentContainer background task") }
+                let generatedUUID = UUID()
                 
                 let newPayment = Payment(context: context)
-                newPayment.uid = UUID()
+                newPayment.uid = generatedUUID
                 newPayment.amountPaid = paymentInfo.amountPaid
                 newPayment.place = paymentInfo.place
                 newPayment.date = paymentInfo.date
@@ -218,54 +191,41 @@ class DatabaseAsync {
                 
                 let totalAfter = totalBefore + paymentInfo.amountPaid
                 
-                let paymentTotalInfo = PaymentTotalInfo(payment: newPayment, totalBefore: totalBefore, totalAfter: totalAfter)
+                let paymentTotalInfo = PaymentTotalInfo(uid: generatedUUID, totalAfter: totalAfter)
                 
-                print("----Payment: \(newPayment)")
+//                print("----Payment: \(newPayment)")
                 
                 DispatchQueue.main.async {
                     completion(paymentTotalInfo)
                 }
             }
-            
-            
-            
-            
-            // ---- Synchronous -----
-                
-//            let newPayment = Payment(context: self.context)
-//            newPayment.uid = UUID()
-//            newPayment.amountPaid = paymentInfo.amountPaid
-//            newPayment.place = paymentInfo.place
-//            newPayment.date = paymentInfo.date
-//            newPayment.paymentReceived = false
-//
-//            let receiptPhoto = ReceiptPhoto(context: self.context)
-//            receiptPhoto.imageData = self.imageCompression.compressImage(for: paymentInfo.receiptImage)
-//            newPayment.receiptPhoto = receiptPhoto
-//
-//            //                self?.saveContext()
-//            self.saveContext()
-//
-//            let totalAfter = totalBefore + paymentInfo.amountPaid
-//
-//            let paymentTotalInfo = PaymentTotalInfo(payment: newPayment, totalBefore: totalBefore, totalAfter: totalAfter)
-//
-//            print("----Payment: \(newPayment)")
-//
-//            DispatchQueue.main.async {
-//                completion(paymentTotalInfo)
-//            }
         }
     }
     
-//    private func runOnMainThread(_ closure: @escaping () ->() ) {
-//        DispatchQueue.main.async {
-//            closure()
-//        }
-//    }
     
     
-    
+    /**
+     Updates a payments with the information passed in tuple
+     - Parameter payment: Payment from the database to be updated
+     - Parameter paymentInfo: Tuple used to update the payment information
+     */
+    func updateAsync(payment: Payment, with paymentInfo: PaymentInformation, completion: @escaping (PaymentTotalInfo) -> ()) {
+        
+        persistentContainer.performBackgroundTask { [unowned self] context in
+            payment.receiptPhoto?.imageData = paymentInfo.receiptImage.jpegData(compressionQuality: self.settings.compression)
+            payment.amountPaid = paymentInfo.amountPaid
+            payment.place = paymentInfo.place
+            payment.date = paymentInfo.date
+            
+            self.save(context)
+            
+            self.getTotalAmountAsync(of: .Pending) { totalAfter in
+                let info = PaymentTotalInfo(uid: payment.uid!, totalAfter: totalAfter)
+                completion(info)
+            }
+        }
+    }
+
     
     // MARK: - Get Total
     
@@ -317,5 +277,28 @@ class DatabaseAsync {
             }
         }
     }
+    
+    
+    
+    
+
+
+    // MARK: - Fault the entity
+
+    /**
+     Faults the object in order to remoove it from memory
+     */
+    func refault(object: NSManagedObject?) {
+        guard let object = object else {
+            Log.exception(message: "Refaulting object is nil")
+            return
+        }
+        
+        context.refresh(object, mergeChanges: true)
+    }
+
 }
+
+
+
 
