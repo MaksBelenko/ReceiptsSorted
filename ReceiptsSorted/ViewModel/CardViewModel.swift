@@ -231,7 +231,7 @@ extension CardViewModel: PaymentDelegate {
     
     // ----- Delegate method -----
     func passData(as showPayment: PaymentAction, paymentInfo: PaymentInformation) {
-        DispatchQueue.main.async {
+//        DispatchQueue.main.async {
             switch showPayment
             {
             case .AddPayment:
@@ -242,15 +242,16 @@ extension CardViewModel: PaymentDelegate {
             
 //            self.cardTableSections = self.cardTableHeader.getSections(for: self.fetchedPayments, sortedBy: self.sortType)
 //            self.delegate?.reloadTable()
-        }
+//        }
     }
     
     
     private func addNewPayment(paymentInfo: PaymentInformation) {
-        dbAsync.add(payment: paymentInfo) { [weak self] paymentTotalInfo in
-            if (self?.paymentStatusType != .Received) {
-                self?.fetchedPayments.append(paymentTotalInfo.payment)
-            }
+        dbAsync.add(paymentInfo: paymentInfo) { [weak self] paymentTotalInfo in
+//            if (self?.paymentStatusType != .Received) {
+//                self?.fetchedPayments.append(paymentTotalInfo.payment)
+//            }
+            self?.refreshPayments()
             self?.amountAnimation.animateCircle(to: paymentTotalInfo.totalAfter)
             self?.delegate?.reloadTable()
         }

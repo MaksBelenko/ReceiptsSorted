@@ -121,35 +121,140 @@ class DatabaseAsync {
     
     /**
      Adds a payments to database and returns a tuple of the totals before and after the payment
-     - Parameter payment: Tuple that is used to create a new entry in the database
+     - Parameter paymentInfo: Tuple that is used to create a new entry in the database
      */
-    func add (payment: PaymentInformation, completion: @escaping (PaymentTotalInfo) -> ()) {
+    func add (paymentInfo: PaymentInformation, completion: @escaping (PaymentTotalInfo) -> ()) {
         
         getTotalAmountAsync(of: .Pending) { [unowned self] totalBefore in
-            self.persistentContainer.performBackgroundTask { [weak self] context in
+            
+//            let privateMOC = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
+//            privateMOC.parent = self.context
+//
+//            privateMOC.perform {
+//
+//                let newPayment = Payment(context: privateMOC)
+//                newPayment.uid = UUID()
+//                newPayment.amountPaid = paymentInfo.amountPaid
+//                newPayment.place = paymentInfo.place
+//                newPayment.date = paymentInfo.date
+//                newPayment.paymentReceived = false
+//
+//                let receiptPhoto = ReceiptPhoto(context: privateMOC)
+//                receiptPhoto.imageData = self.imageCompression.compressImage(for: paymentInfo.receiptImage)
+//                newPayment.receiptPhoto = receiptPhoto
+//
+//                do {
+//                    try privateMOC.save()
+//                    self.context.performAndWait {
+//                        do {
+//                            try self.context.save()
+//                        } catch {
+//                            fatalError("Failure to save context: \(error)")
+//                        }
+//                    }
+//
+//                    DispatchQueue.main.async {
+//                        let totalAfter = totalBefore + paymentInfo.amountPaid
+//                        let paymentTotalInfo = PaymentTotalInfo(payment: newPayment, totalBefore: totalBefore, totalAfter: totalAfter)
+//
+//                        completion(paymentTotalInfo)
+//                    }
+//                } catch {
+//                    fatalError("Failure to save context: \(error)")
+//                }
+//            }
+            
+            
+            
+//            self.persistentContainer.performBackgroundTask { [weak self] context in
+                
+//            let newContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
+//            newContext.parent = self.context
+//
+//            newContext.performAndWait {
+//                let newPayment = Payment(context: newContext)
+//                newPayment.uid = UUID()
+//                newPayment.amountPaid = paymentInfo.amountPaid
+//                newPayment.place = paymentInfo.place
+//                newPayment.date = paymentInfo.date
+//                newPayment.paymentReceived = false
+//
+//                let receiptPhoto = ReceiptPhoto(context: newContext)
+//                receiptPhoto.imageData = self.imageCompression.compressImage(for: paymentInfo.receiptImage)
+//                newPayment.receiptPhoto = receiptPhoto
+//
+//                //                self?.saveContext()
+//                self.save(newContext)
+//
+//                let totalAfter = totalBefore + paymentInfo.amountPaid
+//
+//                let paymentTotalInfo = PaymentTotalInfo(payment: newPayment, totalBefore: totalBefore, totalAfter: totalAfter)
+//
+//                print("----Payment: \(newPayment)")
+//
+//                DispatchQueue.main.async {
+//                    completion(paymentTotalInfo)
+//                }
+//            }
+            
+            
+            
+            
+            self.persistentContainer.performBackgroundTask { [unowned self] context in
+                defer { print("Exiting persistentContainer background task") }
                 
                 let newPayment = Payment(context: context)
                 newPayment.uid = UUID()
-                newPayment.amountPaid = payment.amountPaid
-                newPayment.place = payment.place
-                newPayment.date = payment.date
+                newPayment.amountPaid = paymentInfo.amountPaid
+                newPayment.place = paymentInfo.place
+                newPayment.date = paymentInfo.date
                 newPayment.paymentReceived = false
                 
                 let receiptPhoto = ReceiptPhoto(context: context)
-                receiptPhoto.imageData = self?.imageCompression.compressImage(for: payment.receiptImage)
+                receiptPhoto.imageData = self.imageCompression.compressImage(for: paymentInfo.receiptImage)
                 newPayment.receiptPhoto = receiptPhoto
                 
-//                self?.saveContext()
-                self?.save(context)
+                self.save(context)
                 
-                let totalAfter = totalBefore + payment.amountPaid
+                let totalAfter = totalBefore + paymentInfo.amountPaid
                 
-                let paymentInfo = PaymentTotalInfo(payment: newPayment, totalBefore: totalBefore, totalAfter: totalAfter)
+                let paymentTotalInfo = PaymentTotalInfo(payment: newPayment, totalBefore: totalBefore, totalAfter: totalAfter)
+                
+                print("----Payment: \(newPayment)")
                 
                 DispatchQueue.main.async {
-                    completion(paymentInfo)
+                    completion(paymentTotalInfo)
                 }
             }
+            
+            
+            
+            
+            // ---- Synchronous -----
+                
+//            let newPayment = Payment(context: self.context)
+//            newPayment.uid = UUID()
+//            newPayment.amountPaid = paymentInfo.amountPaid
+//            newPayment.place = paymentInfo.place
+//            newPayment.date = paymentInfo.date
+//            newPayment.paymentReceived = false
+//
+//            let receiptPhoto = ReceiptPhoto(context: self.context)
+//            receiptPhoto.imageData = self.imageCompression.compressImage(for: paymentInfo.receiptImage)
+//            newPayment.receiptPhoto = receiptPhoto
+//
+//            //                self?.saveContext()
+//            self.saveContext()
+//
+//            let totalAfter = totalBefore + paymentInfo.amountPaid
+//
+//            let paymentTotalInfo = PaymentTotalInfo(payment: newPayment, totalBefore: totalBefore, totalAfter: totalAfter)
+//
+//            print("----Payment: \(newPayment)")
+//
+//            DispatchQueue.main.async {
+//                completion(paymentTotalInfo)
+//            }
         }
     }
     

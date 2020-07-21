@@ -13,7 +13,8 @@ class CoreDataStack {
     private let modelName: String
 
     lazy var managedContext: NSManagedObjectContext = {
-      return self.persistentContainer.viewContext
+//        self.persistentContainer.viewContext.automaticallyMergesChangesFromParent = true
+        return self.persistentContainer.viewContext
     }()
 
     
