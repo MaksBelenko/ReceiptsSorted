@@ -29,7 +29,6 @@ class CardViewModel {
     private var paymentUpdateIndex = (section: 0, row: 0)
     var sortType: SortType = .NewestDateAdded
     var paymentStatusType: PaymentStatusType = .Pending
-    var database = DatabaseAdapter()
     var cardTableHeader = CardTableHeader()
     var amountAnimation: AmountAnimation!
     var allSelected = false {
@@ -39,13 +38,12 @@ class CardViewModel {
     }
     
     
-    let dbAsync = DatabaseAsync()
+    let database = DatabaseAsync()
     
     
     // MARK: - Initiliation
     init() {
         refreshPayments()
-        database.delegate = self
     }
     
     
@@ -55,7 +53,7 @@ class CardViewModel {
      Fetches the payments from database and separates them into sections
      */
     func refreshPayments() {
-        dbAsync.fetchDataAsync(by: sortType, and: paymentStatusType) { [weak self] payments in
+        database.fetchDataAsync(by: sortType, and: paymentStatusType) { [weak self] payments in
             self?.updateData(with: payments)
         }
     }
@@ -77,7 +75,7 @@ class CardViewModel {
      - Parameter searchText: Name that is searched for
      */
     func getPayments(forSearchName searchText: String) {
-        dbAsync.fetchDataAsync(forName: searchText, by: sortType, and: paymentStatusType) { [unowned self] payments in
+        database.fetchDataAsync(forName: searchText, by: sortType, and: paymentStatusType) { [unowned self] payments in
             self.fetchedPayments = payments
             self.delegate?.reloadTable()
         }
@@ -86,8 +84,10 @@ class CardViewModel {
     /**
      Fetches payments from database that returns selected earlier payments from UIDs
      */
-    func getSelectedPayments() -> [Payment] {
-        return database.fetchData(containsUIDs: selectedPaymentsUIDs)
+    func getSelectedPayments(completion: @escaping ([Payment]) -> ()) {
+        database.fetchDataAsync(containingUIDs: selectedPaymentsUIDs) { payments in
+            completion(payments)
+        }
     }
     
     /**
@@ -220,7 +220,7 @@ class CardViewModel {
     // MARK: - Delete Payment
     
     func deletePayment(payment: Payment, indexPath: IndexPath) {
-        dbAsync.deleteAsync(item: payment)
+        database.deleteAsync(item: payment)
         removeFromTableVeiw(indexPath: indexPath, action: .Remove)
     }
 }
@@ -242,10 +242,10 @@ extension CardViewModel: PaymentDelegate {
     
     
     private func addNewPayment(paymentInfo: PaymentInformation) {
-        dbAsync.addAsync(paymentInfo: paymentInfo) { [weak self] paymentTotalInfo in
+        database.addAsync(paymentInfo: paymentInfo) { [weak self] paymentTotalInfo in
 
             // After concurrently saving context, fetch the payment with the new uid
-            self?.dbAsync.fetchPaymentAsync(with: paymentTotalInfo.uid) { payment in
+            self?.database.fetchPaymentAsync(with: paymentTotalInfo.uid) { payment in
                 if (self?.paymentStatusType != .Received) {
                     self?.fetchedPayments.append(payment)
                 }
@@ -263,20 +263,26 @@ extension CardViewModel: PaymentDelegate {
             return
         }
         
-        dbAsync.updateAsync(payment: payment, with: paymentInfo, completion: { info in
-            self.dbAsync.fetchPaymentAsync(with: info.uid) { payment in
+        database.updateAsync(payment: payment, with: paymentInfo, completion: { info in
+            self.database.fetchPaymentAsync(with: info.uid) { payment in
                 self.fetchedPayments[index] = payment
-                self.dbAsync.refault(object: payment.receiptPhoto) // fault receiptData to remove image from memory
+                self.database.refault(object: payment.receiptPhoto) // fault receiptData to remove image from memory
                 self.delegate?.reloadTable()
             }
             self.amountAnimation.animateCircle(to: info.totalAfter)
         })
     }
+    
+    
+    
+    func updateField(for payment: Payment, fieldType: PaymentField, with newDetail: Any) {
+        database.updateFieldAsync(for: payment, fieldType: fieldType, with: newDetail)
+    }
 }
 
 
 // MARK: - SwipeActionDelegate
-extension CardViewModel{
+extension CardViewModel {
     
     func removeFromTableVeiw(indexPath: IndexPath, action: SwipeCommandType) {
         let payment = getPayment(indexPath: indexPath)
@@ -288,10 +294,7 @@ extension CardViewModel{
         
         if (paymentStatusType != .All || action == .Remove) {
             removeSectionIfEmpty(indexPath: indexPath, index: index)
-//                fetchedPayments.remove(at: index)
-//                cardTableSections[indexPath.section].payments.remove(at: indexPath.row)
-        }
-        else {
+        } else {
             delegate?.updateRows(indexPaths: [indexPath])
         }
         
@@ -313,17 +316,9 @@ extension CardViewModel{
     
     
     func updateCircularBar() {
-        let totalAmount = database.getTotalAmount(of: .Pending)
-        amountAnimation?.animateCircle(to: totalAmount)
+        database.getTotalAmountAsync(of: .Pending) { totalAmount in
+            self.amountAnimation?.animateCircle(to: totalAmount)
+        }
     }
     
-}
-
-
-// MARK: - PaymentsFetchedDelegate
-extension CardViewModel: PaymentsFetchedDelegate {
-    func onPaymentsFetched(newPayments: [Payment]) {
-        fetchedPayments = newPayments
-        delegate?.reloadTable()
-    }
 }

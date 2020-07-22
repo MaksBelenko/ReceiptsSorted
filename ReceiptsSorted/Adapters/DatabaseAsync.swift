@@ -69,7 +69,7 @@ class DatabaseAsync {
         let objectID = item.objectID  // Cannot remove NSManagedObject on a different
                                       // thread therefore it needs an object id of it
         
-        persistentContainer.performBackgroundTask { privateContext in
+        persistentContainer.performBackgroundTask { [unowned self] privateContext in
             let object = privateContext.object(with: objectID)
             privateContext.delete(object)
             self.save(privateContext)
@@ -235,21 +235,48 @@ class DatabaseAsync {
      - Parameter paymentInfo: Tuple used to update the payment information
      */
     func updateAsync(payment: Payment, with paymentInfo: PaymentInformation, completion: @escaping (PaymentTotalInfo) -> ()) {
-        
-//        persistentContainer.viewContext.automaticallyMergesChangesFromParent = true
-        persistentContainer.performBackgroundTask { [unowned self] context in
+    
+        persistentContainer.performBackgroundTask { [unowned self] privateContext in
             payment.receiptPhoto?.imageData = paymentInfo.receiptImage.jpegData(compressionQuality: self.settings.compression)
             payment.amountPaid = paymentInfo.amountPaid
             payment.place = paymentInfo.place
             payment.date = paymentInfo.date
             
-            self.save(context)
+            self.save(privateContext)
             self.save(self.context) // save main parent context
             
             self.getTotalAmountAsync(of: .Pending) { totalAfter in
                 let info = PaymentTotalInfo(uid: payment.uid!, totalAfter: totalAfter)
                 completion(info)
             }
+        }
+    }
+    
+    
+    
+    /**
+     Update individual attribute of payment in the database
+     - Parameter payment: Entry to update
+     - Parameter detailType: Enum of the attributes
+     - Parameter newDetail: Value that the attribute of the entry should be updated with.
+                            AmountPaid -> Float; Place -> String; ReceiptPhoto -> Data;
+                            PaymentReceived -> Bool
+     */
+    func updateFieldAsync(for payment: Payment, fieldType: PaymentField, with newDetail: Any) {
+        persistentContainer.performBackgroundTask { [unowned self] privateContext in
+            switch fieldType {
+            case .AmountPaid:
+                payment.amountPaid = newDetail as! Float
+            case .Place:
+                payment.place = newDetail as? String
+            case .Image:
+                payment.receiptPhoto?.imageData = newDetail as? Data
+            case .PaymentReceived:
+                payment.paymentReceived = newDetail as! Bool
+            }
+            
+            self.save(privateContext)
+            self.save(self.context) // save main parent context
         }
     }
 

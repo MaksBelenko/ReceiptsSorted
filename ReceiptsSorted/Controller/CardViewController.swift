@@ -239,15 +239,16 @@ class CardViewController: UIViewController {
     
     // ---------------- Selection Helper View ------------------
     @IBAction func nextButtonPressed(_ sender: Any) {
-        let selectedPayments = cardViewModel.getSelectedPayments()
-        if selectedPayments.count == 0 {
-            Alert.shared.showNoPaymentsErrorAlert(for: self)
-            return
+        cardViewModel.getSelectedPayments { selectedPayments in
+            if selectedPayments.count == 0 {
+                Alert.shared.showNoPaymentsErrorAlert(for: self)
+                return
+            }
+            Alert.shared.showFileFormatAlert(for: self, withPayments: selectedPayments, onComplete: { [unowned self] in
+                self.selectingPayments(mode: .Disable)
+            })
+            self.cardViewModel.selectedPaymentsUIDs.removeAll()
         }
-        Alert.shared.showFileFormatAlert(for: self, withPayments: selectedPayments, onComplete: { [unowned self] in
-            self.selectingPayments(mode: .Disable)
-        })
-        cardViewModel.selectedPaymentsUIDs.removeAll()
     }
     
     @IBAction func selectAllPressed(_ sender: UIButton) {
@@ -415,9 +416,9 @@ extension CardViewController: SwipeActionDelegate {
             })
             return
         case .Tick:
-            cardViewModel.database.updateField(for: payment, fieldType: .PaymentReceived, with: true)
+            cardViewModel.updateField(for: payment, fieldType: .PaymentReceived, with: true)
         case .Untick:
-            cardViewModel.database.updateField(for: payment, fieldType: .PaymentReceived, with: false)
+            cardViewModel.updateField(for: payment, fieldType: .PaymentReceived, with: false)
         }
 
         cardViewModel.removeFromTableVeiw(indexPath: indexPath, action: action)
