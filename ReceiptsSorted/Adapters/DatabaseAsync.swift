@@ -290,9 +290,7 @@ class DatabaseAsync {
      */
     func getTotalAmountAsync(of sortMethod: PaymentStatusType, completion: @escaping (Float) -> ()) {
         
-        persistentContainer.performBackgroundTask { [weak self] context in
-            guard let self = self else { return }
-            
+        persistentContainer.performBackgroundTask { [unowned self] context in
             let dictSumName = "sumAmount"
             
             let fetchRequest = NSFetchRequest<NSDictionary>(entityName: self.paymentsEntityName)
@@ -322,7 +320,7 @@ class DatabaseAsync {
                     totalAmount = value.floatValue
                 }
             } catch {
-                print(error)
+                Log.exception(message: "Error retrieving total amount. Error: \(error.localizedDescription)")
             }
             
             
