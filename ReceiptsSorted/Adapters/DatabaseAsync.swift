@@ -11,9 +11,10 @@ import CoreData
 
 class DatabaseAsync {
     
+    fileprivate let paymentsEntityName = "Payment"
+    
     typealias CompletionHandler = ([Payment]) -> ()
     
-    private let paymentsEntityName: String = "Payment"
     private let coreDataStack = CoreDataStack(modelName: "PaymentsData")
     private lazy var context = coreDataStack.managedContext
     private lazy var persistentContainer = coreDataStack.persistentContainer
@@ -65,7 +66,7 @@ class DatabaseAsync {
      - Parameter completion: Completion handler to be executed after the item
                              is deleted asynchrnously on the main thread async
      */
-    func deleteAsync(item: NSManagedObject, completion: (() -> ())? = nil) {
+    func deleteAsync<T: NSManagedObject>(item: T, completion: (() -> ())? = nil) {
         let objectID = item.objectID  // Cannot remove NSManagedObject on a different
                                       // thread therefore it needs an object id of it
         
@@ -91,8 +92,8 @@ class DatabaseAsync {
      - Parameter completion: Completion handler to be executed after the payments
                              are fetched asynchronously
      */
-    private func loadPaymentsAsync(with request: NSFetchRequest<Payment> = Payment.fetchRequest(), completion: @escaping CompletionHandler) {
-        let asyncFetchRequest = NSAsynchronousFetchRequest<Payment>( fetchRequest: request) { /*[unowned self]*/ (result: NSAsynchronousFetchResult) in
+    private func loadPaymentsAsync<T: NSManagedObject>(with request: NSFetchRequest<T>, completion: @escaping ([T]) -> ()) {
+        let asyncFetchRequest = NSAsynchronousFetchRequest<T>( fetchRequest: request) { /*[unowned self]*/ (result: NSAsynchronousFetchResult) in
             guard let fetchedPayments = result.finalResult else { return }
             completion(fetchedPayments)
         }
@@ -114,16 +115,11 @@ class DatabaseAsync {
      - Parameter type: by what parameter should the data be sorted
      */
     private func fetchSortedDataAsync(by sort: SortType, and paymentStatus: PaymentStatusType, completion: @escaping CompletionHandler) {
-        let request: NSFetchRequest<Payment> = Payment.fetchRequest()
-        
-        // Set predicate for fetch request
-        request.predicate = paymentStatus.getPredicate()
-    
-        // Set sortDescriptor for fetch request
-        if let sortDescriptor = sort.getSortDescriptor() {
-            request.sortDescriptors = [sortDescriptor]
-        }
-        
+        let request = DBRequestBuilder<Payment>()
+                        .withPredicate(paymentStatus.getPredicate())
+                        .withSortDescriptor(sort.getSortDescriptor())
+                        .build()
+//
         loadPaymentsAsync(with: request, completion: completion)
     }
     
@@ -138,13 +134,12 @@ class DatabaseAsync {
                              are fetched asynchronously
      */
     func fetchDataAsync(forName name: String? = nil, by sort: SortType, and paymentStatus: PaymentStatusType, completion: @escaping CompletionHandler) {
-        let request: NSFetchRequest<Payment> = Payment.fetchRequest()
-        
         if (name == "" || name == nil) {
             fetchSortedDataAsync(by: sort, and: paymentStatus, completion: completion)
             return
         }
         
+        let request: NSFetchRequest<Payment> = Payment.fetchRequest()
         //[cd] is to make it non-casesensitive and non-diacritic
         request.predicate = NSPredicate(format: "place CONTAINS[cd] %@", name!)
         request.predicate! += paymentStatus.getPredicate()
@@ -293,7 +288,7 @@ class DatabaseAsync {
         persistentContainer.performBackgroundTask { [unowned self] context in
             let dictSumName = "sumAmount"
             
-            let fetchRequest = NSFetchRequest<NSDictionary>(entityName: self.paymentsEntityName)
+            let fetchRequest = Payment.fetchDictionaryRequest()
             fetchRequest.resultType = .dictionaryResultType
             let sumExpressionDescr = NSExpressionDescription()
             sumExpressionDescr.name = dictSumName

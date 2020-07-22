@@ -51,6 +51,7 @@
 		B573FAAC23B98285005473D2 /* CameraViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B573FAAA23B98285005473D2 /* CameraViewController.xib */; };
 		B573FAAE23BA815F005473D2 /* CameraSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = B573FAAD23BA815F005473D2 /* CameraSession.swift */; };
 		B57419BE245F1BAB001228A1 /* DetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57419BD245F1BAB001228A1 /* DetailsViewController.swift */; };
+		B575FD7224C8DA53007034D4 /* DBRequestBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B575FD7124C8DA53007034D4 /* DBRequestBuilder.swift */; };
 		B57BCD1024C6305E0019D85A /* CardVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57BCD0F24C6305E0019D85A /* CardVM.swift */; };
 		B57BCD1224C63EA50019D85A /* DatabaseFetchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57BCD1124C63EA50019D85A /* DatabaseFetchController.swift */; };
 		B57BCD1424C64F1F0019D85A /* NSPredicateExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57BCD1324C64F1F0019D85A /* NSPredicateExtensions.swift */; };
@@ -146,6 +147,7 @@
 		B573FAAA23B98285005473D2 /* CameraViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CameraViewController.xib; sourceTree = "<group>"; };
 		B573FAAD23BA815F005473D2 /* CameraSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraSession.swift; sourceTree = "<group>"; };
 		B57419BD245F1BAB001228A1 /* DetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsViewController.swift; sourceTree = "<group>"; };
+		B575FD7124C8DA53007034D4 /* DBRequestBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBRequestBuilder.swift; sourceTree = "<group>"; };
 		B57BCD0F24C6305E0019D85A /* CardVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardVM.swift; sourceTree = "<group>"; };
 		B57BCD1124C63EA50019D85A /* DatabaseFetchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseFetchController.swift; sourceTree = "<group>"; };
 		B57BCD1324C64F1F0019D85A /* NSPredicateExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSPredicateExtensions.swift; sourceTree = "<group>"; };
@@ -355,6 +357,7 @@
 			children = (
 				B565673F24831619000A6639 /* ZipAdapter.swift */,
 				B5977E7B24C4729400F3E589 /* DatabaseAsync.swift */,
+				B575FD7124C8DA53007034D4 /* DBRequestBuilder.swift */,
 				B57BCD1124C63EA50019D85A /* DatabaseFetchController.swift */,
 			);
 			path = Adapters;
@@ -621,6 +624,7 @@
 				B5377C0023A82E280010B144 /* AppDelegate.swift in Sources */,
 				B5BA5F482489130500AC026A /* UserChecker.swift in Sources */,
 				B57ECC572454A6BA003E9598 /* UITextFieldExtensions.swift in Sources */,
+				B575FD7224C8DA53007034D4 /* DBRequestBuilder.swift in Sources */,
 				B5BA07662485A4FE00097E2C /* UIFontExtensions.swift in Sources */,
 				B59E3E2323B44DE80017D474 /* CardViewController.swift in Sources */,
 				B566604E242FA955003DD15B /* PaymentTableSection.swift in Sources */,
