@@ -220,7 +220,7 @@ class CardViewModel {
     // MARK: - Delete Payment
     
     func deletePayment(payment: Payment, indexPath: IndexPath) {
-        database.delete(item: payment)
+        dbAsync.deleteAsync(item: payment)
         removeFromTableVeiw(indexPath: indexPath, action: .Remove)
     }
 }
@@ -231,18 +231,13 @@ extension CardViewModel: PaymentDelegate {
     
     // ----- Delegate method -----
     func passData(as showPayment: PaymentAction, paymentInfo: PaymentInformation) {
-//        DispatchQueue.main.async {
-            switch showPayment
-            {
-            case .AddPayment:
-                self.addNewPayment(paymentInfo: paymentInfo)
-            case .UpdatePayment:
-                self.updatePayment(paymentInfo: paymentInfo)
-            }
-            
-//            self.cardTableSections = self.cardTableHeader.getSections(for: self.fetchedPayments, sortedBy: self.sortType)
-//            self.delegate?.reloadTable()
-//        }
+        switch showPayment
+        {
+        case .AddPayment:
+            self.addNewPayment(paymentInfo: paymentInfo)
+        case .UpdatePayment:
+            self.updatePayment(paymentInfo: paymentInfo)
+        }
     }
     
     

@@ -32,21 +32,7 @@ class DatabaseAsync {
     
     
     
-    // MARK: - Basic Methods
-    
-    /**
-     Attempts to commit unsaved changes to registered objects to the context’s parent store.
-     */
-    private func saveMainContext() {
-        if context.hasChanges {
-            do {
-                try context.save()
-            } catch {
-                print("Error found when saving context: \(error)")
-            }
-        }
-    }
-    
+    // MARK: - Basic saving
     
     /**
      Save specified context. It ensures that it will be saved in the same thread on which it was
@@ -59,8 +45,7 @@ class DatabaseAsync {
                 do {
                     try context.save()
                 } catch {
-                    var message = "Error found when saving context: \(error.localizedDescription)"
-                    message += "\n Callstack:"
+                    var message = "Error found when saving context: \(error.localizedDescription)  \n Callstack:"
                     for symbol: String in Thread.callStackSymbols {
                         message += "\n > \(symbol)"
                     }
@@ -72,7 +57,41 @@ class DatabaseAsync {
     
     
     
-    func loadPaymentsAsync(with request: NSFetchRequest<Payment> = Payment.fetchRequest(), completion: @escaping CompletionHandler) {
+    // MARK: - Deletion
+    
+    /**
+     Deletes an item in the database
+     - Parameter item: Item to delete from database
+     - Parameter completion: Completion handler to be executed after the item
+                             is deleted asynchrnously on the main thread async
+     */
+    func deleteAsync(item: NSManagedObject, completion: (() -> ())? = nil) {
+        let objectID = item.objectID  // Cannot remove NSManagedObject on a different
+                                      // thread therefore it needs an object id of it
+        
+        persistentContainer.performBackgroundTask { privateContext in
+            let object = privateContext.object(with: objectID)
+            privateContext.delete(object)
+            self.save(privateContext)
+            
+            guard let completion = completion else { return }
+            DispatchQueue.main.async {
+                completion()
+            }
+        }
+    }
+    
+    
+    
+    // MARK: - Asynchronous fetching
+    
+    /**
+     Executes asynchronous fetch with the passed request
+     - Parameter request: Request to be fetched with (default is empty fetch request)
+     - Parameter completion: Completion handler to be executed after the payments
+                             are fetched asynchronously
+     */
+    private func loadPaymentsAsync(with request: NSFetchRequest<Payment> = Payment.fetchRequest(), completion: @escaping CompletionHandler) {
         let asyncFetchRequest = NSAsynchronousFetchRequest<Payment>( fetchRequest: request) { /*[unowned self]*/ (result: NSAsynchronousFetchResult) in
             guard let fetchedPayments = result.finalResult else { return }
             completion(fetchedPayments)
@@ -84,6 +103,8 @@ class DatabaseAsync {
             Log.exception(message: "Error executing asynchronous fetch: \(error.localizedDescription)")
         }
     }
+    
+    
     
     
     // MARK: - Fetch
@@ -134,6 +155,7 @@ class DatabaseAsync {
     
     
     
+    
     /**
      Fetch the payment with matches single uid
      - Parameter uid: UID used to find in database
@@ -153,6 +175,8 @@ class DatabaseAsync {
     /**
      Fetches data from the array of UIDs of the payments
      - Parameter uidArray: Array of UIDs
+     - Parameter completion: Completion handler to be executed after the payments
+                             are fetched asynchronously
      */
     func fetchDataAsync(containingUIDs uidArray: [UUID], completion: @escaping CompletionHandler){
         let request: NSFetchRequest<Payment> = Payment.fetchRequest()
@@ -162,7 +186,7 @@ class DatabaseAsync {
     }
     
     
-    //MARK: - Add & Update Payment methods
+    //MARK: - Add methods
     
     /**
      Adds a payments to database and returns a tuple of the totals before and after the payment
@@ -203,6 +227,7 @@ class DatabaseAsync {
     }
     
     
+    // MARK: - Update methods
     
     /**
      Updates a payments with the information passed in tuple
@@ -211,6 +236,7 @@ class DatabaseAsync {
      */
     func updateAsync(payment: Payment, with paymentInfo: PaymentInformation, completion: @escaping (PaymentTotalInfo) -> ()) {
         
+//        persistentContainer.viewContext.automaticallyMergesChangesFromParent = true
         persistentContainer.performBackgroundTask { [unowned self] context in
             payment.receiptPhoto?.imageData = paymentInfo.receiptImage.jpegData(compressionQuality: self.settings.compression)
             payment.amountPaid = paymentInfo.amountPaid
@@ -218,6 +244,7 @@ class DatabaseAsync {
             payment.date = paymentInfo.date
             
             self.save(context)
+            self.save(self.context) // save main parent context
             
             self.getTotalAmountAsync(of: .Pending) { totalAfter in
                 let info = PaymentTotalInfo(uid: payment.uid!, totalAfter: totalAfter)
