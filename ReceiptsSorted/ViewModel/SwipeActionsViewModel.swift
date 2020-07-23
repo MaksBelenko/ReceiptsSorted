@@ -12,8 +12,8 @@ class SwipeActionsViewModel {
 
     weak var swipeActionDelegate: SwipeActionDelegate?
     
-    private let xMarkSymbol = "\u{2715}"  //\u{2716}
-    private let tickSymbol = "\u{2713}"
+    let removeText = "\u{2715}\nRemove"  //\u{2716}
+    let tickText = "\u{2713}\nClaimed"
     
     
     /**
@@ -25,12 +25,12 @@ class SwipeActionsViewModel {
         
         let checkAction:UIContextualAction?
         
-        let deleteAction = createContextualAction(title: "\(xMarkSymbol)\nRemove", colour: .lightRed, indexPath: indexPath) { (indexPath) in
+        let deleteAction = createContextualAction(title: removeText, colour: .lightRed, indexPath: indexPath) { (indexPath) in
             self.actionClicked(for: .Remove, indexPath: indexPath, payment: payment)
         }
         
         if (payment.paymentReceived == false){
-            checkAction = createContextualAction(title: "\(tickSymbol)\nClaimed", colour: .tickSwipeActionColour, indexPath: indexPath, onSelectAction: { (indexPath) in
+            checkAction = createContextualAction(title: tickText, colour: .tickSwipeActionColour, indexPath: indexPath, onSelectAction: { (indexPath) in
                 self.actionClicked(for: .Tick, indexPath: indexPath, payment: payment)
             })
         } else {

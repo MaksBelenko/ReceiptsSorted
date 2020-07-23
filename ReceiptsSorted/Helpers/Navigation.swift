@@ -15,8 +15,8 @@ class Navigation {
     
     
     // MARK: - ViewController
-    func showCameraVC(for controller: UIViewController, onAddReceipt: @escaping (PaymentAction, PaymentInformation) -> () ) {
-        let cameraVC = CameraViewController(onAddReceipt: onAddReceipt)
+    func showCameraVC(for controller: UIViewController) {
+        let cameraVC = CameraViewController()
         cameraVC.modalPresentationStyle = .custom
         cameraVC.controllerFrame = controller.view.frame
         controller.navigationController?.pushViewController(cameraVC, animated: true)
@@ -50,18 +50,17 @@ class Navigation {
     
     
     // MARK: - CameraViewController
-    func showPaymentVC(for controller: CameraViewController, withImage image: UIImage, onAddReceipt: @escaping (PaymentAction, PaymentInformation) -> ()) {
+    func showPaymentVC(for controller: CameraViewController, withImage image: UIImage) {
         if let paymentVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "PaymentDetails") as? PaymentViewController
         {
             paymentVC.passedImage = image
-            paymentVC.onButtonAction = onAddReceipt
             paymentVC.modalPresentationStyle = .fullScreen
             controller.navigationController?.pushViewController(paymentVC, animated: true)
         }
     }
     
     
-    func showPaymentVC(for controller: CardViewController, payment selectedPayment: Payment, onUpdateReceipt: @escaping (PaymentAction, PaymentInformation) -> ()) {
+    func showPaymentVC(for controller: CardViewController, payment selectedPayment: Payment) {
         if let paymentVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "PaymentDetails") as? PaymentViewController
         {
             paymentVC.passedImage = UIImage(data: selectedPayment.receiptPhoto?.imageData ?? Data())
@@ -70,8 +69,7 @@ class Navigation {
             paymentVC.amountPaid = selectedPayment.amountPaid
             paymentVC.place = selectedPayment.place!
             paymentVC.date = selectedPayment.date!
-            paymentVC.pageType = .UpdatePayment
-            paymentVC.onButtonAction = onUpdateReceipt
+            paymentVC.paymentAction = .UpdatePayment
             
             paymentVC.modalPresentationStyle = .fullScreen
             controller.navigationController?.pushViewController(paymentVC, animated: true)

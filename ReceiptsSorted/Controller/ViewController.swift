@@ -135,7 +135,7 @@ class ViewController: UIViewController  {
     
     
     @objc private func addButtonPressed () {
-        Navigation.shared.showCameraVC(for: self, onAddReceipt: cardViewController.cardViewModel.passData(as:paymentInfo:))
+        Navigation.shared.showCameraVC(for: self)
     }
     
     @objc private func addButtonTouchDown() {

@@ -44,8 +44,12 @@ class CardViewModel {
     // MARK: - Initiliation
     init() {
         refreshPayments()
+        NotificationCenter.default.addObserver(self, selector: #selector(onReceivePaymentData(_:)), name: .didReceivePaymentData, object: nil)
     }
     
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: .didReceivePaymentData, object: nil)
+    }
     
     
     // MARK: - Helpers
@@ -226,12 +230,15 @@ class CardViewModel {
 }
 
 
-//MARK: - PaymentDelegate extension
-extension CardViewModel: PaymentDelegate {
+//MARK: - Notification extension
+extension CardViewModel {
     
-    // ----- Delegate method -----
-    func passData(as showPayment: PaymentAction, paymentInfo: PaymentInformation) {
-        switch showPayment
+    @objc private func onReceivePaymentData(_ notification: Notification) {
+        guard let userInfo = notification.userInfo,
+            let action = userInfo[NotificationUserInfo.action] as? PaymentAction,
+            let paymentInfo = userInfo[NotificationUserInfo.info] as? PaymentInformation else { return }
+        
+        switch action
         {
         case .AddPayment:
             self.addNewPayment(paymentInfo: paymentInfo)

@@ -43,6 +43,7 @@
 		B566604E242FA955003DD15B /* PaymentTableSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = B566604D242FA955003DD15B /* PaymentTableSection.swift */; };
 		B5666050242FB65F003DD15B /* IntExtensins.swift in Sources */ = {isa = PBXBuildFile; fileRef = B566604F242FB65F003DD15B /* IntExtensins.swift */; };
 		B5689D7224BB61D5005C46C5 /* ShareImagesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5689D7124BB61D5005C46C5 /* ShareImagesViewModel.swift */; };
+		B56939D024CA474B00806953 /* Notification.NameExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56939CF24CA474B00806953 /* Notification.NameExtension.swift */; };
 		B57145182474100800E0720C /* Navigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57145172474100800E0720C /* Navigation.swift */; };
 		B573FA9A23B81EC8005473D2 /* PaymentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B573FA9923B81EC8005473D2 /* PaymentViewController.swift */; };
 		B573FAA423B95F57005473D2 /* Delegates.swift in Sources */ = {isa = PBXBuildFile; fileRef = B573FAA323B95F57005473D2 /* Delegates.swift */; };
@@ -139,6 +140,7 @@
 		B566604D242FA955003DD15B /* PaymentTableSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentTableSection.swift; sourceTree = "<group>"; };
 		B566604F242FB65F003DD15B /* IntExtensins.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntExtensins.swift; sourceTree = "<group>"; };
 		B5689D7124BB61D5005C46C5 /* ShareImagesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareImagesViewModel.swift; sourceTree = "<group>"; };
+		B56939CF24CA474B00806953 /* Notification.NameExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.NameExtension.swift; sourceTree = "<group>"; };
 		B57145172474100800E0720C /* Navigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Navigation.swift; sourceTree = "<group>"; };
 		B573FA9923B81EC8005473D2 /* PaymentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentViewController.swift; sourceTree = "<group>"; };
 		B573FAA323B95F57005473D2 /* Delegates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Delegates.swift; sourceTree = "<group>"; };
@@ -477,6 +479,7 @@
 				B546A7A52471F77C00FB551D /* UIImageExtensions.swift */,
 				B5BA07652485A4FE00097E2C /* UIFontExtensions.swift */,
 				B57BCD1324C64F1F0019D85A /* NSPredicateExtensions.swift */,
+				B56939CF24CA474B00806953 /* Notification.NameExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -623,6 +626,7 @@
 				B5ED9A3E2485A21300FA7A7B /* TextHelper.swift in Sources */,
 				B5377C0023A82E280010B144 /* AppDelegate.swift in Sources */,
 				B5BA5F482489130500AC026A /* UserChecker.swift in Sources */,
+				B56939D024CA474B00806953 /* Notification.NameExtension.swift in Sources */,
 				B57ECC572454A6BA003E9598 /* UITextFieldExtensions.swift in Sources */,
 				B575FD7224C8DA53007034D4 /* DBRequestBuilder.swift in Sources */,
 				B5BA07662485A4FE00097E2C /* UIFontExtensions.swift in Sources */,

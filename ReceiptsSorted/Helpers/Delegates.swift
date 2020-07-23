@@ -15,11 +15,6 @@ protocol PopupDelegate: AnyObject {
     func setDatepopupValue(value: Date)
 }
 
-
-protocol PaymentDelegate: AnyObject {
-    func passData(as showPayment: PaymentAction, paymentInfo: PaymentInformation)
-}
-
 protocol SortButtonLabelDelegate: AnyObject {
     func changeButtonLabel(sortByOption: SortType, buttonTitle: String)
 }

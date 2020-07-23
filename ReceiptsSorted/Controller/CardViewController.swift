@@ -78,11 +78,10 @@ class CardViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        let cell = tblView.cellForRow(at: IndexPath(row: 0, section: 0)) as? PaymentTableViewCell
-    
-        if cell != nil && !userChecker.wasSwipeDemoShown() {
-            presentSwipeDemo(forCell: cell!, animated: false)
-            previewSwipeActions(for: cell!)
+        if  !userChecker.wasSwipeDemoShown() {
+            guard let cell = tblView.cellForRow(at: IndexPath(row: 0, section: 0)) as? PaymentTableViewCell else { return }
+            presentSwipeDemo(forCell: cell, animated: false)
+            previewSwipeActions(for: cell)
             
             userChecker.setSwipeDemoAsShown() // set UserDefaults as shown
         }
@@ -159,8 +158,7 @@ class CardViewController: UIViewController {
                                width: cell.frame.width,
                                height: cell.frame.height - 1)
         
-        onboardingVC.add(info: OnboardingInfo(showRect: showFrame,
-                                              text: text))
+        onboardingVC.add(info: OnboardingInfo(showRect: showFrame, text: text))
         
         onboardingVC.modalPresentationStyle = .overFullScreen
         present(onboardingVC, animated: animated)
@@ -169,8 +167,8 @@ class CardViewController: UIViewController {
     
     private func previewSwipeActions(for cell: PaymentTableViewCell) {
 
-        let tickSwipeLabel = createDemoSwipeLabel(text: "\u{2713}\nClaimed", backgroundColour: .tickSwipeActionColour)
-        let removeSwipeLabel = createDemoSwipeLabel(text: "\u{2715}\nRemove", backgroundColour: .lightRed)
+        let tickSwipeLabel = createDemoSwipeLabel(text: swipeActions.tickText, backgroundColour: .tickSwipeActionColour)
+        let removeSwipeLabel = createDemoSwipeLabel(text: swipeActions.removeText, backgroundColour: .lightRed)
 
         let removeSwipeWidth: CGFloat = removeSwipeLabel.sizeThatFits(tickSwipeLabel.frame.size).width + 15
         let tickSwipeWidth: CGFloat = tickSwipeLabel.sizeThatFits(tickSwipeLabel.frame.size).width + 15
@@ -342,7 +340,7 @@ extension CardViewController: UITableViewDataSource, UITableViewDelegate {
         
         if cardViewModel.selectCellActionShowVC(for: cell, indexPath: indexPath) {
             let selectedPayment = cardViewModel.getPayment(indexPath: indexPath)
-            Navigation.shared.showPaymentVC(for: self, payment: selectedPayment, onUpdateReceipt: cardViewModel.passData(as:paymentInfo:))
+            Navigation.shared.showPaymentVC(for: self, payment: selectedPayment)
         }
     }
     

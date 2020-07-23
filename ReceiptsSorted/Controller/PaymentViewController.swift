@@ -12,14 +12,13 @@ import CropViewController
 
 class PaymentViewController: UIViewController, UITextFieldDelegate {
 
-    var pageType: PaymentAction = .AddPayment
+    var paymentAction: PaymentAction = .AddPayment
     var passedImage: UIImage? = nil
     var amountPaid: Float = 0.0
     var place: String = ""
     var date: Date = Date()
-    var onButtonAction: ((PaymentAction, PaymentInformation) -> ())?
     
-    
+    let notificationCenter = NotificationCenter.default
     private let buttonAnimations = AddButtonAnimations()
     private let imageGesturesViewModel = ImageGestures()
     
@@ -87,13 +86,13 @@ class PaymentViewController: UIViewController, UITextFieldDelegate {
     //MARK: - Keyboard
     
     private func addKeyboardObservers() {
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardAppearanceChanged), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardAppearanceChanged), name: UIResponder.keyboardWillHideNotification, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(keyboardAppearanceChanged), name: UIResponder.keyboardWillShowNotification, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(keyboardAppearanceChanged), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     private func removeKeyboardObservers() {
-        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+        notificationCenter.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        notificationCenter.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     
@@ -154,7 +153,7 @@ class PaymentViewController: UIViewController, UITextFieldDelegate {
         placeOfPurchaseTextField.text = place
         dateTextField.text = date.toString(as: .long)
         
-        if (pageType == .UpdatePayment) {
+        if (paymentAction == .UpdatePayment) {
             amountPaidTextField.text = amountPaid.ToString(decimals: 2)
         }
     }
@@ -179,7 +178,7 @@ class PaymentViewController: UIViewController, UITextFieldDelegate {
         addButton.layer.cornerRadius = addButton.frame.size.height/4
         addButton.layer.applyShadow(color: .flatOrange, alpha: 0.5, x: 1, y: 4, blur: 6)
         
-        let buttonTitle = (pageType == .AddPayment) ? "Add" : "Update"
+        let buttonTitle = (paymentAction == .AddPayment) ? "Add" : "Update"
         addButton.setTitle( buttonTitle, for: .normal)
         
         buttonAnimations.startAnimatingPressActions(for: addButton)
@@ -228,13 +227,20 @@ class PaymentViewController: UIViewController, UITextFieldDelegate {
         place = placeOfPurchaseTextField.text!
         
         let paymentInfo = PaymentInformation(amountPaid: amountPaid, place: place, date: date, receiptImage: receiptImageView.image ?? UIImage())
-        onButtonAction!(pageType, paymentInfo)
+        postNotification(action: paymentAction, info: paymentInfo)
         
-        if (pageType == .AddPayment) {
+        if (paymentAction == .AddPayment) {
             navigationController?.popToRootViewController(animated: true)
         } else {
             navigationController?.popViewController(animated: true)
         }
+    }
+    
+    
+    private func postNotification(action: PaymentAction, info: PaymentInformation) {
+        let userInfo: [NotificationUserInfo : Any] = [.action : action,
+                                                      .info   : info]
+        notificationCenter.post(name: .didReceivePaymentData, object: self, userInfo: userInfo)
     }
     
     

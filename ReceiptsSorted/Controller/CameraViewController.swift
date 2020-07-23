@@ -19,8 +19,6 @@ class CameraViewController: UIViewController, UINavigationControllerDelegate {
     private var photoOutput: AVCapturePhotoOutput?
     private var cameraSession: CameraSession?
     private let imagePicker = UIImagePickerController()
-    
-    private var onAddReceipt: ((PaymentAction, PaymentInformation) -> ())?
 
     override var preferredStatusBarStyle: UIStatusBarStyle { return .lightContent }
     
@@ -34,9 +32,8 @@ class CameraViewController: UIViewController, UINavigationControllerDelegate {
     
     
     // MARK: - Initialisation
-    init(onAddReceipt: @escaping (PaymentAction, PaymentInformation) -> ()) {
+    init() {
         super.init(nibName: "CameraViewController", bundle: nil)
-        self.onAddReceipt = onAddReceipt
     }
     
     required init?(coder: NSCoder) {
@@ -111,7 +108,7 @@ extension CameraViewController: UIImagePickerControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         dismiss(animated: true, completion: nil)
         if let pickedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
-            Navigation.shared.showPaymentVC(for: self, withImage: pickedImage, onAddReceipt: onAddReceipt!)
+            Navigation.shared.showPaymentVC(for: self, withImage: pickedImage)
         }
     }
     
@@ -131,7 +128,7 @@ extension CameraViewController: AVCapturePhotoCaptureDelegate {
                 return
         }
         
-        Navigation.shared.showPaymentVC(for: self, withImage: image, onAddReceipt: onAddReceipt!)
+        Navigation.shared.showPaymentVC(for: self, withImage: image)
         
     }
 }

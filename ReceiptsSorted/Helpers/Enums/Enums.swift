@@ -42,3 +42,8 @@ enum SelectionAction {
 enum PaymentsSelectionOption {
     case SelectAll, DeselectAll
 }
+
+enum NotificationUserInfo: String {
+    case action = "action"
+    case info = "info"
+}
