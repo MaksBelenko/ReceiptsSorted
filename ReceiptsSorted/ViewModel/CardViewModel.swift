@@ -39,7 +39,7 @@ class CardViewModel {
     
     
     let database = DatabaseAsync()
-    
+    private var currentSearchText = ""
     
     // MARK: - Initiliation
     init() {
@@ -57,7 +57,7 @@ class CardViewModel {
      Fetches the payments from database and separates them into sections
      */
     func refreshPayments() {
-        database.fetchDataAsync(by: sortType, and: paymentStatusType) { [weak self] payments in
+        database.fetchDataAsync(forName: currentSearchText, by: sortType, and: paymentStatusType) { [weak self] payments in
             self?.updateData(with: payments)
         }
     }
@@ -79,6 +79,7 @@ class CardViewModel {
      - Parameter searchText: Name that is searched for
      */
     func getPayments(forSearchName searchText: String) {
+        currentSearchText = searchText
         database.fetchDataAsync(forName: searchText, by: sortType, and: paymentStatusType) { [unowned self] payments in
             self.fetchedPayments = payments
             self.delegate?.reloadTable()

@@ -26,7 +26,6 @@ class TextHelper {
         let attributedTitle = NSMutableAttributedString(string: "\(boldText) ",
                                                         attributes: [NSAttributedString.Key.font : UIFont.arialBold(ofSize: 18),
                                                                      NSAttributedString.Key.foregroundColor : UIColor.white])
-        
         attributedTitle.append(NSAttributedString(string: text,
                                                   attributes: [NSAttributedString.Key.font : UIFont.arial(ofSize: 18),
                                                                NSAttributedString.Key.foregroundColor : UIColor.white]))

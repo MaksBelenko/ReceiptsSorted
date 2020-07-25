@@ -107,8 +107,6 @@ class CardViewController: UIViewController {
 //    }
     
     
-    
-    
     private func setupSearchBar() {
         searchBar.delegate = self
         searchBar.returnKeyType = UIReturnKeyType.done
@@ -237,15 +235,15 @@ class CardViewController: UIViewController {
     
     // ---------------- Selection Helper View ------------------
     @IBAction func nextButtonPressed(_ sender: Any) {
-        cardViewModel.getSelectedPayments { selectedPayments in
+        cardViewModel.getSelectedPayments { [unowned self] selectedPayments in
             if selectedPayments.count == 0 {
                 Alert.shared.showNoPaymentsErrorAlert(for: self)
                 return
             }
             Alert.shared.showFileFormatAlert(for: self, withPayments: selectedPayments, onComplete: { [unowned self] in
                 self.selectingPayments(mode: .Disable)
+                self.cardViewModel.selectedPaymentsUIDs.removeAll()
             })
-            self.cardViewModel.selectedPaymentsUIDs.removeAll()
         }
     }
     
@@ -386,7 +384,7 @@ extension CardViewController: RefreshTableDelegate {
     func reloadTable() {
         tblView.reloadData()
     }
-    
+
     func updateRows(indexPaths: [IndexPath]) {
         tblView.reloadRows(at: indexPaths, with: .left)
     }
