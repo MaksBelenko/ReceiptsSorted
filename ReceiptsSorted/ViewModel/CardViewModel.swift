@@ -282,8 +282,8 @@ extension CardViewModel {
     
     
     
-    func updateField(for payment: Payment, fieldType: PaymentField, with newDetail: Any) {
-        database.updateFieldAsync(for: payment, fieldType: fieldType, with: newDetail)
+    func updateField(for payment: Payment, fieldType: PaymentField, with newDetail: Any, completion: @escaping () -> ()) {
+        database.updateFieldAsync(for: payment, fieldType: fieldType, with: newDetail, completion: completion)
     }
 }
 

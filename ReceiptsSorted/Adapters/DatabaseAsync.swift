@@ -259,7 +259,7 @@ class DatabaseAsync {
                             AmountPaid -> Float; Place -> String; ReceiptPhoto -> Data;
                             PaymentReceived -> Bool
      */
-    func updateFieldAsync(for payment: Payment, fieldType: PaymentField, with newDetail: Any) {
+    func updateFieldAsync(for payment: Payment, fieldType: PaymentField, with newDetail: Any, completion: @escaping () -> ()) {
         persistentContainer.performBackgroundTask { [unowned self] privateContext in
             switch fieldType {
             case .AmountPaid:
@@ -274,6 +274,10 @@ class DatabaseAsync {
             
             self.save(privateContext)
             self.save(self.context) // save main parent context
+            
+            DispatchQueue.main.async {
+                completion()
+            }
         }
     }
 

@@ -412,11 +412,13 @@ extension CardViewController: SwipeActionDelegate {
             })
             return
         case .Tick:
-            cardViewModel.updateField(for: payment, fieldType: .PaymentReceived, with: true)
+            cardViewModel.updateField(for: payment, fieldType: .PaymentReceived, with: true) { [unowned self] in
+                self.cardViewModel.removeFromTableVeiw(indexPath: indexPath, action: action)
+            }
         case .Untick:
-            cardViewModel.updateField(for: payment, fieldType: .PaymentReceived, with: false)
+            cardViewModel.updateField(for: payment, fieldType: .PaymentReceived, with: false) { [unowned self] in
+                self.cardViewModel.removeFromTableVeiw(indexPath: indexPath, action: action)
+            }
         }
-
-        cardViewModel.removeFromTableVeiw(indexPath: indexPath, action: action)
     }
 }
