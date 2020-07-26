@@ -191,6 +191,7 @@ class DatabaseAsync {
         
         getTotalAmountAsync(of: .Pending) { [unowned self] totalBefore in
             
+            let compressionRate = self.settings.compression
             self.persistentContainer.performBackgroundTask { [unowned self] context in
 //                defer { print("Exiting persistentContainer background task") }
                 let generatedUUID = UUID()
@@ -203,7 +204,7 @@ class DatabaseAsync {
                 newPayment.paymentReceived = false
                 
                 let receiptPhoto = ReceiptPhoto(context: context)
-                receiptPhoto.imageData = self.imageCompression.compressImage(for: paymentInfo.receiptImage)
+                receiptPhoto.imageData = self.imageCompression.compressImage(for: paymentInfo.receiptImage, withCompression: compressionRate)
                 newPayment.receiptPhoto = receiptPhoto
                 
                 self.save(context)
@@ -230,9 +231,10 @@ class DatabaseAsync {
      - Parameter paymentInfo: Tuple used to update the payment information
      */
     func updateAsync(payment: Payment, with paymentInfo: PaymentInformation, completion: @escaping (PaymentTotalInfo) -> ()) {
-    
+        let compressionRate = settings.compression
+        
         persistentContainer.performBackgroundTask { [unowned self] privateContext in
-            payment.receiptPhoto?.imageData = paymentInfo.receiptImage.jpegData(compressionQuality: self.settings.compression)
+            payment.receiptPhoto?.imageData = paymentInfo.receiptImage.jpegData(compressionQuality: compressionRate)
             payment.amountPaid = paymentInfo.amountPaid
             payment.place = paymentInfo.place
             payment.date = paymentInfo.date
@@ -285,7 +287,7 @@ class DatabaseAsync {
      */
     func getTotalAmountAsync(of sortMethod: PaymentStatusType, completion: @escaping (Float) -> ()) {
         
-        persistentContainer.performBackgroundTask { [unowned self] context in
+        persistentContainer.performBackgroundTask { /*[unowned self]*/ context in
             let dictSumName = "sumAmount"
             
             let fetchRequest = Payment.fetchDictionaryRequest()

@@ -163,5 +163,22 @@ class Alert {
                                  actions: [UIAlertAction(title: "OK", style: .default, handler: nil)])
         alert.show(for: controller)
     }
+    
+    
+    
+    // MARK: - SettingsVC Alerts
+    
+    func showImageCompressionInfo(for controller: UIViewController) {
+        let text = """
+                    It's necessary to save your device memory and send receipts faster.
+                    Best - readable and minimal space required.
+                    Decent – more clear pictures.
+                    None – takes a lot of device’s memory.
+                   """
+        
+        let ac = UIAlertController(title: "Image Compression", message: text, preferredStyle: .alert)
+        ac.addAction(UIAlertAction(title: "OK", style: .default))
+        controller.present(ac, animated: true)
+    }
 
 }

@@ -67,6 +67,8 @@ class SettingsViewController: UITableViewController {
                 let index = self.currencyPickerHelper.currencies.firstIndex(where: { $0.symbol == self.currencyLabel.text})!
                 self.currencyPicker.selectRow(index, inComponent: 0, animated: false)
             }
+        case tableRow[.ImageCompression]:
+            Alert.shared.showImageCompressionInfo(for: self)
         case tableRow[.ReceiptRemoval]:
             animate(picker: receiptsRemovalPicker, arrow: receiptRemovalArrowImage, executeOnShow: nil)
         default:
