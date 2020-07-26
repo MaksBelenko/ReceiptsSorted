@@ -31,8 +31,6 @@ class DtabaseFetchController: NSObject {
         fetchedResultsController.delegate = self
         return fetchedResultsController
     }()
-    
-    
 }
 
 

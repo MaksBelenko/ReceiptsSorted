@@ -65,6 +65,8 @@
 		B593962F2483D50600B1E895 /* Payment+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B593962B2483D50600B1E895 /* Payment+CoreDataProperties.swift */; };
 		B5977E7C24C4729400F3E589 /* DatabaseAsync.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5977E7B24C4729400F3E589 /* DatabaseAsync.swift */; };
 		B5977E7E24C47F0400F3E589 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5977E7D24C47F0400F3E589 /* CoreDataStack.swift */; };
+		B598D8E724CDB80D00158766 /* CurrencyPickerHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B598D8E624CDB80D00158766 /* CurrencyPickerHelper.swift */; };
+		B598D8E924CDBD6500158766 /* ReceiptRemovalPickerHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B598D8E824CDBD6500158766 /* ReceiptRemovalPickerHelper.swift */; };
 		B59E3E2323B44DE80017D474 /* CardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59E3E2123B44DE80017D474 /* CardViewController.swift */; };
 		B59E3E2423B44DE80017D474 /* CardViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B59E3E2223B44DE80017D474 /* CardViewController.xib */; };
 		B59E3E2723B50D9F0017D474 /* PaymentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59E3E2523B50D9F0017D474 /* PaymentTableViewCell.swift */; };
@@ -162,6 +164,8 @@
 		B593962B2483D50600B1E895 /* Payment+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Payment+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		B5977E7B24C4729400F3E589 /* DatabaseAsync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseAsync.swift; sourceTree = "<group>"; };
 		B5977E7D24C47F0400F3E589 /* CoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
+		B598D8E624CDB80D00158766 /* CurrencyPickerHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyPickerHelper.swift; sourceTree = "<group>"; };
+		B598D8E824CDBD6500158766 /* ReceiptRemovalPickerHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiptRemovalPickerHelper.swift; sourceTree = "<group>"; };
 		B59E3E2123B44DE80017D474 /* CardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardViewController.swift; sourceTree = "<group>"; };
 		B59E3E2223B44DE80017D474 /* CardViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CardViewController.xib; sourceTree = "<group>"; };
 		B59E3E2523B50D9F0017D474 /* PaymentTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentTableViewCell.swift; sourceTree = "<group>"; };
@@ -279,6 +283,8 @@
 				B535A1BF244BC320005585F0 /* Log.swift */,
 				B5ED9A3D2485A21300FA7A7B /* TextHelper.swift */,
 				B5BA5F472489130500AC026A /* UserChecker.swift */,
+				B598D8E624CDB80D00158766 /* CurrencyPickerHelper.swift */,
+				B598D8E824CDBD6500158766 /* ReceiptRemovalPickerHelper.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -610,6 +616,7 @@
 				B5217ECE246C870B00CC31AB /* FileManagerExtensions.swift in Sources */,
 				B5666050242FB65F003DD15B /* IntExtensins.swift in Sources */,
 				B565674024831619000A6639 /* ZipAdapter.swift in Sources */,
+				B598D8E724CDB80D00158766 /* CurrencyPickerHelper.swift in Sources */,
 				B5E3086824BE532E003D5860 /* NavControllerTransitions.swift in Sources */,
 				B5F54E8B241E78C70016DCED /* DateExtensions.swift in Sources */,
 				B59E3E2723B50D9F0017D474 /* PaymentTableViewCell.swift in Sources */,
@@ -649,6 +656,7 @@
 				B5443FF024829E2A0037AA38 /* PaymentInformation.swift in Sources */,
 				B5AD17DD240464CB00BB3069 /* TopGraphicsShapes.swift in Sources */,
 				B514A36724BB74C00078E9A9 /* Currency.swift in Sources */,
+				B598D8E924CDBD6500158766 /* ReceiptRemovalPickerHelper.swift in Sources */,
 				B517DD5F246B394B004B3B2C /* PaymentTotalInfo.swift in Sources */,
 				B573FAAB23B98285005473D2 /* CameraViewController.swift in Sources */,
 				B50BAADF242BECEE00EAFECA /* StringExtensions.swift in Sources */,

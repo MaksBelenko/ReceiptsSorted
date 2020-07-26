@@ -70,7 +70,7 @@
                         <sections>
                             <tableViewSection headerTitle="Section-1" id="GeH-fE-0mR">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="ibl-DP-AKa">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="ibl-DP-AKa" userLabel="Currency Cell">
                                         <rect key="frame" x="0.0" y="55.333332061767578" width="375" height="43.666667938232422"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ibl-DP-AKa" id="MJa-yv-gA9">
@@ -98,7 +98,7 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="216" id="fvf-r1-Ica">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="216" id="fvf-r1-Ica" userLabel="Currency Picker Cell">
                                         <rect key="frame" x="0.0" y="99" width="375" height="216"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="fvf-r1-Ica" id="b7x-4D-KB1">
@@ -117,7 +117,7 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="gray" indentationWidth="10" rowHeight="97" id="1rZ-zG-KFh">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="gray" indentationWidth="10" rowHeight="97" id="1rZ-zG-KFh" userLabel="Image Compression Cell">
                                         <rect key="frame" x="0.0" y="315" width="375" height="97"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="1rZ-zG-KFh" id="1ne-1u-8ka">
@@ -163,7 +163,7 @@
                             </tableViewSection>
                             <tableViewSection headerTitle="Section-2" id="Z05-Vb-UBM">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="gray" accessoryType="disclosureIndicator" indentationWidth="10" id="dra-A4-w3j">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="gray" accessoryType="disclosureIndicator" indentationWidth="10" id="dra-A4-w3j" userLabel="Receipts Removal Cell">
                                         <rect key="frame" x="0.0" y="468" width="375" height="43.666667938232422"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="dra-A4-w3j" id="CXW-Jp-Z1r">
@@ -191,16 +191,27 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="NfF-HS-akG">
-                                        <rect key="frame" x="0.0" y="511.66666793823242" width="375" height="43.666667938232422"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="216" id="NfF-HS-akG" userLabel="Remove After Picker Cell">
+                                        <rect key="frame" x="0.0" y="511.66666793823242" width="375" height="216"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="NfF-HS-akG" id="z7J-rv-f2P">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.666667938232422"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="216"/>
                                             <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="66l-kM-gbS" userLabel="Removal Picker View">
+                                                    <rect key="frame" x="0.0" y="0.0" width="375" height="216"/>
+                                                </pickerView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="bottom" secondItem="66l-kM-gbS" secondAttribute="bottom" id="893-rr-czw"/>
+                                                <constraint firstAttribute="trailing" secondItem="66l-kM-gbS" secondAttribute="trailing" id="ISB-22-CZt"/>
+                                                <constraint firstItem="66l-kM-gbS" firstAttribute="top" secondItem="z7J-rv-f2P" secondAttribute="top" id="WjY-Zt-tIT"/>
+                                                <constraint firstItem="66l-kM-gbS" firstAttribute="leading" secondItem="z7J-rv-f2P" secondAttribute="leading" id="wCF-kF-AZh"/>
+                                            </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="9vZ-Ym-cys">
-                                        <rect key="frame" x="0.0" y="555.33333587646484" width="375" height="43.666667938232422"/>
+                                        <rect key="frame" x="0.0" y="727.66666793823242" width="375" height="43.666667938232422"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="9vZ-Ym-cys" id="aCc-8W-QBV">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.666667938232422"/>
@@ -212,7 +223,7 @@
                             <tableViewSection headerTitle="Section-3" id="nmo-pf-iic">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="j15-hB-I4O">
-                                        <rect key="frame" x="0.0" y="655.00000381469727" width="375" height="43.666667938232422"/>
+                                        <rect key="frame" x="0.0" y="827.33333587646484" width="375" height="43.666667938232422"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="j15-hB-I4O" id="vpb-z4-pWe">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.666667938232422"/>
@@ -220,7 +231,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="br8-He-SVQ">
-                                        <rect key="frame" x="0.0" y="698.66667175292969" width="375" height="43.666667938232422"/>
+                                        <rect key="frame" x="0.0" y="871.00000381469727" width="375" height="43.666667938232422"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="br8-He-SVQ" id="3cZ-lp-fpk">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.666667938232422"/>
@@ -228,7 +239,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="Oe6-Rc-6UC">
-                                        <rect key="frame" x="0.0" y="742.33333969116211" width="375" height="43.666667938232422"/>
+                                        <rect key="frame" x="0.0" y="914.66667175292969" width="375" height="43.666667938232422"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Oe6-Rc-6UC" id="7Sn-yV-Aov">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.666667938232422"/>
@@ -247,6 +258,7 @@
                     <connections>
                         <outlet property="currencyLabel" destination="cxY-6B-Qkf" id="G2F-kf-pEj"/>
                         <outlet property="currencyPicker" destination="vpM-Pb-MBM" id="BbZ-TM-9Vq"/>
+                        <outlet property="receiptsRemovalPicker" destination="66l-kM-gbS" id="YoG-P1-lvu"/>
                         <outlet property="tblView" destination="r3g-dd-7YN" id="FVR-AT-13y"/>
                     </connections>
                 </tableViewController>

@@ -251,7 +251,6 @@ extension CardViewModel {
     
     private func addNewPayment(paymentInfo: PaymentInformation) {
         database.addAsync(paymentInfo: paymentInfo) { [weak self] paymentTotalInfo in
-
             // After concurrently saving context, fetch the payment with the new uid
             self?.database.fetchPaymentAsync(with: paymentTotalInfo.uid) { payment in
                 if (self?.paymentStatusType != .Received) {

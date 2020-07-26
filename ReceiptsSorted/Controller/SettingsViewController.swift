@@ -13,31 +13,41 @@ class SettingsViewController: UITableViewController {
     @IBOutlet var tblView: UITableView!
     @IBOutlet weak var currencyPicker: UIPickerView!
     @IBOutlet weak var currencyLabel: UILabel!
+    @IBOutlet weak var receiptsRemovalPicker: UIPickerView!
     
     
     let settings = Settings.shared
     
-    let currencies = WorldCurrencies().currencies //Locale.isoCurrencyCodes
-    
+    private let currencyPickerHelper = CurrencyPickerHelper()
+    private let receiptRemovalPickerHelper = ReceiptRemovalPickerHelper()
     
     private enum SettingsTableRow {
         case Currency, CurrencyPicker
         case ImageCompression
+        case ReceiptRemoval, ReceiptRemovalPicker
     }
     
-    private let tableRow: [SettingsTableRow : IndexPath] = [ .Currency           : IndexPath(row: 0, section: 0),
-                                                             .CurrencyPicker     : IndexPath(row: 1, section: 0),
-                                                             .ImageCompression   : IndexPath(row: 2, section: 0) ]
+    private let tableRow: [SettingsTableRow : IndexPath] = [ .Currency             : IndexPath(row: 0, section: 0),
+                                                             .CurrencyPicker       : IndexPath(row: 1, section: 0),
+                                                             .ImageCompression     : IndexPath(row: 2, section: 0),
+                                                             .ReceiptRemoval       : IndexPath(row: 0, section: 1),
+                                                             .ReceiptRemovalPicker : IndexPath(row: 1, section: 1)]
     
     // MARK: - Lifeycle
     override func viewDidLoad() {
         super.viewDidLoad()
 
         currencyLabel.text = settings.currencySymbol
-        currencyPicker.isHidden = true
-        currencyPicker.delegate = self
-        currencyPicker.dataSource = self
         
+        currencyPicker.isHidden = true
+        currencyPickerHelper.delegate = self
+        currencyPicker.delegate = currencyPickerHelper
+        currencyPicker.dataSource = currencyPickerHelper
+        
+        receiptsRemovalPicker.isHidden = true
+        receiptRemovalPickerHelper.delegate = self
+        receiptsRemovalPicker.delegate = receiptRemovalPickerHelper
+        receiptsRemovalPicker.dataSource = receiptRemovalPickerHelper
     }
     
 
@@ -53,20 +63,28 @@ class SettingsViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-        
-        print(indexPath)
         if indexPath == tableRow[.Currency] {
             currencyPicker.isHidden = !currencyPicker.isHidden
-            let alpha: CGFloat = (currencyPicker.isHidden) ? 1 : 1
 
             UIView.animate(withDuration: 0.3) {
-                self.currencyPicker.alpha = alpha
                 self.tableView.beginUpdates()
                 self.tableView.endUpdates()
             }
             
-            let index = currencies.firstIndex(where: { $0.symbol == currencyLabel.text})!
+            let index = currencyPickerHelper.currencies.firstIndex(where: { $0.symbol == currencyLabel.text})!
             currencyPicker.selectRow(index, inComponent: 0, animated: false)
+        }
+        
+        if indexPath == tableRow[.ReceiptRemoval] {
+            receiptsRemovalPicker.isHidden = !receiptsRemovalPicker.isHidden
+
+            UIView.animate(withDuration: 0.3) {
+                self.tableView.beginUpdates()
+                self.tableView.endUpdates()
+            }
+            
+//            let index = receiptRemovalPickerHelper.removeOptions.firstIndex(where: { $0.value == currencyLabel.text})!
+//            currencyPicker.selectRow(index, inComponent: 0, animated: false)
         }
     }
     
@@ -76,6 +94,8 @@ class SettingsViewController: UITableViewController {
         {
         case tableRow[.CurrencyPicker]:
             return currencyPicker.isHidden ? 0.0 : 216.0
+        case tableRow[.ReceiptRemovalPicker]:
+            return receiptsRemovalPicker.isHidden ? 0.0 : 100.0
         case tableRow[.ImageCompression]:
             return 97.0
         default:
@@ -93,24 +113,16 @@ class SettingsViewController: UITableViewController {
 }
 
 
-// MARK: - UIPickerViewDelegate, UIPickerViewDataSource
-extension SettingsViewController: UIPickerViewDelegate, UIPickerViewDataSource {
-    
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return 1
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return currencies.count
-    }
-
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return currencies[row].name
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        let symbol = currencies[row].symbol
+// MARK: - CurrencyPickerDelegate
+extension SettingsViewController: CurrencyPickerDelegate {
+    func onCurrencySelected(symbol: String) {
         currencyLabel.text = symbol
         settings.currencySymbol = symbol
+    }
+}
+
+extension SettingsViewController: ReceiptRemovalPickerDelegate {
+    func onRemoveOptionSelected(afterMonths monthsNumber: Int) {
+        print("Selected option: \(monthsNumber) months")
     }
 }
