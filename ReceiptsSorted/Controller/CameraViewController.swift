@@ -57,15 +57,20 @@ class CameraViewController: UIViewController, UINavigationControllerDelegate {
     }
         
     override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(true)
+        super.viewWillAppear(animated)
         cameraSession!.startRunningCaptureSession()
         animateButtons(open: true)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(true)        
-        cameraSession!.stopCaptureSession()
+        super.viewWillDisappear(animated)
         animateButtons(open: false)
+    }
+    
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        cameraSession!.stopCaptureSession()
     }
     
     
