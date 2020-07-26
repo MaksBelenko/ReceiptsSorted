@@ -14,6 +14,11 @@ class CameraViewController: UIViewController, UINavigationControllerDelegate {
     @IBOutlet weak var takePhotoButton: UIButton!
     @IBOutlet weak var cameraView: UIView!
     
+    @IBOutlet weak var closeButton: UIButton!
+    @IBOutlet weak var flashButton: UIButton!
+    @IBOutlet weak var imagePickerButton: UIButton!
+    
+    
     var controllerFrame: CGRect?
     
     private var photoOutput: AVCapturePhotoOutput?
@@ -54,11 +59,13 @@ class CameraViewController: UIViewController, UINavigationControllerDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         cameraSession!.startRunningCaptureSession()
+        animateButtons(open: true)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(true)        
         cameraSession!.stopCaptureSession()
+        animateButtons(open: false)
     }
     
     
@@ -73,6 +80,25 @@ class CameraViewController: UIViewController, UINavigationControllerDelegate {
         // Create gesture recognisers for camera focusing
         let tapGestureRecogniser = UITapGestureRecognizer(target: cameraSession, action: #selector(cameraSession?.handleTapToFocus(recogniser:)))
         cameraView.addGestureRecognizer(tapGestureRecogniser)
+    }
+    
+    
+    
+    // MARK: - Opening animations
+    private func animateButtons(open: Bool) {
+        animate(view: takePhotoButton, open: open)
+        animate(view: flashButton, open: open)
+        animate(view: closeButton, open: open)
+        animate(view: imagePickerButton, open: open)
+    }
+    
+    private func animate(view: UIView, open: Bool) {
+        view.transform = (open) ? CGAffineTransform.identity.translatedBy(x: 0, y: 50) : CGAffineTransform.identity
+        view.alpha = (open) ? 0 : 1
+        UIView.animate(withDuration: (open) ? 0.5 : 0.3) {
+            view.transform = (open) ? CGAffineTransform.identity : CGAffineTransform.identity.translatedBy(x: 0, y: 50)
+            view.alpha = (open) ? 1 : 0
+        }
     }
     
     

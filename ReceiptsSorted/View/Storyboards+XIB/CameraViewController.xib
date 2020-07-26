@@ -10,6 +10,9 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CameraViewController" customModule="WorkReceipts" customModuleProvider="target">
             <connections>
                 <outlet property="cameraView" destination="lto-ph-Osu" id="lkt-IR-h0x"/>
+                <outlet property="closeButton" destination="gXZ-Dz-QGX" id="Sdw-j6-lvp"/>
+                <outlet property="flashButton" destination="DHd-Jy-jG0" id="iFz-7K-NLX"/>
+                <outlet property="imagePickerButton" destination="SIH-m9-Zga" id="WVU-uq-fxa"/>
                 <outlet property="takePhotoButton" destination="365-wz-sNb" id="xIJ-ts-Qvm"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>

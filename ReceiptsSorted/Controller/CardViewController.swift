@@ -48,9 +48,6 @@ class CardViewController: UIViewController {
     
     
     fileprivate let paymentCellIdentifier = "paymentCell"
-//    private let cardVM = CardVM()
-    
-    
     
     
     //MARK: - Lifecycle
