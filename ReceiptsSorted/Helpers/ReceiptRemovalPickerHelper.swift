@@ -13,7 +13,7 @@ protocol ReceiptRemovalPickerDelegate: AnyObject {
 }
 
 
-class ReceiptRemovalPickerHelper: NSObject, UIPickerViewDelegate, UIPickerViewDataSource  {
+class ReceiptRemovalPickerHelper: NSObject, PickerProtocol {
     
     weak var delegate: ReceiptRemovalPickerDelegate?
     let removeOptions = [(value: -1, name: "Disable"),

@@ -8,15 +8,18 @@
 
 import UIKit
 
+protocol PickerProtocol: UIPickerViewDelegate, UIPickerViewDataSource {}
+
 class SettingsViewController: UITableViewController {
 
     @IBOutlet var tblView: UITableView!
     @IBOutlet weak var currencyPicker: UIPickerView!
     @IBOutlet weak var currencyLabel: UILabel!
+    @IBOutlet weak var currencyArrowImage: UIImageView!
     @IBOutlet weak var receiptsRemovalPicker: UIPickerView!
+    @IBOutlet weak var receiptRemovalArrowImage: UIImageView!
     
-    
-    let settings = Settings.shared
+    private let settings = Settings.shared
     
     private let currencyPickerHelper = CurrencyPickerHelper()
     private let receiptRemovalPickerHelper = ReceiptRemovalPickerHelper()
@@ -38,18 +41,12 @@ class SettingsViewController: UITableViewController {
         super.viewDidLoad()
 
         currencyLabel.text = settings.currencySymbol
-        
-        currencyPicker.isHidden = true
+
         currencyPickerHelper.delegate = self
-        currencyPicker.delegate = currencyPickerHelper
-        currencyPicker.dataSource = currencyPickerHelper
-        
-        receiptsRemovalPicker.isHidden = true
+        setup(picker: currencyPicker, to: currencyPickerHelper)
         receiptRemovalPickerHelper.delegate = self
-        receiptsRemovalPicker.delegate = receiptRemovalPickerHelper
-        receiptsRemovalPicker.dataSource = receiptRemovalPickerHelper
+        setup(picker: receiptsRemovalPicker, to: receiptRemovalPickerHelper)
     }
-    
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -63,31 +60,19 @@ class SettingsViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-        if indexPath == tableRow[.Currency] {
-            currencyPicker.isHidden = !currencyPicker.isHidden
-
-            UIView.animate(withDuration: 0.3) {
-                self.tableView.beginUpdates()
-                self.tableView.endUpdates()
+        switch indexPath
+        {
+        case tableRow[.Currency]:
+            animate(picker: currencyPicker, arrow: currencyArrowImage) {
+                let index = self.currencyPickerHelper.currencies.firstIndex(where: { $0.symbol == self.currencyLabel.text})!
+                self.currencyPicker.selectRow(index, inComponent: 0, animated: false)
             }
-            
-            let index = currencyPickerHelper.currencies.firstIndex(where: { $0.symbol == currencyLabel.text})!
-            currencyPicker.selectRow(index, inComponent: 0, animated: false)
-        }
-        
-        if indexPath == tableRow[.ReceiptRemoval] {
-            receiptsRemovalPicker.isHidden = !receiptsRemovalPicker.isHidden
-
-            UIView.animate(withDuration: 0.3) {
-                self.tableView.beginUpdates()
-                self.tableView.endUpdates()
-            }
-            
-//            let index = receiptRemovalPickerHelper.removeOptions.firstIndex(where: { $0.value == currencyLabel.text})!
-//            currencyPicker.selectRow(index, inComponent: 0, animated: false)
+        case tableRow[.ReceiptRemoval]:
+            animate(picker: receiptsRemovalPicker, arrow: receiptRemovalArrowImage, executeOnShow: nil)
+        default:
+            break
         }
     }
-    
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         switch indexPath
@@ -95,13 +80,51 @@ class SettingsViewController: UITableViewController {
         case tableRow[.CurrencyPicker]:
             return currencyPicker.isHidden ? 0.0 : 216.0
         case tableRow[.ReceiptRemovalPicker]:
-            return receiptsRemovalPicker.isHidden ? 0.0 : 100.0
+            return receiptsRemovalPicker.isHidden ? 0.0 : 130.0
         case tableRow[.ImageCompression]:
             return 97.0
         default:
             return 44
         }
     }
+    
+    // MARK: - Helpers
+    
+    /**
+     Animate PickerView from hidden to unhidden and vice versa.
+     - Parameter picker: PickerView that should be animated
+     - Parameter arrow: Arrow of the picker view to be rotated on open and close
+     - Parameter executeOnShow: If the next state is to show the PickerView execute the closure.
+     */
+    private func animate(picker: UIPickerView, arrow: UIImageView?, executeOnShow: (() -> ())? = nil) {
+        picker.isHidden = !picker.isHidden
+        UIView.animate(withDuration: 0.3) {
+            self.tableView.beginUpdates()
+            self.tableView.endUpdates()
+        }
+        if let image = arrow {
+            let coeff: CGFloat = (picker.isHidden) ? 0 : 1
+            UIView.animate(withDuration: 0.3) {
+                image.transform = CGAffineTransform(rotationAngle: coeff * CGFloat.pi/2)
+            }
+        }
+        if !picker.isHidden {
+            executeOnShow?()
+        }
+    }
+    
+    /**
+     Sets up PickerView's delegae and datasource to PickerHelper and sets PickerView
+     to be hidden.
+     - Parameter picker: Picker which delegate and dataSource should be mapped to helper
+     - Parameter pickerHelper: Helper that will work with the delegate and dataSource
+     */
+    private func setup(picker: UIPickerView, to pickerHelper: PickerProtocol) {
+           picker.isHidden = true
+           picker.delegate = pickerHelper
+           picker.dataSource = pickerHelper
+       }
+    
 
     
     // MARK: - @IBActions
@@ -121,6 +144,7 @@ extension SettingsViewController: CurrencyPickerDelegate {
     }
 }
 
+// MARK: - ReceiptRemovalPickerDelegate
 extension SettingsViewController: ReceiptRemovalPickerDelegate {
     func onRemoveOptionSelected(afterMonths monthsNumber: Int) {
         print("Selected option: \(monthsNumber) months")

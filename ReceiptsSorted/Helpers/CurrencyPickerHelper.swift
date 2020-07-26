@@ -13,7 +13,7 @@ protocol CurrencyPickerDelegate: AnyObject {
 }
 
 
-class CurrencyPickerHelper: NSObject, UIPickerViewDelegate, UIPickerViewDataSource  {
+class CurrencyPickerHelper: NSObject, PickerProtocol  {
     
     weak var delegate: CurrencyPickerDelegate?
     let currencies = WorldCurrencies().currencies //Locale.isoCurrencyCodes
