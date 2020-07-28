@@ -12,6 +12,7 @@ import CoreData
 class DatabaseAsync {
     
     fileprivate let paymentsEntityName = "Payment"
+    let fetchLimit = 50
     
     typealias CompletionHandler = ([Payment]) -> ()
     
@@ -92,12 +93,12 @@ class DatabaseAsync {
      - Parameter completion: Completion handler to be executed after the payments
                              are fetched asynchronously
      */
-    private func loadPaymentsAsync<T: NSManagedObject>(with request: NSFetchRequest<T>, completion: @escaping ([T]) -> ()) {
+    private func loadAsync<T: NSManagedObject>(with request: NSFetchRequest<T>, completion: @escaping ([T]) -> ()) {
         let asyncFetchRequest = NSAsynchronousFetchRequest<T>( fetchRequest: request) { /*[unowned self]*/ (result: NSAsynchronousFetchResult) in
-            guard let fetchedPayments = result.finalResult else { return }
-            completion(fetchedPayments)
+            guard let fetchedArrayResults = result.finalResult else { return }
+            completion(fetchedArrayResults)
         }
-        
+
         do {
             try context.execute(asyncFetchRequest)
         } catch {
@@ -106,23 +107,7 @@ class DatabaseAsync {
     }
     
     
-    
-    
     // MARK: - Fetch
-    
-    /**
-     Fetch sorted data from database
-     - Parameter type: by what parameter should the data be sorted
-     */
-    private func fetchSortedDataAsync(by sort: SortType, and paymentStatus: PaymentStatusType, completion: @escaping CompletionHandler) {
-        let request = DBRequestBuilder<Payment>()
-                        .withPredicate(paymentStatus.getPredicate())
-                        .withSortDescriptor(sort.getSortDescriptor())
-                        .build()
-//
-        loadPaymentsAsync(with: request, completion: completion)
-    }
-    
     
     /**
      Fetch all payments from database which contain the passed place name
@@ -133,22 +118,43 @@ class DatabaseAsync {
      - Parameter completion: Completion handler to be executed after the payments
                              are fetched asynchronously
      */
-    func fetchDataAsync(forName name: String? = nil, by sort: SortType, and paymentStatus: PaymentStatusType, completion: @escaping CompletionHandler) {
-        if (name == "" || name == nil) {
-            fetchSortedDataAsync(by: sort, and: paymentStatus, completion: completion)
-            return
-        }
-        
-        let request: NSFetchRequest<Payment> = Payment.fetchRequest()
-        //[cd] is to make it non-casesensitive and non-diacritic
-        request.predicate = NSPredicate(format: "place CONTAINS[cd] %@", name!)
-        request.predicate! += paymentStatus.getPredicate()
-        
-        request.sortDescriptors = [placeSortDescriptor]
-        loadPaymentsAsync(with: request, completion: completion)
+    func fetchDataAsync(offset: Int = 0, forName name: String? = nil, by sort: SortType, and paymentStatus: PaymentStatusType, completion: @escaping CompletionHandler) {
+        let request = createFetchRequest(offset: offset, forName: name, by: sort, and: paymentStatus)
+        loadAsync(with: request, completion: completion)
     }
     
     
+    
+    func fetchMoreDataAsync(offset: Int = 0, forName name: String? = nil, by sort: SortType, and paymentStatus: PaymentStatusType, completion: @escaping (Int, [Payment]) -> ()) {
+        let request = createFetchRequest(offset: offset, forName: name, by: sort, and: paymentStatus)
+
+        countPayments(predicate: request.predicate, sortDescriptors: request.sortDescriptors) { [unowned self] count in
+            let leftToFetch = count - offset
+            if ( leftToFetch == 0 ) {
+                completion(0, [])
+                return
+            }
+            self.loadAsync(with: request) { payments in
+                completion(payments.count, payments)
+            }
+        }
+    }
+    
+    private func createFetchRequest(offset: Int = 0, forName name: String? = nil, by sort: SortType, and paymentStatus: PaymentStatusType) -> NSFetchRequest<Payment> {
+        let reqBuilder = DBRequestBuilder<Payment>()
+                            .withFetchLimit(fetchLimit)
+                            .withFetchOffset(offset)
+                            .withPredicate(paymentStatus.getPredicate())
+                            .withSortDescriptor(sort.getSortDescriptor())
+        
+        if (name != "" && name != nil) {
+            //[cd] is to make it non-casesensitive and non-diacritic
+            reqBuilder.withPredicate(NSPredicate(format: "place CONTAINS[cd] %@", name!))
+            reqBuilder.withSortDescriptor(placeSortDescriptor)
+        }
+        
+        return reqBuilder.build()
+    }
     
     
     /**
@@ -157,11 +163,11 @@ class DatabaseAsync {
      - Parameter completion: Completion handler to be executed after the payment
                              is fetched asynchronously
      */
-    func fetchPaymentAsync(with uid: UUID, completion: @escaping (Payment) -> ()) {
+    func fetchSinglePaymentAsync(with uid: UUID, completion: @escaping (Payment) -> ()) {
         let request: NSFetchRequest<Payment> = Payment.fetchRequest()
         request.predicate = NSPredicate(format: "%K == %@", #keyPath(Payment.uid), uid as CVarArg)
         
-        loadPaymentsAsync(with: request) { payments in
+        loadAsync(with: request) { payments in
             completion(payments.first!)
         }
     }
@@ -177,7 +183,7 @@ class DatabaseAsync {
         let request: NSFetchRequest<Payment> = Payment.fetchRequest()
         request.predicate = NSPredicate(format: "%K IN %@", #keyPath(Payment.uid), uidArray)
         
-        loadPaymentsAsync(with: request, completion: completion)
+        loadAsync(with: request, completion: completion)
     }
     
     
@@ -331,6 +337,25 @@ class DatabaseAsync {
         }
     }
     
+    
+    func countPayments(predicate: NSPredicate?, sortDescriptors: [NSSortDescriptor]?, completion: @escaping (Int) -> ()) {
+        let fetchRequest = NSFetchRequest<NSNumber>(entityName: paymentsEntityName)
+        fetchRequest.resultType = .countResultType
+        fetchRequest.predicate = predicate
+        fetchRequest.sortDescriptors = sortDescriptors
+        
+        persistentContainer.performBackgroundTask { newContext in
+            var count = 0
+            do {
+                let countResult = try newContext.fetch(fetchRequest)
+                count = countResult.first!.intValue
+            } catch let error as NSError {
+                print("count not fetched \(error), \(error.userInfo)")
+            }
+
+            completion(count)
+        }
+    }
     
     
     

@@ -18,7 +18,8 @@ class DBRequestBuilder<T: NSManagedObject & FetchProtocol> {
     
     private var predicate: NSPredicate?
     private var sortDescriptors: [NSSortDescriptor] = []
-    
+    private var fetchLimit = 100
+    private var fetchOffset = 0
 
     @discardableResult
     func withPredicate(_ p: NSPredicate?) -> DBRequestBuilder {
@@ -38,13 +39,28 @@ class DBRequestBuilder<T: NSManagedObject & FetchProtocol> {
         sortDescriptors.append(sortDescr)
         return self
     }
+    
+    
+    @discardableResult
+    func withFetchLimit(_ limit: Int) -> DBRequestBuilder {
+        fetchLimit = limit
+        return self
+    }
+    
 
+    @discardableResult
+    func withFetchOffset(_ offset: Int) -> DBRequestBuilder {
+        fetchOffset = offset
+        return self
+    }
     
     
     func build() -> NSFetchRequest<T.EntityType> {
         let request = T.createFetchRequest()
         request.predicate = predicate
         request.sortDescriptors = sortDescriptors
+        request.fetchLimit = fetchLimit
+        request.fetchOffset = fetchOffset
         return request
     }
 }

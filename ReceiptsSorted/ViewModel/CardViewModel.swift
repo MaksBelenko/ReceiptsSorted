@@ -63,18 +63,6 @@ class CardViewModel {
     }
     
     /**
-     Updates current payments array with bew array
-     - Parameter payments: Payments to be updated with
-     */
-    private func updateData(with payments: [Payment]) {
-        fetchedPayments = payments
-        delegate?.reloadTable()
-        if (isSelectionEnabled.value == true) {
-            checkThatAllSelected()
-        }
-    }
-    
-    /**
      Fetches payments from database that have search name in the names
      - Parameter searchText: Name that is searched for
      */
@@ -85,6 +73,41 @@ class CardViewModel {
             self.delegate?.reloadTable()
         }
     }
+    
+    /**
+     Updates current payments array with new array
+     - Parameter payments: Payments to be updated with
+     */
+    private func updateData(with payments: [Payment]) {
+        fetchedPayments = payments
+        delegate?.reloadTable()
+        if (isSelectionEnabled.value == true) {
+            checkThatAllSelected()
+        }
+    }
+    
+    private func loadMoreIfNeeded(indexPath: IndexPath) {
+        if (indexPath.section == cardTableSections.count - 1
+            && indexPath.row == cardTableSections[indexPath.section].payments.count - 1
+            && fetchedPayments.count >= database.fetchLimit)
+        {
+            loadMorePayments()
+        }
+    }
+    
+    private func loadMorePayments() {
+        database.fetchMoreDataAsync(offset: fetchedPayments.count,
+                                    forName: currentSearchText,
+                                    by: sortType,
+                                    and: paymentStatusType)
+        { [unowned self] (count, payments) in
+            if count == 0 { return }
+            self.fetchedPayments.append(contentsOf: payments)
+            self.delegate?.reloadTable()
+        }
+    }
+    
+    
     
     /**
      Fetches payments from database that returns selected earlier payments from UIDs
@@ -102,6 +125,8 @@ class CardViewModel {
         return cardTableSections[indexPath.section].payments[indexPath.row]
     }
     
+    
+    // MARK: - Header
     
     /**
      Get UIView for section header
@@ -123,6 +148,8 @@ class CardViewModel {
      - Parameter indexPath: IndexPath of the cell
      */
     func set(cell: PaymentTableViewCell, indexPath: IndexPath) -> PaymentTableViewCell {
+        loadMoreIfNeeded(indexPath: indexPath)
+        
         let payment = getPayment(indexPath: indexPath)
         cell.setCell(for: payment, selectionEnabled: isSelectionEnabled.value, animate: firstVisibleCells.contains(cell))
         
@@ -153,6 +180,7 @@ class CardViewModel {
     }
     
     
+    // MARK: - Cell Selection
     /**
      Either ticks or unticks the cell when in "selectionEnabled" mode
      */
@@ -226,7 +254,7 @@ class CardViewModel {
     
     func deletePayment(payment: Payment, indexPath: IndexPath) {
         database.deleteAsync(item: payment)
-        removeFromTableVeiw(indexPath: indexPath, action: .Remove)
+        applyActionToTableView(indexPath: indexPath, action: .Remove)
     }
 }
 
@@ -249,10 +277,10 @@ extension CardViewModel {
     }
     
     
-    private func addNewPayment(paymentInfo: PaymentInformation) {
+    func addNewPayment(paymentInfo: PaymentInformation) {
         database.addAsync(paymentInfo: paymentInfo) { [weak self] paymentTotalInfo in
             // After concurrently saving context, fetch the payment with the new uid
-            self?.database.fetchPaymentAsync(with: paymentTotalInfo.uid) { payment in
+            self?.database.fetchSinglePaymentAsync(with: paymentTotalInfo.uid) { payment in
                 if (self?.paymentStatusType != .Received) {
                     self?.fetchedPayments.append(payment)
                 }
@@ -271,7 +299,7 @@ extension CardViewModel {
         }
         
         database.updateAsync(payment: payment, with: paymentInfo, completion: { info in
-            self.database.fetchPaymentAsync(with: info.uid) { payment in
+            self.database.fetchSinglePaymentAsync(with: info.uid) { payment in
                 self.fetchedPayments[index] = payment
                 self.database.refault(object: payment.receiptPhoto) // fault receiptData to remove image from memory
                 self.delegate?.reloadTable()
@@ -291,7 +319,7 @@ extension CardViewModel {
 // MARK: - SwipeActionDelegate
 extension CardViewModel {
     
-    func removeFromTableVeiw(indexPath: IndexPath, action: SwipeCommandType) {
+    func applyActionToTableView(indexPath: IndexPath, action: SwipeCommandType) {
         let payment = getPayment(indexPath: indexPath)
         
         guard let index = fetchedPayments.firstIndex(of: payment) else {
@@ -300,7 +328,7 @@ extension CardViewModel {
         }
         
         if (paymentStatusType != .All || action == .Remove) {
-            removeSectionIfEmpty(indexPath: indexPath, index: index)
+            removeSectionOrRow(indexPath: indexPath, index: index)
         } else {
             delegate?.updateRows(indexPaths: [indexPath])
         }
@@ -309,7 +337,7 @@ extension CardViewModel {
     }
     
     
-    private func removeSectionIfEmpty(indexPath: IndexPath, index: Int) {
+    private func removeSectionOrRow(indexPath: IndexPath, index: Int) {
         // Note: Check fist before removing from the fetchedPayments as it
         //       changes cardTableSections in didSet
         let sectionPaymentCount = cardTableSections[indexPath.section].payments.count

@@ -69,8 +69,17 @@ class CardViewController: UIViewController {
         cardViewModel.selectAllButtonText.onValueChanged { [weak self] (buttonText) in
             self?.selectAllButton.setTitle(buttonText, for: .normal)
         }
+        
+//        testAddNewPayments()
     }
     
+    
+    private func testAddNewPayments() {
+        for i in 0...10000 {
+            cardViewModel.addNewPayment(paymentInfo: PaymentInformation(amountPaid: Float(i), place: "test\(i)", date: Date(), receiptImage: #imageLiteral(resourceName: "NoReceipts")))
+            print("Loop at \(i)")
+        }
+    }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -410,11 +419,11 @@ extension CardViewController: SwipeActionDelegate {
             return
         case .Tick:
             cardViewModel.updateField(for: payment, fieldType: .PaymentReceived, with: true) { [unowned self] in
-                self.cardViewModel.removeFromTableVeiw(indexPath: indexPath, action: action)
+                self.cardViewModel.applyActionToTableView(indexPath: indexPath, action: action)
             }
         case .Untick:
             cardViewModel.updateField(for: payment, fieldType: .PaymentReceived, with: false) { [unowned self] in
-                self.cardViewModel.removeFromTableVeiw(indexPath: indexPath, action: action)
+                self.cardViewModel.applyActionToTableView(indexPath: indexPath, action: action)
             }
         }
     }

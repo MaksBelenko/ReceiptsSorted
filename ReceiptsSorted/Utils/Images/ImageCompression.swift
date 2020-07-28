@@ -35,7 +35,7 @@ class ImageCompression {
         let  newImage = (receiptImage.size.width > 1200) ? receiptImage.resize(toWidth: 1200) : receiptImage
         
         let newImageData = newImage.jpegData(compressionQuality: compression)!
-        Log.debug(message: "Size compressed in MB = \(Float(newImageData.count) / powf(10, 6))")
+//        Log.debug(message: "Size compressed in MB = \(Float(newImageData.count) / powf(10, 6))")
         
         return newImageData
     }
