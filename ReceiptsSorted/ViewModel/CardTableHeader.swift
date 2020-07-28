@@ -71,6 +71,7 @@ class CardTableHeader {
      - Parameter sortedBy: Sort method
      */
     private func getSectionTitle(for section: Int, sortedBy: SortType) -> String {
+        return "  THIS MONTH"
         let calendar = Calendar.current
         let currentMonth = calendar.component(.month, from: Date()).mapToMonth()
 

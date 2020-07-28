@@ -50,6 +50,24 @@ class CardViewController: UIViewController {
     fileprivate let paymentCellIdentifier = "paymentCell"
     
     
+    var fetchRequest: NSFetchRequest<Payment> = Payment.fetchRequest()
+    
+    
+    private let coreDataStack = CoreDataStack(modelName: "PaymentsData")
+    lazy var fetchedResultsController: NSFetchedResultsController<Payment> = {
+        
+        let sort = NSSortDescriptor(key: #keyPath(Payment.date), ascending: true)
+        fetchRequest.sortDescriptors = [sort]
+        let fetchedResultsController = NSFetchedResultsController( fetchRequest: fetchRequest,
+                                                                   managedObjectContext: coreDataStack.managedContext,
+                                                                   sectionNameKeyPath: nil,
+                                                                   cacheName: nil)
+        return fetchedResultsController
+    }()
+    
+    
+    
+    
     //MARK: - Lifecycle
     
     override func viewDidLoad() {
@@ -70,14 +88,10 @@ class CardViewController: UIViewController {
             self?.selectAllButton.setTitle(buttonText, for: .normal)
         }
         
-//        testAddNewPayments()
-    }
-    
-    
-    private func testAddNewPayments() {
-        for i in 0...10000 {
-            cardViewModel.addNewPayment(paymentInfo: PaymentInformation(amountPaid: Float(i), place: "test\(i)", date: Date(), receiptImage: #imageLiteral(resourceName: "NoReceipts")))
-            print("Loop at \(i)")
+        do {
+            try fetchedResultsController.performFetch()
+        } catch let error as NSError {
+            print("Fetching error: \(error), \(error.userInfo)")
         }
     }
     
@@ -234,6 +248,13 @@ class CardViewController: UIViewController {
     //MARK: - @IBActions
     
     @IBAction func segmentedControlValueChanged(_ sender: UISegmentedControl) {
+        let sort = NSSortDescriptor(key: #keyPath(Payment.place), ascending: true)
+        fetchRequest.sortDescriptors = [sort]
+        do {
+            try fetchedResultsController.performFetch()
+        } catch let error as NSError {
+            print("Fetching error: \(error), \(error.userInfo)")
+        }
         cardViewModel.paymentStatusType = sender.getCurrentPosition()
         cardViewModel.refreshPayments()
     }
@@ -331,7 +352,12 @@ extension CardViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: paymentCellIdentifier, for: indexPath) as! PaymentTableViewCell
-        return cardViewModel.set(cell: cell, indexPath: indexPath)
+        let payment = fetchedResultsController.object(at: indexPath)
+        cell.amountPaidText.text = payment.amountPaid.ToString(decimals: 2)
+        cell.placeText.text = payment.place
+        cell.dateText.text = payment.date!.toString(as: .long)
+        return cell
+//        return cardViewModel.set(cell: cell, indexPath: indexPath)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -352,12 +378,15 @@ extension CardViewController: UITableViewDataSource, UITableViewDelegate {
     //MARK: - Sections
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        noReceiptsImage.alpha = (cardViewModel.cardTableSections.count == 0) ? 1 : 0
-        return cardViewModel.cardTableSections.count
+//        noReceiptsImage.alpha = (cardViewModel.cardTableSections.count == 0) ? 1 : 0
+//        return cardViewModel.cardTableSections.count
+        return 1
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return cardViewModel.cardTableSections[section].payments.count
+//        return cardViewModel.cardTableSections[section].payments.count
+        guard let sectionInfo = fetchedResultsController.sections?[section] else { return 0 }
+        return sectionInfo.numberOfObjects
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
