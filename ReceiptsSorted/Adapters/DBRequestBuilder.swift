@@ -18,7 +18,7 @@ class DBRequestBuilder<T: NSManagedObject & FetchProtocol> {
     
     private var predicate: NSPredicate?
     private var sortDescriptors: [NSSortDescriptor] = []
-    private var fetchLimit = 100
+    private var fetchLimit = 0 // 0 -> Unlimited results
     private var fetchOffset = 0
 
     @discardableResult

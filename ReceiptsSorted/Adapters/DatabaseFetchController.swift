@@ -45,10 +45,9 @@ extension DtabaseFetchController: NSFetchedResultsControllerDelegate {
         //    DispatchQueue.global(qos: .userInitiated).async {
         var diff = NSDiffableDataSourceSnapshot<String, Payment>()
         
-        // There is a single section
         snapshot.sectionIdentifiers.forEach { section in
             
-//            diff.appendSections([section as! String])
+            diff.appendSections([section as! String])
             
             let items = snapshot.itemIdentifiersInSection(withIdentifier: section).map { (objectId: Any) -> Payment in
                 let oid =  objectId as! NSManagedObjectID

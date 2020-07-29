@@ -12,7 +12,7 @@ import CoreData
 class DatabaseAsync {
     
     fileprivate let paymentsEntityName = "Payment"
-    let fetchLimit = 50
+    let fetchLimit = 100
     
     typealias CompletionHandler = ([Payment]) -> ()
     
