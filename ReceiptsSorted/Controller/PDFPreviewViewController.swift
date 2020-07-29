@@ -8,6 +8,7 @@
 
 import UIKit
 import PDFKit
+import SimplePDFBuilder
 
 class PDFPreviewViewController: UIViewController {
     
@@ -95,13 +96,68 @@ class PDFPreviewViewController: UIViewController {
     
     
     
-    // MARK: - Helpers
+    // MARK: - PDF Creation
     
     private func createPDFPreviewDocument() {
-        let pdfCreator = PdfFactory(payments: passedPayments)
-        pdfData = pdfCreator.createPDF()
+        let pdfData = createPDF()
         pdfView.document = PDFDocument(data: pdfData)
 //        pdfView.interpolationQuality = .low // for images
+    }
+    
+    private func createPDF() -> Data {
+        let pdf = PDFBuilder()
+        pdf.withMetaTitle("Receipts")
+        pdf.withMetaAuthor("WorkReceipts")
+        pdf.withMetaCreator("WorkReceipts")
+        
+        pdf.addFooter(pagingEnabled: true, text: "", colour: .wetAsphalt)
+        
+        pdf.addImage(image: #imageLiteral(resourceName: "app-noBG-tight"), maxWidth: 60, alignment: .right)
+        pdf.addSpace(inches: -0.6)
+        pdf.addText(text: "Date: \(dateToday)", alignment: .left, font: .arial(ofSize: 17))
+        
+        pdf.addSpace(inches: 0.5)
+        
+        // ----- Table creation -----
+        let headers = [PDFColumnHeader(name: "DATE", alignment: .left, weight: 1),
+                       PDFColumnHeader(name: "PLACE", alignment: .left, weight: 3),
+                       PDFColumnHeader(name: "PRICE", alignment: .right, weight: 1)]
+        
+        var rows: [PDFTableRow] = []
+        for p in passedPayments {
+            rows.append(PDFTableRow([p.date?.toString(as: .long) ?? "",
+                                     p.place ?? "",
+                                     "£\(p.amountPaid.ToString(decimals: 2))"]))
+        }
+        
+        do {
+            try pdf.addTable(headers: headers,
+                             rows: rows,
+                             tableStyle: .Modern,
+                             font: .systemFont(ofSize: 11),
+                             tableColour: .wetAsphalt)
+        } catch {
+            Log.exception(message: "Error creating PDF table, Error: \(error.localizedDescription)")
+        }
+        
+        
+        // ----- Add images -----
+        for p in passedPayments {
+            pdf.newPage()
+            guard let rp = p.receiptPhoto,
+                let imageData = rp.imageData,
+                let photo = UIImage(data: imageData) else
+            {
+                    pdf.addText(text: "Couldn't retrieve image for \(p.place ?? "")",
+                                alignment: .centre, font: .arial(ofSize: 20), colour: .black)
+                    continue
+            }
+            
+            pdf.addImage(image: photo, maxWidth: 200, alignment: .centre)
+        }
+        
+        
+        return pdf.build()
     }
     
     

@@ -28,6 +28,8 @@
 		B5377C0723A82E280010B144 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B5377C0523A82E280010B144 /* Main.storyboard */; };
 		B5377C0923A82E2A0010B144 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B5377C0823A82E2A0010B144 /* Assets.xcassets */; };
 		B5377C0C23A82E2A0010B144 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B5377C0A23A82E2A0010B144 /* LaunchScreen.storyboard */; };
+		B53A430624D224DF001A8AC8 /* SimplePDFBuilder.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5743AC724D223D100930030 /* SimplePDFBuilder.framework */; };
+		B53A430724D224DF001A8AC8 /* SimplePDFBuilder.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B5743AC724D223D100930030 /* SimplePDFBuilder.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B5443FF024829E2A0037AA38 /* PaymentInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5443FEF24829E2A0037AA38 /* PaymentInformation.swift */; };
 		B546A7A62471F77C00FB551D /* UIImageExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B546A7A52471F77C00FB551D /* UIImageExtensions.swift */; };
 		B548CE0D246469C200342613 /* VibrationEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = B548CE0C246469C200342613 /* VibrationEnum.swift */; };
@@ -36,7 +38,6 @@
 		B549C0B324BF0A1D003F148E /* AlertFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B549C0B224BF0A1D003F148E /* AlertFactory.swift */; };
 		B550E150245B2F0F000294B1 /* SortEnums+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = B550E14F245B2F0F000294B1 /* SortEnums+Ext.swift */; };
 		B554F963247718BA007C486A /* CardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B554F962247718BA007C486A /* CardViewModel.swift */; };
-		B561B38F243BFBAD00F7B29B /* PdfFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B561B38E243BFBAD00F7B29B /* PdfFactory.swift */; };
 		B561B391243BFBBA00F7B29B /* SimpleShapes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B561B390243BFBBA00F7B29B /* SimpleShapes.swift */; };
 		B564470B241027EB00B08AD3 /* AddButtonAnimations.swift in Sources */ = {isa = PBXBuildFile; fileRef = B564470A241027EB00B08AD3 /* AddButtonAnimations.swift */; };
 		B565674024831619000A6639 /* ZipAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B565673F24831619000A6639 /* ZipAdapter.swift */; };
@@ -100,6 +101,30 @@
 		B5FDDC03241443950037BA7E /* SwipeActionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FDDC02241443950037BA7E /* SwipeActionsViewModel.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		B5743AC624D223D100930030 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B5743AC224D223D100930030 /* SimplePDFBuilder.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = B5BE410924A0B48300A2078E;
+			remoteInfo = SimplePDFBuilder;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		B53A430824D224DF001A8AC8 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				B53A430724D224DF001A8AC8 /* SimplePDFBuilder.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		0684F8876FBD25DAACD5A6E3 /* Pods-ReceiptsSorted.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReceiptsSorted.debug.xcconfig"; path = "Target Support Files/Pods-ReceiptsSorted/Pods-ReceiptsSorted.debug.xcconfig"; sourceTree = "<group>"; };
 		9CF30740DF16DB5B0E3706AC /* libPods-ReceiptsSorted.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ReceiptsSorted.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -134,7 +159,6 @@
 		B549C0B224BF0A1D003F148E /* AlertFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertFactory.swift; sourceTree = "<group>"; };
 		B550E14F245B2F0F000294B1 /* SortEnums+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SortEnums+Ext.swift"; sourceTree = "<group>"; };
 		B554F962247718BA007C486A /* CardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardViewModel.swift; sourceTree = "<group>"; };
-		B561B38E243BFBAD00F7B29B /* PdfFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PdfFactory.swift; sourceTree = "<group>"; };
 		B561B390243BFBBA00F7B29B /* SimpleShapes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleShapes.swift; sourceTree = "<group>"; };
 		B564470A241027EB00B08AD3 /* AddButtonAnimations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddButtonAnimations.swift; sourceTree = "<group>"; };
 		B565673F24831619000A6639 /* ZipAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZipAdapter.swift; sourceTree = "<group>"; };
@@ -150,6 +174,7 @@
 		B573FAAA23B98285005473D2 /* CameraViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CameraViewController.xib; sourceTree = "<group>"; };
 		B573FAAD23BA815F005473D2 /* CameraSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraSession.swift; sourceTree = "<group>"; };
 		B57419BD245F1BAB001228A1 /* DetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsViewController.swift; sourceTree = "<group>"; };
+		B5743AC224D223D100930030 /* SimplePDFBuilder.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SimplePDFBuilder.xcodeproj; path = ../SimplePDFBuilder/SimplePDFBuilder.xcodeproj; sourceTree = "<group>"; };
 		B575FD7124C8DA53007034D4 /* DBRequestBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBRequestBuilder.swift; sourceTree = "<group>"; };
 		B57BCD1124C63EA50019D85A /* DatabaseFetchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseFetchController.swift; sourceTree = "<group>"; };
 		B57BCD1324C64F1F0019D85A /* NSPredicateExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSPredicateExtensions.swift; sourceTree = "<group>"; };
@@ -204,6 +229,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6DD17AED02E9B45D8DEADFE5 /* libPods-ReceiptsSorted.a in Frameworks */,
+				B53A430624D224DF001A8AC8 /* SimplePDFBuilder.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -291,6 +317,7 @@
 		B5377BF323A82E280010B144 = {
 			isa = PBXGroup;
 			children = (
+				B5743AC224D223D100930030 /* SimplePDFBuilder.xcodeproj */,
 				B5377BFE23A82E280010B144 /* ReceiptsSorted */,
 				B5377BFD23A82E280010B144 /* Products */,
 				2E3883DB9B9A8B4185BE22A4 /* Pods */,
@@ -368,7 +395,6 @@
 		B56567412483196B000A6639 /* Factories */ = {
 			isa = PBXGroup;
 			children = (
-				B561B38E243BFBAD00F7B29B /* PdfFactory.swift */,
 				B549C0B224BF0A1D003F148E /* AlertFactory.swift */,
 			);
 			path = Factories;
@@ -392,6 +418,14 @@
 				B5377C0823A82E2A0010B144 /* Assets.xcassets */,
 			);
 			path = SupportingFiles;
+			sourceTree = "<group>";
+		};
+		B5743AC324D223D100930030 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B5743AC724D223D100930030 /* SimplePDFBuilder.framework */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		B59E3E1323B3BF4E0017D474 /* Model */ = {
@@ -507,6 +541,7 @@
 				B5377BF923A82E280010B144 /* Frameworks */,
 				B5377BFA23A82E280010B144 /* Resources */,
 				823DC00705679BAB8EAB91C6 /* [CP] Copy Pods Resources */,
+				B53A430824D224DF001A8AC8 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -543,12 +578,28 @@
 			mainGroup = B5377BF323A82E280010B144;
 			productRefGroup = B5377BFD23A82E280010B144 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = B5743AC324D223D100930030 /* Products */;
+					ProjectRef = B5743AC224D223D100930030 /* SimplePDFBuilder.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				B5377BFB23A82E280010B144 /* ReceiptsSorted */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		B5743AC724D223D100930030 /* SimplePDFBuilder.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = SimplePDFBuilder.framework;
+			remoteRef = B5743AC624D223D100930030 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		B5377BFA23A82E280010B144 /* Resources */ = {
@@ -679,7 +730,6 @@
 				B5F54E87241E78750016DCED /* UIColorExtensions.swift in Sources */,
 				B5B6758223CF724000291D31 /* ImageManipulator.swift in Sources */,
 				B535A1C0244BC320005585F0 /* Log.swift in Sources */,
-				B561B38F243BFBAD00F7B29B /* PdfFactory.swift in Sources */,
 				B58CC932246DB9B5006FEF00 /* CollectionViewFlowLayout.swift in Sources */,
 				B5D70A6D24534DCA0080BF81 /* AddButtonView.swift in Sources */,
 				B54967AD241167C000684A2F /* SortingDropDownMenu.swift in Sources */,
