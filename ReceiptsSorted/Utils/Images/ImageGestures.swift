@@ -11,7 +11,7 @@ import UIKit
 class ImageGestures: NSObject {
     
     ///Image's origin to be used for pan gesture
-    var imageOrigin : CGPoint!
+    private var imageOrigin : CGPoint!
     
     
     
