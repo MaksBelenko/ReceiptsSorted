@@ -74,12 +74,12 @@ class CardViewController: UIViewController {
     }
     
     
-    private func testAddNewPayments() {
-        for i in 0...10000 {
-            cardViewModel.addNewPayment(paymentInfo: PaymentInformation(amountPaid: Float(i), place: "test\(i)", date: Date(), receiptImage: #imageLiteral(resourceName: "NoReceipts")))
-            print("Loop at \(i)")
-        }
-    }
+//    private func testAddNewPayments() {
+//        for i in 0...10000 {
+//            cardViewModel.addNewPayment(paymentInfo: PaymentInformation(amountPaid: Float(i), place: "test\(i)", date: Date(), receiptImage: #imageLiteral(resourceName: "NoReceipts")))
+//            print("Loop at \(i)")
+//        }
+//    }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)

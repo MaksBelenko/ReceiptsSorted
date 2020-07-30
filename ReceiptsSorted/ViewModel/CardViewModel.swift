@@ -208,49 +208,53 @@ class CardViewModel {
         
         switch option {
         case .SelectAll:
-//            database.getAllUids(for: paymentStatusType) { uids in
-//                
-//            }
-            
-            fetchedPayments.forEach {
-                if (!selectedPaymentsUIDs.contains($0.uid!)) {
-                    selectedPaymentsUIDs.append($0.uid!)
+            database.getAllUids(for: paymentStatusType) { [unowned self] uids in
+                uids.forEach {
+                    if (!self.selectedPaymentsUIDs.contains($0)) {
+                        self.selectedPaymentsUIDs.append($0)
+                    }
                 }
+                self.allSelected = !self.allSelected
+                self.delegate?.reloadTable()
             }
-            selectAllButtonText.value = "Unselect All"
         
         case .DeselectAll:
-            fetchedPayments.forEach {
-                if selectedPaymentsUIDs.contains($0.uid!) {
-                    let index = selectedPaymentsUIDs.firstIndex(of: $0.uid!)
-                    selectedPaymentsUIDs.remove(at: index!)
+            database.getAllUids(for: paymentStatusType) { [unowned self] uids in
+                uids.forEach {
+                    if self.selectedPaymentsUIDs.contains($0) {
+                        let index = self.selectedPaymentsUIDs.firstIndex(of: $0)
+                        self.selectedPaymentsUIDs.remove(at: index!)
+                    }
                 }
+                self.allSelected = !self.allSelected
+                self.delegate?.reloadTable()
             }
-            selectAllButtonText.value = "Select All"
         }
-        
-        allSelected = !allSelected
-        delegate?.reloadTable()
     }
     
     
     private func checkThatAllSelected() {
-        if selectedPaymentsUIDs.count < fetchedPayments.count {
+        if (selectedPaymentsUIDs.count < fetchedPayments.count) {
             allSelected = false
             return
         }
         
-        var count = 0
-        for fetchedPayment in fetchedPayments {
-            for selectedUid in selectedPaymentsUIDs {
-                if fetchedPayment.uid == selectedUid {
-                    count += 1
-                }
-            }
+        if fetchedPayments.count == 0 {
+            allSelected = false
+            return
         }
         
-        allSelected = (count == fetchedPayments.count) ? true : false
-       
+        database.getAllUids(for: paymentStatusType) { [unowned self] fetchedUIDs in
+            var count = 0
+            for fetchedUID in fetchedUIDs {
+                for selectedUid in self.selectedPaymentsUIDs {
+                    if fetchedUID == selectedUid {
+                        count += 1
+                    }
+                }
+            }
+            self.allSelected = (count == fetchedUIDs.count) ? true : false
+        }
     }
     
     

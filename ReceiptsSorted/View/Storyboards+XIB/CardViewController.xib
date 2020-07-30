@@ -78,9 +78,12 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="A1B-4a-56p">
-                            <rect key="frame" x="174" y="9" width="66" height="30"/>
+                            <rect key="frame" x="157" y="9" width="100" height="30"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="100" id="HtL-wA-4Yw"/>
+                            </constraints>
                             <fontDescription key="fontDescription" name="ArialMT" family="Arial" pointSize="16"/>
-                            <state key="normal" title="Select All">
+                            <state key="normal" title="Unselect All">
                                 <color key="titleColor" red="0.2274509804" green="0.32549019610000002" blue="0.41568627450000001" alpha="1" colorSpace="calibratedRGB"/>
                             </state>
                             <connections>

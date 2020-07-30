@@ -12,7 +12,7 @@ import CoreData
 class DatabaseAsync {
     
     fileprivate lazy var paymentsEntityName = Payment.entity().name! //"Payment"
-    let fetchLimit = 100
+    let fetchLimit = 200
     
     typealias CompletionHandler = ([Payment]) -> ()
     
@@ -213,20 +213,10 @@ class DatabaseAsync {
         fetchRequest.predicate = paymentStatus.getPredicate()
         fetchRequest.propertiesToFetch = [uidKeyPath]
         fetchRequest.resultType = .dictionaryResultType
-//        do {
-//            let results = try context.fetch(fetchRequest)
-//            results.forEach { result in
-//                uids.append(result[uidKeyPath] as! UUID)
-//            }
-//        } catch let error as NSError {
-//            print(error)
-//        }
         
         loadAsync(with: fetchRequest) { results in
-            results.forEach { result in
-                uids.append(result[uidKeyPath] as! UUID)
-            }
-            print("Printing fetched uids:\n \(uids)")
+            results.forEach { uids.append($0[uidKeyPath] as! UUID) }
+//            print("Printing fetched uids:\n \(uids)")
             completion(uids)
         }
     }
