@@ -17,7 +17,7 @@ class CardViewModel {
     var selectAllButtonText: Observable<String> = Observable("Select All")
     var isSelectionEnabled: Observable<Bool> = Observable(false)
     var firstVisibleCells: [PaymentTableViewCell] = []
-    var selectedPaymentsUIDs: [UUID] = []
+    var selectedPaymentsUIDs = SelectedUIDs()
     
     var tableRowsHeight: CGFloat = 60
 
@@ -188,7 +188,7 @@ class CardViewModel {
      Fetches payments from database that returns selected earlier payments from UIDs
      */
     func getSelectedPayments(completion: @escaping ([Payment]) -> ()) {
-        database.fetchDataAsync(containingUIDs: selectedPaymentsUIDs) { payments in
+        database.fetchDataAsync(containingUIDs: selectedPaymentsUIDs.getAll()) { payments in
             completion(payments)
         }
     }
@@ -197,15 +197,15 @@ class CardViewModel {
      Either ticks or unticks the cell when in "selectionEnabled" mode
      */
     func cellSelectedAction(for cell: PaymentTableViewCell, indexPath: IndexPath) {
-        guard let paymentUID = getPayment(indexPath: indexPath).uid else { return }
+        let payment = getPayment(indexPath: indexPath)
+        guard let paymentUID = payment.uid else { return }
         
         if selectedPaymentsUIDs.contains(paymentUID) == false {
             cell.selectCell(with: .Tick)
-            selectedPaymentsUIDs.append(paymentUID)
+            selectedPaymentsUIDs.append(paymentUID, for: payment.paymentReceived)
         } else {
             cell.selectCell(with: .Untick)
-            let index = selectedPaymentsUIDs.firstIndex(of: paymentUID)!
-            selectedPaymentsUIDs.remove(at: index)
+            selectedPaymentsUIDs.remove(paymentUID)
         }
         
         checkThatAllSelected()
@@ -220,53 +220,82 @@ class CardViewModel {
         
         switch option {
         case .SelectAll:
-            database.getAllUids(for: paymentStatusType) { [unowned self] uids in
-                uids.forEach {
-                    if (!self.selectedPaymentsUIDs.contains($0)) {
-                        self.selectedPaymentsUIDs.append($0)
-                    }
-                }
+            addAllUids(for: paymentStatusType) {
                 self.allSelected = !self.allSelected
                 self.delegate?.reloadTable()
             }
         
         case .DeselectAll:
-            database.getAllUids(for: paymentStatusType) { [unowned self] uids in
-                uids.forEach {
-                    if self.selectedPaymentsUIDs.contains($0) {
-                        let index = self.selectedPaymentsUIDs.firstIndex(of: $0)
-                        self.selectedPaymentsUIDs.remove(at: index!)
-                    }
+            removeUids(for: paymentStatusType)
+            self.allSelected = !self.allSelected
+            self.delegate?.reloadTable()
+            
+        }
+    }
+    
+    
+    private func addAllUids(for paymentStatus: PaymentStatusType, completion: @escaping () -> ()) {
+        switch paymentStatus
+        {
+        case .All:
+            database.getAllUids(for: .Pending) { [unowned self] pendingUIDs in
+                self.database.getAllUids(for: .Received) { [unowned self] claimedUIDs in
+                    self.selectedPaymentsUIDs.pendingUIDs.append(contentsOf: pendingUIDs)
+                    self.selectedPaymentsUIDs.claimedUIDs.append(contentsOf: claimedUIDs)
+                    completion()
                 }
-                self.allSelected = !self.allSelected
-                self.delegate?.reloadTable()
+            }
+        case .Pending:
+            database.getAllUids(for: paymentStatus) { [unowned self] uids in
+                self.selectedPaymentsUIDs.pendingUIDs.append(contentsOf: uids)
+                completion()
+            }
+        case .Received:
+            database.getAllUids(for: paymentStatus) { [unowned self] uids in
+                self.selectedPaymentsUIDs.claimedUIDs.append(contentsOf: uids)
+                completion()
             }
         }
     }
     
     
-    private func checkThatAllSelected() {
-        if (selectedPaymentsUIDs.count < fetchedPayments.count) {
-            allSelected = false
-            return
+    private func removeUids(for paymentStatus: PaymentStatusType) {
+        switch paymentStatus
+        {
+        case .All:
+            selectedPaymentsUIDs.removeAll()
+        case .Pending:
+            selectedPaymentsUIDs.pendingUIDs.removeAll()
+        case .Received:
+            selectedPaymentsUIDs.claimedUIDs.removeAll()
         }
+    }
+    
+    
+    private func checkThatAllSelected() {
+//        if (selectedPaymentsUIDs.count < fetchedPayments.count) {
+//            allSelected = false
+//            return
+//        }
         
         if fetchedPayments.count == 0 {
             allSelected = false
             return
         }
         
-        database.getAllUids(for: paymentStatusType) { [unowned self] fetchedUIDs in
-            var count = 0
-            for fetchedUID in fetchedUIDs {
-                for selectedUid in self.selectedPaymentsUIDs {
-                    if fetchedUID == selectedUid {
-                        count += 1
-                    }
-                }
-            }
-            self.allSelected = (count == fetchedUIDs.count) ? true : false
-        }
+        
+        
+//        database.getAllUids(for: paymentStatusType) { [unowned self] fetchedUIDs in
+//            var count = 0
+//            for fetchedUID in fetchedUIDs {
+//                for selectedUid in self.selectedPaymentsUIDs {
+//                    if fetchedUID == selectedUid {
+//                        count += 1
+//                    }
+//                }
+//            }
+//            self.allSelected = (count == fetchedUIDs.count) ? true : false
+//        }
     }
 }
 
@@ -338,6 +367,7 @@ extension CardViewModel {
 
 // MARK: - Payment actions
 extension CardViewModel {
+    
     func addNewPayment(paymentInfo: PaymentInformation) {
         database.addAsync(paymentInfo: paymentInfo) { [weak self] paymentTotalInfo in
             // After concurrently saving context, fetch the payment with the new uid
