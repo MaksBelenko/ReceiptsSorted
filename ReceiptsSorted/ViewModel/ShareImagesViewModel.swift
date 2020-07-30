@@ -24,7 +24,9 @@ class ShareImagesViewModel {
         passedPayments = payments
     }
     
-    
+    deinit {
+        print("DEBUG: ShareImagesViewModel deinit")
+    }
     
     // MARK: - Public Methods
     
@@ -117,7 +119,7 @@ class ShareImagesViewModel {
             do {
                 guard let imageData = receiptPhotoData.imageData else { fatalError("No ImageDaa to write to directory") }
                 try imageData.write(to: fileURL)  // writes the image data to disk
-                print("file saved")
+//                print("file saved")
             } catch {
                 print("error saving file:", error)
             }

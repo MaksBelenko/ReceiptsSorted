@@ -222,6 +222,31 @@ class DatabaseAsync {
     }
     
     
+    
+    /**
+     Fetches number of entries that have the uids provided
+     */
+    func getUidCount(for uidArray: [UUID], with paymentStatus: PaymentStatusType, completion: @escaping (Int) -> ()){
+        let fetchRequest = NSFetchRequest<NSNumber>(entityName: paymentsEntityName)
+        fetchRequest.resultType = .countResultType
+        fetchRequest.predicate = NSPredicate(format: "%K IN %@", #keyPath(Payment.uid), uidArray)
+        fetchRequest.predicate! += paymentStatus.getPredicate()
+        
+        persistentContainer.performBackgroundTask { newContext in
+            var count = 0
+            do {
+                let countResult = try newContext.fetch(fetchRequest)
+                count = countResult.first!.intValue
+            } catch let error as NSError {
+                print("count not fetched \(error), \(error.userInfo)")
+            }
+
+            completion(count)
+        }
+    }
+
+    
+    
     //MARK: - Add methods
     
     /**
@@ -373,7 +398,38 @@ class DatabaseAsync {
     }
     
     
-    func countPayments(predicate: NSPredicate?, sortDescriptors: [NSSortDescriptor]?, completion: @escaping (Int) -> ()) {
+    // MARK: - Count
+    
+    /**
+     Counts the amount of payments for a specific payment status
+     */
+    func countPayments(for paymentStatus: PaymentStatusType, completion: @escaping (Int) -> ()) {
+        let fetchRequest = NSFetchRequest<NSNumber>(entityName: paymentsEntityName)
+        fetchRequest.resultType = .countResultType
+        fetchRequest.predicate = paymentStatus.getPredicate()
+        
+        persistentContainer.performBackgroundTask { newContext in
+            var count = 0
+            do {
+                let countResult = try newContext.fetch(fetchRequest)
+                count = countResult.first!.intValue
+            } catch let error as NSError {
+                print("count not fetched \(error), \(error.userInfo)")
+            }
+
+            completion(count)
+        }
+    }
+    
+    
+    
+    /**
+     Counts the number of payments in the database
+     - Parameter predicate: Fetch request predicate
+     - Parameter sortDescriptors: Fetch request sort descriptors
+     - Parameter completion: Completion handler that passes the number of payments
+     */
+    private func countPayments(predicate: NSPredicate?, sortDescriptors: [NSSortDescriptor]?, completion: @escaping (Int) -> ()) {
         let fetchRequest = NSFetchRequest<NSNumber>(entityName: paymentsEntityName)
         fetchRequest.resultType = .countResultType
         fetchRequest.predicate = predicate
@@ -391,8 +447,6 @@ class DatabaseAsync {
             completion(count)
         }
     }
-    
-    
     
 
 

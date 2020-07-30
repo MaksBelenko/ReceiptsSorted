@@ -283,19 +283,14 @@ class CardViewModel {
             return
         }
         
-        
-        
-//        database.getAllUids(for: paymentStatusType) { [unowned self] fetchedUIDs in
-//            var count = 0
-//            for fetchedUID in fetchedUIDs {
-//                for selectedUid in self.selectedPaymentsUIDs {
-//                    if fetchedUID == selectedUid {
-//                        count += 1
-//                    }
-//                }
-//            }
-//            self.allSelected = (count == fetchedUIDs.count) ? true : false
-//        }
+        // Gets the count of the payments which uids match with the ones passed
+        database.getUidCount(for: selectedPaymentsUIDs.getAll(), with: paymentStatusType) { [unowned self] uidCount in
+            self.database.countPayments(for: self.paymentStatusType) { [unowned self] totalCount in
+                DispatchQueue.main.async {
+                    self.allSelected = (uidCount == totalCount) ? true : false
+                }
+            }
+        }
     }
 }
 
