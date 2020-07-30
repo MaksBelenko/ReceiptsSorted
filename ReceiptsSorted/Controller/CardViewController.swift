@@ -21,16 +21,15 @@ class CardViewController: UIViewController {
     @IBOutlet weak var selectionHelperView: UIView!
     @IBOutlet weak var bottomSHViewConstraint: NSLayoutConstraint!
     
+    
+    fileprivate let paymentCellIdentifier = "paymentCell"
     var cardHeight: CGFloat = 0
     var cardStartPointY: CGFloat = 0
-    
     let cardViewModel = CardViewModel()
     var cardGesturesViewModel: CardGesturesViewModel!
-    
     private let dropDownMenu = SortingDropDownMenu()
     private let swipeActions = SwipeActionsViewModel()
     private let userChecker = UserChecker()
-    
     var amountAnimation: AmountAnimation? = nil {
         didSet {
             cardViewModel.amountAnimation = amountAnimation
@@ -44,10 +43,6 @@ class CardViewController: UIViewController {
         return imageView
     }()
     
-    
-    
-    
-    fileprivate let paymentCellIdentifier = "paymentCell"
     
     
     //MARK: - Lifecycle
@@ -108,7 +103,7 @@ class CardViewController: UIViewController {
 //    func setupDataSource() -> UITableViewDiffableDataSource<String, Payment> {
 //      return UITableViewDiffableDataSource(tableView: tblView) { [unowned self] (tableView, indexPath, payment) -> UITableViewCell? in
 //        let cell = tableView.dequeueReusableCell(withIdentifier: self.paymentCellIdentifier, for: indexPath) as! PaymentTableViewCell
-//        return self.cardVM.set(cell: cell, with: payment)
+//        return self.cardVM.setup(cell: cell, with: payment)
 //      }
 //    }
     
@@ -284,33 +279,6 @@ class CardViewController: UIViewController {
 }
 
 
-//MARK: - Sort Popover
-extension CardViewController: UIPopoverPresentationControllerDelegate, SortButtonLabelDelegate {
-    
-    @IBAction func sortButtonPressed(_ sender: UIButton) {
-        let popoverPresentationController = dropDownMenu.createDropDownMenu(for: sender, ofSize: CGSize(width: 200, height: 130))
-        popoverPresentationController?.delegate = self
-        dropDownMenu.sortButtonLabelDelegate = self
-        self.present(dropDownMenu.tableViewController, animated: true, completion: nil)
-    }
-    
-    
-    func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
-        return .none
-    }
-
-    
-    //Delegate method
-    func changeButtonLabel(sortByOption: SortType, buttonTitle: String) {
-        if (cardViewModel.sortType != sortByOption) {
-            cardViewModel.sortType = sortByOption
-            sortButton.setTitle(buttonTitle, for: .normal)
-            cardViewModel.refreshPayments()
-        }
-    }
-}
-
-
 
 //MARK: - SearchBar extension
 extension CardViewController: UISearchBarDelegate {
@@ -331,7 +299,7 @@ extension CardViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: paymentCellIdentifier, for: indexPath) as! PaymentTableViewCell
-        return cardViewModel.set(cell: cell, indexPath: indexPath)
+        return cardViewModel.setup(cell: cell, indexPath: indexPath)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -342,7 +310,7 @@ extension CardViewController: UITableViewDataSource, UITableViewDelegate {
         tableView.deselectRow(at: indexPath, animated: true)
         guard let cell = tblView.cellForRow(at: indexPath) as? PaymentTableViewCell else { return }
         
-        if cardViewModel.selectCellActionShowVC(for: cell, indexPath: indexPath) {
+        if cardViewModel.isActionVCNeeded(for: cell, indexPath: indexPath) {
             let selectedPayment = cardViewModel.getPayment(indexPath: indexPath)
             Navigation.shared.showPaymentVC(for: self, payment: selectedPayment)
         }
@@ -352,12 +320,12 @@ extension CardViewController: UITableViewDataSource, UITableViewDelegate {
     //MARK: - Sections
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        noReceiptsImage.alpha = (cardViewModel.cardTableSections.count == 0) ? 1 : 0
-        return cardViewModel.cardTableSections.count
+        noReceiptsImage.alpha = (cardViewModel.numberOfSections == 0) ? 1 : 0
+        return cardViewModel.numberOfSections
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return cardViewModel.cardTableSections[section].payments.count
+        return cardViewModel.paymentsCount(for: section)
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -365,7 +333,7 @@ extension CardViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return cardViewModel.cardTableHeader.headerHeight
+        return cardViewModel.headerHeight
     }
     
 
@@ -403,6 +371,35 @@ extension CardViewController: RefreshTableDelegate {
         tblView.deleteSections(indexSet, with: .fade)
     }
 }
+
+
+
+//MARK: - Sort Popover
+extension CardViewController: UIPopoverPresentationControllerDelegate, SortButtonLabelDelegate {
+    
+    @IBAction func sortButtonPressed(_ sender: UIButton) {
+        let popoverPresentationController = dropDownMenu.createDropDownMenu(for: sender, ofSize: CGSize(width: 200, height: 130))
+        popoverPresentationController?.delegate = self
+        dropDownMenu.sortButtonLabelDelegate = self
+        self.present(dropDownMenu.tableViewController, animated: true, completion: nil)
+    }
+    
+    
+    func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
+        return .none
+    }
+
+    
+    //Delegate method
+    func changeButtonLabel(sortByOption: SortType, buttonTitle: String) {
+        if (cardViewModel.sortType != sortByOption) {
+            cardViewModel.sortType = sortByOption
+            sortButton.setTitle(buttonTitle, for: .normal)
+            cardViewModel.refreshPayments()
+        }
+    }
+}
+
 
 // MARK: - SwipeActionDelegate
 extension CardViewController: SwipeActionDelegate {
