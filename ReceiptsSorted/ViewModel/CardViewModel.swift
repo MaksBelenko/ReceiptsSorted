@@ -208,6 +208,10 @@ class CardViewModel {
         
         switch option {
         case .SelectAll:
+//            database.getAllUids(for: paymentStatusType) { uids in
+//                
+//            }
+            
             fetchedPayments.forEach {
                 if (!selectedPaymentsUIDs.contains($0.uid!)) {
                     selectedPaymentsUIDs.append($0.uid!)

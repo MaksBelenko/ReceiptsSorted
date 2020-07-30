@@ -11,7 +11,7 @@ import CoreData
 
 class DatabaseAsync {
     
-    fileprivate let paymentsEntityName = "Payment"
+    fileprivate lazy var paymentsEntityName = Payment.entity().name! //"Payment"
     let fetchLimit = 100
     
     typealias CompletionHandler = ([Payment]) -> ()
@@ -93,7 +93,7 @@ class DatabaseAsync {
      - Parameter completion: Completion handler to be executed after the payments
                              are fetched asynchronously
      */
-    private func loadAsync<T: NSManagedObject>(with request: NSFetchRequest<T>, completion: @escaping ([T]) -> ()) {
+    private func loadAsync<T>(with request: NSFetchRequest<T>, completion: @escaping ([T]) -> ()) {
         let asyncFetchRequest = NSAsynchronousFetchRequest<T>( fetchRequest: request) { /*[unowned self]*/ (result: NSAsynchronousFetchResult) in
             guard let fetchedArrayResults = result.finalResult else { return }
             completion(fetchedArrayResults)
@@ -124,7 +124,16 @@ class DatabaseAsync {
     }
     
     
-    
+    /**
+     Fetches more entries from database with offset
+     - Parameter offset: Offset for fetch request in the database
+     - Parameter name: Optional string that is used to search payments in
+                       the database (Default value is nil)
+     - Parameter sort: General sorting of all payments (eg. sort by .NewestDate)
+     - Parameter paymentStatus: Payment status (eg. .Pending)
+     - Parameter completion: Completion handler to be executed after the payments
+                             are fetched asynchronously
+     */
     func fetchMoreDataAsync(offset: Int = 0, forName name: String? = nil, by sort: SortType, and paymentStatus: PaymentStatusType, completion: @escaping (Int, [Payment]) -> ()) {
         let request = createFetchRequest(offset: offset, forName: name, by: sort, and: paymentStatus)
 
@@ -157,6 +166,10 @@ class DatabaseAsync {
     }
     
     
+    
+    
+    // MARK: - UUID related fetching
+    
     /**
      Fetch the payment with matches single uid
      - Parameter uid: UID used to find in database
@@ -184,6 +197,38 @@ class DatabaseAsync {
         request.predicate = NSPredicate(format: "%K IN %@", #keyPath(Payment.uid), uidArray)
         
         loadAsync(with: request, completion: completion)
+    }
+    
+    
+    /**
+     Get all UIDs from database
+     - Parameter paymentStatus: Get uids for payments with the passed payment status
+     - Parameter completion: Completion closure to be executed after the fetch with the fetched uids
+     */
+    func getAllUids(for paymentStatus: PaymentStatusType, completion: @escaping ([UUID]) -> ()) {
+        var uids = [UUID]()
+        let uidKeyPath = #keyPath(Payment.uid)
+        
+        let fetchRequest = Payment.fetchDictionaryRequest()
+        fetchRequest.predicate = paymentStatus.getPredicate()
+        fetchRequest.propertiesToFetch = [uidKeyPath]
+        fetchRequest.resultType = .dictionaryResultType
+//        do {
+//            let results = try context.fetch(fetchRequest)
+//            results.forEach { result in
+//                uids.append(result[uidKeyPath] as! UUID)
+//            }
+//        } catch let error as NSError {
+//            print(error)
+//        }
+        
+        loadAsync(with: fetchRequest) { results in
+            results.forEach { result in
+                uids.append(result[uidKeyPath] as! UUID)
+            }
+            print("Printing fetched uids:\n \(uids)")
+            completion(uids)
+        }
     }
     
     
