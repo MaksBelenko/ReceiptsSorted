@@ -17,13 +17,18 @@ class DateAnimation {
     /// Maximum number of days (eg 7 30, 31) for the period
     var maxDays: Float = 7
     private var currentDay: Float = 5
-    private var animationDuration: Double = 10//0.7
+    private var animationDuration: Double = 0.7
     
+    private var startDay: Float = 0
+    private var trackStartValue: Float = 0.0
+    
+    private let maxLength: CGFloat
     
     
     
     init(dateIndicator: CALayer) {
         self.dateIndicator = dateIndicator
+        self.maxLength = dateIndicator.bounds.width
     }
     
 
@@ -34,10 +39,10 @@ class DateAnimation {
      - Parameter endValue:
      */
     func animateDate(from startValue: Float = -1 , to endValue: Float ) {
-//        let beginValue = (startValue == -1) ? trackStartValue : startValue
+        let beginValue = (startValue == -1) ? trackStartValue : startValue
         
 //        overallAmount.value = beginValue //before animation executed
-//        self.startValue = beginValue
+        self.startDay = beginValue
         self.currentDay = endValue
 //        trackStartValue = endValue
         
@@ -53,13 +58,23 @@ class DateAnimation {
      Creates animation for the circle graphics
      */
     func createDateAnimation() {
-        let dateAnimation = CABasicAnimation(keyPath: #keyPath(CALayer.opacity))
-        dateAnimation.fromValue = overallDays.value/maxDays
-        dateAnimation.toValue = 1//self.currentDay/maxDays
+        let dateAnimation = CABasicAnimation(keyPath: #keyPath(CALayer.bounds))
+        
+        var startBounds = dateIndicator.bounds //dateIndicator.presentation()?.bounds
+        startBounds.size.width = CGFloat(startDay/maxDays) * maxLength
+        dateAnimation.fromValue = startBounds
+        
+        var endBounds = dateIndicator.bounds
+        endBounds.size.width = CGFloat(currentDay/maxDays) * maxLength
+        dateAnimation.toValue = endBounds
+        
+        
         dateAnimation.duration = animationDuration
         /* Keep animation after completion */
         dateAnimation.fillMode = .forwards
         dateAnimation.isRemovedOnCompletion = false
+        // animation curve is Ease Out
+        dateAnimation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeOut)
         dateIndicator.add(dateAnimation, forKey: "dateAnimation")
     }
     

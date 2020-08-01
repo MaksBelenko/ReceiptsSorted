@@ -101,7 +101,7 @@ class TopGraphicsView: UIView {
         
         /* Creating days bar */
         let contourBar = mainGraphics.createHorizontalBar(colour: .contourFlatColour, offset: offsetRight)
-        dayBar = mainGraphics.createHorizontalBar(percentage: 0.85, colour: .flatOrange, offset: offsetRight)
+        dayBar = mainGraphics.createHorizontalBar(percentage: 1, colour: .flatOrange, offset: offsetRight)
         layer.addSublayer(contourBar)
         layer.addSublayer(dayBar)
         contourBar.applyShadow(color: .black, alpha: 0.16, x: 2, y: 2, blur: 3)
