@@ -10,35 +10,29 @@ import Foundation
 
 class DateHelper {
 
-    var currentDay: Observable<Int> = Observable(0)
+    var currentDay: Int = 0
     var daysInCurrentMonth: Int = 0
     
+    
     private let currentDate = Date()
+    private var onDayChanged: ((Int) -> ())?
+    private enum NotificationMode {
+        case Enable, Disable
+    }
     
     
     // MARK: - Lifecycle
-    init() {
+    init(onDayChanged: ((Int) -> ())? = nil ) {
+        self.onDayChanged = onDayChanged
         setDateValues()
-        NotificationCenter.default.addObserver(self, selector: #selector(onDayChanged), name: .NSCalendarDayChanged, object: nil)
-
+        dayChangedNotification(.Enable)
     }
     
     deinit {
-        NotificationCenter.default.removeObserver(self, name: .NSCalendarDayChanged, object: nil)
+        dayChangedNotification(.Disable)
     }
-    
     
 
-    
-    // MARK: - Day change notification handler
-    
-    /**
-     Executed when day changes (eg. midnight)
-     */
-    @objc private func onDayChanged() {
-        
-    }
-    
     
     // MARK: - Properties initialisation
     
@@ -48,10 +42,43 @@ class DateHelper {
     private func setDateValues() {
         let calendar = Calendar.current
         let calendarDate = calendar.dateComponents([.day, .month], from: currentDate)
-        currentDay.value = calendarDate.day!
+        currentDay = calendarDate.day!
         
         // Gets number of days in a given month
         let range = calendar.range(of: .day, in: .month, for: currentDate)!
         daysInCurrentMonth = range.count
     }
+    
+    
+    
+    // MARK: - Day change notification handler
+    
+    /**
+     Enables or disables NSCalendarDayChanged notification if "onDayChanged" closure is set
+     - Parameter mode: Either enable or disable
+     */
+    private func dayChangedNotification(_ mode: NotificationMode) {
+        guard let _ = onDayChanged else { return }
+        switch mode {
+        case .Enable:
+            NotificationCenter.default.addObserver(self, selector: #selector(dayDidChange), name: .NSCalendarDayChanged, object: nil)
+        case .Disable:
+            NotificationCenter.default.removeObserver(self, name: .NSCalendarDayChanged, object: nil)
+        }
+    }
+    
+    
+    /**
+     Executed when day changes (eg. midnight)
+     */
+    @objc private func dayDidChange(notification: NSNotification) {
+        guard let onDayChanged = onDayChanged else { return }
+        let newDate = Date()
+        let calendarDate = Calendar.current.dateComponents([.day], from: newDate)
+        
+        DispatchQueue.main.async {
+            onDayChanged(calendarDate.day!)
+        }
+    }
+    
 }

@@ -94,7 +94,7 @@ class AmountAnimation {
         
         if (elapsedTime <= animationDuration) {
             let percentageComplete = elapsedTime / animationDuration
-            let value = startValue + Float(percentageComplete) * endValue
+            let value = startValue + Float(percentageComplete) * (endValue - startValue)
             overallAmount.value = value
         } else {
             overallAmount.value = endValue

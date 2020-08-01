@@ -15,13 +15,13 @@ class DateAnimation {
     /// Observer for the days that are currently showing
     var daysLeft: Observable<Int> = Observable(0)
     /// Maximum number of days (eg 7, 30, 31) for the period
-    var maxDays: Float = 31
+    var maxDays: Float = 0
     
     
     
     // MARK: - Private properties
     
-    private let dateHelper = DateHelper()
+    private var dateHelper: DateHelper!
     
     private let dateIndicator: CALayer
     private var animationDuration: Double = 0.7
@@ -46,15 +46,30 @@ class DateAnimation {
     init(dateIndicator: CALayer) {
         self.dateIndicator = dateIndicator
         self.maxLength = dateIndicator.bounds.width
+        initialiseDateHelper()
     }
     
 
+    // MARK: - Bindings
+    
+    /**
+     Initialises DatHelper with the closure to listen for day changes notifications
+     */
+    private func initialiseDateHelper() {
+        dateHelper = DateHelper(onDayChanged: { [unowned self] newDay in
+            let currentDay = Float(newDay)
+            self.animateDate(to: currentDay)
+        })
+    }
+    
     // MARK: - Animation methods
     
-    
+    /**
+     Animates the date indicator from 0 to current day in a month
+     */
     func animateToCurrentDate() {
         let daysInMonth = Float(dateHelper.daysInCurrentMonth)
-        let currentDay = Float(dateHelper.currentDay.value)
+        let currentDay = Float(dateHelper.currentDay)
         maxDays = daysInMonth
         animateDate(to: currentDay)
     }
@@ -122,7 +137,7 @@ class DateAnimation {
         
         if (elapsedTime <= animationDuration) {
             let percentageComplete = elapsedTime / animationDuration
-            let value = startDay + Float(percentageComplete) * currentDay
+            let value = startDay + Float(percentageComplete) * (currentDay - startDay)
             overallDays = value
         } else {
             overallDays = currentDay
