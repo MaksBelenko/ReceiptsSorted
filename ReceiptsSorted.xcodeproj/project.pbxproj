@@ -89,6 +89,7 @@
 		B5DFF55C24843B02003CEDA3 /* ShowElementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5DFF55B24843B02003CEDA3 /* ShowElementView.swift */; };
 		B5E3086824BE532E003D5860 /* NavControllerTransitions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E3086724BE532E003D5860 /* NavControllerTransitions.swift */; };
 		B5E3C3782445403B00AD59AC /* ImageGestures.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E3C3772445403B00AD59AC /* ImageGestures.swift */; };
+		B5EB7C9D24D45AC6007EC8F4 /* DateAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5EB7C9C24D45AC6007EC8F4 /* DateAnimation.swift */; };
 		B5ED9A3A248595BC00FA7A7B /* OnboardingInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5ED9A39248595BC00FA7A7B /* OnboardingInfo.swift */; };
 		B5ED9A3C2485A10300FA7A7B /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5ED9A3B2485A10300FA7A7B /* WelcomeView.swift */; };
 		B5ED9A3E2485A21300FA7A7B /* TextHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5ED9A3D2485A21300FA7A7B /* TextHelper.swift */; };
@@ -212,6 +213,7 @@
 		B5DFF55B24843B02003CEDA3 /* ShowElementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowElementView.swift; sourceTree = "<group>"; };
 		B5E3086724BE532E003D5860 /* NavControllerTransitions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavControllerTransitions.swift; sourceTree = "<group>"; };
 		B5E3C3772445403B00AD59AC /* ImageGestures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageGestures.swift; sourceTree = "<group>"; };
+		B5EB7C9C24D45AC6007EC8F4 /* DateAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateAnimation.swift; sourceTree = "<group>"; };
 		B5ED9A39248595BC00FA7A7B /* OnboardingInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingInfo.swift; sourceTree = "<group>"; };
 		B5ED9A3B2485A10300FA7A7B /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
 		B5ED9A3D2485A21300FA7A7B /* TextHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextHelper.swift; sourceTree = "<group>"; };
@@ -366,6 +368,7 @@
 			isa = PBXGroup;
 			children = (
 				B50BAADA242B7DC200EAFECA /* AmountAnimation.swift */,
+				B5EB7C9C24D45AC6007EC8F4 /* DateAnimation.swift */,
 				B564470A241027EB00B08AD3 /* AddButtonAnimations.swift */,
 				B5AD17E22404757300BB3069 /* CardGesturesViewModel.swift */,
 				B573FAA723B98061005473D2 /* CircularTransition.swift */,
@@ -711,6 +714,7 @@
 				B58CC90A246DACE1006FEF00 /* ImageViewerCell.swift in Sources */,
 				B550E150245B2F0F000294B1 /* SortEnums+Ext.swift in Sources */,
 				B573FA9A23B81EC8005473D2 /* PaymentViewController.swift in Sources */,
+				B5EB7C9D24D45AC6007EC8F4 /* DateAnimation.swift in Sources */,
 				B5443FF024829E2A0037AA38 /* PaymentInformation.swift in Sources */,
 				B5AD17DD240464CB00BB3069 /* TopGraphicsShapes.swift in Sources */,
 				B514A36724BB74C00078E9A9 /* Currency.swift in Sources */,

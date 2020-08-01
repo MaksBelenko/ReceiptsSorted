@@ -84,6 +84,8 @@ class ViewController: UIViewController  {
             cardViewController.cardViewModel.database.getTotalAmountAsync(of: .Pending) { totalAmount in
                 self.topGraphicsView.amountAnimation.animateCircle(to: totalAmount)
             }
+            
+            topGraphicsView.dateAnimation.animateDate(to: 3)
         }
     }
     

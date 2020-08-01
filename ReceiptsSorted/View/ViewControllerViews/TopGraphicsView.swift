@@ -14,9 +14,11 @@ class TopGraphicsView: UIView {
     private var viewHeight: CGFloat!
     
     private var indicatorCircle: CAShapeLayer!
+    private var dayBar: CALayer!
     private var amountSumLabel: UILabel!
     
     var amountAnimation: AmountAnimation!
+    var dateAnimation: DateAnimation!
     
 
     override init(frame: CGRect) {
@@ -38,10 +40,16 @@ class TopGraphicsView: UIView {
     
     private func createBindings() {
         amountAnimation = AmountAnimation(animationCircle: indicatorCircle)
-
         amountAnimation.overallAmount.onValueChanged { [unowned self] in
             self.amountSumLabel.text = "£\($0.pendingNumberRepresentation())"
         }
+        
+        dateAnimation = DateAnimation(dateIndicator: dayBar)
+        dateAnimation.overallDays.onValueChanged { [unowned self] in
+//            self.amountSumLabel.text = "£\($0.pendingNumberRepresentation())"
+            print($0)
+        }
+
     }
     
     
@@ -91,15 +99,15 @@ class TopGraphicsView: UIView {
         
         
         
-        
+        /* Creating days bar */
         let contourBar = mainGraphics.createHorizontalBar(colour: .contourFlatColour, offset: offsetRight)
-        let dayBar = mainGraphics.createHorizontalBar(percentage: 0.85, colour: .flatOrange, offset: offsetRight)
+        dayBar = mainGraphics.createHorizontalBar(percentage: 0.85, colour: .flatOrange, offset: offsetRight)
         layer.addSublayer(contourBar)
         layer.addSublayer(dayBar)
         contourBar.applyShadow(color: .black, alpha: 0.16, x: 2, y: 2, blur: 3)
         dayBar.applyShadow(color: .flatOrange, alpha: 0.7, x: 0, y: 1, blur: 6)
-        
-        
+
+
         let daysLeftLabel = UILabel(frame: CGRect(x: contourBar.frame.origin.x,
                                                   y: contourBar.frame.origin.y - 25,
                                                   width: contourBar.frame.width,
@@ -108,7 +116,7 @@ class TopGraphicsView: UIView {
         daysLeftLabel.textColor = UIColor(rgb: 0xC6CACE)
         daysLeftLabel.font = UIFont.arial(ofSize: 15)
         daysLeftLabel.textAlignment = .center
-        
+
         addSubview(daysLeftLabel)
     }
 }

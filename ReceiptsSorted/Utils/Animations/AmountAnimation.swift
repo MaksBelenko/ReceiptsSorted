@@ -13,6 +13,9 @@ class AmountAnimation {
     ///Bind to UILabel
     var overallAmount: Observable<Float> = Observable(0.0)
     
+    /// Maximum value that indicates the full circle
+    var maxValue: Float = 1000
+    
     private var animationDuration: Double = 0.7
     private var animationCircle: CAShapeLayer!
     private var startValue: Float = 0
@@ -55,13 +58,15 @@ class AmountAnimation {
      Creates animation for the circle graphics
      */
     func createCircleAnimation() {
-        let circleAnimation = CABasicAnimation(keyPath: "strokeEnd")
-        circleAnimation.fromValue = overallAmount.value/1000
-        circleAnimation.toValue = self.endValue/1000
+        let circleAnimation = CABasicAnimation(keyPath: #keyPath(CAShapeLayer.strokeEnd))
+        circleAnimation.fromValue = overallAmount.value/maxValue
+        circleAnimation.toValue = self.endValue/maxValue
         circleAnimation.duration = animationDuration
         /* Keep animation after completion */
         circleAnimation.fillMode = .forwards
         circleAnimation.isRemovedOnCompletion = false
+        // animation curve is Ease Out
+        circleAnimation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeOut)
         animationCircle.add(circleAnimation, forKey: "circleAnim")
     }
     

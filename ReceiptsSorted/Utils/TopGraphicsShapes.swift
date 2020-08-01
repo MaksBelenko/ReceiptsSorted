@@ -45,18 +45,37 @@ class TopGraphicsShapes {
      */
     func createHorizontalBar(percentage: CGFloat = 1, colour: UIColor, offset: CGFloat) -> CALayer {
         let barLayer = CALayer()
-        
+
         let barHeight: CGFloat = 6
         let offsetY = circleCenter.y + circleRadius*3/4
-        
+
         let offsetX = circleRightSideOffset + offset
         let barWidth = percentage * (frameWidth - offsetX) - offset
 
         barLayer.frame = CGRect(x: offsetX, y: offsetY, width: barWidth, height: barHeight)
         barLayer.cornerRadius = barHeight/2
         barLayer.backgroundColor = colour.cgColor
-        
+
         return barLayer
+        
+        
+//        let shapeLayer = CAShapeLayer()
+//
+//        let barHeight: CGFloat = 6
+//        let offsetY = circleCenter.y + circleRadius*3/4
+//        let offsetX = circleRightSideOffset + offset
+//        let barWidth = percentage * (frameWidth - offsetX) - offset
+//
+//        let rect = CGRect(x: offsetX, y: offsetY, width: barWidth, height: barHeight)
+//        let barPath = UIBezierPath(roundedRect: rect, cornerRadius: rect.height/2)
+//
+//        shapeLayer.path = barPath.cgPath
+//        shapeLayer.fillColor = UIColor.clear.cgColor
+//        shapeLayer.strokeColor = colour.cgColor
+//        shapeLayer.lineCap = .round
+//        shapeLayer.lineWidth = 6  //frameWidth/11
+//
+//        return shapeLayer
     }
     
     
