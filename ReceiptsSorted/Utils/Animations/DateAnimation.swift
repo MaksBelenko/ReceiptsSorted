@@ -24,6 +24,7 @@ class DateAnimation {
     
     private let maxLength: CGFloat
     
+    private var animationStartTime = Date()
     
     
     init(dateIndicator: CALayer) {
@@ -41,16 +42,18 @@ class DateAnimation {
     func animateDate(from startValue: Float = -1 , to endValue: Float ) {
         let beginValue = (startValue == -1) ? trackStartValue : startValue
         
-//        overallAmount.value = beginValue //before animation executed
+        animationStartTime = Date()
+        overallDays.value = beginValue //before animation executed
         self.startDay = beginValue
         self.currentDay = endValue
-//        trackStartValue = endValue
+        trackStartValue = endValue
         
         if endValue != 0.0 {
             dateIndicator.opacity = 1.0
         }
         
         createDateAnimation()
+        createDisplayLink()
     }
     
 
@@ -59,16 +62,8 @@ class DateAnimation {
      */
     func createDateAnimation() {
         let dateAnimation = CABasicAnimation(keyPath: #keyPath(CALayer.bounds))
-        
-        var startBounds = dateIndicator.bounds //dateIndicator.presentation()?.bounds
-        startBounds.size.width = CGFloat(startDay/maxDays) * maxLength
-        dateAnimation.fromValue = startBounds
-        
-        var endBounds = dateIndicator.bounds
-        endBounds.size.width = CGFloat(currentDay/maxDays) * maxLength
-        dateAnimation.toValue = endBounds
-        
-        
+        dateAnimation.fromValue = getBounds(for: startDay)
+        dateAnimation.toValue = getBounds(for: currentDay)
         dateAnimation.duration = animationDuration
         /* Keep animation after completion */
         dateAnimation.fillMode = .forwards
@@ -76,6 +71,49 @@ class DateAnimation {
         // animation curve is Ease Out
         dateAnimation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeOut)
         dateIndicator.add(dateAnimation, forKey: "dateAnimation")
+    }
+    
+    
+    
+    /**
+     Cretas CADisplayLink for the label (UILabel should be binded to overallAmount)
+     */
+    private func createDisplayLink() {
+        let displaylink = CADisplayLink(target: self, selector: #selector(step))
+        displaylink.add(to: .current, forMode: .default)
+    }
+    
+    
+         
+    /**
+     Handles updates for the label
+     - Parameter displaylink: Used to remove the link when the animation has finished
+     */
+    @objc private func step(displaylink: CADisplayLink) {
+        
+        let currentAnimationTime = Date()
+        let elapsedTime = currentAnimationTime.timeIntervalSince(animationStartTime)
+        
+        if (elapsedTime <= animationDuration) {
+            let percentageComplete = elapsedTime / animationDuration
+            let value = startDay + Float(percentageComplete) * (currentDay - overallDays.value)
+            overallDays.value = value
+        } else {
+            overallDays.value = currentDay
+            dateIndicator.opacity = (currentDay == 0) ? 0.0 : 1.0
+            displaylink.remove(from: .current, forMode: .default)
+        }
+        
+    }
+    
+    
+    
+    // MARK: - Helpers
+    
+    private func getBounds(for day: Float) -> CGRect {
+        var bounds = dateIndicator.bounds //dateIndicator.presentation()?.bounds
+        bounds.size.width = CGFloat(currentDay/maxDays) * maxLength
+        return bounds
     }
     
 }

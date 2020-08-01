@@ -41,6 +41,7 @@ class TopGraphicsView: UIView {
     private func createBindings() {
         amountAnimation = AmountAnimation(animationCircle: indicatorCircle)
         amountAnimation.overallAmount.onValueChanged { [unowned self] in
+//            print("amount animation: \($0)")
             self.amountSumLabel.text = "£\($0.pendingNumberRepresentation())"
         }
         
