@@ -10,22 +10,36 @@ import UIKit
 
 class DateAnimation {
     
+    // MARK: - Public properties
+    
+    /// Observer for the days that are currently showing
+    var observedDays: Observable<Int> = Observable(0)
+    /// Maximum number of days (eg 7, 30, 31) for the period
+    var maxDays: Float = 31
+    
+    
+    
+    // MARK: - Private properties
     
     private let dateIndicator: CALayer
-    var overallDays: Observable<Float> = Observable(0.0)
-    
-    /// Maximum number of days (eg 7 30, 31) for the period
-    var maxDays: Float = 7
-    private var currentDay: Float = 5
     private var animationDuration: Double = 0.7
-    
+    private var currentDay: Float = 5
     private var startDay: Float = 0
     private var trackStartValue: Float = 0.0
-    
     private let maxLength: CGFloat
-    
     private var animationStartTime = Date()
+    private var overallDays: Float = 0.0 {
+        didSet {
+            observedDays.value = Int(overallDays)
+//            if (Int(overallDays) != observedDays.value) {
+//                observedDays.value = Int(overallDays)
+//            }
+        }
+    }
     
+    
+    
+    // MARK: - Initialisation
     
     init(dateIndicator: CALayer) {
         self.dateIndicator = dateIndicator
@@ -33,6 +47,7 @@ class DateAnimation {
     }
     
 
+    // MARK: - Animation methods
     
     /**
      Animates date indicator
@@ -43,7 +58,7 @@ class DateAnimation {
         let beginValue = (startValue == -1) ? trackStartValue : startValue
         
         animationStartTime = Date()
-        overallDays.value = beginValue //before animation executed
+        self.overallDays = beginValue //before animation executed
         self.startDay = beginValue
         self.currentDay = endValue
         trackStartValue = endValue
@@ -96,10 +111,10 @@ class DateAnimation {
         
         if (elapsedTime <= animationDuration) {
             let percentageComplete = elapsedTime / animationDuration
-            let value = startDay + Float(percentageComplete) * (currentDay - overallDays.value)
-            overallDays.value = value
+            let value = startDay + Float(percentageComplete) * currentDay
+            overallDays = value
         } else {
-            overallDays.value = currentDay
+            overallDays = currentDay
             dateIndicator.opacity = (currentDay == 0) ? 0.0 : 1.0
             displaylink.remove(from: .current, forMode: .default)
         }
@@ -112,7 +127,7 @@ class DateAnimation {
     
     private func getBounds(for day: Float) -> CGRect {
         var bounds = dateIndicator.bounds //dateIndicator.presentation()?.bounds
-        bounds.size.width = CGFloat(currentDay/maxDays) * maxLength
+        bounds.size.width = CGFloat(day/maxDays) * maxLength
         return bounds
     }
     

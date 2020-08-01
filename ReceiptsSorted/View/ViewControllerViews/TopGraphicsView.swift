@@ -16,6 +16,7 @@ class TopGraphicsView: UIView {
     private var indicatorCircle: CAShapeLayer!
     private var dayBar: CALayer!
     private var amountSumLabel: UILabel!
+    private var daysLeftLabel: UILabel!
     
     var amountAnimation: AmountAnimation!
     var dateAnimation: DateAnimation!
@@ -41,14 +42,13 @@ class TopGraphicsView: UIView {
     private func createBindings() {
         amountAnimation = AmountAnimation(animationCircle: indicatorCircle)
         amountAnimation.overallAmount.onValueChanged { [unowned self] in
-//            print("amount animation: \($0)")
             self.amountSumLabel.text = "£\($0.pendingNumberRepresentation())"
         }
         
         dateAnimation = DateAnimation(dateIndicator: dayBar)
-        dateAnimation.overallDays.onValueChanged { [unowned self] in
-//            self.amountSumLabel.text = "£\($0.pendingNumberRepresentation())"
-            print($0)
+        dateAnimation.observedDays.onValueChanged { [unowned self] in
+            let maxDays = Int(self.dateAnimation.maxDays)
+            self.daysLeftLabel.text = "\(maxDays - $0) of \(maxDays) days left"
         }
 
     }
@@ -109,7 +109,7 @@ class TopGraphicsView: UIView {
         dayBar.applyShadow(color: .flatOrange, alpha: 0.7, x: 0, y: 1, blur: 6)
 
 
-        let daysLeftLabel = UILabel(frame: CGRect(x: contourBar.frame.origin.x,
+        daysLeftLabel = UILabel(frame: CGRect(x: contourBar.frame.origin.x,
                                                   y: contourBar.frame.origin.y - 25,
                                                   width: contourBar.frame.width,
                                                   height: 17))
