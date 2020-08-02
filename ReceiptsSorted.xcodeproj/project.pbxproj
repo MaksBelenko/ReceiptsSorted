@@ -43,6 +43,7 @@
 		B565674024831619000A6639 /* ZipAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B565673F24831619000A6639 /* ZipAdapter.swift */; };
 		B566604E242FA955003DD15B /* PaymentTableSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = B566604D242FA955003DD15B /* PaymentTableSection.swift */; };
 		B5666050242FB65F003DD15B /* IntExtensins.swift in Sources */ = {isa = PBXBuildFile; fileRef = B566604F242FB65F003DD15B /* IntExtensins.swift */; };
+		B5683DFA24D759DF00828AFA /* DateHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5683DF924D759DF00828AFA /* DateHelper.swift */; };
 		B5689D7224BB61D5005C46C5 /* ShareImagesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5689D7124BB61D5005C46C5 /* ShareImagesViewModel.swift */; };
 		B56939D024CA474B00806953 /* Notification.NameExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56939CF24CA474B00806953 /* Notification.NameExtension.swift */; };
 		B57145182474100800E0720C /* Navigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57145172474100800E0720C /* Navigation.swift */; };
@@ -166,6 +167,7 @@
 		B565673F24831619000A6639 /* ZipAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZipAdapter.swift; sourceTree = "<group>"; };
 		B566604D242FA955003DD15B /* PaymentTableSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentTableSection.swift; sourceTree = "<group>"; };
 		B566604F242FB65F003DD15B /* IntExtensins.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntExtensins.swift; sourceTree = "<group>"; };
+		B5683DF924D759DF00828AFA /* DateHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateHelper.swift; sourceTree = "<group>"; };
 		B5689D7124BB61D5005C46C5 /* ShareImagesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareImagesViewModel.swift; sourceTree = "<group>"; };
 		B56939CF24CA474B00806953 /* Notification.NameExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.NameExtension.swift; sourceTree = "<group>"; };
 		B57145172474100800E0720C /* Navigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Navigation.swift; sourceTree = "<group>"; };
@@ -307,6 +309,7 @@
 				B5076BCE2457A28400C2BE34 /* Alerts.swift */,
 				B57145172474100800E0720C /* Navigation.swift */,
 				B573FAA323B95F57005473D2 /* Delegates.swift */,
+				B5683DF924D759DF00828AFA /* DateHelper.swift */,
 				B561B390243BFBBA00F7B29B /* SimpleShapes.swift */,
 				B550E14E245B230E000294B1 /* Enums */,
 				B535A1BF244BC320005585F0 /* Log.swift */,
@@ -705,6 +708,7 @@
 				B5076BCF2457A28400C2BE34 /* Alerts.swift in Sources */,
 				B50BAADB242B7DC200EAFECA /* AmountAnimation.swift in Sources */,
 				B5977E7E24C47F0400F3E589 /* CoreDataStack.swift in Sources */,
+				B5683DFA24D759DF00828AFA /* DateHelper.swift in Sources */,
 				B593962F2483D50600B1E895 /* Payment+CoreDataProperties.swift in Sources */,
 				B564470B241027EB00B08AD3 /* AddButtonAnimations.swift in Sources */,
 				B554F963247718BA007C486A /* CardViewModel.swift in Sources */,

@@ -85,7 +85,7 @@ class ViewController: UIViewController  {
                 self.topGraphicsView.amountAnimation.animateCircle(to: totalAmount)
             }
             
-            topGraphicsView.dateAnimation.animateDate(to: 20)
+            topGraphicsView.dateAnimation.animateToCurrentDate()
         }
     }
     
