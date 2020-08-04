@@ -30,3 +30,8 @@ protocol RefreshTableDelegate: AnyObject {
     func removeSection(indexSet: IndexSet)
 }
 
+
+// MARK: - Settings protocols
+protocol DateSettingChangedProtocol {
+  func dateIndicatorSettingChanged(to period: IndicatorPeriod)
+}

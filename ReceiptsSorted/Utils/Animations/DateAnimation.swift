@@ -33,12 +33,10 @@ class DateAnimation {
     private var overallDays: Float = 0.0 {
         didSet {
             daysLeft.value = Int(maxDays - overallDays)
-//            if (Int(overallDays) != observedDays.value) {
-//                observedDays.value = Int(overallDays)
-//            }
         }
     }
     
+//    private let settings = SettingsUserDefaults.shared
     
     
     // MARK: - Initialisation

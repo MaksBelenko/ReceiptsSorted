@@ -73,6 +73,8 @@
 		B59E3E2723B50D9F0017D474 /* PaymentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59E3E2523B50D9F0017D474 /* PaymentTableViewCell.swift */; };
 		B59E3E2823B50D9F0017D474 /* PaymentTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B59E3E2623B50D9F0017D474 /* PaymentTableViewCell.xib */; };
 		B59E3E2C23B53FEF0017D474 /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59E3E2B23B53FEF0017D474 /* Enums.swift */; };
+		B59EB41524D9E57D00AB16FC /* SettingsUserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59EB41424D9E57D00AB16FC /* SettingsUserDefaults.swift */; };
+		B59EB41E24D9F59500AB16FC /* MulticastDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59EB41D24D9F59500AB16FC /* MulticastDelegate.swift */; };
 		B5AC4AAF2453940E00D6F6D3 /* UISegmentedControlExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5AC4AAE2453940E00D6F6D3 /* UISegmentedControlExtensions.swift */; };
 		B5AD17DD240464CB00BB3069 /* TopGraphicsShapes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5AD17DC240464CB00BB3069 /* TopGraphicsShapes.swift */; };
 		B5AD17E32404757300BB3069 /* CardGesturesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5AD17E22404757300BB3069 /* CardGesturesViewModel.swift */; };
@@ -198,6 +200,8 @@
 		B59E3E2523B50D9F0017D474 /* PaymentTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentTableViewCell.swift; sourceTree = "<group>"; };
 		B59E3E2623B50D9F0017D474 /* PaymentTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PaymentTableViewCell.xib; sourceTree = "<group>"; };
 		B59E3E2B23B53FEF0017D474 /* Enums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
+		B59EB41424D9E57D00AB16FC /* SettingsUserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsUserDefaults.swift; sourceTree = "<group>"; };
+		B59EB41D24D9F59500AB16FC /* MulticastDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MulticastDelegate.swift; sourceTree = "<group>"; };
 		B5AC4AAE2453940E00D6F6D3 /* UISegmentedControlExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISegmentedControlExtensions.swift; sourceTree = "<group>"; };
 		B5AD17DC240464CB00BB3069 /* TopGraphicsShapes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopGraphicsShapes.swift; sourceTree = "<group>"; };
 		B5AD17E22404757300BB3069 /* CardGesturesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardGesturesViewModel.swift; sourceTree = "<group>"; };
@@ -280,6 +284,8 @@
 				B5B6757F23CF70F400291D31 /* TextRecogniser.swift */,
 				B5AD17DC240464CB00BB3069 /* TopGraphicsShapes.swift */,
 				B514A36A24BB91990078E9A9 /* WorldCurrencies.swift */,
+				B5BA5F472489130500AC026A /* UserChecker.swift */,
+				B59EB41424D9E57D00AB16FC /* SettingsUserDefaults.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -309,14 +315,12 @@
 				B5076BCE2457A28400C2BE34 /* Alerts.swift */,
 				B57145172474100800E0720C /* Navigation.swift */,
 				B573FAA323B95F57005473D2 /* Delegates.swift */,
-				B5683DF924D759DF00828AFA /* DateHelper.swift */,
 				B561B390243BFBBA00F7B29B /* SimpleShapes.swift */,
-				B550E14E245B230E000294B1 /* Enums */,
-				B535A1BF244BC320005585F0 /* Log.swift */,
+				B5683DF924D759DF00828AFA /* DateHelper.swift */,
 				B5ED9A3D2485A21300FA7A7B /* TextHelper.swift */,
-				B5BA5F472489130500AC026A /* UserChecker.swift */,
 				B598D8E624CDB80D00158766 /* CurrencyPickerHelper.swift */,
 				B598D8E824CDBD6500158766 /* ReceiptRemovalPickerHelper.swift */,
+				B535A1BF244BC320005585F0 /* Log.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -352,6 +356,7 @@
 				B59E3E1523B3BF670017D474 /* Controller */,
 				B50355692457968B000C09DC /* Utils */,
 				B535A1BE244BC2D7005585F0 /* Helpers */,
+				B550E14E245B230E000294B1 /* Enums */,
 				B5F54E83241E78220016DCED /* Extensions */,
 			);
 			path = ReceiptsSorted;
@@ -485,6 +490,7 @@
 			isa = PBXGroup;
 			children = (
 				B526B4E1241B09A10031F629 /* Observable.swift */,
+				B59EB41D24D9F59500AB16FC /* MulticastDelegate.swift */,
 				B554F962247718BA007C486A /* CardViewModel.swift */,
 				B5FD65FA242EC9C7002C5C48 /* CardTableHeader.swift */,
 				B5FDDC02241443950037BA7E /* SwipeActionsViewModel.swift */,
@@ -706,6 +712,7 @@
 				B566604E242FA955003DD15B /* PaymentTableSection.swift in Sources */,
 				B59E3E2C23B53FEF0017D474 /* Enums.swift in Sources */,
 				B5076BCF2457A28400C2BE34 /* Alerts.swift in Sources */,
+				B59EB41E24D9F59500AB16FC /* MulticastDelegate.swift in Sources */,
 				B50BAADB242B7DC200EAFECA /* AmountAnimation.swift in Sources */,
 				B5977E7E24C47F0400F3E589 /* CoreDataStack.swift in Sources */,
 				B5683DFA24D759DF00828AFA /* DateHelper.swift in Sources */,
@@ -725,6 +732,7 @@
 				B598D8E924CDBD6500158766 /* ReceiptRemovalPickerHelper.swift in Sources */,
 				B517DD5F246B394B004B3B2C /* PaymentTotalInfo.swift in Sources */,
 				B573FAAB23B98285005473D2 /* CameraViewController.swift in Sources */,
+				B59EB41524D9E57D00AB16FC /* SettingsUserDefaults.swift in Sources */,
 				B50BAADF242BECEE00EAFECA /* StringExtensions.swift in Sources */,
 				B561B391243BFBBA00F7B29B /* SimpleShapes.swift in Sources */,
 				B5377C0223A82E280010B144 /* SceneDelegate.swift in Sources */,

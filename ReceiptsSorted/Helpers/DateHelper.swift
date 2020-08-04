@@ -10,10 +10,12 @@ import Foundation
 
 class DateHelper {
 
+//    let settings = SettingsUserDefaults.shared
+    
     var currentDay: Int = 0
     var daysInCurrentMonth: Int = 0
     
-    
+//    private let indicatorPeriod: IndicatorPeriod
     private let currentDate = Date()
     private var onDayChanged: ((Int) -> ())?
     private enum NotificationMode {
@@ -22,8 +24,10 @@ class DateHelper {
     
     
     // MARK: - Lifecycle
-    init(onDayChanged: ((Int) -> ())? = nil ) {
+    init(/*mode indicatorPeriod: IndicatorPeriod,*/ onDayChanged: ((Int) -> ())? = nil ) {
+//        self.indicatorPeriod = indicatorPeriod
         self.onDayChanged = onDayChanged
+        
         setDateValues()
         dayChangedNotification(.Enable)
     }

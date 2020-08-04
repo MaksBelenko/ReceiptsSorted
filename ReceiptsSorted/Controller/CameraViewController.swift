@@ -13,7 +13,6 @@ class CameraViewController: UIViewController, UINavigationControllerDelegate {
 
     @IBOutlet weak var takePhotoButton: UIButton!
     @IBOutlet weak var cameraView: UIView!
-    
     @IBOutlet weak var closeButton: UIButton!
     @IBOutlet weak var flashButton: UIButton!
     @IBOutlet weak var imagePickerButton: UIButton!
@@ -110,6 +109,7 @@ class CameraViewController: UIViewController, UINavigationControllerDelegate {
     
     //MARK: - Buttons actions
     @IBAction func pressedTakePhotoButton(_ sender: UIButton) {
+        takePictureAnimation()
         cameraSession?.setCapturePhoto(delegate: self)
     }
     
@@ -161,5 +161,23 @@ extension CameraViewController: AVCapturePhotoCaptureDelegate {
         
         Navigation.shared.showPaymentVC(for: self, withImage: image)
         
+    }
+}
+
+// MARK: - Picture taking
+extension CameraViewController {
+    
+    private func takePictureAnimation() {
+        let flashView = UIView()
+        flashView.frame = cameraView.frame
+        flashView.frame.origin = CGPoint(x: 0, y: 0)
+        flashView.backgroundColor = .white
+        cameraView.addSubview(flashView)
+        
+        UIView.animate(withDuration: 0.5, animations: {
+            flashView.alpha = 0
+        }) { _ in
+            flashView.removeFromSuperview()
+        }
     }
 }
