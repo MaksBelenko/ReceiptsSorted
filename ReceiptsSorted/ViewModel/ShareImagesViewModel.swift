@@ -19,14 +19,41 @@ class ShareImagesViewModel {
     private let zipAdapter = ZipAdapter()
     
     
+    private let operationQueue = OperationQueue()
+    private var operations: [Operation] = []
+    
+    
+    
     // MARK: - Initialisation
     init(payments: [Payment]) {
         passedPayments = payments
+        
+        createOperations()
     }
     
     deinit {
         print("DEBUG: ShareImagesViewModel deinit")
     }
+    
+    
+    
+    private func createOperations() {
+        let createDirecoryOp = DirectoryCreatorOperation(directoryName: "test", in: .documentDirectory)
+        
+        createDirecoryOp.completionBlock = {
+            print("DEBUG: Created directory path - \(createDirecoryOp.directoryPath)")
+        }
+        
+        operationQueue.addOperation(createDirecoryOp)
+        
+        if operations.isEmpty == false {
+            operations.forEach { $0.cancel() }
+        }
+        
+        operations = [createDirecoryOp]
+    }
+    
+    
     
     // MARK: - Public Methods
     
@@ -34,7 +61,7 @@ class ShareImagesViewModel {
      Create Zip archive in Documents directory
      */
     func createZipArchive() {
-        let directoryPath = createDirectory()
+        let directoryPath = DirectoryCreator().createDirectory(named: directoryName, in: .documentDirectory)
         addPhotosToDirectory(withPath: directoryPath)
         zipURL = zipDirectory(withPath: directoryPath)
     }
@@ -61,37 +88,7 @@ class ShareImagesViewModel {
     
     // MARK: - Private methods
     
-    /**
-     Create directory in "Documents" directory
-     - Returns: Path to the created directory
-     */
-    private func createDirectory() -> String {
-        let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
-        let documentsDirectory = paths[0]
-        let docURL = URL(string: documentsDirectory)!
-        let directoryURL = docURL.appendingPathComponent(directoryName)
-        
-        if FileManager.default.fileExists(atPath: directoryURL.absoluteString) {
-            do {
-                print("Removing directory \(directoryURL.path)")
-                try FileManager.default.removeItem(atPath: directoryURL.path)
-            } catch {
-                print(error.localizedDescription)
-            }
-        }
-        
-        // Create the directory again
-        do {
-            print("Creating directory in \(directoryURL.path)")
-            try FileManager.default.createDirectory(atPath: directoryURL.absoluteString, withIntermediateDirectories: true, attributes: nil)
-        } catch {
-            print(error.localizedDescription)
-        }
-        
-        
-        return directoryURL.path
-    }
-    
+
     
     /**
      Adds photos to directory and name them
@@ -117,7 +114,7 @@ class ShareImagesViewModel {
             photosURLs.append(fileURL)
             
             do {
-                guard let imageData = receiptPhotoData.imageData else { fatalError("No ImageDaa to write to directory") }
+                guard let imageData = receiptPhotoData.imageData else { fatalError("No ImageData to write to directory") }
                 try imageData.write(to: fileURL)  // writes the image data to disk
 //                print("file saved")
             } catch {

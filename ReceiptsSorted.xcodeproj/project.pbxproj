@@ -75,6 +75,9 @@
 		B59E3E2C23B53FEF0017D474 /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59E3E2B23B53FEF0017D474 /* Enums.swift */; };
 		B59EB41524D9E57D00AB16FC /* SettingsUserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59EB41424D9E57D00AB16FC /* SettingsUserDefaults.swift */; };
 		B59EB41E24D9F59500AB16FC /* MulticastDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59EB41D24D9F59500AB16FC /* MulticastDelegate.swift */; };
+		B5A4357D24DE03EC00559908 /* AsyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A4357C24DE03EC00559908 /* AsyncOperation.swift */; };
+		B5A4357F24DE059900559908 /* DirectoryCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A4357E24DE059900559908 /* DirectoryCreator.swift */; };
+		B5A4358124DE08B700559908 /* DirectoryCreatorOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A4358024DE08B700559908 /* DirectoryCreatorOperation.swift */; };
 		B5AC4AAF2453940E00D6F6D3 /* UISegmentedControlExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5AC4AAE2453940E00D6F6D3 /* UISegmentedControlExtensions.swift */; };
 		B5AD17DD240464CB00BB3069 /* TopGraphicsShapes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5AD17DC240464CB00BB3069 /* TopGraphicsShapes.swift */; };
 		B5AD17E32404757300BB3069 /* CardGesturesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5AD17E22404757300BB3069 /* CardGesturesViewModel.swift */; };
@@ -202,6 +205,9 @@
 		B59E3E2B23B53FEF0017D474 /* Enums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
 		B59EB41424D9E57D00AB16FC /* SettingsUserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsUserDefaults.swift; sourceTree = "<group>"; };
 		B59EB41D24D9F59500AB16FC /* MulticastDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MulticastDelegate.swift; sourceTree = "<group>"; };
+		B5A4357C24DE03EC00559908 /* AsyncOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncOperation.swift; sourceTree = "<group>"; };
+		B5A4357E24DE059900559908 /* DirectoryCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectoryCreator.swift; sourceTree = "<group>"; };
+		B5A4358024DE08B700559908 /* DirectoryCreatorOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectoryCreatorOperation.swift; sourceTree = "<group>"; };
 		B5AC4AAE2453940E00D6F6D3 /* UISegmentedControlExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISegmentedControlExtensions.swift; sourceTree = "<group>"; };
 		B5AD17DC240464CB00BB3069 /* TopGraphicsShapes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopGraphicsShapes.swift; sourceTree = "<group>"; };
 		B5AD17E22404757300BB3069 /* CardGesturesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardGesturesViewModel.swift; sourceTree = "<group>"; };
@@ -286,6 +292,7 @@
 				B514A36A24BB91990078E9A9 /* WorldCurrencies.swift */,
 				B5BA5F472489130500AC026A /* UserChecker.swift */,
 				B59EB41424D9E57D00AB16FC /* SettingsUserDefaults.swift */,
+				B5A4357E24DE059900559908 /* DirectoryCreator.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -350,6 +357,7 @@
 				B5743AC124D21BF500930030 /* SupportingFiles */,
 				B565673E24831554000A6639 /* Adapters */,
 				B56567412483196B000A6639 /* Factories */,
+				B5A4357A24DE039A00559908 /* Operations */,
 				B5AD17D7240460E700BB3069 /* ViewModel */,
 				B59E3E1323B3BF4E0017D474 /* Model */,
 				B59E3E1423B3BF5F0017D474 /* View */,
@@ -484,6 +492,15 @@
 				B5DFF55624842629003CEDA3 /* OnboardingViewController.swift */,
 			);
 			path = Controller;
+			sourceTree = "<group>";
+		};
+		B5A4357A24DE039A00559908 /* Operations */ = {
+			isa = PBXGroup;
+			children = (
+				B5A4357C24DE03EC00559908 /* AsyncOperation.swift */,
+				B5A4358024DE08B700559908 /* DirectoryCreatorOperation.swift */,
+			);
+			path = Operations;
 			sourceTree = "<group>";
 		};
 		B5AD17D7240460E700BB3069 /* ViewModel */ = {
@@ -703,6 +720,7 @@
 				B57419BE245F1BAB001228A1 /* DetailsViewController.swift in Sources */,
 				B5ED9A3E2485A21300FA7A7B /* TextHelper.swift in Sources */,
 				B5377C0023A82E280010B144 /* AppDelegate.swift in Sources */,
+				B5A4357F24DE059900559908 /* DirectoryCreator.swift in Sources */,
 				B5BA5F482489130500AC026A /* UserChecker.swift in Sources */,
 				B56939D024CA474B00806953 /* Notification.NameExtension.swift in Sources */,
 				B57ECC572454A6BA003E9598 /* UITextFieldExtensions.swift in Sources */,
@@ -737,6 +755,7 @@
 				B561B391243BFBBA00F7B29B /* SimpleShapes.swift in Sources */,
 				B5377C0223A82E280010B144 /* SceneDelegate.swift in Sources */,
 				B5977E7C24C4729400F3E589 /* DatabaseAsync.swift in Sources */,
+				B5A4358124DE08B700559908 /* DirectoryCreatorOperation.swift in Sources */,
 				B5FDDC03241443950037BA7E /* SwipeActionsViewModel.swift in Sources */,
 				B5DB922323BE929F0081E8D7 /* PaymentsData.xcdatamodeld in Sources */,
 				B5689D7224BB61D5005C46C5 /* ShareImagesViewModel.swift in Sources */,
@@ -748,6 +767,7 @@
 				B504902424731A60009B4DA5 /* PaymentSelectionButtonView.swift in Sources */,
 				B516CF14243BF1F0003D09E1 /* PDFPreviewViewController.swift in Sources */,
 				B5F54E87241E78750016DCED /* UIColorExtensions.swift in Sources */,
+				B5A4357D24DE03EC00559908 /* AsyncOperation.swift in Sources */,
 				B5B6758223CF724000291D31 /* ImageManipulator.swift in Sources */,
 				B535A1C0244BC320005585F0 /* Log.swift in Sources */,
 				B58CC932246DB9B5006FEF00 /* CollectionViewFlowLayout.swift in Sources */,

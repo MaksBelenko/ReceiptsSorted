@@ -81,10 +81,10 @@ class ShareImagesViewController: UIViewController {
         
         viewModel = ShareImagesViewModel(payments: passedPayments)
         
-        DispatchQueue.global(qos: .utility).async { [weak self] in
-            guard let viewModel = self?.viewModel else { return }
-            viewModel.createZipArchive()
-        }
+//        DispatchQueue.global(qos: .utility).async { [weak self] in
+//            guard let viewModel = self?.viewModel else { return }
+//            viewModel.createZipArchive()
+//        }
     }
 
     
