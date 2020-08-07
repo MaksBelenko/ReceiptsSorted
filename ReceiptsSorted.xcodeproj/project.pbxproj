@@ -78,6 +78,7 @@
 		B5A4357D24DE03EC00559908 /* AsyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A4357C24DE03EC00559908 /* AsyncOperation.swift */; };
 		B5A4357F24DE059900559908 /* DirectoryCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A4357E24DE059900559908 /* DirectoryCreator.swift */; };
 		B5A4358124DE08B700559908 /* DirectoryCreatorOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A4358024DE08B700559908 /* DirectoryCreatorOperation.swift */; };
+		B5A4358324DE10EF00559908 /* DirectoryHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A4358224DE10EF00559908 /* DirectoryHelper.swift */; };
 		B5AC4AAF2453940E00D6F6D3 /* UISegmentedControlExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5AC4AAE2453940E00D6F6D3 /* UISegmentedControlExtensions.swift */; };
 		B5AD17DD240464CB00BB3069 /* TopGraphicsShapes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5AD17DC240464CB00BB3069 /* TopGraphicsShapes.swift */; };
 		B5AD17E32404757300BB3069 /* CardGesturesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5AD17E22404757300BB3069 /* CardGesturesViewModel.swift */; };
@@ -208,6 +209,7 @@
 		B5A4357C24DE03EC00559908 /* AsyncOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncOperation.swift; sourceTree = "<group>"; };
 		B5A4357E24DE059900559908 /* DirectoryCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectoryCreator.swift; sourceTree = "<group>"; };
 		B5A4358024DE08B700559908 /* DirectoryCreatorOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectoryCreatorOperation.swift; sourceTree = "<group>"; };
+		B5A4358224DE10EF00559908 /* DirectoryHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectoryHelper.swift; sourceTree = "<group>"; };
 		B5AC4AAE2453940E00D6F6D3 /* UISegmentedControlExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISegmentedControlExtensions.swift; sourceTree = "<group>"; };
 		B5AD17DC240464CB00BB3069 /* TopGraphicsShapes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopGraphicsShapes.swift; sourceTree = "<group>"; };
 		B5AD17E22404757300BB3069 /* CardGesturesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardGesturesViewModel.swift; sourceTree = "<group>"; };
@@ -328,6 +330,7 @@
 				B598D8E624CDB80D00158766 /* CurrencyPickerHelper.swift */,
 				B598D8E824CDBD6500158766 /* ReceiptRemovalPickerHelper.swift */,
 				B535A1BF244BC320005585F0 /* Log.swift */,
+				B5A4358224DE10EF00559908 /* DirectoryHelper.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -703,6 +706,7 @@
 				B573FAA823B98061005473D2 /* CircularTransition.swift in Sources */,
 				B5217ECE246C870B00CC31AB /* FileManagerExtensions.swift in Sources */,
 				B5666050242FB65F003DD15B /* IntExtensins.swift in Sources */,
+				B5A4358324DE10EF00559908 /* DirectoryHelper.swift in Sources */,
 				B565674024831619000A6639 /* ZipAdapter.swift in Sources */,
 				B598D8E724CDB80D00158766 /* CurrencyPickerHelper.swift in Sources */,
 				B5E3086824BE532E003D5860 /* NavControllerTransitions.swift in Sources */,

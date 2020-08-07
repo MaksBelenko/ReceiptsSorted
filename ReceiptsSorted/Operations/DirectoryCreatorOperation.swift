@@ -16,8 +16,10 @@ final class DirectoryCreatorOperation: AsyncOperation {
     private let directoryName: String
     private let directorySearchPath: FileManager.SearchPathDirectory
     
+    private let directoryHelper = DirecoryHelper()
     
-    init(directoryName: String, in directorySearchPath: FileManager.SearchPathDirectory) {
+    
+    init(directoryName: String, in directorySearchPath: FileManager.SearchPathDirectory = .documentDirectory) {
         self.directoryName = directoryName
         self.directorySearchPath = directorySearchPath
     }
@@ -33,36 +35,23 @@ final class DirectoryCreatorOperation: AsyncOperation {
         defer { self.state = .finished }
         
         let paths = NSSearchPathForDirectoriesInDomains(directorySearchPath, .userDomainMask, true)
-        let documentsDirectory = paths[0]
-        let docURL = URL(string: documentsDirectory)!
+        let directoryString = paths[0]
+        let docURL = URL(string: directoryString)!
         let directoryURL = docURL.appendingPathComponent(directoryName)
         
         guard !isCancelled else { return } // Check weather operation is cancelled
         
-        if FileManager.default.fileExists(atPath: directoryURL.absoluteString) {
-            do {
-                print("Removing directory \(directoryURL.path)")
-                try FileManager.default.removeItem(atPath: directoryURL.path)
-            } catch {
-                print(error.localizedDescription)
-                return
-            }
-        }
-        
-        
-        guard !isCancelled else { return } // Check weather operation is cancelled
-        
-        // Create the directory again
         do {
-            print("Creating directory in \(directoryURL.path)")
-            try FileManager.default.createDirectory(atPath: directoryURL.absoluteString, withIntermediateDirectories: true, attributes: nil)
+            try directoryHelper.removeDirectoryIfExists(url: directoryURL)
+            guard !isCancelled else { return } // Check weather operation is cancelled
+            try directoryHelper.createDirectory(for: directoryURL, withIntermediateDirectories: false)
         } catch {
-            print(error.localizedDescription)
+            Log.exception(message: "Error creating directory: \(error.localizedDescription)")
             return
         }
         
         guard !isCancelled else { return } // Check weather operation is cancelled
         
-         directoryPath = directoryURL.path
+        directoryPath = directoryURL.path
     }
 }
