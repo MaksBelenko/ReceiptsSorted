@@ -10,7 +10,7 @@ import Foundation
 
 class DateHelper {
 
-//    let settings = SettingsUserDefaults.shared
+    let settings = SettingsUserDefaults.shared
     
     var currentDay: Int = 0
     var daysInCurrentMonth: Int = 0

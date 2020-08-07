@@ -15,7 +15,7 @@ class DateAnimation {
     /// Observer for the days that are currently showing
     var daysLeft: Observable<Int> = Observable(0)
     /// Maximum number of days (eg 7, 30, 31) for the period
-    var maxDays: Float = 0
+    var maxDays: Int = 0
     
     
     
@@ -25,14 +25,13 @@ class DateAnimation {
     
     private let dateIndicator: CALayer
     private var animationDuration: Double = 0.7
-    private var currentDay: Float = 5
+    private var currentDay: Int = 5
     private var startDay: Float = 0
-    private var trackStartValue: Float = 0.0
     private let maxLength: CGFloat
     private var animationStartTime = Date()
     private var overallDays: Float = 0.0 {
         didSet {
-            daysLeft.value = Int(maxDays - overallDays)
+            daysLeft.value = maxDays - Int(overallDays)
         }
     }
     
@@ -54,11 +53,18 @@ class DateAnimation {
      Initialises DatHelper with the closure to listen for day changes notifications
      */
     private func initialiseDateHelper() {
-        dateHelper = DateHelper(onDayChanged: { [unowned self] newDay in
-            let currentDay = Float(newDay)
+        dateHelper = DateHelper(onDayChanged: { [unowned self] currentDay in
             self.animateDate(to: currentDay)
+//            self.switchToNextDay()
         })
     }
+     
+    
+//    private func switchToNextDay() {
+//        let animateTo = (currentDay % maxDays) + 1
+//        self.animateDate(to: animateTo)
+//    }
+    
     
     // MARK: - Animation methods
     
@@ -66,10 +72,8 @@ class DateAnimation {
      Animates the date indicator from 0 to current day in a month
      */
     func animateToCurrentDate() {
-        let daysInMonth = Float(dateHelper.daysInCurrentMonth)
-        let currentDay = Float(dateHelper.currentDay)
-        maxDays = daysInMonth
-        animateDate(to: currentDay)
+        maxDays = dateHelper.daysInCurrentMonth
+        animateDate(to: dateHelper.currentDay)
     }
     
     
@@ -78,16 +82,16 @@ class DateAnimation {
      - Parameter startValue: From what date to be animated from
      - Parameter endValue: to what day it should be animated
      */
-    private func animateDate(from startValue: Float = -1 , to endValue: Float ) {
-        let beginValue = (startValue == -1) ? trackStartValue : startValue
+    private func animateDate(from startValue: Float = -1 , to endValue: Int) {
+        let beginValue = (startValue == -1) ? Float(currentDay) : startValue
         
         animationStartTime = Date()
         self.overallDays = beginValue //before animation executed
         self.startDay = beginValue
-        self.currentDay = endValue
-        trackStartValue = endValue
         
-        if endValue != 0.0 {
+        self.currentDay = endValue
+        
+        if endValue != 0 {
             dateIndicator.opacity = 1.0
         }
         
@@ -102,7 +106,7 @@ class DateAnimation {
     func createDateAnimation() {
         let dateAnimation = CABasicAnimation(keyPath: #keyPath(CALayer.bounds))
         dateAnimation.fromValue = getBounds(for: startDay)
-        dateAnimation.toValue = getBounds(for: currentDay)
+        dateAnimation.toValue = getBounds(for: Float(currentDay))
         dateAnimation.duration = animationDuration
         /* Keep animation after completion */
         dateAnimation.fillMode = .forwards
@@ -115,7 +119,7 @@ class DateAnimation {
     
     
     /**
-     Cretas CADisplayLink for the label (UILabel should be binded to overallAmount)
+     Creates CADisplayLink for the label (UILabel should be binded to overallAmount)
      */
     private func createDisplayLink() {
         let displaylink = CADisplayLink(target: self, selector: #selector(step))
@@ -135,10 +139,10 @@ class DateAnimation {
         
         if (elapsedTime <= animationDuration) {
             let percentageComplete = elapsedTime / animationDuration
-            let value = startDay + Float(percentageComplete) * (currentDay - startDay)
+            let value = startDay + Float(percentageComplete) * (Float(currentDay) - startDay)
             overallDays = value
         } else {
-            overallDays = currentDay
+            overallDays = Float(currentDay)
             dateIndicator.opacity = (currentDay == 0) ? 0.0 : 1.0
             displaylink.remove(from: .current, forMode: .default)
         }
@@ -151,7 +155,7 @@ class DateAnimation {
     
     private func getBounds(for day: Float) -> CGRect {
         var bounds = dateIndicator.bounds //dateIndicator.presentation()?.bounds
-        bounds.size.width = CGFloat(day/maxDays) * maxLength
+        bounds.size.width = CGFloat(day/Float(maxDays)) * maxLength
         return bounds
     }
     

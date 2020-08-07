@@ -50,7 +50,6 @@ class TopGraphicsView: UIView {
             let maxDays = Int(self.dateAnimation.maxDays)
             self.daysLeftLabel.text = "\($0) of \(maxDays) days left"
         }
-
     }
     
     
