@@ -25,11 +25,10 @@ class DateAnimation {
     
     private let dateIndicator: CALayer
     private var animationDuration: Double = 0.7
-    private var currentDay: Int = 5
-    private var startDay: Float = 0
+    private var currentDay: Int = 1
     private let maxLength: CGFloat
     private var animationStartTime = Date()
-    private var overallDays: Float = 0.0 {
+    private var overallDays: Int = 0 {
         didSet {
             daysLeft.value = maxDays - Int(overallDays)
         }
@@ -79,83 +78,45 @@ class DateAnimation {
     
     /**
      Animates date indicator
-     - Parameter startValue: From what date to be animated from
+     - Parameter sValue: From what date to be animated from
      - Parameter endValue: to what day it should be animated
      */
-    private func animateDate(from startValue: Float = -1 , to endValue: Int) {
-        let beginValue = (startValue == -1) ? Float(currentDay) : startValue
+    private func animateDate(from sValue: Int? = nil , to endValue: Int) {
+        let startValue = (sValue == nil) ? currentDay : sValue!
         
         animationStartTime = Date()
-        self.overallDays = beginValue //before animation executed
-        self.startDay = beginValue
-        
+        self.overallDays = startValue //before animation executed
         self.currentDay = endValue
         
         if endValue != 0 {
             dateIndicator.opacity = 1.0
         }
         
-        createDateAnimation()
-        createDisplayLink()
-    }
-    
-
-    /**
-     Creates animation for the circle graphics
-     */
-    func createDateAnimation() {
-        let dateAnimation = CABasicAnimation(keyPath: #keyPath(CALayer.bounds))
-        dateAnimation.fromValue = getBounds(for: startDay)
-        dateAnimation.toValue = getBounds(for: Float(currentDay))
-        dateAnimation.duration = animationDuration
-        /* Keep animation after completion */
-        dateAnimation.fillMode = .forwards
-        dateAnimation.isRemovedOnCompletion = false
-        // animation curve is Ease Out
-        dateAnimation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeOut)
-        dateIndicator.add(dateAnimation, forKey: "dateAnimation")
-    }
-    
-    
-    
-    /**
-     Creates CADisplayLink for the label (UILabel should be binded to overallAmount)
-     */
-    private func createDisplayLink() {
-        let displaylink = CADisplayLink(target: self, selector: #selector(step))
-        displaylink.add(to: .current, forMode: .default)
-    }
-    
-    
-         
-    /**
-     Handles updates for the label
-     - Parameter displaylink: Used to remove the link when the animation has finished
-     */
-    @objc private func step(displaylink: CADisplayLink) {
         
-        let currentAnimationTime = Date()
-        let elapsedTime = currentAnimationTime.timeIntervalSince(animationStartTime)
+        let indicatorAnimation = IndicatorAnimation(indicator: dateIndicator, duration: animationDuration)
         
-        if (elapsedTime <= animationDuration) {
-            let percentageComplete = elapsedTime / animationDuration
-            let value = startDay + Float(percentageComplete) * (Float(currentDay) - startDay)
-            overallDays = value
-        } else {
-            overallDays = Float(currentDay)
-            dateIndicator.opacity = (currentDay == 0) ? 0.0 : 1.0
-            displaylink.remove(from: .current, forMode: .default)
+        indicatorAnimation.executeIndicatorAnimation(for: #keyPath(CALayer.bounds),
+                                                     fromValue: getBounds(for: startValue),
+                                                     toValue:   getBounds(for: endValue))
+        
+        indicatorAnimation.createDisplayLink(progressHandler: { [unowned self] progress in
+            let value = startValue + Int(progress * Double(endValue - startValue))
+            self.overallDays = value
+        }) { [unowned self] in
+            self.dateIndicator.opacity = (endValue == 0) ? 0.0 : 1.0
         }
         
     }
+    
+
     
     
     
     // MARK: - Helpers
     
-    private func getBounds(for day: Float) -> CGRect {
+    private func getBounds(for day: Int) -> CGRect {
         var bounds = dateIndicator.bounds //dateIndicator.presentation()?.bounds
-        bounds.size.width = CGFloat(day/Float(maxDays)) * maxLength
+        bounds.size.width = CGFloat(day)/CGFloat(maxDays) * maxLength
         return bounds
     }
     
