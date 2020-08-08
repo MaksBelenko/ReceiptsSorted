@@ -15,7 +15,7 @@ class ShareImagesViewController: UIViewController {
 
     var passedPayments: [Payment] = []
     private var paymentsCount: Int = 1
-    private var viewModel: ShareImagesViewModel?
+    private var viewModel: ShareImagesViewModel!
 
     
     // MARK: - Computed properties
@@ -71,6 +71,9 @@ class ShareImagesViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        viewModel = ShareImagesViewModel(payments: passedPayments)
+        viewModel.startPhotosZipOperations()
+        
         self.title = "Images Viewer"
         view.backgroundColor = .white
         setupNavigationBar()
@@ -78,13 +81,12 @@ class ShareImagesViewController: UIViewController {
         
         setupCollectionView()
         setupCountLabel()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
         
-        viewModel = ShareImagesViewModel(payments: passedPayments)
-        
-//        DispatchQueue.global(qos: .utility).async { [weak self] in
-//            guard let viewModel = self?.viewModel else { return }
-//            viewModel.createZipArchive()
-//        }
+        viewModel.cancelAllOperations()
     }
 
     
@@ -154,7 +156,7 @@ class ShareImagesViewController: UIViewController {
     }
     
     func showActivityVC(for shareType: ShareImagesType) {
-        guard let activityVC = viewModel?.createActivityVC(for: shareType) else { return }
+        guard let activityVC = viewModel.createActivityVC(for: shareType) else { return }
         present(activityVC, animated: true, completion: nil)
     }
 }

@@ -27,8 +27,6 @@ class ShareImagesViewModel {
     // MARK: - Initialisation
     init(payments: [Payment]) {
         passedPayments = payments
-        
-        createOperations()
     }
     
     deinit {
@@ -61,7 +59,7 @@ class ShareImagesViewModel {
     
     // MARK: - Operations
     
-    func createOperations() {
+    func startPhotosZipOperations() {
         guard let nameImagePair = createNameImageDataPair(for: passedPayments) else { return }
         
         let createDirecoryOp = DirectoryCreatorOperation(directoryName: "test", in: .documentDirectory)
@@ -102,6 +100,10 @@ class ShareImagesViewModel {
 //        operations = [createDirecoryOp, addPhotosOp, zipDirectoryOp]
     }
     
+    
+    func cancelAllOperations() {
+        operationQueue.cancelAllOperations()
+    }
     
     
     
