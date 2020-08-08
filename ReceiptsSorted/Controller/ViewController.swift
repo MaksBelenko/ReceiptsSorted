@@ -89,11 +89,8 @@ class ViewController: UIViewController  {
             
             topGraphicsView.dateAnimation.animateToCurrentDate()
             
-            
             pushNotificationScheduler.requestAuthorization()
-//            pushNotificationScheduler.center.requestAuthorization(options: [.alert,.sound,.badge]) { [weak self] (granted, error) in
-//                print("Granted? \(granted)")
-//            }
+            pushNotificationScheduler.removeIconBadge()
         }
         
         

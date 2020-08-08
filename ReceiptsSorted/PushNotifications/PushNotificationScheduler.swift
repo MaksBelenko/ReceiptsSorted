@@ -25,13 +25,11 @@ class PushNotificationScheduler: NSObject {
     }()
     
     private var testTrigger: UNNotificationTrigger = {
-//        var components = DateComponents()
-//        components.second = 10
-//        components.minute = 0
-//        components.hour = 0
-//        return UNCalendarNotificationTrigger(dateMatching: components, repeats: false)
+        var components = DateComponents()
+        components.second = 30
+        return UNCalendarNotificationTrigger(dateMatching: components, repeats: false)
         
-        return UNTimeIntervalNotificationTrigger(timeInterval: 30, repeats: false)
+//        return UNTimeIntervalNotificationTrigger(timeInterval: 30, repeats: false)
     }()
     
     
@@ -65,6 +63,17 @@ class PushNotificationScheduler: NSObject {
             }
         }
     }
+    
+    
+    
+    /**
+    Remove push notification icon badge
+     */
+    func removeIconBadge() {
+        UIApplication.shared.applicationIconBadgeNumber = 0
+    }
+    
+    
     
     
     
@@ -130,8 +139,8 @@ extension PushNotificationScheduler: DateSettingChangedProtocol {
     private func schedule() {
         let request = PushNotificationRequestBuilder()
                                 .withTrigger(testTrigger)
-                                .withTitle("Test Title")
-                                .withBody("Test long body")
+                                .withTitle("Reminder:")
+                                .withBody("Don't forget to send back your receipts! 🧾")
                                 .withSoundEnabled(true)
                                 .withBadge(1)
                                 .build()
