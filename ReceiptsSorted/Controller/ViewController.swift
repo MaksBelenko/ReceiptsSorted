@@ -28,6 +28,8 @@ class ViewController: UIViewController  {
     
     private var onStartup = true
     
+    private let pushNotificationScheduler = PushNotificationScheduler()
+    
     
     //MARK: - Status Bar
     
@@ -87,7 +89,7 @@ class ViewController: UIViewController  {
             
             topGraphicsView.dateAnimation.animateToCurrentDate()
             
-            PushNotificationScheduler().center.requestAuthorization(options: [.alert,.sound,.badge]) { [weak self] (granted, error) in
+            pushNotificationScheduler.center.requestAuthorization(options: [.alert,.sound,.badge]) { [weak self] (granted, error) in
                 print("Granted? \(granted)")
             }
         }
@@ -229,3 +231,12 @@ class ViewController: UIViewController  {
     }
 }
 
+
+extension ViewController: UNUserNotificationCenterDelegate {
+  func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+
+//    refreshNotificationList()
+
+    completionHandler([.alert, .sound, .badge])
+  }
+}

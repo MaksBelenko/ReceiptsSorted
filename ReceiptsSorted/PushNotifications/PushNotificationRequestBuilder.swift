@@ -17,8 +17,9 @@ class PushNotificationRequestBuilder {
     private var trigger: UNNotificationTrigger?
     
     
-    func withTrigger(_ trigger: UNNotificationTrigger?) {
+    func withTrigger(_ trigger: UNNotificationTrigger?) -> PushNotificationRequestBuilder {
         self.trigger = trigger
+        return self
     }
     
     @discardableResult
