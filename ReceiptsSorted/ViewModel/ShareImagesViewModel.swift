@@ -13,8 +13,8 @@ class ShareImagesViewModel {
     private var passedPayments: [Payment] = []
     private let directoryName = "Receipts"
     private let photoFormat = "jpg"
-    private var zipURL: URL!
-    private var photosURLs = [URL]()
+    private var zipURL: URL?
+    private var photosURLs: [URL] = []
     
     private let zipAdapter = ZipAdapter()
     
@@ -37,43 +37,7 @@ class ShareImagesViewModel {
     
     
     
-    private func createOperations() {
-        guard let nameImagePair = createNameImageDataPair(for: passedPayments) else { return }
-        
-        let createDirecoryOp = DirectoryCreatorOperation(directoryName: "test", in: .documentDirectory)
-        let addPhotosOp = AddPhotosOperation(for: nameImagePair)
-        addPhotosOp.addDependency(createDirecoryOp)
-        
-//        createDirecoryOp.completionBlock = {
-//            print("DEBUG: Created directory path - \(createDirecoryOp.directoryPath)")
-//        }
-//        addPhotosOp.completionBlock = {
-//            print("DEBUG: add[hotos completed: \(addPhotosOp.photosURLs)")
-//        }
-        
-        
-        operationQueue.addOperation(createDirecoryOp)
-        operationQueue.addOperation(addPhotosOp)
-        
-        if operations.isEmpty == false {
-            operations.forEach { $0.cancel() }
-        }
-        
-        operations = [createDirecoryOp, addPhotosOp]
-    }
-    
-    
-    
-    // MARK: - Public Methods
-    
-    /**
-     Create Zip archive in Documents directory
-     */
-    func createZipArchive() {
-        let directoryPath = DirectoryCreator().createDirectory(named: directoryName, in: .documentDirectory)
-        addPhotosToDirectory(withPath: directoryPath)
-        zipURL = zipDirectory(withPath: directoryPath)
-    }
+    // MARK: - Activity VC Methods
     
     /**
      Creates and Activity View Controller
@@ -95,9 +59,54 @@ class ShareImagesViewModel {
     }
     
     
-    // MARK: - Private methods
+    // MARK: - Operations
     
-
+    func createOperations() {
+        guard let nameImagePair = createNameImageDataPair(for: passedPayments) else { return }
+        
+        let createDirecoryOp = DirectoryCreatorOperation(directoryName: "test", in: .documentDirectory)
+        let addPhotosOp = AddPhotosOperation(for: nameImagePair)
+        let zipDirectoryOp = ZipDirectoryOperation(zipName: "testcheck")
+        
+        addPhotosOp.addDependency(createDirecoryOp)
+        zipDirectoryOp.addDependency(addPhotosOp)
+        
+//        createDirecoryOp.completionBlock = {
+//            print("DEBUG: Created directory path - \(createDirecoryOp.directoryPath)")
+//        }
+//        addPhotosOp.completionBlock = {
+//            print("DEBUG: add[hotos completed: \(addPhotosOp.photosURLs)")
+//        }
+//        zipDirectoryOp.completionBlock = {
+//            print("DEBUG: Completed zipping: \(zipDirectoryOp.zipURL)")
+//        }
+        
+        addPhotosOp.onPhotosAdded = { [weak self] photosURLs in
+            guard let urls = photosURLs else { return }
+            self?.photosURLs = urls
+        }
+        
+        zipDirectoryOp.onZipCreated = { [weak self] url in
+            self?.zipURL = url
+        }
+        
+        
+        operationQueue.addOperation(createDirecoryOp)
+        operationQueue.addOperation(addPhotosOp)
+        operationQueue.addOperation(zipDirectoryOp)
+        
+//        if operations.isEmpty == false {
+//            operations.forEach { $0.cancel() }
+//        }
+//
+//        operations = [createDirecoryOp, addPhotosOp, zipDirectoryOp]
+    }
+    
+    
+    
+    
+    // MARK: - Helper methods
+    
     private func createNameImageDataPair(for payments: [Payment]) -> [(name: String, imageData: Data)]? {
         var pair: [(name: String, imageData: Data)] = []
         var namesDictionary = Dictionary<String, Int>()
@@ -122,58 +131,5 @@ class ShareImagesViewModel {
         }
         
         return (pair.isEmpty) ? nil : pair
-    }
-    
-    
-    
-    /**
-     Adds photos to directory and name them
-     - Parameter path: Path to the directory where photos should be added
-     */
-    private func addPhotosToDirectory(withPath path: String) {
-        var namesDictionary = Dictionary<String, Int>()
-        
-        for payment in passedPayments {
-            guard let receiptPhotoData = payment.receiptPhoto else { return }
-            guard let placeName = payment.place else { return }
-            
-            if !namesDictionary.contains(where: {$0.key == placeName} ) {
-                namesDictionary[placeName] = 0
-            } else {
-                namesDictionary[placeName]! += 1
-            }
-            
-            let count = (namesDictionary[placeName] == 0) ? "" : "_\(namesDictionary[placeName]!)"
-            let fileName = "\(placeName)\(count).\(photoFormat)"//"Image\(photoCounter).jpg"
-            
-            let fileURL = URL(fileURLWithPath: path).appendingPathComponent(fileName)
-            photosURLs.append(fileURL)
-            
-            do {
-                guard let imageData = receiptPhotoData.imageData else { fatalError("No ImageData to write to directory") }
-                try imageData.write(to: fileURL)  // writes the image data to disk
-//                print("file saved")
-            } catch {
-                print("error saving file:", error)
-            }
-        }
-        
-    }
-    
-    
-    
-    /**
-     Archives the directory
-     - Parameter directoryPath: path which directory should be archived
-     - Returns: URL of the archive
-     */
-    private func zipDirectory(withPath directoryPath: String) -> URL? {
-        do {
-            let directoryURL = URL(fileURLWithPath: directoryPath)
-            return try zipAdapter.zipFiles([directoryURL], fileName: directoryName)
-        } catch {
-            print("Zip failed with error: \(error.localizedDescription)")
-            return nil
-        }
     }
 }

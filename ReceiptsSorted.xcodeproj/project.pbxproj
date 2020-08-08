@@ -81,6 +81,7 @@
 		B5A4358324DE10EF00559908 /* DirectoryHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A4358224DE10EF00559908 /* DirectoryHelper.swift */; };
 		B5A4358524DE1BF900559908 /* AddPhotosOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A4358424DE1BF900559908 /* AddPhotosOperation.swift */; };
 		B5A4358724DE1CB500559908 /* OperationProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A4358624DE1CB500559908 /* OperationProtocols.swift */; };
+		B5A4358924DE284500559908 /* ZipDirectoryOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A4358824DE284500559908 /* ZipDirectoryOperation.swift */; };
 		B5AC4AAF2453940E00D6F6D3 /* UISegmentedControlExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5AC4AAE2453940E00D6F6D3 /* UISegmentedControlExtensions.swift */; };
 		B5AD17DD240464CB00BB3069 /* TopGraphicsShapes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5AD17DC240464CB00BB3069 /* TopGraphicsShapes.swift */; };
 		B5AD17E32404757300BB3069 /* CardGesturesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5AD17E22404757300BB3069 /* CardGesturesViewModel.swift */; };
@@ -214,6 +215,7 @@
 		B5A4358224DE10EF00559908 /* DirectoryHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectoryHelper.swift; sourceTree = "<group>"; };
 		B5A4358424DE1BF900559908 /* AddPhotosOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPhotosOperation.swift; sourceTree = "<group>"; };
 		B5A4358624DE1CB500559908 /* OperationProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperationProtocols.swift; sourceTree = "<group>"; };
+		B5A4358824DE284500559908 /* ZipDirectoryOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZipDirectoryOperation.swift; sourceTree = "<group>"; };
 		B5AC4AAE2453940E00D6F6D3 /* UISegmentedControlExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISegmentedControlExtensions.swift; sourceTree = "<group>"; };
 		B5AD17DC240464CB00BB3069 /* TopGraphicsShapes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopGraphicsShapes.swift; sourceTree = "<group>"; };
 		B5AD17E22404757300BB3069 /* CardGesturesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardGesturesViewModel.swift; sourceTree = "<group>"; };
@@ -508,6 +510,7 @@
 				B5A4358624DE1CB500559908 /* OperationProtocols.swift */,
 				B5A4358024DE08B700559908 /* DirectoryCreatorOperation.swift */,
 				B5A4358424DE1BF900559908 /* AddPhotosOperation.swift */,
+				B5A4358824DE284500559908 /* ZipDirectoryOperation.swift */,
 			);
 			path = Operations;
 			sourceTree = "<group>";
@@ -791,6 +794,7 @@
 				B5DFF55C24843B02003CEDA3 /* ShowElementView.swift in Sources */,
 				B5F54E85241E783C0016DCED /* UIViewExtensions.swift in Sources */,
 				B526B4E2241B09A10031F629 /* Observable.swift in Sources */,
+				B5A4358924DE284500559908 /* ZipDirectoryOperation.swift in Sources */,
 				B50BAADD242BB8E000EAFECA /* SettingsViewController.swift in Sources */,
 				B5E3C3782445403B00AD59AC /* ImageGestures.swift in Sources */,
 				B57145182474100800E0720C /* Navigation.swift in Sources */,

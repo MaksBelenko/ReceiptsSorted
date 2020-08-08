@@ -8,9 +8,15 @@
 
 import UIKit.UIImage
 
+extension AddPhotosOperation: UrlPathProvider {}
+
 final class AddPhotosOperation: AsyncOperation {
     
+    
+    var directoryPath: String?
     var photosURLs: [URL] = []
+    
+    var onPhotosAdded: (([URL]?) -> ())?
     
     /// Image dictionary should contain name of the file
     /// as a key and ImageData as data
@@ -49,9 +55,17 @@ final class AddPhotosOperation: AsyncOperation {
             
             do {
                 try element.imageData.write(to: fileURL)  // writes the image data to disk
-//                print("file saved")
             } catch {
                 print("error saving file:", error)
+            }
+        }
+        
+        guard !isCancelled else { return } // Check weather operation is cancelled
+        directoryPath = path
+        
+        if let onPhotosAdded = onPhotosAdded  {
+            DispatchQueue.main.async { [weak self] in
+                onPhotosAdded(self?.photosURLs)
             }
         }
     }
