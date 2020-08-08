@@ -15,7 +15,6 @@ class DateHelper {
     
     private let settings = SettingsUserDefaults.shared
     private var indicatorPeriod: IndicatorPeriod
-    private var currentDate = Date()
     /// Passes day and maxDays in current period
     private var onDayChanged: ((Int, Int) -> ())?
     private enum NotificationMode {
@@ -30,7 +29,7 @@ class DateHelper {
         
         settings.addDateChangedListener(self)
         
-        setDateValues()
+        setDateValues(currentDate: Date())
         dayChangedNotification(.Enable)
     }
     
@@ -45,7 +44,7 @@ class DateHelper {
     /**
      Sets values for the current date
      */
-    private func setDateValues() {
+    private func setDateValues(currentDate: Date) {
         let calendar = Calendar.current
         
         switch indicatorPeriod
@@ -90,8 +89,7 @@ class DateHelper {
     @objc private func dayDidChange() {
         guard let onDayChanged = onDayChanged else { return }
         
-        currentDate = Date()
-        setDateValues()
+        setDateValues(currentDate: Date())
         
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }

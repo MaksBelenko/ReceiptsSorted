@@ -90,10 +90,9 @@ class ViewController: UIViewController  {
             topGraphicsView.dateAnimation.animateToCurrentDate()
             
             pushNotificationScheduler.requestAuthorization()
-            pushNotificationScheduler.removeIconBadge()
         }
         
-        
+        pushNotificationScheduler.removeIconBadge()
         
     }
     

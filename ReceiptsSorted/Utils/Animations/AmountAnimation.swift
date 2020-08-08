@@ -33,13 +33,13 @@ class AmountAnimation {
      - Parameter sValue: Value from which the animation should start (in £)
      - Parameter endValue: Value at which animation should end (in £)
      */
-    func animateCircle(from sValue: Float? = nil , to endValue: Float ) {
+    func animateCircle(from sValue: Float? = nil , to endValue: Float) {
         let startValue = (sValue == nil) ? trackStartValue : sValue!
         
         overallAmount.value = startValue //before animation executed
         trackStartValue = endValue
         
-        if endValue != 0.0 {
+        if (withinZeroBounds(for: endValue) == false) {
             animationCircle.opacity = 1.0
         }
         
@@ -55,9 +55,15 @@ class AmountAnimation {
             let value = startValue + Float(progress) * (endValue - startValue)
             self.overallAmount.value = value
         }) { [unowned self] in
-            self.animationCircle.opacity = (endValue == 0) ? 0.0 : 1.0
+            self.animationCircle.opacity = (self.withinZeroBounds(for: endValue)) ? 0.0 : 1.0
         }
-        
     }
+    
+    
+    private func withinZeroBounds(for value: Float) -> Bool {
+        return (value < 0.001 && value > -0.001)
+    }
+    
+    
     
 }

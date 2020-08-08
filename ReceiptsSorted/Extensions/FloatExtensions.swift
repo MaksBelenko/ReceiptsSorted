@@ -13,6 +13,7 @@ import UIKit
 
 extension Float {
     func ToString(decimals: Int) -> String {
+        // TODO: check if the value is rounded
         return String(format: "%.0\(decimals)f", self)
     }
 }
