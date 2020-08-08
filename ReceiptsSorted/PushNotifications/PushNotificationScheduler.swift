@@ -18,11 +18,23 @@ class PushNotificationScheduler: NSObject {
     private var accessGranted = false
     
     
+    // MARK: - Triggers
+    
     private var endOfMonthTrigger: UNCalendarNotificationTrigger = {
         let endOfMonthDate = Date().endOfMonth()
-        let components = Calendar.current.dateComponents([.year, .month, .day], from: endOfMonthDate)
-        return UNCalendarNotificationTrigger(dateMatching: components, repeats: false)
+        var components = Calendar.current.dateComponents([.day], from: endOfMonthDate)
+        components.hour = 11
+        return UNCalendarNotificationTrigger(dateMatching: components, repeats: true)
     }()
+    
+    
+    private var fridayWeekTrigger: UNCalendarNotificationTrigger = {
+        var components = DateComponents()
+        components.weekday = 6 // Friday
+        components.hour = 11
+        return UNCalendarNotificationTrigger(dateMatching: components, repeats: true)
+    }()
+    
     
     private var testTrigger: UNNotificationTrigger = {
         var components = DateComponents()
@@ -33,17 +45,18 @@ class PushNotificationScheduler: NSObject {
     }()
     
     
+    
+    
+    
     // MARK: - Lifecycle
+    
     override init() {
         super.init()
         settings.addDateChangedListener(self)
     }
     
     
-    
-    
-    
-    
+    // MARK: - Authorisation and appearance
     /**
      Request authorization
      */
@@ -65,7 +78,6 @@ class PushNotificationScheduler: NSObject {
     }
     
     
-    
     /**
     Remove push notification icon badge
      */
@@ -74,6 +86,29 @@ class PushNotificationScheduler: NSObject {
     }
     
     
+    
+    // MARK: - Scheduling
+    
+    /**
+    Schedules the notification for the time period
+    - Parameter period: Current time period
+    - Returns: Request identifier
+    */
+    func schedule(for period: IndicatorPeriod) -> String {
+        let trigger = (period == .Week) ? fridayWeekTrigger : endOfMonthTrigger
+         
+        let request = PushNotificationRequestBuilder()
+                                .withTrigger(trigger)
+                                .withTitle("Reminder:")
+                                .withBody("Don't forget to send back your receipts! 🧾")
+                                .withSoundEnabled(true)
+                                .withBadge(1)
+                                .build()
+        
+        scheduleNotification(with: request)
+        
+        return request.identifier
+    }
     
     
     
@@ -96,6 +131,8 @@ class PushNotificationScheduler: NSObject {
         return request.identifier
     }
     
+    
+    // MARK: - Removing push notifications
     /**
      Remove all notifications
      */
@@ -115,6 +152,11 @@ class PushNotificationScheduler: NSObject {
         
         notificationIdentifiers = notificationIdentifiers.filter { $0 != identifier }
     }
+    
+    
+    // MARK: - Notification tracking
+    
+    
 }
 
 // MARK: - DateSettingChangedProtocol
@@ -125,7 +167,7 @@ extension PushNotificationScheduler: DateSettingChangedProtocol {
         
         removeAllNotifications()
         
-        schedule()
+        schedule(for: period)
 
         center.getPendingNotificationRequests { [weak self] requests in
             let r = requests
@@ -136,22 +178,9 @@ extension PushNotificationScheduler: DateSettingChangedProtocol {
         }
     }
     
-    private func schedule() {
-        let request = PushNotificationRequestBuilder()
-                                .withTrigger(testTrigger)
-                                .withTitle("Reminder:")
-                                .withBody("Don't forget to send back your receipts! 🧾")
-                                .withSoundEnabled(true)
-                                .withBadge(1)
-                                .build()
-        
-        scheduleNotification(with: request)
-    
-    }
-    
 }
 
-
+// MARK: - UNUserNotificationCenterDelegate
 extension PushNotificationScheduler: UNUserNotificationCenterDelegate {
     
   func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {

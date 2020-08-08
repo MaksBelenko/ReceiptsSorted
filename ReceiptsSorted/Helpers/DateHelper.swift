@@ -60,7 +60,8 @@ class DateHelper {
         case .Week:
             daysInCurrentPeriod = 7
             let calendarDate = calendar.dateComponents([.weekday], from: currentDate)
-            currentDay = (calendarDate.weekday! + 1) % 7 //Sunday == 1, Saturday == 7
+            let day = (calendarDate.weekday! + 1) % 7
+            currentDay = (day == 0) ? 7 : day  //Sunday == 1, Saturday == 7
         }
     }
     
