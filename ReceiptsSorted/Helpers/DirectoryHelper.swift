@@ -8,7 +8,7 @@
 
 import Foundation
 
-class DirecoryHelper {
+class DirectoryHelper {
     
     /**
      Removes directory if the one exists

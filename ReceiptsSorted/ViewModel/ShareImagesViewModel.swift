@@ -38,19 +38,28 @@ class ShareImagesViewModel {
     
     
     private func createOperations() {
-        let createDirecoryOp = DirectoryCreatorOperation(directoryName: "test", in: .documentDirectory)
+        guard let nameImagePair = createNameImageDataPair(for: passedPayments) else { return }
         
-        createDirecoryOp.completionBlock = {
-            print("DEBUG: Created directory path - \(createDirecoryOp.directoryPath)")
-        }
+        let createDirecoryOp = DirectoryCreatorOperation(directoryName: "test", in: .documentDirectory)
+        let addPhotosOp = AddPhotosOperation(for: nameImagePair)
+        addPhotosOp.addDependency(createDirecoryOp)
+        
+//        createDirecoryOp.completionBlock = {
+//            print("DEBUG: Created directory path - \(createDirecoryOp.directoryPath)")
+//        }
+//        addPhotosOp.completionBlock = {
+//            print("DEBUG: add[hotos completed: \(addPhotosOp.photosURLs)")
+//        }
+        
         
         operationQueue.addOperation(createDirecoryOp)
+        operationQueue.addOperation(addPhotosOp)
         
         if operations.isEmpty == false {
             operations.forEach { $0.cancel() }
         }
         
-        operations = [createDirecoryOp]
+        operations = [createDirecoryOp, addPhotosOp]
     }
     
     
@@ -89,6 +98,33 @@ class ShareImagesViewModel {
     // MARK: - Private methods
     
 
+    private func createNameImageDataPair(for payments: [Payment]) -> [(name: String, imageData: Data)]? {
+        var pair: [(name: String, imageData: Data)] = []
+        var namesDictionary = Dictionary<String, Int>()
+        
+        for payment in payments {
+            guard let placeName = payment.place else { return nil }
+            
+            if !namesDictionary.contains(where: {$0.key == placeName} ) {
+                namesDictionary[placeName] = 0
+            } else {
+                namesDictionary[placeName]! += 1
+            }
+            
+            let count = (namesDictionary[placeName] == 0) ? "" : "_\(namesDictionary[placeName]!)"
+            let fileName = "\(placeName)\(count).\(photoFormat)"//"Image\(photoCounter).jpg"
+            
+            
+            guard let receiptPhotoData = payment.receiptPhoto,
+                let imageData = receiptPhotoData.imageData else { return nil }
+            
+            pair.append( (name: fileName, imageData: imageData) )
+        }
+        
+        return (pair.isEmpty) ? nil : pair
+    }
+    
+    
     
     /**
      Adds photos to directory and name them
@@ -121,6 +157,7 @@ class ShareImagesViewModel {
                 print("error saving file:", error)
             }
         }
+        
     }
     
     

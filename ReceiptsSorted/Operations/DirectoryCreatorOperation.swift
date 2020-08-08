@@ -8,6 +8,8 @@
 
 import Foundation
 
+extension DirectoryCreatorOperation: UrlPathProvider {}
+
 final class DirectoryCreatorOperation: AsyncOperation {
     
     /// Created directory url path
@@ -16,7 +18,7 @@ final class DirectoryCreatorOperation: AsyncOperation {
     private let directoryName: String
     private let directorySearchPath: FileManager.SearchPathDirectory
     
-    private let directoryHelper = DirecoryHelper()
+    private let directoryHelper = DirectoryHelper()
     
     
     init(directoryName: String, in directorySearchPath: FileManager.SearchPathDirectory = .documentDirectory) {

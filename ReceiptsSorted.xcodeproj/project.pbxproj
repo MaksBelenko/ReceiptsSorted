@@ -79,6 +79,8 @@
 		B5A4357F24DE059900559908 /* DirectoryCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A4357E24DE059900559908 /* DirectoryCreator.swift */; };
 		B5A4358124DE08B700559908 /* DirectoryCreatorOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A4358024DE08B700559908 /* DirectoryCreatorOperation.swift */; };
 		B5A4358324DE10EF00559908 /* DirectoryHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A4358224DE10EF00559908 /* DirectoryHelper.swift */; };
+		B5A4358524DE1BF900559908 /* AddPhotosOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A4358424DE1BF900559908 /* AddPhotosOperation.swift */; };
+		B5A4358724DE1CB500559908 /* OperationProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A4358624DE1CB500559908 /* OperationProtocols.swift */; };
 		B5AC4AAF2453940E00D6F6D3 /* UISegmentedControlExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5AC4AAE2453940E00D6F6D3 /* UISegmentedControlExtensions.swift */; };
 		B5AD17DD240464CB00BB3069 /* TopGraphicsShapes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5AD17DC240464CB00BB3069 /* TopGraphicsShapes.swift */; };
 		B5AD17E32404757300BB3069 /* CardGesturesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5AD17E22404757300BB3069 /* CardGesturesViewModel.swift */; };
@@ -210,6 +212,8 @@
 		B5A4357E24DE059900559908 /* DirectoryCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectoryCreator.swift; sourceTree = "<group>"; };
 		B5A4358024DE08B700559908 /* DirectoryCreatorOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectoryCreatorOperation.swift; sourceTree = "<group>"; };
 		B5A4358224DE10EF00559908 /* DirectoryHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectoryHelper.swift; sourceTree = "<group>"; };
+		B5A4358424DE1BF900559908 /* AddPhotosOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPhotosOperation.swift; sourceTree = "<group>"; };
+		B5A4358624DE1CB500559908 /* OperationProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperationProtocols.swift; sourceTree = "<group>"; };
 		B5AC4AAE2453940E00D6F6D3 /* UISegmentedControlExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISegmentedControlExtensions.swift; sourceTree = "<group>"; };
 		B5AD17DC240464CB00BB3069 /* TopGraphicsShapes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopGraphicsShapes.swift; sourceTree = "<group>"; };
 		B5AD17E22404757300BB3069 /* CardGesturesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardGesturesViewModel.swift; sourceTree = "<group>"; };
@@ -501,7 +505,9 @@
 			isa = PBXGroup;
 			children = (
 				B5A4357C24DE03EC00559908 /* AsyncOperation.swift */,
+				B5A4358624DE1CB500559908 /* OperationProtocols.swift */,
 				B5A4358024DE08B700559908 /* DirectoryCreatorOperation.swift */,
+				B5A4358424DE1BF900559908 /* AddPhotosOperation.swift */,
 			);
 			path = Operations;
 			sourceTree = "<group>";
@@ -728,6 +734,7 @@
 				B5BA5F482489130500AC026A /* UserChecker.swift in Sources */,
 				B56939D024CA474B00806953 /* Notification.NameExtension.swift in Sources */,
 				B57ECC572454A6BA003E9598 /* UITextFieldExtensions.swift in Sources */,
+				B5A4358524DE1BF900559908 /* AddPhotosOperation.swift in Sources */,
 				B575FD7224C8DA53007034D4 /* DBRequestBuilder.swift in Sources */,
 				B5BA07662485A4FE00097E2C /* UIFontExtensions.swift in Sources */,
 				B59E3E2323B44DE80017D474 /* CardViewController.swift in Sources */,
@@ -737,6 +744,7 @@
 				B59EB41E24D9F59500AB16FC /* MulticastDelegate.swift in Sources */,
 				B50BAADB242B7DC200EAFECA /* AmountAnimation.swift in Sources */,
 				B5977E7E24C47F0400F3E589 /* CoreDataStack.swift in Sources */,
+				B5A4358724DE1CB500559908 /* OperationProtocols.swift in Sources */,
 				B5683DFA24D759DF00828AFA /* DateHelper.swift in Sources */,
 				B593962F2483D50600B1E895 /* Payment+CoreDataProperties.swift in Sources */,
 				B564470B241027EB00B08AD3 /* AddButtonAnimations.swift in Sources */,
