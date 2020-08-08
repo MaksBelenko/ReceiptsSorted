@@ -28,3 +28,21 @@ extension Date {
         return "\(day) \(month.mapToMonth()) \(year)"
     }
 }
+
+
+
+extension Date {
+    func startOfMonth() -> Date? {
+        let components: DateComponents = Calendar.current.dateComponents([.year, .month, .hour],
+                                                                         from: Calendar.current.startOfDay(for: self))
+        return Calendar.current.date(from: components)!
+    }
+
+    func endOfMonth() -> Date {
+        var components = Calendar.current.dateComponents([.month, .day, .hour],
+                                                         from: Calendar.current.startOfDay(for: self))
+        components.month = 1
+        components.day = -1
+        return Calendar.current.date(byAdding: components, to: self.startOfMonth()!)!
+    }
+}

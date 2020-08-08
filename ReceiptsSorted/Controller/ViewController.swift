@@ -89,9 +89,11 @@ class ViewController: UIViewController  {
             
             topGraphicsView.dateAnimation.animateToCurrentDate()
             
-            pushNotificationScheduler.center.requestAuthorization(options: [.alert,.sound,.badge]) { [weak self] (granted, error) in
-                print("Granted? \(granted)")
-            }
+            
+            pushNotificationScheduler.requestAuthorization()
+//            pushNotificationScheduler.center.requestAuthorization(options: [.alert,.sound,.badge]) { [weak self] (granted, error) in
+//                print("Granted? \(granted)")
+//            }
         }
         
         
@@ -229,14 +231,4 @@ class ViewController: UIViewController  {
         fractionComplete = 0
         cardViewController.selectingPayments(mode: .Enable)
     }
-}
-
-
-extension ViewController: UNUserNotificationCenterDelegate {
-  func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-
-//    refreshNotificationList()
-
-    completionHandler([.alert, .sound, .badge])
-  }
 }

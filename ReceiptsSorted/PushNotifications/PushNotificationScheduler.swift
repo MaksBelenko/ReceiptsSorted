@@ -9,7 +9,7 @@
 import UIKit
 import UserNotifications
 
-class PushNotificationScheduler {
+class PushNotificationScheduler: NSObject {
     
     private let center = UNUserNotificationCenter.current()
     private let settings = SettingsUserDefaults.shared
@@ -18,8 +18,26 @@ class PushNotificationScheduler {
     private var accessGranted = false
     
     
+    private var endOfMonthTrigger: UNCalendarNotificationTrigger = {
+        let endOfMonthDate = Date().endOfMonth()
+        let components = Calendar.current.dateComponents([.year, .month, .day], from: endOfMonthDate)
+        return UNCalendarNotificationTrigger(dateMatching: components, repeats: false)
+    }()
+    
+    private var testTrigger: UNNotificationTrigger = {
+//        var components = DateComponents()
+//        components.second = 10
+//        components.minute = 0
+//        components.hour = 0
+//        return UNCalendarNotificationTrigger(dateMatching: components, repeats: false)
+        
+        return UNTimeIntervalNotificationTrigger(timeInterval: 30, repeats: false)
+    }()
+    
+    
     // MARK: - Lifecycle
-    init() {
+    override init() {
+        super.init()
         settings.addDateChangedListener(self)
     }
     
@@ -34,7 +52,13 @@ class PushNotificationScheduler {
     func requestAuthorization() {
         center.requestAuthorization(options: [.alert,.sound,.badge]) { [weak self] (granted, error) in
             print("Push notifications access Granted? \(granted)")
-            self?.accessGranted = granted
+            
+            guard let self = self else { return }
+            self.accessGranted = granted
+            
+            if granted {
+                self.center.delegate = self
+            }
             
             if let error = error {
                 Log.exception(message: "Error requesting authorization for Push notification: \(error.localizedDescription)")
@@ -92,24 +116,20 @@ extension PushNotificationScheduler: DateSettingChangedProtocol {
         
         removeAllNotifications()
         
-//        schedule()
-//
-//        center.getPendingNotificationRequests { [weak self] requests in
-//            let r = requests
-//        }
-//
-//        center.getDeliveredNotifications { [weak self] requests in
-//            let r = requests
-//        }
+        schedule()
+
+        center.getPendingNotificationRequests { [weak self] requests in
+            let r = requests
+        }
+
+        center.getDeliveredNotifications { [weak self] requests in
+            let r = requests
+        }
     }
     
     private func schedule() {
-        let endOfMonthDate = Date().endOfMonth()
-        let components = Calendar.current.dateComponents([.year, .month, .day], from: endOfMonthDate)
-        let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: false)
-        
         let request = PushNotificationRequestBuilder()
-                                .withTrigger(trigger)
+                                .withTrigger(testTrigger)
                                 .withTitle("Test Title")
                                 .withBody("Test long body")
                                 .withSoundEnabled(true)
@@ -123,22 +143,14 @@ extension PushNotificationScheduler: DateSettingChangedProtocol {
 }
 
 
+extension PushNotificationScheduler: UNUserNotificationCenterDelegate {
+    
+  func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
 
+//    refreshNotificationList()
 
-extension Date {
-    func startOfMonth() -> Date? {
-        let components: DateComponents = Calendar.current.dateComponents([.year, .month, .hour],
-                                                                         from: Calendar.current.startOfDay(for: self))
-        return Calendar.current.date(from: components)!
-    }
-
-    func endOfMonth() -> Date {
-        var components = Calendar.current.dateComponents([.month, .day, .hour],
-                                                         from: Calendar.current.startOfDay(for: self))
-        components.month = 1
-        components.day = -1
-        return Calendar.current.date(byAdding: components, to: self.startOfMonth()!)!
-    }
+    completionHandler([.alert, .sound, .badge])
+  }
 }
 
 
