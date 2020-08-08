@@ -173,18 +173,9 @@ extension PushNotificationManager: DateSettingChangedProtocol {
     
     func dateIndicatorSettingChanged(to period: IndicatorPeriod) {
         print("Changed in PushNotificationScheduler to \(period)")
-        
+
         removeAllNotifications()
-        
         schedule(for: period)
-
-        center.getPendingNotificationRequests { [weak self] requests in
-            let r = requests
-        }
-
-        center.getDeliveredNotifications { [weak self] requests in
-            let r = requests
-        }
     }
     
 }
@@ -193,8 +184,6 @@ extension PushNotificationManager: DateSettingChangedProtocol {
 extension PushNotificationManager: UNUserNotificationCenterDelegate {
     
   func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-
-//    refreshNotificationList()
 
     completionHandler([.alert, .sound, .badge])
   }
