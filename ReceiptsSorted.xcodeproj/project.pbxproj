@@ -111,7 +111,7 @@
 		B5F54E8D241E78E60016DCED /* FloatExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F54E8C241E78E60016DCED /* FloatExtensions.swift */; };
 		B5FD65FB242EC9C7002C5C48 /* CardTableHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FD65FA242EC9C7002C5C48 /* CardTableHeader.swift */; };
 		B5FDDC03241443950037BA7E /* SwipeActionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FDDC02241443950037BA7E /* SwipeActionsViewModel.swift */; };
-		B5FDE69924E595AF009B997F /* PushNotificationScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FDE69824E595AF009B997F /* PushNotificationScheduler.swift */; };
+		B5FDE69924E595AF009B997F /* PushNotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FDE69824E595AF009B997F /* PushNotificationManager.swift */; };
 		B5FDE69B24E59A77009B997F /* PushNotificationRequestBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FDE69A24E59A77009B997F /* PushNotificationRequestBuilder.swift */; };
 /* End PBXBuildFile section */
 
@@ -247,7 +247,7 @@
 		B5F54E8C241E78E60016DCED /* FloatExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatExtensions.swift; sourceTree = "<group>"; };
 		B5FD65FA242EC9C7002C5C48 /* CardTableHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardTableHeader.swift; sourceTree = "<group>"; };
 		B5FDDC02241443950037BA7E /* SwipeActionsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeActionsViewModel.swift; sourceTree = "<group>"; };
-		B5FDE69824E595AF009B997F /* PushNotificationScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotificationScheduler.swift; sourceTree = "<group>"; };
+		B5FDE69824E595AF009B997F /* PushNotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotificationManager.swift; sourceTree = "<group>"; };
 		B5FDE69A24E59A77009B997F /* PushNotificationRequestBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotificationRequestBuilder.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -582,7 +582,7 @@
 			isa = PBXGroup;
 			children = (
 				B5FDE69A24E59A77009B997F /* PushNotificationRequestBuilder.swift */,
-				B5FDE69824E595AF009B997F /* PushNotificationScheduler.swift */,
+				B5FDE69824E595AF009B997F /* PushNotificationManager.swift */,
 			);
 			path = PushNotifications;
 			sourceTree = "<group>";
@@ -738,7 +738,7 @@
 				B5D70A6B245338530080BF81 /* TopGraphicsView.swift in Sources */,
 				B5A4358D24DEC2FA00559908 /* IndicatorAnimation.swift in Sources */,
 				B57BCD1224C63EA50019D85A /* DatabaseFetchController.swift in Sources */,
-				B5FDE69924E595AF009B997F /* PushNotificationScheduler.swift in Sources */,
+				B5FDE69924E595AF009B997F /* PushNotificationManager.swift in Sources */,
 				B573FAA423B95F57005473D2 /* Delegates.swift in Sources */,
 				B549C0B324BF0A1D003F148E /* AlertFactory.swift in Sources */,
 				B514A36B24BB91990078E9A9 /* WorldCurrencies.swift in Sources */,

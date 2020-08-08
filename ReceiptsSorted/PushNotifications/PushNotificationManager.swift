@@ -9,7 +9,7 @@
 import UIKit
 import UserNotifications
 
-class PushNotificationScheduler: NSObject {
+class PushNotificationManager: NSObject {
     
     private let center = UNUserNotificationCenter.current()
     private let settings = SettingsUserDefaults.shared
@@ -94,6 +94,7 @@ class PushNotificationScheduler: NSObject {
     - Parameter period: Current time period
     - Returns: Request identifier
     */
+    @discardableResult
     func schedule(for period: IndicatorPeriod) -> String {
         let trigger = (period == .Week) ? fridayWeekTrigger : endOfMonthTrigger
          
@@ -156,11 +157,19 @@ class PushNotificationScheduler: NSObject {
     
     // MARK: - Notification tracking
     
+    func getPendingNotificationRequests(completionHandler: @escaping ([UNNotificationRequest]) -> Void) {
+        center.getPendingNotificationRequests(completionHandler: completionHandler)
+    }
+    
+
+    func getDeliveredNotifications(completionHandler: @escaping ([UNNotification]) -> Void) {
+        center.getDeliveredNotifications(completionHandler: completionHandler)
+    }
     
 }
 
 // MARK: - DateSettingChangedProtocol
-extension PushNotificationScheduler: DateSettingChangedProtocol {
+extension PushNotificationManager: DateSettingChangedProtocol {
     
     func dateIndicatorSettingChanged(to period: IndicatorPeriod) {
         print("Changed in PushNotificationScheduler to \(period)")
@@ -181,7 +190,7 @@ extension PushNotificationScheduler: DateSettingChangedProtocol {
 }
 
 // MARK: - UNUserNotificationCenterDelegate
-extension PushNotificationScheduler: UNUserNotificationCenterDelegate {
+extension PushNotificationManager: UNUserNotificationCenterDelegate {
     
   func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
 

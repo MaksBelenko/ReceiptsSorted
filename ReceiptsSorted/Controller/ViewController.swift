@@ -28,7 +28,7 @@ class ViewController: UIViewController  {
     
     private var onStartup = true
     
-    private let pushNotificationScheduler = PushNotificationScheduler()
+    private let pushNotifications = PushNotificationManager()
     
     
     //MARK: - Status Bar
@@ -89,10 +89,15 @@ class ViewController: UIViewController  {
             
             topGraphicsView.dateAnimation.animateToCurrentDate()
             
-            pushNotificationScheduler.requestAuthorization()
+            pushNotifications.requestAuthorization()
+            pushNotifications.getPendingNotificationRequests { [weak self] requests in
+                if requests.count == 0 {
+                    self?.pushNotifications.schedule(for: SettingsUserDefaults.shared.getIndicatorPeriod())
+                }
+            }
         }
         
-        pushNotificationScheduler.removeIconBadge()
+        pushNotifications.removeIconBadge()
         
     }
     
