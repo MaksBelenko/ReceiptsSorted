@@ -405,7 +405,9 @@ extension CardViewModel {
     
     
     func deletePayment(payment: Payment, indexPath: IndexPath) {
-        database.deleteAsync(item: payment) 
+        database.deleteAsync(item: payment) { [unowned self] in
+            self.updateCircularBar()
+        }
         applyActionToTableView(indexPath: indexPath, action: .Remove)
     }
 }
@@ -417,9 +419,10 @@ extension CardViewModel: CurrencyChangedProtocol {
     func currencySettingChanged(to currencySymbol: String, name currencyName: String) {
         updateCircularBar()
         
-        database.countDifferentCurrencies(for: paymentStatusType) { [unowned self] currencies in
+        database.countDifferentCurrencies(for: .Pending) { [unowned self] currencies in
             print("\(currencies.count) currencies")
-            self.showCurrencyWarningText.value = (currencies.count > 1 || !currencies.contains(self.settings.getCurrency().name!)) ? true : false
+            self.showCurrencyWarningText.value = (currencies.count > 1
+                || (!currencies.contains(self.settings.getCurrency().name!) && currencies.count != 0)) ? true : false
         }
     }
     
