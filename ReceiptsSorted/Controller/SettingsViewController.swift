@@ -21,22 +21,20 @@ class SettingsViewController: UITableViewController {
     @IBOutlet weak var receiptsRemovalPicker: UIPickerView!
     @IBOutlet weak var receiptRemovalArrowImage: UIImageView!
     
-    private let settings = Settings.shared
+    private let settings = SettingsUserDefaults.shared
     
     private let currencyPickerHelper = CurrencyPickerHelper()
     private let receiptRemovalPickerHelper = ReceiptRemovalPickerHelper()
     
     private enum SettingsTableRow {
         case Currency, CurrencyPicker
-        case ImageCompression
         case IndicatorTimePeriod
         case ReceiptRemoval, ReceiptRemovalPicker
     }
     
     private let tableRow: [SettingsTableRow : IndexPath] = [ .Currency             : IndexPath(row: 0, section: 0),
                                                              .CurrencyPicker       : IndexPath(row: 1, section: 0),
-                                                             .ImageCompression     : IndexPath(row: 2, section: 0),
-                                                             .IndicatorTimePeriod  : IndexPath(row: 3, section: 0),
+                                                             .IndicatorTimePeriod  : IndexPath(row: 2, section: 0),
                                                              .ReceiptRemoval       : IndexPath(row: 0, section: 1),
                                                              .ReceiptRemovalPicker : IndexPath(row: 1, section: 1)]
     
@@ -44,7 +42,7 @@ class SettingsViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        currencyLabel.text = settings.currencySymbol
+//        currencyLabel.text = settings.currencySymbol
 
         currencyPickerHelper.delegate = self
         setup(picker: currencyPicker, to: currencyPickerHelper)
@@ -73,8 +71,8 @@ class SettingsViewController: UITableViewController {
                 let index = self.currencyPickerHelper.currencies.firstIndex(where: { $0.symbol == self.currencyLabel.text})!
                 self.currencyPicker.selectRow(index, inComponent: 0, animated: false)
             }
-        case tableRow[.ImageCompression]:
-            Alert.shared.showImageCompressionInfo(for: self)
+        case tableRow[.IndicatorTimePeriod]:
+            Alert.shared.showDateIndicator(for: self)
         case tableRow[.ReceiptRemoval]:
             animate(picker: receiptsRemovalPicker, arrow: receiptRemovalArrowImage, executeOnShow: nil)
         default:
@@ -88,9 +86,7 @@ class SettingsViewController: UITableViewController {
         case tableRow[.CurrencyPicker]:
             return currencyPicker.isHidden ? 0.0 : 216.0
         case tableRow[.ReceiptRemovalPicker]:
-            return receiptsRemovalPicker.isHidden ? 0.0 : 130.0
-        case tableRow[.ImageCompression]:
-            return 97.0
+            return receiptsRemovalPicker.isHidden ? 0.0 : 160.0
         case tableRow[.IndicatorTimePeriod]:
             return 97.0
         default:
@@ -145,7 +141,7 @@ class SettingsViewController: UITableViewController {
     
     @IBAction func timePeriodChanged(_ sender: UISegmentedControl) {
         let indicatorPeriod = sender.getIndicatorPeriod()
-        SettingsUserDefaults.shared.setIndicatorPeriod(to: indicatorPeriod)
+        settings.setIndicatorPeriod(to: indicatorPeriod)
     }
 }
 
@@ -154,7 +150,7 @@ class SettingsViewController: UITableViewController {
 extension SettingsViewController: CurrencyPickerDelegate {
     func onCurrencySelected(symbol: String) {
         currencyLabel.text = symbol
-        settings.currencySymbol = symbol
+        settings.setDefaultCurrency(to: symbol)
     }
 }
 
@@ -164,3 +160,13 @@ extension SettingsViewController: ReceiptRemovalPickerDelegate {
         print("Selected option: \(monthsNumber) months")
     }
 }
+
+
+//// MARK: - CurrencyChangedProtocol
+//extension SettingsViewController: CurrencyChangedProtocol {
+//
+//    func currencySettingChanged(to currencyLabel: String) {
+//        currencyLabel.text = symbol
+//    }
+//
+//}

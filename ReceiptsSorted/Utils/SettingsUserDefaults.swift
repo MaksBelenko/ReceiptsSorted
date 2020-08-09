@@ -18,9 +18,29 @@ enum IndicatorPeriod: Int {
 class SettingsUserDefaults {
     
     static let shared = SettingsUserDefaults()
+    
+    private let currencyKey = "currencyKey"
+    private let currencyMulticastDelegate = MulticastDelegate<CurrencyChangedProtocol>()
+    
     private let periodKey = "period"
-    private let multicastDelegate = MulticastDelegate<DateSettingChangedProtocol>()
+    private let dateMulticastDelegate = MulticastDelegate<DateSettingChangedProtocol>()
 
+    
+    
+    // MARK: - Currency
+    
+    func setDefaultCurrency(to currencySymbol: String) {
+        UserDefaults.standard.set(currencySymbol, forKey: currencyKey)
+        invokeCurrencyDelegates(with: currencySymbol)
+    }
+    
+    func getCurrency() -> String? {
+        let currencySymbol = UserDefaults.standard.string(forKey: currencyKey)
+        return currencySymbol
+    }
+    
+    
+    // MARK: - Date indicator
     /**
      Set write to UserDefaults the date indicator period.
      - Parameter period: Enum that represents what period should be set.
@@ -43,7 +63,42 @@ class SettingsUserDefaults {
 }
 
 
-// MARK: - Multicast extension
+
+// MARK: - Currency Multicast extension
+extension SettingsUserDefaults {
+    
+    /**
+     Adds a delegate which will listen to changes for the date period
+     - Parameter object: Object that will listen to changes
+     */
+    func addCurrencyChangedListener(_ object: CurrencyChangedProtocol) {
+        currencyMulticastDelegate.addDelegate(object)
+    }
+    
+    /**
+     Removes listener from date changed delegates
+     - Parameter object: Object to be removed
+     */
+    func removeCurrencyListener(_ object: CurrencyChangedProtocol) {
+        currencyMulticastDelegate.removeDelegate(object)
+    }
+    
+    
+    /**
+     Invokes all the delegates with changes
+     - Parameter period: New period that is being saved to UserDefaults
+     */
+    private func invokeCurrencyDelegates(with currencyLabel: String) {
+        currencyMulticastDelegate.invokeDelegates {
+            $0.currencySettingChanged(to: currencyLabel)
+        }
+    }
+}
+
+
+
+
+// MARK: - Date Indicator Multicast extension
 extension SettingsUserDefaults {
     
     /**
@@ -51,7 +106,7 @@ extension SettingsUserDefaults {
      - Parameter object: Object that will listen to changes
      */
     func addDateChangedListener(_ object: DateSettingChangedProtocol) {
-        multicastDelegate.addDelegate(object)
+        dateMulticastDelegate.addDelegate(object)
     }
     
     /**
@@ -59,7 +114,7 @@ extension SettingsUserDefaults {
      - Parameter object: Object to be removed
      */
     func removeDateListener(_ object: DateSettingChangedProtocol) {
-        multicastDelegate.removeDelegate(object)
+        dateMulticastDelegate.removeDelegate(object)
     }
     
     
@@ -68,7 +123,7 @@ extension SettingsUserDefaults {
      - Parameter period: New period that is being saved to UserDefaults
      */
     private func invokePeriodDelegates(with period: IndicatorPeriod) {
-        multicastDelegate.invokeDelegates {
+        dateMulticastDelegate.invokeDelegates {
             $0.dateIndicatorSettingChanged(to: period)
         }
     }

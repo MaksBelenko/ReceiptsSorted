@@ -180,5 +180,18 @@ class Alert {
         ac.addAction(UIAlertAction(title: "OK", style: .default))
         controller.present(ac, animated: true)
     }
+    
+    
+    func showDateIndicator(for controller: UIViewController) {
+        let text = """
+                    Indicator presents either a week, with last day being friday, or a month,
+                    with last day being last day of the month. Also, it sets notifications to
+                    be sent on a last day of the period.
+                   """
+        
+        let ac = UIAlertController(title: "Date Indicator", message: text, preferredStyle: .alert)
+        ac.addAction(UIAlertAction(title: "OK", style: .default))
+        controller.present(ac, animated: true)
+    }
 
 }

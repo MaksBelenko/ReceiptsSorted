@@ -21,7 +21,6 @@ class DatabaseAsync {
     private lazy var persistentContainer = coreDataStack.persistentContainer
     
     private let imageCompression = ImageCompression()
-    private let settings = Settings.shared
     
 
     
@@ -257,7 +256,7 @@ class DatabaseAsync {
         
         getTotalAmountAsync(of: .Pending) { [unowned self] totalBefore in
             
-            let compressionRate = self.settings.compression
+            let compressionRate: CGFloat = 0.0 // self.settings.compression
             self.persistentContainer.performBackgroundTask { [unowned self] context in
 //                defer { print("Exiting persistentContainer background task") }
                 let generatedUUID = UUID()
@@ -297,7 +296,7 @@ class DatabaseAsync {
      - Parameter paymentInfo: Tuple used to update the payment information
      */
     func updateAsync(payment: Payment, with paymentInfo: PaymentInformation, completion: @escaping (PaymentTotalInfo) -> ()) {
-        let compressionRate = settings.compression
+        let compressionRate: CGFloat = 0.0
         
         persistentContainer.performBackgroundTask { [unowned self] privateContext in
             payment.receiptPhoto?.imageData = paymentInfo.receiptImage.jpegData(compressionQuality: compressionRate)

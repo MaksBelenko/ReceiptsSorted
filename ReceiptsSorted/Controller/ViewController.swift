@@ -49,6 +49,10 @@ class ViewController: UIViewController  {
             FileManager.default.cleanTmpDirectory()
         }
         
+        if SettingsUserDefaults.shared.getCurrency() == nil {
+            SettingsUserDefaults.shared.setDefaultCurrency(to: "£")
+        }
+        
         setupCard()
         setupCardHandle()
         setupTopViewWithGraphics()
@@ -98,7 +102,6 @@ class ViewController: UIViewController  {
         }
         
         pushNotifications.removeIconBadge()
-        
     }
     
     

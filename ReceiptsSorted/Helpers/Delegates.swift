@@ -35,3 +35,8 @@ protocol RefreshTableDelegate: AnyObject {
 protocol DateSettingChangedProtocol {
   func dateIndicatorSettingChanged(to period: IndicatorPeriod)
 }
+
+
+protocol CurrencyChangedProtocol {
+  func currencySettingChanged(to currencyLabel: String)
+}
