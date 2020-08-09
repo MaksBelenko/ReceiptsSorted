@@ -85,6 +85,7 @@
 		B5AC4AAF2453940E00D6F6D3 /* UISegmentedControlExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5AC4AAE2453940E00D6F6D3 /* UISegmentedControlExtensions.swift */; };
 		B5AD17DD240464CB00BB3069 /* TopGraphicsShapes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5AD17DC240464CB00BB3069 /* TopGraphicsShapes.swift */; };
 		B5AD17E32404757300BB3069 /* CardGesturesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5AD17E22404757300BB3069 /* CardGesturesViewModel.swift */; };
+		B5B3378924E0A10800116183 /* WarningPopoverHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B3378824E0A10800116183 /* WarningPopoverHelper.swift */; };
 		B5B6758023CF70F400291D31 /* TextRecogniser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B6757F23CF70F400291D31 /* TextRecogniser.swift */; };
 		B5B6758223CF724000291D31 /* ImageManipulator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B6758123CF724000291D31 /* ImageManipulator.swift */; };
 		B5BA07662485A4FE00097E2C /* UIFontExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5BA07652485A4FE00097E2C /* UIFontExtensions.swift */; };
@@ -220,6 +221,7 @@
 		B5AC4AAE2453940E00D6F6D3 /* UISegmentedControlExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISegmentedControlExtensions.swift; sourceTree = "<group>"; };
 		B5AD17DC240464CB00BB3069 /* TopGraphicsShapes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopGraphicsShapes.swift; sourceTree = "<group>"; };
 		B5AD17E22404757300BB3069 /* CardGesturesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardGesturesViewModel.swift; sourceTree = "<group>"; };
+		B5B3378824E0A10800116183 /* WarningPopoverHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarningPopoverHelper.swift; sourceTree = "<group>"; };
 		B5B6757F23CF70F400291D31 /* TextRecogniser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextRecogniser.swift; sourceTree = "<group>"; };
 		B5B6758123CF724000291D31 /* ImageManipulator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageManipulator.swift; sourceTree = "<group>"; };
 		B5BA07652485A4FE00097E2C /* UIFontExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFontExtensions.swift; sourceTree = "<group>"; };
@@ -335,6 +337,7 @@
 				B561B390243BFBBA00F7B29B /* SimpleShapes.swift */,
 				B5683DF924D759DF00828AFA /* DateHelper.swift */,
 				B5ED9A3D2485A21300FA7A7B /* TextHelper.swift */,
+				B5B3378824E0A10800116183 /* WarningPopoverHelper.swift */,
 				B598D8E624CDB80D00158766 /* CurrencyPickerHelper.swift */,
 				B598D8E824CDBD6500158766 /* ReceiptRemovalPickerHelper.swift */,
 				B514A36A24BB91990078E9A9 /* WorldCurrencies.swift */,
@@ -725,6 +728,7 @@
 				B5F54E8B241E78C70016DCED /* DateExtensions.swift in Sources */,
 				B59E3E2723B50D9F0017D474 /* PaymentTableViewCell.swift in Sources */,
 				B5D70A6B245338530080BF81 /* TopGraphicsView.swift in Sources */,
+				B5B3378924E0A10800116183 /* WarningPopoverHelper.swift in Sources */,
 				B5A4358D24DEC2FA00559908 /* IndicatorAnimation.swift in Sources */,
 				B57BCD1224C63EA50019D85A /* DatabaseFetchController.swift in Sources */,
 				B5FDE69924E595AF009B997F /* PushNotificationManager.swift in Sources */,

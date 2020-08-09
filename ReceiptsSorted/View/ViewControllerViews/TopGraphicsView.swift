@@ -24,15 +24,13 @@ class TopGraphicsView: UIView {
     var amountAnimation: AmountAnimation!
     var dateAnimation: DateAnimation!
     
-    let warningLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Warning: you have pending\nreceipts in other currencies"
-        label.numberOfLines = 0
-        label.textAlignment = .center
-        label.textColor = .lightText
-        label.font = UIFont.arial(ofSize: 13)
-        return label
-    }()
+//    let warningButton: UIButton = {
+//        let button = UIButton(type: .system)
+//        button.tintColor = .systemYellow
+//        button.setBackgroundImage(UIImage(systemName: "exclamationmark.triangle"), for: .normal)
+//        button.addTarget(self, action: #selector(warningButtonPressed), for: .touchUpInside)
+//        return button
+//    }()
     
     
 
@@ -45,8 +43,6 @@ class TopGraphicsView: UIView {
         
         configureUI()
         createBindings()
-        
-        settings.addCurrencyChangedListener(self)
     }
     
     
@@ -144,28 +140,26 @@ class TopGraphicsView: UIView {
         addSubview(daysLeftLabel)
         
         
-        /* Configure multiple currency warning */
-        addSubview(warningLabel)
-        warningLabel.translatesAutoresizingMaskIntoConstraints = false
-        warningLabel.topAnchor.constraint(equalTo: topAnchor).isActive = true
-        warningLabel.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+//        /* Configure multiple currency warning */
+//        addSubview(warningButton)
+//        warningButton.translatesAutoresizingMaskIntoConstraints = false
+//        warningButton.topAnchor.constraint(equalTo: topAnchor).isActive = true
+//        warningButton.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+//        warningButton.heightAnchor.constraint(equalToConstant: 25).isActive = true
+//        warningButton.widthAnchor.constraint(equalToConstant: 25).isActive = true
         
     }
 }
 
 
 // MARK: - CurrencyChangedProtocol
-extension TopGraphicsView: CurrencyChangedProtocol {
-    func currencySettingChanged(to currencySymbol: String, name currencyName: String) {
-        setCurrencyLabelText(with: currencySymbol)
-    }
+extension TopGraphicsView {
+//    func currencySettingChanged(to currencySymbol: String, name currencyName: String) {
+//        setCurrencyLabelText(with: currencySymbol)
+//    }
     
-    
-    private func setCurrencyLabelText(with currencySymbol: String) {
+    func setCurrencyLabelText(with currencySymbol: String) {
         currencyLabel.font = (currencySymbol.count > 2) ? UIFont.arial(ofSize: 30) : UIFont.arial(ofSize: 46)
         currencyLabel.text = currencySymbol
     }
 }
-
-
-

@@ -30,6 +30,17 @@ class ViewController: UIViewController  {
     
     private let pushNotifications = PushNotificationManager()
     
+    private let settings = SettingsUserDefaults.shared
+    
+    
+    let warningButton: UIButton = {
+         let button = UIButton(type: .system)
+         button.tintColor = .systemYellow
+         button.setBackgroundImage(UIImage(systemName: "exclamationmark.triangle"), for: .normal)
+         button.addTarget(self, action: #selector(warningButtonPressed), for: .touchUpInside)
+         return button
+     }()
+    
     
     //MARK: - Status Bar
     
@@ -49,8 +60,8 @@ class ViewController: UIViewController  {
             FileManager.default.cleanTmpDirectory()
         }
         
-        if SettingsUserDefaults.shared.getCurrency().name == nil {
-            SettingsUserDefaults.shared.setDefaultCurrency(to: "£", currencyName: "British Pound Sterling")
+        if settings.getCurrency().name == nil {
+            settings.setDefaultCurrency(to: "£", currencyName: "British Pound Sterling")
         }
         
         setupCard()
@@ -67,8 +78,11 @@ class ViewController: UIViewController  {
         cardGesturesViewModel.addButton = buttonView.addButton
         
         
+        settings.addCurrencyChangedListener(self)
+        setupWarningButton()
+        
         cardViewController.cardViewModel.showCurrencyWarningText.onValueChanged { [weak self] showWarning in
-            self?.topGraphicsView.warningLabel.alpha = (showWarning) ? 1 : 0
+            self?.warningButton.alpha = (showWarning) ? 1 : 0
         }
         
         DispatchQueue.main.async { [unowned self] in
@@ -236,11 +250,48 @@ class ViewController: UIViewController  {
     }
     
     
+    // MARK: - Warning Button setup
+    
+    private func setupWarningButton() {
+        view.insertSubview(warningButton, at: 1)
+        warningButton.translatesAutoresizingMaskIntoConstraints = false
+        warningButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        warningButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+        warningButton.heightAnchor.constraint(equalToConstant: 25).isActive = true
+        warningButton.widthAnchor.constraint(equalToConstant: 25).isActive = true
+    }
+    
+    
     
     //MARK: - Email button
     
     @IBAction func emailButtonPressed(_ sender: UIButton) {
         fractionComplete = 0
         cardViewController.selectingPayments(mode: .Enable)
+    }
+}
+
+
+
+// MARK: - CurrencyChangedProtocol
+extension ViewController: CurrencyChangedProtocol {
+
+    func currencySettingChanged(to currencySymbol: String, name currencyName: String) {
+        topGraphicsView.setCurrencyLabelText(with: currencySymbol)
+    }
+}
+
+
+// MARK: - UIPopoverControllerDelegate
+extension ViewController: UIPopoverPresentationControllerDelegate {
+    
+    func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
+        return .none
+    }
+    
+    @objc private func warningButtonPressed() {
+        let popover = WarningPopoverHelper().createWarningPopover(for: warningButton, ofSize: CGSize(width: 200, height: 70))
+        popover.popoverPresentationController?.delegate = self
+        self.present(popover, animated: true)
     }
 }
