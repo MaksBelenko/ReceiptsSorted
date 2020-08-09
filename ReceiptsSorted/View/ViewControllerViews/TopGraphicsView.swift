@@ -16,12 +16,16 @@ class TopGraphicsView: UIView {
     private var indicatorCircle: CAShapeLayer!
     private var dayBar: CALayer!
     private var amountSumLabel: UILabel!
+    private var currencyLabel: UILabel!
     private var daysLeftLabel: UILabel!
+    
+    private let settings = SettingsUserDefaults.shared
     
     var amountAnimation: AmountAnimation!
     var dateAnimation: DateAnimation!
     
 
+    // MARK: - Lifecycle
     override init(frame: CGRect) {
         super.init(frame: frame)
     
@@ -30,6 +34,8 @@ class TopGraphicsView: UIView {
         
         configureUI()
         createBindings()
+        
+        settings.addCurrencyChangedListener(self)
     }
     
     
@@ -38,6 +44,12 @@ class TopGraphicsView: UIView {
     }
     
     
+//    deinit {
+//        SettingsUserDefaults.shared.removeCurrencyListener(self)
+//    }
+    
+
+    // MARK: - Configureations
     
     private func createBindings() {
         amountAnimation = AmountAnimation(animationCircle: indicatorCircle)
@@ -52,7 +64,7 @@ class TopGraphicsView: UIView {
         }
     }
     
-    
+    // MARK: - UI Configuration
     
     private func configureUI() {
         /* Create circles; region is [-pi/2 ; pi*3/2] */
@@ -68,7 +80,8 @@ class TopGraphicsView: UIView {
         
         
         /* Creating Currency Label inside the circle */
-        let currencyLabel = mainGraphics.createCurrencyLabel()
+        currencyLabel = mainGraphics.createCurrencyLabel()
+        setCurrencyLabelText(with: settings.getCurrency()!)
         addSubview(currencyLabel)
 
         
@@ -120,3 +133,21 @@ class TopGraphicsView: UIView {
         addSubview(daysLeftLabel)
     }
 }
+
+
+// MARK: - CurrencyChangedProtocol
+extension TopGraphicsView: CurrencyChangedProtocol {
+    func currencySettingChanged(to currencySymbol: String) {
+        setCurrencyLabelText(with: currencySymbol)
+    }
+    
+    
+    private func setCurrencyLabelText(with currencySymbol: String) {
+        currencyLabel.font = (currencySymbol.count > 2) ? UIFont.arial(ofSize: 30) : UIFont.arial(ofSize: 46)
+        currencyLabel.text = currencySymbol
+    }
+    
+}
+
+
+

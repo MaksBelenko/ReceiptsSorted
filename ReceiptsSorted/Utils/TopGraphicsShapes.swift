@@ -89,11 +89,12 @@ class TopGraphicsShapes {
     func createCurrencyLabel() -> UILabel {
         let currencyLabel = UILabel()
         currencyLabel.text = "£"
+        currencyLabel.textAlignment = .center
         currencyLabel.textColor = .flatOrange
-        currencyLabel.font = UIFont.arial(ofSize: 46)
+        currencyLabel.font = UIFont.arial(ofSize: 30)
         currencyLabel.textAlignment = .center
         currencyLabel.frame.size.height = 50
-        currencyLabel.frame.size.width = 50
+        currencyLabel.frame.size.width = 70
         currencyLabel.center = circleCenter
         
         currencyLabel.layer.applyShadow(color: .black, alpha: 0.16, x: 2, y: 2, blur: 4)

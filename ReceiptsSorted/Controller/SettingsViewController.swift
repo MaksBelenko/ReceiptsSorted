@@ -42,7 +42,7 @@ class SettingsViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-//        currencyLabel.text = settings.currencySymbol
+        currencyLabel.text = settings.getCurrency()
 
         currencyPickerHelper.delegate = self
         setup(picker: currencyPicker, to: currencyPickerHelper)
@@ -68,7 +68,7 @@ class SettingsViewController: UITableViewController {
         {
         case tableRow[.Currency]:
             animate(picker: currencyPicker, arrow: currencyArrowImage) {
-                let index = self.currencyPickerHelper.currencies.firstIndex(where: { $0.symbol == self.currencyLabel.text})!
+                let index = self.currencyPickerHelper.currencies.firstIndex(where: { $0.symbol_native == self.currencyLabel.text})!
                 self.currencyPicker.selectRow(index, inComponent: 0, animated: false)
             }
         case tableRow[.IndicatorTimePeriod]:

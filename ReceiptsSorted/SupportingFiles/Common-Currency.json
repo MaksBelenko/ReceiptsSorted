@@ -25,7 +25,7 @@
 }, {
     "symbol": "AED",
     "name": "United Arab Emirates Dirham",
-    "symbol_native": "د.إ.‏",
+    "symbol_native": "د.إ‏",
     "decimal_digits": 2,
     "rounding": 0,
     "code": "AED",
@@ -41,7 +41,7 @@
 }, {
     "symbol": "ALL",
     "name": "Albanian Lek",
-    "symbol_native": "Lek",
+    "symbol_native": "L",
     "decimal_digits": 0,
     "rounding": 0,
     "code": "ALL",
@@ -49,7 +49,7 @@
 }, {
     "symbol": "AMD",
     "name": "Armenian Dram",
-    "symbol_native": "դր.",
+    "symbol_native": "֏",
     "decimal_digits": 0,
     "rounding": 0,
     "code": "AMD",
@@ -73,7 +73,7 @@
 }, {
     "symbol": "man.",
     "name": "Azerbaijani Manat",
-    "symbol_native": "ман.",
+    "symbol_native": "₼",
     "decimal_digits": 2,
     "rounding": 0,
     "code": "AZN",
@@ -97,7 +97,7 @@
 }, {
     "symbol": "BGN",
     "name": "Bulgarian Lev",
-    "symbol_native": "лв.",
+    "symbol_native": "Лв.",
     "decimal_digits": 2,
     "rounding": 0,
     "code": "BGN",
@@ -105,7 +105,7 @@
 }, {
     "symbol": "BD",
     "name": "Bahraini Dinar",
-    "symbol_native": "د.ب.‏",
+    "symbol_native": "د.ب‏",
     "decimal_digits": 3,
     "rounding": 0,
     "code": "BHD",
@@ -153,7 +153,7 @@
 }, {
     "symbol": "BYR",
     "name": "Belarusian Ruble",
-    "symbol_native": "BYR",
+    "symbol_native": "Br",
     "decimal_digits": 0,
     "rounding": 0,
     "code": "BYR",
@@ -169,7 +169,7 @@
 }, {
     "symbol": "CDF",
     "name": "Congolese Franc",
-    "symbol_native": "FrCD",
+    "symbol_native": "FC",
     "decimal_digits": 2,
     "rounding": 0,
     "code": "CDF",
@@ -177,7 +177,7 @@
 }, {
     "symbol": "CHF",
     "name": "Swiss Franc",
-    "symbol_native": "CHF",
+    "symbol_native": "CHf",
     "decimal_digits": 2,
     "rounding": 0.05,
     "code": "CHF",
@@ -737,7 +737,7 @@
 }, {
     "symbol": "RUB",
     "name": "Russian Ruble",
-    "symbol_native": "руб.",
+    "symbol_native": "₽",
     "decimal_digits": 2,
     "rounding": 0,
     "code": "RUB",

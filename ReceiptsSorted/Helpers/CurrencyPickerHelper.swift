@@ -33,7 +33,7 @@ class CurrencyPickerHelper: NSObject, PickerProtocol  {
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        let symbol = currencies[row].symbol
+        let symbol = currencies[row].symbol_native
         delegate?.onCurrencySelected(symbol: symbol)
     }
 }
