@@ -91,7 +91,6 @@
 		B5BA07682486E81900097E2C /* OnboardingText.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5BA07672486E81800097E2C /* OnboardingText.swift */; };
 		B5BA5F482489130500AC026A /* UserChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5BA5F472489130500AC026A /* UserChecker.swift */; };
 		B5C42C2C246C8E9900238F68 /* ShareImagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C42C2B246C8E9900238F68 /* ShareImagesViewController.swift */; };
-		B5CCE49B2403195200CA0CB5 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CCE49A2403195200CA0CB5 /* Settings.swift */; };
 		B5D70A6B245338530080BF81 /* TopGraphicsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D70A6A245338530080BF81 /* TopGraphicsView.swift */; };
 		B5D70A6D24534DCA0080BF81 /* AddButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D70A6C24534DCA0080BF81 /* AddButtonView.swift */; };
 		B5DB922323BE929F0081E8D7 /* PaymentsData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B5DB922123BE929F0081E8D7 /* PaymentsData.xcdatamodeld */; };
@@ -227,7 +226,6 @@
 		B5BA07672486E81800097E2C /* OnboardingText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingText.swift; sourceTree = "<group>"; };
 		B5BA5F472489130500AC026A /* UserChecker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserChecker.swift; sourceTree = "<group>"; };
 		B5C42C2B246C8E9900238F68 /* ShareImagesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareImagesViewController.swift; sourceTree = "<group>"; };
-		B5CCE49A2403195200CA0CB5 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		B5D70A6A245338530080BF81 /* TopGraphicsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopGraphicsView.swift; sourceTree = "<group>"; };
 		B5D70A6C24534DCA0080BF81 /* AddButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddButtonView.swift; sourceTree = "<group>"; };
 		B5DB922223BE929F0081E8D7 /* PaymentsData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = PaymentsData.xcdatamodel; sourceTree = "<group>"; };
@@ -461,7 +459,6 @@
 				B5443FEF24829E2A0037AA38 /* PaymentInformation.swift */,
 				B517DD5E246B394B004B3B2C /* PaymentTotalInfo.swift */,
 				B566604D242FA955003DD15B /* PaymentTableSection.swift */,
-				B5CCE49A2403195200CA0CB5 /* Settings.swift */,
 				B5ED9A39248595BC00FA7A7B /* OnboardingInfo.swift */,
 				B5BA07672486E81800097E2C /* OnboardingText.swift */,
 				B514A36624BB74C00078E9A9 /* Currency.swift */,
@@ -810,7 +807,6 @@
 				B5AD17E32404757300BB3069 /* CardGesturesViewModel.swift in Sources */,
 				B548CE0D246469C200342613 /* VibrationEnum.swift in Sources */,
 				B5FD65FB242EC9C7002C5C48 /* CardTableHeader.swift in Sources */,
-				B5CCE49B2403195200CA0CB5 /* Settings.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

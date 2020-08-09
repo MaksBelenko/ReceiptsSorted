@@ -121,6 +121,7 @@ class CardViewModel {
     
     /**
      Gets payment for indexPath
+     - Parameter indexPath: IndexPath that is used to get the payment
      */
     func getPayment(indexPath: IndexPath) -> Payment {
         return cardTableSections[indexPath.section].payments[indexPath.row]
@@ -240,6 +241,9 @@ class CardViewModel {
     }
     
     
+    /**
+     Adds all uids to selected UIDs array for viewModel
+     */
     private func addAllUids(for paymentStatus: PaymentStatusType, completion: @escaping () -> ()) {
         switch paymentStatus
         {
@@ -265,6 +269,9 @@ class CardViewModel {
     }
     
     
+    /**
+     Removes all uids from selected uids array
+     */
     private func removeUids(for paymentStatus: PaymentStatusType) {
         switch paymentStatus
         {
@@ -277,13 +284,10 @@ class CardViewModel {
         }
     }
     
-    
+    /**
+     Checks weather all payments are selected
+     */
     private func checkThatAllSelected() {
-//        if (selectedPaymentsUIDs.count < fetchedPayments.count) {
-//            allSelected = false
-//            return
-//        }
-        
         if fetchedPayments.count == 0 {
             allSelected = false
             return
@@ -325,6 +329,11 @@ extension CardViewModel {
 // MARK: - SwipeActionDelegate
 extension CardViewModel {
     
+    /**
+     Updates, removes a row or the whole section of the table view depending on the action
+     - Parameter indexPath: IndexPath of the cell
+     - Parameter action: Action that should be done to the cell at indexPath
+     */
     func applyActionToTableView(indexPath: IndexPath, action: SwipeCommandType) {
         let payment = getPayment(indexPath: indexPath)
         
@@ -344,6 +353,11 @@ extension CardViewModel {
     }
     
     
+    /**
+     Removes row or section depending on how many elements in section
+     - Parameter indexPath: IndexPath of the cell
+     - Parameter index: Index of the payment in fetchedPayments
+     */
     private func removeSectionOrRow(indexPath: IndexPath, index: Int) {
         // Note: Check fist before removing from the fetchedPayments as it
         //       changes cardTableSections in didSet
@@ -357,7 +371,11 @@ extension CardViewModel {
     }
     
     
-    func updateCircularBar() {
+    
+    /**
+     Updates Circular Bar from the top graphics view with fetched total for currency name
+     */
+    private func updateCircularBar() {
         database.getTotalAmountAsync(of: .Pending, for: settings.getCurrency().name!) { totalAmount in
             self.amountAnimation?.animateCircle(to: totalAmount)
         }
@@ -369,9 +387,13 @@ extension CardViewModel {
 
 
 
-// MARK: - Payment actions
+// MARK: - Payment database actions
 extension CardViewModel {
     
+    /**
+     Adds new payent to database with information from PaymentInformation
+     - Parameter paymentInfo: Payment information that is used to add new payment to database
+     */
     func addNewPayment(paymentInfo: PaymentInformation) {
         database.addAsync(paymentInfo: paymentInfo) { [weak self] paymentTotalInfo in
             // After concurrently saving context, fetch the payment with the new uid
@@ -386,6 +408,10 @@ extension CardViewModel {
     }
     
     
+    /**
+     Updates payment with the information that is provided in payment information
+     - Parameter paymentInfo: Payment information that is used to update payment in database
+     */
     private func updatePayment(paymentInfo: PaymentInformation) {
         let payment = cardTableSections[paymentUpdateIndex.section].payments[paymentUpdateIndex.row]
         guard let index = fetchedPayments.firstIndex(of: payment) else {
@@ -410,6 +436,7 @@ extension CardViewModel {
     }
     
     
+
     func deletePayment(payment: Payment, indexPath: IndexPath) {
         database.deleteAsync(item: payment) { [unowned self] in
             self.updateCircularBar()
