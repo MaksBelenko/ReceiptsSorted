@@ -12,8 +12,6 @@ final class ZipDirectoryOperation: AsyncOperation {
     
     /// URL of the zip file
     var zipURL: URL?
-    /// Closure that runs on the main thread after Zip file is created
-    var onZipCreated: ((URL?) -> ())?
     
     private let passedPath: String?
     private let zipName: String
@@ -24,6 +22,11 @@ final class ZipDirectoryOperation: AsyncOperation {
         self.zipName = zipName
         passedPath = directoryPath
     }
+    
+    deinit {
+        print("DEBUG: ZipDirectoryOperation deinit")
+    }
+    
     
 //    override func cancel() {
 //        super.cancel()
@@ -46,14 +49,6 @@ final class ZipDirectoryOperation: AsyncOperation {
             zipURL = try zipAdapter.zipFiles([directoryURL], fileName: zipName)
         } catch {
             print("Zip failed with error: \(error.localizedDescription)")
-        }
-        
-        
-        guard !isCancelled else { return } // Check weather operation is cancelled
-        if let onZipCreated = onZipCreated {
-            DispatchQueue.main.async { [weak self] in
-                onZipCreated(self?.zipURL)
-            }
         }
     }
 }

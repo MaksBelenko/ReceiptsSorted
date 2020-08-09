@@ -72,20 +72,15 @@ class ShareImagesViewModel {
 //        createDirecoryOp.completionBlock = {
 //            print("DEBUG: Created directory path - \(createDirecoryOp.directoryPath)")
 //        }
-//        addPhotosOp.completionBlock = {
-//            print("DEBUG: add[hotos completed: \(addPhotosOp.photosURLs)")
-//        }
-//        zipDirectoryOp.completionBlock = {
-//            print("DEBUG: Completed zipping: \(zipDirectoryOp.zipURL)")
-//        }
-        
-        addPhotosOp.onPhotosAdded = { [weak self] photosURLs in
-            guard let urls = photosURLs else { return }
-            self?.photosURLs = urls
+        addPhotosOp.completionBlock = {
+            DispatchQueue.main.async { [unowned self] in
+                self.photosURLs = addPhotosOp.photosURLs
+            }
         }
-        
-        zipDirectoryOp.onZipCreated = { [weak self] url in
-            self?.zipURL = url
+        zipDirectoryOp.completionBlock = {
+            DispatchQueue.main.async { [unowned self] in
+                self.zipURL = zipDirectoryOp.zipURL
+            }
         }
         
         

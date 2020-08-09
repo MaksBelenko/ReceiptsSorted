@@ -27,6 +27,10 @@ final class DirectoryCreatorOperation: AsyncOperation {
     }
     
     
+    deinit {
+        print("DEBUG: DirectoryCreatorOperation deinit")
+    }
+    
 //    override func cancel() {
 //        super.cancel()
 //    }

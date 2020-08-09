@@ -17,9 +17,6 @@ final class AddPhotosOperation: AsyncOperation {
     var directoryPath: String?
     /// URLs of all the photos
     var photosURLs: [URL] = []
-    /// Closure that runs on the main thread when all
-    /// the photos are written to a directory
-    var onPhotosAdded: (([URL]?) -> ())?
     
     /// Image dictionary should contain name of the file
     /// as a key and ImageData as data
@@ -31,6 +28,11 @@ final class AddPhotosOperation: AsyncOperation {
     init(for imageDataArray: [(name: String, imageData: Data)], path directoryUrlPath: String? = nil) {
         self.imageDataArray = imageDataArray
         self.directoryUrlPath = directoryUrlPath
+    }
+    
+    
+    deinit {
+        print("DEBUG: AddPhotosOperation deinit")
     }
     
     
@@ -65,11 +67,5 @@ final class AddPhotosOperation: AsyncOperation {
         
         guard !isCancelled else { return } // Check weather operation is cancelled
         directoryPath = path
-        
-        if let onPhotosAdded = onPhotosAdded  {
-            DispatchQueue.main.async { [weak self] in
-                onPhotosAdded(self?.photosURLs)
-            }
-        }
     }
 }
