@@ -17,11 +17,12 @@ extension Payment {
     }
 
     @NSManaged public var amountPaid: Float
+    @NSManaged public var currencySymbol: String?
     @NSManaged public var date: Date?
     @NSManaged public var paymentReceived: Bool
     @NSManaged public var place: String?
     @NSManaged public var uid: UUID?
-    @NSManaged public var currencySymbol: String?
+    @NSManaged public var currencyName: String?
     @NSManaged public var receiptPhoto: ReceiptPhoto?
 
 }

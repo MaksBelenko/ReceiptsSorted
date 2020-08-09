@@ -18,6 +18,7 @@ class PaymentViewController: UIViewController, UITextFieldDelegate {
     var place: String = ""
     var date: Date = Date()
     var currencySymbol: String = ""
+    var currencyName: String = ""
     
     let notificationCenter = NotificationCenter.default
     private let settings = SettingsUserDefaults.shared
@@ -71,7 +72,9 @@ class PaymentViewController: UIViewController, UITextFieldDelegate {
         dateTextField.setInputViewDatePicker(target: self, selector: #selector(pressedDoneDatePicker))
         
         if paymentAction == .AddPayment {
-            currencySymbol = settings.getCurrency()!
+            let tuple = settings.getCurrency()
+            currencySymbol = tuple.symbol!
+            currencyName = tuple.name!
         }
         amountPaidTextField.setInputAmountPaid(with: currencySymbol)
     }
@@ -236,7 +239,8 @@ class PaymentViewController: UIViewController, UITextFieldDelegate {
                                              place: place,
                                              date: date,
                                              receiptImage: receiptImageView.image ?? UIImage(),
-                                             currencySymbol: currencySymbol)
+                                             currencySymbol: currencySymbol,
+                                             currencyName: currencyName)
         
         postNotification(action: paymentAction, info: paymentInfo)
         

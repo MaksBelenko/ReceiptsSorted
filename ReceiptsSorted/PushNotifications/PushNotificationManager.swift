@@ -62,7 +62,7 @@ class PushNotificationManager: NSObject {
      */
     func requestAuthorization() {
         center.requestAuthorization(options: [.alert,.sound,.badge]) { [weak self] (granted, error) in
-            print("Push notifications access Granted? \(granted)")
+            Log.debug(message: "Push notifications access Granted? \(granted)")
             
             guard let self = self else { return }
             self.accessGranted = granted

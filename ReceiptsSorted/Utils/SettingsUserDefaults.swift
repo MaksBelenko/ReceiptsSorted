@@ -19,7 +19,8 @@ class SettingsUserDefaults {
     
     static let shared = SettingsUserDefaults()
     
-    private let currencyKey = "currencyKey"
+    private let currencySymbolKey = "currencySymbolKey"
+    private let currencyNameKey = "currencyNameKey"
     private let currencyMulticastDelegate = MulticastDelegate<CurrencyChangedProtocol>()
     
     private let periodKey = "period"
@@ -29,14 +30,16 @@ class SettingsUserDefaults {
     
     // MARK: - Currency
     
-    func setDefaultCurrency(to currencySymbol: String) {
-        UserDefaults.standard.set(currencySymbol, forKey: currencyKey)
-        invokeCurrencyDelegates(with: currencySymbol)
+    func setDefaultCurrency(to currencySymbol: String, currencyName: String) {
+        UserDefaults.standard.set(currencySymbol, forKey: currencySymbolKey)
+        UserDefaults.standard.set(currencyName, forKey: currencyNameKey)
+        invokeCurrencyDelegates(with: currencySymbol, name: currencyName)
     }
     
-    func getCurrency() -> String? {
-        let currencySymbol = UserDefaults.standard.string(forKey: currencyKey)
-        return currencySymbol
+    func getCurrency() -> (symbol: String?, name: String?) {
+        let currencySymbol = UserDefaults.standard.string(forKey: currencySymbolKey)
+        let currencyName = UserDefaults.standard.string(forKey: currencyNameKey)
+        return (symbol: currencySymbol, name: currencyName)
     }
     
     
@@ -88,9 +91,9 @@ extension SettingsUserDefaults {
      Invokes all the delegates with changes
      - Parameter period: New period that is being saved to UserDefaults
      */
-    private func invokeCurrencyDelegates(with currencyLabel: String) {
+    private func invokeCurrencyDelegates(with currencySymbol: String, name currencyName: String) {
         currencyMulticastDelegate.invokeDelegates {
-            $0.currencySettingChanged(to: currencyLabel)
+            $0.currencySettingChanged(to: currencySymbol, name: currencyName)
         }
     }
 }

@@ -21,4 +21,6 @@ struct PaymentInformation {
     var receiptImage: UIImage
     /// currency symbol
     var currencySymbol: String
+    /// currency name:
+    var currencyName: String
 }

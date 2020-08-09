@@ -42,7 +42,7 @@ class SettingsViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        currencyLabel.text = settings.getCurrency()
+        currencyLabel.text = settings.getCurrency().symbol
 
         currencyPickerHelper.delegate = self
         setup(picker: currencyPicker, to: currencyPickerHelper)
@@ -71,7 +71,7 @@ class SettingsViewController: UITableViewController {
                 Alert.shared.showCurrencyChangeWarning(for: self)
             }
             animate(picker: currencyPicker, arrow: currencyArrowImage) {
-                let index = self.currencyPickerHelper.currencies.firstIndex(where: { $0.symbol_native == self.currencyLabel.text})!
+                let index = self.currencyPickerHelper.currencies.firstIndex(where: { $0.name == self.settings.getCurrency().name!})!
                 self.currencyPicker.selectRow(index, inComponent: 0, animated: false)
             }
             
@@ -154,10 +154,11 @@ class SettingsViewController: UITableViewController {
 
 // MARK: - CurrencyPickerDelegate
 extension SettingsViewController: CurrencyPickerDelegate {
-    func onCurrencySelected(symbol: String) {
+    func onCurrencySelected(symbol: String, name: String) {
         currencyLabel.text = symbol
-        settings.setDefaultCurrency(to: symbol)
+        settings.setDefaultCurrency(to: symbol, currencyName: name)
     }
+    
 }
 
 // MARK: - ReceiptRemovalPickerDelegate

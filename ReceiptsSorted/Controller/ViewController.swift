@@ -49,8 +49,8 @@ class ViewController: UIViewController  {
             FileManager.default.cleanTmpDirectory()
         }
         
-        if SettingsUserDefaults.shared.getCurrency() == nil {
-            SettingsUserDefaults.shared.setDefaultCurrency(to: "£")
+        if SettingsUserDefaults.shared.getCurrency().name == nil {
+            SettingsUserDefaults.shared.setDefaultCurrency(to: "£", currencyName: "British Pound Sterling")
         }
         
         setupCard()
@@ -66,6 +66,10 @@ class ViewController: UIViewController  {
         cardGesturesViewModel.visualEffectView = visualEffectView
         cardGesturesViewModel.addButton = buttonView.addButton
         
+        
+        cardViewController.cardViewModel.showCurrencyWarningText.onValueChanged { [weak self] showWarning in
+            self?.topGraphicsView.warningLabel.alpha = (showWarning) ? 1 : 0
+        }
         
         DispatchQueue.main.async { [unowned self] in
             self.presentOnboardingIfNeeded(animated: false)
@@ -89,7 +93,7 @@ class ViewController: UIViewController  {
         if onStartup {
             onStartup = false
             cardViewController.cardViewModel.database.getTotalAmountAsync(of: .Pending,
-                                                                          for: SettingsUserDefaults.shared.getCurrency()!)
+                                                                          for: SettingsUserDefaults.shared.getCurrency().name!)
             { totalAmount in
                 self.topGraphicsView.amountAnimation.animateCircle(to: totalAmount)
             }

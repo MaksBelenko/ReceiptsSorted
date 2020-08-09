@@ -9,7 +9,7 @@
 import UIKit
 
 protocol CurrencyPickerDelegate: AnyObject {
-    func onCurrencySelected(symbol: String)
+    func onCurrencySelected(symbol: String, name: String)
 }
 
 
@@ -34,6 +34,7 @@ class CurrencyPickerHelper: NSObject, PickerProtocol  {
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         let symbol = currencies[row].symbol_native
-        delegate?.onCurrencySelected(symbol: symbol)
+        let currencyName = currencies[row].name
+        delegate?.onCurrencySelected(symbol: symbol, name: currencyName)
     }
 }

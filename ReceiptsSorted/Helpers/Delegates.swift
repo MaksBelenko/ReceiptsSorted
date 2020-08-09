@@ -38,5 +38,5 @@ protocol DateSettingChangedProtocol {
 
 
 protocol CurrencyChangedProtocol {
-  func currencySettingChanged(to currencySymbol: String)
+    func currencySettingChanged(to currencySymbol: String, name currencyName: String)
 }

@@ -16,6 +16,7 @@ class CardViewModel {
     // Selection enabled
     var selectAllButtonText: Observable<String> = Observable("Select All")
     var isSelectionEnabled: Observable<Bool> = Observable(false)
+    var showCurrencyWarningText: Observable<Bool> = Observable(false)
     var firstVisibleCells: [PaymentTableViewCell] = []
     var selectedPaymentsUIDs = SelectedUIDs()
     
@@ -54,7 +55,7 @@ class CardViewModel {
     // MARK: - Lifecycle
     init() {
         refreshPayments()
-        settings.addCurrencyChangedListener(self)
+        settings.addCurrencyChangedListener(self)        
         NotificationCenter.default.addObserver(self, selector: #selector(onReceivePaymentData(_:)), name: .didReceivePaymentData, object: nil)
     }
     
@@ -351,7 +352,7 @@ extension CardViewModel {
     
     
     func updateCircularBar() {
-        database.getTotalAmountAsync(of: .Pending, for: settings.getCurrency()!) { totalAmount in
+        database.getTotalAmountAsync(of: .Pending, for: settings.getCurrency().name!) { totalAmount in
             self.amountAnimation?.animateCircle(to: totalAmount)
         }
     }
@@ -404,7 +405,7 @@ extension CardViewModel {
     
     
     func deletePayment(payment: Payment, indexPath: IndexPath) {
-        database.deleteAsync(item: payment)
+        database.deleteAsync(item: payment) 
         applyActionToTableView(indexPath: indexPath, action: .Remove)
     }
 }
@@ -413,8 +414,14 @@ extension CardViewModel {
 
 // MARK: - CurrencyChangedProtocol
 extension CardViewModel: CurrencyChangedProtocol {
-    
-    func currencySettingChanged(to currencySymbol: String) {
+    func currencySettingChanged(to currencySymbol: String, name currencyName: String) {
         updateCircularBar()
+        
+        database.countDifferentCurrencies(for: paymentStatusType) { [unowned self] currencies in
+            print("\(currencies.count) currencies")
+            self.showCurrencyWarningText.value = (currencies.count > 1 || !currencies.contains(self.settings.getCurrency().name!)) ? true : false
+        }
     }
+    
+    
 }

@@ -24,12 +24,12 @@ class TopGraphicsView: UIView {
     var amountAnimation: AmountAnimation!
     var dateAnimation: DateAnimation!
     
-    private let warningLabel: UILabel = {
+    let warningLabel: UILabel = {
         let label = UILabel()
-        label.text = "Warning:\nmultiple currencies receipts"
+        label.text = "Warning: you have pending\nreceipts in other currencies"
         label.numberOfLines = 0
         label.textAlignment = .center
-        label.textColor = .white
+        label.textColor = .lightText
         label.font = UIFont.arial(ofSize: 13)
         return label
     }()
@@ -92,7 +92,7 @@ class TopGraphicsView: UIView {
         
         /* Creating Currency Label inside the circle */
         currencyLabel = mainGraphics.createCurrencyLabel()
-        setCurrencyLabelText(with: settings.getCurrency()!)
+        setCurrencyLabelText(with: settings.getCurrency().symbol!)
         addSubview(currencyLabel)
 
         
@@ -145,10 +145,10 @@ class TopGraphicsView: UIView {
         
         
         /* Configure multiple currency warning */
-//        addSubview(warningLabel)
-//        warningLabel.translatesAutoresizingMaskIntoConstraints = false
-//        warningLabel.topAnchor.constraint(equalTo: topAnchor).isActive = true
-//        warningLabel.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        addSubview(warningLabel)
+        warningLabel.translatesAutoresizingMaskIntoConstraints = false
+        warningLabel.topAnchor.constraint(equalTo: topAnchor).isActive = true
+        warningLabel.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         
     }
 }
@@ -156,7 +156,7 @@ class TopGraphicsView: UIView {
 
 // MARK: - CurrencyChangedProtocol
 extension TopGraphicsView: CurrencyChangedProtocol {
-    func currencySettingChanged(to currencySymbol: String) {
+    func currencySettingChanged(to currencySymbol: String, name currencyName: String) {
         setCurrencyLabelText(with: currencySymbol)
     }
     
@@ -165,7 +165,6 @@ extension TopGraphicsView: CurrencyChangedProtocol {
         currencyLabel.font = (currencySymbol.count > 2) ? UIFont.arial(ofSize: 30) : UIFont.arial(ofSize: 46)
         currencyLabel.text = currencySymbol
     }
-    
 }
 
 

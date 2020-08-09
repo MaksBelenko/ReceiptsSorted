@@ -78,9 +78,9 @@ class DatabaseAsync {
             self.save(privateContext)
             
             guard let completion = completion else { return }
-            DispatchQueue.main.async {
+//            DispatchQueue.main.async {
                 completion()
-            }
+//            }
         }
     }
     
@@ -256,7 +256,7 @@ class DatabaseAsync {
      */
     func addAsync (paymentInfo: PaymentInformation, completion: @escaping (PaymentTotalInfo) -> ()) {
         
-        getTotalAmountAsync(of: .Pending, for: paymentInfo.currencySymbol) { [unowned self] totalBefore in
+        getTotalAmountAsync(of: .Pending, for: paymentInfo.currencyName) { [unowned self] totalBefore in
             
             let compressionRate: CGFloat = 0.0 // self.settings.compression
             self.persistentContainer.performBackgroundTask { [unowned self] context in
@@ -267,6 +267,7 @@ class DatabaseAsync {
                 newPayment.uid = generatedUUID
                 newPayment.amountPaid = paymentInfo.amountPaid
                 newPayment.currencySymbol = paymentInfo.currencySymbol //self.settings.getCurrency()
+                newPayment.currencyName = paymentInfo.currencyName
                 newPayment.place = paymentInfo.place
                 newPayment.date = paymentInfo.date
                 newPayment.paymentReceived = false
@@ -307,11 +308,12 @@ class DatabaseAsync {
             payment.place = paymentInfo.place
             payment.date = paymentInfo.date
             payment.currencySymbol = paymentInfo.currencySymbol
+            payment.currencyName = paymentInfo.currencyName
             
             self.save(privateContext)
             self.save(self.context) // save main parent context
             
-            self.getTotalAmountAsync(of: .Pending, for: paymentInfo.currencySymbol) { totalAfter in
+            self.getTotalAmountAsync(of: .Pending, for: paymentInfo.currencyName) { totalAfter in
                 let info = PaymentTotalInfo(uid: payment.uid!, totalAfter: totalAfter)
                 completion(info)
             }
@@ -358,7 +360,7 @@ class DatabaseAsync {
      - Parameter sortMethod: Allows to get a total either for all, pending or received payments
      - Parameter completion: Completion handler which will be executied on main thread asynchronously
      */
-    func getTotalAmountAsync(of sortMethod: PaymentStatusType, for currencySymbol: String, completion: @escaping (Float) -> ()) {
+    func getTotalAmountAsync(of sortMethod: PaymentStatusType, for currencyName: String, completion: @escaping (Float) -> ()) {
         
         persistentContainer.performBackgroundTask { /*[unowned self]*/ context in
             let dictSumName = "sumAmount"
@@ -376,7 +378,7 @@ class DatabaseAsync {
             fetchRequest.propertiesToFetch = [sumExpressionDescr]
             
             // Currency symbol predicate
-            fetchRequest.predicate = NSPredicate(format: "%K == %@", #keyPath(Payment.currencySymbol), currencySymbol)
+            fetchRequest.predicate = NSPredicate(format: "%K == %@", #keyPath(Payment.currencyName), currencyName)
             
             // Set predicate for sortMethod
             if let predicate = sortMethod.getPredicate() {
@@ -406,6 +408,29 @@ class DatabaseAsync {
     
     
     // MARK: - Count
+    
+    /**
+     Gets an array of the currencies that are in the database
+     - Parameter paymentStatus: Payment status that is used for fetch request
+     - Parameter completion: Completion handler which will be executied on main thread asynchronously
+     */
+    func countDifferentCurrencies(for paymentStatus: PaymentStatusType, completion: @escaping ([String]) -> ()) {
+        let fetchRequest = Payment.fetchDictionaryRequest()
+        fetchRequest.resultType = .dictionaryResultType
+        let currencyKeyPath = #keyPath(Payment.currencyName)
+        fetchRequest.propertiesToFetch = [currencyKeyPath]
+        fetchRequest.propertiesToGroupBy = [currencyKeyPath]
+        fetchRequest.predicate = paymentStatus.getPredicate()
+        
+        loadAsync(with: fetchRequest) { results in
+            let currencies = results.map { $0.value(forKey: currencyKeyPath) as! String }
+            DispatchQueue.main.async {
+                completion(currencies)
+            }
+        }
+        
+    }
+    
     
     /**
      Counts the amount of payments for a specific payment status
