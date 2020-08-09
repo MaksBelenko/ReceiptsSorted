@@ -66,6 +66,7 @@ class Navigation {
             paymentVC.passedImage = UIImage(data: selectedPayment.receiptPhoto?.imageData ?? Data())
             Log.debug(message: "size in MB = \(Float((selectedPayment.receiptPhoto?.imageData?.count)!) / powf(10, 6))")
             
+            paymentVC.paymentUID = selectedPayment.uid
             paymentVC.amountPaid = selectedPayment.amountPaid
             paymentVC.place = selectedPayment.place!
             paymentVC.date = selectedPayment.date!

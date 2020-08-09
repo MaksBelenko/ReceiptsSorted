@@ -10,4 +10,5 @@ import Foundation
 
 extension Notification.Name {
     static let didReceivePaymentData = Notification.Name("didReceivePaymentData")
+    static let removePayment = Notification.Name("removePayment")
 }

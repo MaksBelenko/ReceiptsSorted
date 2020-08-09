@@ -55,12 +55,15 @@ class CardViewModel {
     // MARK: - Lifecycle
     init() {
         refreshPayments()
-        settings.addCurrencyChangedListener(self)        
+        settings.addCurrencyChangedListener(self)
+        checkCurrenciesFromDB()
         NotificationCenter.default.addObserver(self, selector: #selector(onReceivePaymentData(_:)), name: .didReceivePaymentData, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(onRemovePaymentNotification(_:)), name: .removePayment, object: nil)
     }
     
     deinit {
         NotificationCenter.default.removeObserver(self, name: .didReceivePaymentData, object: nil)
+        NotificationCenter.default.removeObserver(self, name: .removePayment, object: nil)
     }
     
     
@@ -313,6 +316,8 @@ extension CardViewModel {
         case .UpdatePayment:
             self.updatePayment(paymentInfo: paymentInfo)
         }
+        
+        checkCurrenciesFromDB() // Check if there are other currencies
     }
 }
 
@@ -335,6 +340,7 @@ extension CardViewModel {
         }
         
         updateCircularBar()
+        checkCurrenciesFromDB() // Check if there are other currencies
     }
     
     
@@ -407,9 +413,28 @@ extension CardViewModel {
     func deletePayment(payment: Payment, indexPath: IndexPath) {
         database.deleteAsync(item: payment) { [unowned self] in
             self.updateCircularBar()
+            self.checkCurrenciesFromDB()
         }
+        
         applyActionToTableView(indexPath: indexPath, action: .Remove)
     }
+    
+    
+    @objc private func onRemovePaymentNotification(_ notification: Notification) {
+        guard let userInfo = notification.userInfo,
+            let uid = userInfo[PaymentAction.UpdatePayment] as? UUID else { return }
+        
+        database.fetchSinglePaymentAsync(with: uid) { [unowned self] payment in
+            self.database.deleteAsync(item: payment) { [unowned self] in
+                self.refreshPayments()
+                self.updateCircularBar()
+                self.checkCurrenciesFromDB()
+            }
+        }
+        
+    }
+    
+    
 }
 
 
@@ -418,13 +443,15 @@ extension CardViewModel {
 extension CardViewModel: CurrencyChangedProtocol {
     func currencySettingChanged(to currencySymbol: String, name currencyName: String) {
         updateCircularBar()
-        
+        checkCurrenciesFromDB()
+    }
+    
+    
+    func checkCurrenciesFromDB() {
         database.countDifferentCurrencies(for: .Pending) { [unowned self] currencies in
-            print("\(currencies.count) currencies")
+            Log.debug(message: "Following currencies retrieved: \(currencies)")
             self.showCurrencyWarningText.value = (currencies.count > 1
                 || (!currencies.contains(self.settings.getCurrency().name!) && currencies.count != 0)) ? true : false
         }
     }
-    
-    
 }

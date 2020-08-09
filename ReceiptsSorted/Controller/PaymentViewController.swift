@@ -14,6 +14,8 @@ class PaymentViewController: UIViewController, UITextFieldDelegate {
 
     var paymentAction: PaymentAction = .AddPayment
     var passedImage: UIImage? = nil
+    
+    var paymentUID: UUID!
     var amountPaid: Float = 0.0
     var place: String = ""
     var date: Date = Date()
@@ -290,6 +292,10 @@ class PaymentViewController: UIViewController, UITextFieldDelegate {
     
     @IBAction func deleteBarButtonPressed(_ sender: UIBarButtonItem) {
         Alert.shared.showRemoveAlert(for: self) { [unowned self] in
+            if (self.paymentAction == .UpdatePayment) {
+                let userInfo: [PaymentAction : UUID] = [self.paymentAction : self.paymentUID]
+                self.notificationCenter.post(name: .removePayment, object: self, userInfo: userInfo)
+            }
             self.navigationController?.popToRootViewController(animated: true)
         }
     }
