@@ -193,5 +193,24 @@ class Alert {
         ac.addAction(UIAlertAction(title: "OK", style: .default))
         controller.present(ac, animated: true)
     }
-
+    
+    
+    func showCurrencyChangeWarning(for controller: UIViewController) {
+        let ac = UIAlertController(title: "Warning: currency change",
+                                   message: "If you have receipts paid with different currency they will no longer be shown in the indicators. Only main currency payments sum are shown.",
+                                   preferredStyle: .alert)
+        ac.addAction(UIAlertAction(title: "OK", style: .default))
+        controller.present(ac, animated: true)
+    }
+    
+    
+    // MARK: - Camera alerts
+    
+    func showCameraNotEnabledAlert(for controller: UIViewController) {
+        let ac = UIAlertController(title: "Camera is not enabled",
+                                   message: "You need to enable access to the camera in your device's settings if you want to it.",
+                                   preferredStyle: .alert)
+        ac.addAction(UIAlertAction(title: "OK", style: .default))
+        controller.present(ac, animated: true)
+    }
 }

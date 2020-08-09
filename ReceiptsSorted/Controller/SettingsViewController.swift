@@ -67,14 +67,20 @@ class SettingsViewController: UITableViewController {
         switch indexPath
         {
         case tableRow[.Currency]:
+            if currencyPicker.isHidden {
+                Alert.shared.showCurrencyChangeWarning(for: self)
+            }
             animate(picker: currencyPicker, arrow: currencyArrowImage) {
                 let index = self.currencyPickerHelper.currencies.firstIndex(where: { $0.symbol_native == self.currencyLabel.text})!
                 self.currencyPicker.selectRow(index, inComponent: 0, animated: false)
             }
+            
         case tableRow[.IndicatorTimePeriod]:
             Alert.shared.showDateIndicator(for: self)
+            
         case tableRow[.ReceiptRemoval]:
             animate(picker: receiptsRemovalPicker, arrow: receiptRemovalArrowImage, executeOnShow: nil)
+            
         default:
             break
         }

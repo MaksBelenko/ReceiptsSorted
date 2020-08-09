@@ -22,6 +22,8 @@ class CameraSession  {
     
     private var view: UIView
     
+    private let errorHandler: (Error) -> ()
+    
     enum FlashMode {
         case Auto, Flash, NoFlash
     }
@@ -30,8 +32,9 @@ class CameraSession  {
     
     
     //MARK: - Initialiser
-    init(forView view: UIView) {
+    init(forView view: UIView, errorHandler: @escaping (Error) -> ()) {
         self.view = view
+        self.errorHandler = errorHandler
         if (ProcessInfo.processInfo.environment["SIMULATOR_DEVICE_NAME"] == nil) {
             setupCamera()
         }
@@ -89,7 +92,8 @@ class CameraSession  {
             photoOutput?.setPreparedPhotoSettingsArray([AVCapturePhotoSettings(format: [AVVideoCodecKey: AVVideoCodecType.jpeg])], completionHandler: nil)
             captureSession.addOutput(photoOutput!)
         } catch {
-            print(error)
+            errorHandler(error)
+            Log.exception(message: "Cannot setup camera input source, error: \(error.localizedDescription)")
         }
     }
     

@@ -35,7 +35,7 @@ class ViewController: UIViewController  {
     
     //set Status Bar icons to white
     override var preferredStatusBarStyle: UIStatusBarStyle { return .lightContent }
-
+    
     
     
     //MARK: - Lifecycle
@@ -65,6 +65,7 @@ class ViewController: UIViewController  {
         cardGesturesViewModel.cardViewController = cardViewController
         cardGesturesViewModel.visualEffectView = visualEffectView
         cardGesturesViewModel.addButton = buttonView.addButton
+        
         
         DispatchQueue.main.async { [unowned self] in
             self.presentOnboardingIfNeeded(animated: false)
@@ -229,6 +230,7 @@ class ViewController: UIViewController  {
         topGraphicsView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         topGraphicsView.heightAnchor.constraint(equalToConstant: cardStartPointY).isActive = true
     }
+    
     
     
     //MARK: - Email button

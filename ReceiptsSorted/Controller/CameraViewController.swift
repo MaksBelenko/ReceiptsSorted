@@ -77,7 +77,9 @@ class CameraViewController: UIViewController, UINavigationControllerDelegate {
     
     func setupCameraSession() {
         cameraView.layer.cornerRadius = 20
-        cameraSession = CameraSession(forView: cameraView)
+        cameraSession = CameraSession(forView: cameraView) { error in
+            Alert.shared.showCameraNotEnabledAlert(for: self)
+        }
     }
     
     func setupGestureRecognisers() {

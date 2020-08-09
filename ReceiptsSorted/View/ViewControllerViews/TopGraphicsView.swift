@@ -24,6 +24,17 @@ class TopGraphicsView: UIView {
     var amountAnimation: AmountAnimation!
     var dateAnimation: DateAnimation!
     
+    private let warningLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Warning:\nmultiple currencies receipts"
+        label.numberOfLines = 0
+        label.textAlignment = .center
+        label.textColor = .white
+        label.font = UIFont.arial(ofSize: 13)
+        return label
+    }()
+    
+    
 
     // MARK: - Lifecycle
     override init(frame: CGRect) {
@@ -97,7 +108,7 @@ class TopGraphicsView: UIView {
         amountSumLabel.rightAnchor.constraint(equalTo: rightAnchor, constant: -offsetRight).isActive = true
         amountSumLabel.widthAnchor.constraint(equalTo: widthAnchor, constant: -mainGraphics.circleRightSideOffset-2*offsetRight).isActive = true
         amountSumLabel.heightAnchor.constraint(equalToConstant: 28).isActive = true
-        amountSumLabel.centerYAnchor.constraint(equalTo: currencyLabel.centerYAnchor, constant: -mainGraphics.circleRadius*3/4).isActive = true
+        amountSumLabel.centerYAnchor.constraint(equalTo: currencyLabel.centerYAnchor, constant: -mainGraphics.circleRadius*2/4).isActive = true
         
         
         /* Creating "Pending:" UILabel */
@@ -131,6 +142,14 @@ class TopGraphicsView: UIView {
         daysLeftLabel.textAlignment = .center
 
         addSubview(daysLeftLabel)
+        
+        
+        /* Configure multiple currency warning */
+//        addSubview(warningLabel)
+//        warningLabel.translatesAutoresizingMaskIntoConstraints = false
+//        warningLabel.topAnchor.constraint(equalTo: topAnchor).isActive = true
+//        warningLabel.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        
     }
 }
 
