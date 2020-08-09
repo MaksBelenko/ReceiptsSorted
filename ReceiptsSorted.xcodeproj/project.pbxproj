@@ -35,7 +35,7 @@
 		B548CE0D246469C200342613 /* VibrationEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = B548CE0C246469C200342613 /* VibrationEnum.swift */; };
 		B54967A824104E3500684A2F /* ImageCompression.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54967A724104E3500684A2F /* ImageCompression.swift */; };
 		B54967AD241167C000684A2F /* SortingDropDownMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54967AC241167C000684A2F /* SortingDropDownMenu.swift */; };
-		B549C0B324BF0A1D003F148E /* AlertFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B549C0B224BF0A1D003F148E /* AlertFactory.swift */; };
+		B549C0B324BF0A1D003F148E /* AlertHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B549C0B224BF0A1D003F148E /* AlertHelper.swift */; };
 		B550E150245B2F0F000294B1 /* SortEnums+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = B550E14F245B2F0F000294B1 /* SortEnums+Ext.swift */; };
 		B554F963247718BA007C486A /* CardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B554F962247718BA007C486A /* CardViewModel.swift */; };
 		B561B391243BFBBA00F7B29B /* SimpleShapes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B561B390243BFBBA00F7B29B /* SimpleShapes.swift */; };
@@ -170,7 +170,7 @@
 		B548CE0C246469C200342613 /* VibrationEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VibrationEnum.swift; sourceTree = "<group>"; };
 		B54967A724104E3500684A2F /* ImageCompression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCompression.swift; sourceTree = "<group>"; };
 		B54967AC241167C000684A2F /* SortingDropDownMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortingDropDownMenu.swift; sourceTree = "<group>"; };
-		B549C0B224BF0A1D003F148E /* AlertFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertFactory.swift; sourceTree = "<group>"; };
+		B549C0B224BF0A1D003F148E /* AlertHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertHelper.swift; sourceTree = "<group>"; };
 		B550E14F245B2F0F000294B1 /* SortEnums+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SortEnums+Ext.swift"; sourceTree = "<group>"; };
 		B554F962247718BA007C486A /* CardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardViewModel.swift; sourceTree = "<group>"; };
 		B561B390243BFBBA00F7B29B /* SimpleShapes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleShapes.swift; sourceTree = "<group>"; };
@@ -296,12 +296,15 @@
 		B50355692457968B000C09DC /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				B5076BCE2457A28400C2BE34 /* Alerts.swift */,
+				B57145172474100800E0720C /* Navigation.swift */,
+				B573FAA323B95F57005473D2 /* Delegates.swift */,
+				B535A1BF244BC320005585F0 /* Log.swift */,
 				B54967A924105B4B00684A2F /* Animations */,
 				B5076BCD2457995E00C2BE34 /* Images */,
 				B573FAAD23BA815F005473D2 /* CameraSession.swift */,
 				B5B6757F23CF70F400291D31 /* TextRecogniser.swift */,
 				B5AD17DC240464CB00BB3069 /* TopGraphicsShapes.swift */,
-				B514A36A24BB91990078E9A9 /* WorldCurrencies.swift */,
 				B5BA5F472489130500AC026A /* UserChecker.swift */,
 				B59EB41424D9E57D00AB16FC /* SettingsUserDefaults.swift */,
 			);
@@ -330,15 +333,13 @@
 		B535A1BE244BC2D7005585F0 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
-				B5076BCE2457A28400C2BE34 /* Alerts.swift */,
-				B57145172474100800E0720C /* Navigation.swift */,
-				B573FAA323B95F57005473D2 /* Delegates.swift */,
+				B549C0B224BF0A1D003F148E /* AlertHelper.swift */,
 				B561B390243BFBBA00F7B29B /* SimpleShapes.swift */,
 				B5683DF924D759DF00828AFA /* DateHelper.swift */,
 				B5ED9A3D2485A21300FA7A7B /* TextHelper.swift */,
 				B598D8E624CDB80D00158766 /* CurrencyPickerHelper.swift */,
 				B598D8E824CDBD6500158766 /* ReceiptRemovalPickerHelper.swift */,
-				B535A1BF244BC320005585F0 /* Log.swift */,
+				B514A36A24BB91990078E9A9 /* WorldCurrencies.swift */,
 				B5A4358224DE10EF00559908 /* DirectoryHelper.swift */,
 			);
 			path = Helpers;
@@ -368,9 +369,9 @@
 			children = (
 				B5743AC124D21BF500930030 /* SupportingFiles */,
 				B565673E24831554000A6639 /* Adapters */,
-				B56567412483196B000A6639 /* Factories */,
 				B5A4357A24DE039A00559908 /* Operations */,
 				B5FDE69624E5957F009B997F /* PushNotifications */,
+				B5AD17E4240482CA00BB3069 /* Database */,
 				B5AD17D7240460E700BB3069 /* ViewModel */,
 				B59E3E1323B3BF4E0017D474 /* Model */,
 				B59E3E1423B3BF5F0017D474 /* View */,
@@ -421,18 +422,9 @@
 			children = (
 				B565673F24831619000A6639 /* ZipAdapter.swift */,
 				B5977E7B24C4729400F3E589 /* DatabaseAsync.swift */,
-				B575FD7124C8DA53007034D4 /* DBRequestBuilder.swift */,
 				B57BCD1124C63EA50019D85A /* DatabaseFetchController.swift */,
 			);
 			path = Adapters;
-			sourceTree = "<group>";
-		};
-		B56567412483196B000A6639 /* Factories */ = {
-			isa = PBXGroup;
-			children = (
-				B549C0B224BF0A1D003F148E /* AlertFactory.swift */,
-			);
-			path = Factories;
 			sourceTree = "<group>";
 		};
 		B566605124311384003DD15B /* Cells */ = {
@@ -466,8 +458,6 @@
 		B59E3E1323B3BF4E0017D474 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				B5977E7D24C47F0400F3E589 /* CoreDataStack.swift */,
-				B5AD17E4240482CA00BB3069 /* Database */,
 				B5443FEF24829E2A0037AA38 /* PaymentInformation.swift */,
 				B517DD5E246B394B004B3B2C /* PaymentTotalInfo.swift */,
 				B566604D242FA955003DD15B /* PaymentTableSection.swift */,
@@ -539,6 +529,8 @@
 		B5AD17E4240482CA00BB3069 /* Database */ = {
 			isa = PBXGroup;
 			children = (
+				B5977E7D24C47F0400F3E589 /* CoreDataStack.swift */,
+				B575FD7124C8DA53007034D4 /* DBRequestBuilder.swift */,
 				B5DB922123BE929F0081E8D7 /* PaymentsData.xcdatamodeld */,
 				B593962A2483D50500B1E895 /* Payment+CoreDataClass.swift */,
 				B593962B2483D50600B1E895 /* Payment+CoreDataProperties.swift */,
@@ -740,7 +732,7 @@
 				B57BCD1224C63EA50019D85A /* DatabaseFetchController.swift in Sources */,
 				B5FDE69924E595AF009B997F /* PushNotificationManager.swift in Sources */,
 				B573FAA423B95F57005473D2 /* Delegates.swift in Sources */,
-				B549C0B324BF0A1D003F148E /* AlertFactory.swift in Sources */,
+				B549C0B324BF0A1D003F148E /* AlertHelper.swift in Sources */,
 				B514A36B24BB91990078E9A9 /* WorldCurrencies.swift in Sources */,
 				B593962C2483D50600B1E895 /* ReceiptPhoto+CoreDataProperties.swift in Sources */,
 				B593962E2483D50600B1E895 /* Payment+CoreDataClass.swift in Sources */,

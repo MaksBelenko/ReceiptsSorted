@@ -2,9 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:ReceiptsSorted/Model/Database/Payment+CoreDataProperties.swift">
-   </FileRef>
-   <FileRef
       location = "group:ReceiptsSorted.xcodeproj">
    </FileRef>
    <FileRef

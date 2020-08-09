@@ -31,7 +31,7 @@ class Alert {
         })
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
         
-        let alert = AlertFactory(alertController: UIAlertController(title: "Send receipts as:", message: nil , preferredStyle: .actionSheet),
+        let alert = AlertHelper(alertController: UIAlertController(title: "Send receipts as:", message: nil , preferredStyle: .actionSheet),
                                  actions: [pdfAction, archiveAction, cancelAction])
         alert.show(for: controller)
     }
@@ -43,7 +43,7 @@ class Alert {
      */
     func showNoPaymentsErrorAlert(for controller: UIViewController) {
         Vibration.error.vibrate()
-        let alert = AlertFactory(alertController: UIAlertController(title: "No receipts selected!", message: "Please select the receipts that you would like to send" , preferredStyle: .alert),
+        let alert = AlertHelper(alertController: UIAlertController(title: "No receipts selected!", message: "Please select the receipts that you would like to send" , preferredStyle: .alert),
                                  actions: [UIAlertAction(title: "OK", style: .default, handler: nil)])
         alert.show(for: controller)
     }
@@ -64,7 +64,7 @@ class Alert {
         })
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
         
-        let alert = AlertFactory(alertController: UIAlertController(title: "Are you sure you want to dismiss the pdf?", message: nil , preferredStyle: .actionSheet),
+        let alert = AlertHelper(alertController: UIAlertController(title: "Are you sure you want to dismiss the pdf?", message: nil , preferredStyle: .actionSheet),
                                  actions: [dismissAction, cancelAction])
         alert.show(for: controller)
     }
@@ -87,7 +87,7 @@ class Alert {
         })
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
         
-        let alert = AlertFactory(alertController: UIAlertController(title: "How do you want to send images?", message: nil , preferredStyle: .actionSheet),
+        let alert = AlertHelper(alertController: UIAlertController(title: "How do you want to send images?", message: nil , preferredStyle: .actionSheet),
                                  actions: [archiveAction, photosAction, cancelAction])
         alert.show(for: controller)
     }
@@ -109,7 +109,7 @@ class Alert {
         })
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
         
-        let alert = AlertFactory(alertController: UIAlertController(title: "Are you sure you want to delete the payment?", message: nil , preferredStyle: .actionSheet),
+        let alert = AlertHelper(alertController: UIAlertController(title: "Are you sure you want to delete the payment?", message: nil , preferredStyle: .actionSheet),
                                  actions: [deleteAction, cancelAction])
         alert.show(for: controller)
     }
@@ -130,7 +130,7 @@ class Alert {
         })
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
         
-        let alert = AlertFactory(alertController: UIAlertController(title: "Do you want to save the receipt image to your photos?", message: nil , preferredStyle: .actionSheet),
+        let alert = AlertHelper(alertController: UIAlertController(title: "Do you want to save the receipt image to your photos?", message: nil , preferredStyle: .actionSheet),
                                  actions: [deleteAction, cancelAction])
         alert.show(for: controller)
     }
@@ -159,7 +159,7 @@ class Alert {
      */
     func showEmptyFieldsAlert(for controller: UIViewController) {
         Vibration.error.vibrate()
-        let alert = AlertFactory(alertController: UIAlertController(title: "Fill all data", message: "Some of the information is not filled", preferredStyle: .alert),
+        let alert = AlertHelper(alertController: UIAlertController(title: "Fill all data", message: "Some of the information is not filled", preferredStyle: .alert),
                                  actions: [UIAlertAction(title: "OK", style: .default, handler: nil)])
         alert.show(for: controller)
     }

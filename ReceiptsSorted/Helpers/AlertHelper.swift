@@ -9,7 +9,7 @@
 import UIKit.UIAlertController
 
 
-class AlertFactory {
+class AlertHelper {
     
     private let alertController: UIAlertController
     
