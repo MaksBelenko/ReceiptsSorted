@@ -2,6 +2,7 @@
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="16119" systemVersion="19G73" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Payment" representedClassName=".Payment" syncable="YES">
         <attribute name="amountPaid" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="currencySymbol" attributeType="String"/>
         <attribute name="date" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="paymentReceived" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="place" attributeType="String"/>
@@ -13,7 +14,7 @@
         <relationship name="payment" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Payment" inverseName="receiptPhoto" inverseEntity="Payment"/>
     </entity>
     <elements>
-        <element name="Payment" positionX="160" positionY="192" width="128" height="133"/>
+        <element name="Payment" positionX="160" positionY="192" width="128" height="148"/>
         <element name="ReceiptPhoto" positionX="-1228.33203125" positionY="-2934.21875" width="128" height="73"/>
     </elements>
 </model>

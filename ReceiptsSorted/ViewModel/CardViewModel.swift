@@ -40,6 +40,7 @@ class CardViewModel {
     }
     
     
+    private let settings = SettingsUserDefaults.shared
     private var currentSearchText = ""
     private var paymentUpdateIndex = (section: 0, row: 0)
     private var cardTableSections: [PaymentTableSection] = []
@@ -53,6 +54,7 @@ class CardViewModel {
     // MARK: - Lifecycle
     init() {
         refreshPayments()
+        settings.addCurrencyChangedListener(self)
         NotificationCenter.default.addObserver(self, selector: #selector(onReceivePaymentData(_:)), name: .didReceivePaymentData, object: nil)
     }
     
@@ -349,7 +351,7 @@ extension CardViewModel {
     
     
     func updateCircularBar() {
-        database.getTotalAmountAsync(of: .Pending) { totalAmount in
+        database.getTotalAmountAsync(of: .Pending, for: settings.getCurrency()!) { totalAmount in
             self.amountAnimation?.animateCircle(to: totalAmount)
         }
     }
@@ -404,5 +406,15 @@ extension CardViewModel {
     func deletePayment(payment: Payment, indexPath: IndexPath) {
         database.deleteAsync(item: payment)
         applyActionToTableView(indexPath: indexPath, action: .Remove)
+    }
+}
+
+
+
+// MARK: - CurrencyChangedProtocol
+extension CardViewModel: CurrencyChangedProtocol {
+    
+    func currencySettingChanged(to currencySymbol: String) {
+        updateCircularBar()
     }
 }

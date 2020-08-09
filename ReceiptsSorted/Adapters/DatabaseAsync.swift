@@ -22,6 +22,8 @@ class DatabaseAsync {
     
     private let imageCompression = ImageCompression()
     
+    private let settings = SettingsUserDefaults.shared
+    
 
     
     /// Sort descriptor for places in alphabetical order
@@ -254,7 +256,7 @@ class DatabaseAsync {
      */
     func addAsync (paymentInfo: PaymentInformation, completion: @escaping (PaymentTotalInfo) -> ()) {
         
-        getTotalAmountAsync(of: .Pending) { [unowned self] totalBefore in
+        getTotalAmountAsync(of: .Pending, for: paymentInfo.currencySymbol) { [unowned self] totalBefore in
             
             let compressionRate: CGFloat = 0.0 // self.settings.compression
             self.persistentContainer.performBackgroundTask { [unowned self] context in
@@ -264,6 +266,7 @@ class DatabaseAsync {
                 let newPayment = Payment(context: context)
                 newPayment.uid = generatedUUID
                 newPayment.amountPaid = paymentInfo.amountPaid
+                newPayment.currencySymbol = paymentInfo.currencySymbol //self.settings.getCurrency()
                 newPayment.place = paymentInfo.place
                 newPayment.date = paymentInfo.date
                 newPayment.paymentReceived = false
@@ -303,11 +306,12 @@ class DatabaseAsync {
             payment.amountPaid = paymentInfo.amountPaid
             payment.place = paymentInfo.place
             payment.date = paymentInfo.date
+            payment.currencySymbol = paymentInfo.currencySymbol
             
             self.save(privateContext)
             self.save(self.context) // save main parent context
             
-            self.getTotalAmountAsync(of: .Pending) { totalAfter in
+            self.getTotalAmountAsync(of: .Pending, for: paymentInfo.currencySymbol) { totalAfter in
                 let info = PaymentTotalInfo(uid: payment.uid!, totalAfter: totalAfter)
                 completion(info)
             }
@@ -354,7 +358,7 @@ class DatabaseAsync {
      - Parameter sortMethod: Allows to get a total either for all, pending or received payments
      - Parameter completion: Completion handler which will be executied on main thread asynchronously
      */
-    func getTotalAmountAsync(of sortMethod: PaymentStatusType, completion: @escaping (Float) -> ()) {
+    func getTotalAmountAsync(of sortMethod: PaymentStatusType, for currencySymbol: String, completion: @escaping (Float) -> ()) {
         
         persistentContainer.performBackgroundTask { /*[unowned self]*/ context in
             let dictSumName = "sumAmount"
@@ -371,10 +375,14 @@ class DatabaseAsync {
             //Set properties to fetch
             fetchRequest.propertiesToFetch = [sumExpressionDescr]
             
+            // Currency symbol predicate
+            fetchRequest.predicate = NSPredicate(format: "%K == %@", #keyPath(Payment.currencySymbol), currencySymbol)
+            
             // Set predicate for sortMethod
             if let predicate = sortMethod.getPredicate() {
-                fetchRequest.predicate = predicate
+                fetchRequest.predicate! += predicate
             }
+            
             
             var totalAmount: Float = -1
             

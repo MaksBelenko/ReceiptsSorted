@@ -53,7 +53,7 @@ class PaymentTableViewCell: UITableViewCell {
      - Parameter selectionEnabled: Shows weather tickbox should be shown
      */
     func setCell(for payment: Payment, selectionEnabled: Bool = false, animate: Bool = true) {
-        self.amountPaidText.text = "£" + payment.amountPaid.ToString(decimals: 2)
+        self.amountPaidText.text = payment.currencySymbol! + payment.amountPaid.ToString(decimals: 2)
         self.placeText.text = payment.place!
         self.dateText.text = "Paid on " + payment.date!.toString(as: .long)
         self.receivedPayment = payment.paymentReceived

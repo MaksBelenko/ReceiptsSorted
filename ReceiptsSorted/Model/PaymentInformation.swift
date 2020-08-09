@@ -19,4 +19,6 @@ struct PaymentInformation {
     var date: Date
     /// Image of receipt itself
     var receiptImage: UIImage
+    /// currency symbol
+    var currencySymbol: String
 }

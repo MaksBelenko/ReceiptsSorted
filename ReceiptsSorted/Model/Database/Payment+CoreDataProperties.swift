@@ -2,7 +2,7 @@
 //  Payment+CoreDataProperties.swift
 //  
 //
-//  Created by Maksim on 31/05/2020.
+//  Created by Maksim on 09/08/2020.
 //
 //
 
@@ -21,6 +21,7 @@ extension Payment {
     @NSManaged public var paymentReceived: Bool
     @NSManaged public var place: String?
     @NSManaged public var uid: UUID?
+    @NSManaged public var currencySymbol: String?
     @NSManaged public var receiptPhoto: ReceiptPhoto?
 
 }

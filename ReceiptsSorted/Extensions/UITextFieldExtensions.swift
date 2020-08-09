@@ -27,11 +27,11 @@ extension UITextField {
     
     
     ///Sets parameters for AmountPaid TextField in PaymentVC
-    func setInputAmountPaid() {
+    func setInputAmountPaid(with currencySymbol: String) {
         leftViewMode = .always
         
         let currencyLabel = UILabel()
-        currencyLabel.text = "£ "
+        currencyLabel.text = currencySymbol + " "
         currencyLabel.textColor = .wetAsphalt
         currencyLabel.font = UIFont(name: "Arial", size: 20)
         currencyLabel.textAlignment = .center

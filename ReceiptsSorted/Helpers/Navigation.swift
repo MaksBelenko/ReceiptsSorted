@@ -69,6 +69,7 @@ class Navigation {
             paymentVC.amountPaid = selectedPayment.amountPaid
             paymentVC.place = selectedPayment.place!
             paymentVC.date = selectedPayment.date!
+            paymentVC.currencySymbol = selectedPayment.currencySymbol!
             paymentVC.paymentAction = .UpdatePayment
             
             paymentVC.modalPresentationStyle = .fullScreen

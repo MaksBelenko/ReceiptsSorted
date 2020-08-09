@@ -127,7 +127,7 @@ class PDFPreviewViewController: UIViewController {
         for p in passedPayments {
             rows.append(PDFTableRow([p.date?.toString(as: .long) ?? "",
                                      p.place ?? "",
-                                     "£\(p.amountPaid.ToString(decimals: 2))"]))
+                                     "\(p.currencySymbol!)\(p.amountPaid.ToString(decimals: 2))"]))
         }
         
         do {

@@ -30,8 +30,8 @@ class AmountAnimation {
     
     /**
      Animates circle graphics as well as UILabel binded to overallAmount
-     - Parameter sValue: Value from which the animation should start (in £)
-     - Parameter endValue: Value at which animation should end (in £)
+     - Parameter sValue: Value from which the animation should start
+     - Parameter endValue: Value at which animation should end
      */
     func animateCircle(from sValue: Float? = nil , to endValue: Float) {
         let startValue = (sValue == nil) ? trackStartValue : sValue!

@@ -17,8 +17,10 @@ class PaymentViewController: UIViewController, UITextFieldDelegate {
     var amountPaid: Float = 0.0
     var place: String = ""
     var date: Date = Date()
+    var currencySymbol: String = ""
     
     let notificationCenter = NotificationCenter.default
+    private let settings = SettingsUserDefaults.shared
     private let buttonAnimations = AddButtonAnimations()
     private let imageGesturesViewModel = ImageGestures()
     
@@ -66,8 +68,12 @@ class PaymentViewController: UIViewController, UITextFieldDelegate {
         amountPaidTextField.delegate = self
         placeOfPurchaseTextField.delegate = self
     
-        self.dateTextField.setInputViewDatePicker(target: self, selector: #selector(pressedDoneDatePicker))
-        self.amountPaidTextField.setInputAmountPaid()
+        dateTextField.setInputViewDatePicker(target: self, selector: #selector(pressedDoneDatePicker))
+        
+        if paymentAction == .AddPayment {
+            currencySymbol = settings.getCurrency()!
+        }
+        amountPaidTextField.setInputAmountPaid(with: currencySymbol)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -226,7 +232,12 @@ class PaymentViewController: UIViewController, UITextFieldDelegate {
         amountPaid = amountPaidTextField.text!.floatValue
         place = placeOfPurchaseTextField.text!
         
-        let paymentInfo = PaymentInformation(amountPaid: amountPaid, place: place, date: date, receiptImage: receiptImageView.image ?? UIImage())
+        let paymentInfo = PaymentInformation(amountPaid: amountPaid,
+                                             place: place,
+                                             date: date,
+                                             receiptImage: receiptImageView.image ?? UIImage(),
+                                             currencySymbol: currencySymbol)
+        
         postNotification(action: paymentAction, info: paymentInfo)
         
         if (paymentAction == .AddPayment) {
