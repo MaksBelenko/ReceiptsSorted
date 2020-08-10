@@ -99,7 +99,7 @@ class PDFPreviewViewController: UIViewController {
     // MARK: - PDF Creation
     
     private func createPDFPreviewDocument() {
-        let pdfData = createPDF()
+        pdfData = createPDF()
         pdfView.document = PDFDocument(data: pdfData)
 //        pdfView.interpolationQuality = .low // for images
     }
@@ -179,7 +179,8 @@ class PDFPreviewViewController: UIViewController {
 
 
         do {
-            try pdfData!.write(to: temporaryFileURL) //Write document to defaults storage
+            guard let data = pdfData else { return }
+            try data.write(to: temporaryFileURL) //Write document to defaults storage
 
             let activityViewController = UIActivityViewController(activityItems: [temporaryFileURL], applicationActivities: nil)
             present(activityViewController, animated: true, completion: nil)

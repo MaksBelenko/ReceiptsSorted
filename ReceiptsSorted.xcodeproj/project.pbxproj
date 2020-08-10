@@ -222,6 +222,7 @@
 		B5AD17DC240464CB00BB3069 /* TopGraphicsShapes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopGraphicsShapes.swift; sourceTree = "<group>"; };
 		B5AD17E22404757300BB3069 /* CardGesturesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardGesturesViewModel.swift; sourceTree = "<group>"; };
 		B5B3378824E0A10800116183 /* WarningPopoverHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarningPopoverHelper.swift; sourceTree = "<group>"; };
+		B5B3378A24E0BA6F00116183 /* WorkReceipts.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WorkReceipts.entitlements; sourceTree = "<group>"; };
 		B5B6757F23CF70F400291D31 /* TextRecogniser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextRecogniser.swift; sourceTree = "<group>"; };
 		B5B6758123CF724000291D31 /* ImageManipulator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageManipulator.swift; sourceTree = "<group>"; };
 		B5BA07652485A4FE00097E2C /* UIFontExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFontExtensions.swift; sourceTree = "<group>"; };
@@ -368,6 +369,7 @@
 		B5377BFE23A82E280010B144 /* ReceiptsSorted */ = {
 			isa = PBXGroup;
 			children = (
+				B5B3378A24E0BA6F00116183 /* WorkReceipts.entitlements */,
 				B5743AC124D21BF500930030 /* SupportingFiles */,
 				B565673E24831554000A6639 /* Adapters */,
 				B5A4357A24DE039A00559908 /* Operations */,
@@ -955,6 +957,7 @@
 			baseConfigurationReference = 0684F8876FBD25DAACD5A6E3 /* Pods-ReceiptsSorted.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = ReceiptsSorted/WorkReceipts.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = KELPFZXFAP;
 				INFOPLIST_FILE = ReceiptsSorted/SupportingFiles/Info.plist;
@@ -974,6 +977,7 @@
 			baseConfigurationReference = B5470F2B20BCB16126F229BA /* Pods-ReceiptsSorted.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = ReceiptsSorted/WorkReceipts.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = KELPFZXFAP;
 				INFOPLIST_FILE = ReceiptsSorted/SupportingFiles/Info.plist;
