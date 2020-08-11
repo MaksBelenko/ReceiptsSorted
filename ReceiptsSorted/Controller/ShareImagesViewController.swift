@@ -71,11 +71,12 @@ class ShareImagesViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.title = "Images Viewer"
+        view.backgroundColor = .whiteGrayDynColour
+        
         viewModel = ShareImagesViewModel(payments: passedPayments)
         viewModel.startPhotosZipOperations()
         
-        self.title = "Images Viewer"
-        view.backgroundColor = .white
         setupNavigationBar()
         setupBarButtons()
         
@@ -98,7 +99,7 @@ class ShareImagesViewController: UIViewController {
         if #available(iOS 13.0, *) {
             let appearance = UINavigationBarAppearance()
             appearance.configureWithOpaqueBackground()
-            appearance.backgroundColor = UIColor.wetAsphalt
+            appearance.backgroundColor = UIColor.navigationColour
             appearance.titleTextAttributes = [.foregroundColor: UIColor.white]
             navigationController?.navigationBar.standardAppearance = appearance
             navigationController?.navigationBar.scrollEdgeAppearance = appearance

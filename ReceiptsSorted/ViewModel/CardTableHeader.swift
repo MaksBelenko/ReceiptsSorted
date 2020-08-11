@@ -11,6 +11,7 @@ import UIKit.UIView
 class CardTableHeader {
     
     var headerHeight: CGFloat = 40
+    private let headerBackgroundColor = UIColor.whiteGrayDynColour
     private var sections = [PaymentTableSection]()
     
     
@@ -43,15 +44,15 @@ class CardTableHeader {
      - Parameter sortedBy: Sort method
      - Parameter width: Width of the section header view
      */
-    func getSectionHeaderView(for section: Int, sortedBy: SortType, width: CGFloat) -> UIView {
+    func getSectionHeaderView(for section: Int, sortedBy sortType: SortType, width: CGFloat) -> UIView {
         
         let sectionView = UIView(frame: CGRect(x: 0, y: 0, width: width, height: headerHeight)) //set these values as necessary
-        sectionView.backgroundColor = .white
+        sectionView.backgroundColor = headerBackgroundColor
         
 //        let yOffset: CGFloat = (section == 0) ? 0 : 10
         
         let label = UILabel(frame: CGRect(x: 0, y: 20, width: width, height: 20))
-        label.text = getSectionTitle(for: section, sortedBy: sortedBy)
+        label.text = getSectionTitle(for: section, sortedBy: sortType)
         label.textColor = UIColor.flatOrange // Flat UI Orange
         label.font = UIFont.systemFont(ofSize: 17, weight: .semibold)
         sectionView.addSubview(label)

@@ -57,7 +57,7 @@ class PaymentViewController: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
 
         receiptImageView.image = passedImage
-        
+    
         setupNavigationBar()
         
         bottomView.layer.cornerRadius = 13
@@ -67,6 +67,7 @@ class PaymentViewController: UIViewController, UITextFieldDelegate {
         setupTextFields()
         setupAddButton()
         setupGestures()
+        configureColors()
         
         amountPaidTextField.delegate = self
         placeOfPurchaseTextField.delegate = self
@@ -92,6 +93,18 @@ class PaymentViewController: UIViewController, UITextFieldDelegate {
         removeKeyboardObservers()
     }
     
+    
+    
+    // MARK: -
+    private func configureColors() {
+        bottomView.backgroundColor = .whiteGrayDynColour
+        view.backgroundColor = .whiteBlackDynColour
+        
+        let textColour = UIColor.formTextColour
+        placeOfPurchaseTextField.textColor = textColour
+        amountPaidTextField.textColor = textColour
+        dateTextField.textColor = textColour
+    }
     
     
     //MARK: - Keyboard
@@ -134,7 +147,7 @@ class PaymentViewController: UIViewController, UITextFieldDelegate {
         if #available(iOS 13.0, *) {
             let appearance = UINavigationBarAppearance()
             appearance.configureWithOpaqueBackground()
-            appearance.backgroundColor = UIColor.wetAsphalt
+            appearance.backgroundColor = UIColor.navigationColour
             appearance.titleTextAttributes = [.foregroundColor: UIColor.white]
             topNavigationBar.standardAppearance = appearance
             topNavigationBar.scrollEdgeAppearance = appearance
@@ -179,13 +192,14 @@ class PaymentViewController: UIViewController, UITextFieldDelegate {
     func drawBottomLine(for textField: UITextField) {
         let bottomLine = CALayer()
         bottomLine.frame = CGRect(x: 0.0, y: textField.frame.height - 7, width: textField.frame.width, height: 1.0)
-        bottomLine.backgroundColor = UIColor.wetAsphalt.cgColor
+        bottomLine.backgroundColor = UIColor.flatBlue.cgColor
         textField.borderStyle = UITextField.BorderStyle.none
         textField.layer.addSublayer(bottomLine)
     }
     
     
     func setupAddButton() {
+        addButton.backgroundColor = .flatOrange
         addButton.layer.cornerRadius = addButton.frame.size.height/4
         addButton.layer.applyShadow(color: .flatOrange, alpha: 0.5, x: 1, y: 4, blur: 6)
         
@@ -229,8 +243,7 @@ class PaymentViewController: UIViewController, UITextFieldDelegate {
     
     @IBAction func pressedAddButton(_ sender: UIButton) {
         
-        if !textFieldsHaveValues() {
-            Alert.shared.showEmptyFieldsAlert(for: self)
+        if successfullFieldValidation() == false {
             return
         }
         
@@ -259,14 +272,38 @@ class PaymentViewController: UIViewController, UITextFieldDelegate {
                                                       .info   : info]
         notificationCenter.post(name: .didReceivePaymentData, object: self, userInfo: userInfo)
     }
+
     
+    
+    private func successfullFieldValidation() -> Bool  {
+        if textFieldsHaveValues() == false {
+            Alert.shared.showEmptyFieldsAlert(for: self)
+            return false
+        }
+        
+        if priceOverflow() {
+            Alert.shared.showPriceOverflow(for: self, currencySymbol: currencySymbol)
+            return false
+        }
+        
+        return true
+    }
+    
+    
+    private func priceOverflow() -> Bool {
+        if amountPaidTextField.text!.floatValue < 0
+            || amountPaidTextField.text!.floatValue > 1_000_000 {
+            return true
+        }
+        
+        return false
+    }
     
     private func textFieldsHaveValues() -> Bool {
         if amountPaidTextField.text == "" { return false }
         if placeOfPurchaseTextField.text == "" { return false }
         return true
     }
-    
     
     
     //MARK: - Bar Buttons Actions

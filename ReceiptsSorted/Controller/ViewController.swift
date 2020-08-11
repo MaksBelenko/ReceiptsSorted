@@ -42,6 +42,16 @@ class ViewController: UIViewController  {
      }()
     
     
+//    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+//       if #available(iOS 13.0, *) {
+//           if (traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection)) {
+//               // ColorUtils.loadCGColorFromAsset returns cgcolor for color name
+//            let t = 5
+////               layer.borderColor = ColorUtils.loadCGColorFromAsset(colorName: "CellBorderColor")
+//           }
+//       }
+//    }
+    
     //MARK: - Status Bar
     
     //set Status Bar icons to white
@@ -55,6 +65,8 @@ class ViewController: UIViewController  {
         super.viewDidLoad()
         
         print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
+        
+        view.backgroundColor = .wetAsphalt
         
         DispatchQueue.global(qos: .background).async {
             FileManager.default.cleanTmpDirectory()

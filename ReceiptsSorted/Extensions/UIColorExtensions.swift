@@ -37,12 +37,45 @@ extension UIColor {
     
     static let superLightFlatOrange = UIColor(rgb: 0xF39C12).withAlphaComponent(0.1)
     static let lightFlatOrange = UIColor(rgb: 0xF39C12).withAlphaComponent(0.8)
-    
-    static let flatOrange = UIColor(rgb: 0xF39C12)
-    static let wetAsphalt = UIColor(rgb: 0x34495E)
 
-    static let contourFlatColour = UIColor(rgb: 0x4D6379)
+    static let indicatorContourFlatColour = UIColor(rgb: 0x4D6379)
     
     static let tickSwipeActionColour = UIColor(rgb: 0x3C556E)
     static let graySwipeColour = UIColor(rgb: 0x676767)
+    
+    
+    static let flatBlue = UIColor(rgb: 0x34495E)
+    static let flatOrangeLight = UIColor(rgb: 0xF39C12)
+    static let flatOrangeDark = UIColor(rgb: 0xDD8B07)
+    
+    static let wetAsphalt = UIColor.dynamic(light: .flatBlue, dark: .black)
+    static let flatOrange = UIColor.dynamic(light: .flatOrangeLight, dark: .flatOrangeDark)
+    
+    static let formTextColour = UIColor.dynamic(light: .flatBlue, dark: .white)
+    static let whiteGrayDynColour = UIColor.dynamic(light: .white, dark: .systemGray6)
+    static let whiteBlackDynColour = UIColor.dynamic(light: .white, dark: .black)
+    static let navigationColour = UIColor.dynamic(light: .flatBlue, dark: .systemGray6)
+    
+    static let blackWhiteShadowColour = UIColor.dynamic(light: .black, dark: .white)
+
+    
+    static func dynamic(light: UIColor, dark: UIColor) -> UIColor {
+
+        if #available(iOS 13.0, *) {
+            return UIColor(dynamicProvider: {
+                switch $0.userInterfaceStyle {
+                case .dark:
+                    return dark
+                case .light, .unspecified:
+                    return light
+                @unknown default:
+                    assertionFailure("Unknown userInterfaceStyle: \($0.userInterfaceStyle)")
+                    return light
+                }
+            })
+        }
+
+        // iOS 12 and earlier
+        return light
+    }
 }

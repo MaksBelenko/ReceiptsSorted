@@ -62,7 +62,7 @@
                 </segmentedControl>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="qpD-v6-aLx">
                     <rect key="frame" x="0.0" y="132" width="414" height="486"/>
-                    <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                    <color key="backgroundColor" systemColor="systemGray6Color" red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                 </tableView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pgg-HW-fbX" userLabel="Selection Helper View">
                     <rect key="frame" x="0.0" y="627" width="414" height="48"/>
@@ -113,7 +113,7 @@
                     </constraints>
                 </view>
             </subviews>
-            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color key="backgroundColor" systemColor="systemGray6Color" red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="pgg-HW-fbX" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="BNd-1q-nzW"/>
                 <constraint firstItem="CUx-DJ-xt5" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="HgC-ZM-0h0"/>

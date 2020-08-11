@@ -26,6 +26,7 @@ class PaymentTableViewCell: UITableViewCell {
         super.awakeFromNib()
         
         self.accessoryType = .disclosureIndicator
+        self.backgroundColor = .whiteGrayDynColour
         
         tickLabel.layer.borderColor = tickColor.cgColor
         tickLabel.layer.borderWidth = 1

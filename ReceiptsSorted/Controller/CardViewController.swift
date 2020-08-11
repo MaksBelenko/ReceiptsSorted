@@ -49,6 +49,10 @@ class CardViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        view.backgroundColor = .whiteGrayDynColour
+        tblView.backgroundColor = .whiteGrayDynColour
+        
         configureTableView()
         setupSearchBar()
         setupNoReceiptsImage()
@@ -100,14 +104,6 @@ class CardViewController: UIViewController {
     }
     
     
-//    func setupDataSource() -> UITableViewDiffableDataSource<String, Payment> {
-//      return UITableViewDiffableDataSource(tableView: tblView) { [unowned self] (tableView, indexPath, payment) -> UITableViewCell? in
-//        let cell = tableView.dequeueReusableCell(withIdentifier: self.paymentCellIdentifier, for: indexPath) as! PaymentTableViewCell
-//        return self.cardVM.setup(cell: cell, with: payment)
-//      }
-//    }
-    
-    
     private func setupSearchBar() {
         searchBar.delegate = self
         searchBar.returnKeyType = UIReturnKeyType.done
@@ -131,8 +127,9 @@ class CardViewController: UIViewController {
     }
     
     private func setupSelectionHelperView() {
+        selectionHelperView.backgroundColor = .whiteGrayDynColour
         selectionHelperView.layer.cornerRadius = 25
-        selectionHelperView.layer.applyShadow(color: .black, alpha: 0.1, x: 0, y: -3, blur: 3)
+        selectionHelperView.layer.applyShadow(color: .blackWhiteShadowColour, alpha: 0.1, x: 0, y: -3, blur: 3)
         selectionHelperView.clipsToBounds = false
         
         bottomSHViewConstraint.isActive = false
@@ -421,6 +418,19 @@ extension CardViewController: SwipeActionDelegate {
         case .Untick:
             cardViewModel.updateField(for: payment, fieldType: .PaymentReceived, with: false) { [unowned self] in
                 self.cardViewModel.applyActionToTableView(indexPath: indexPath, action: action)
+            }
+        }
+    }
+}
+
+
+// MARK: - TraitCollection
+extension CardViewController {
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        if #available(iOS 13.0, *) {
+            if (traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection)) {
+                
+                selectionHelperView.layer.shadowColor = UIColor.blackWhiteShadowColour.cgColor
             }
         }
     }

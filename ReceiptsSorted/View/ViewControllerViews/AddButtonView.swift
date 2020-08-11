@@ -11,15 +11,29 @@ import UIKit
 class AddButtonView: UIView {
     
     let buttonAnimations = AddButtonAnimations()
-    var addButton: UIButton!
+    
+    lazy var addButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.backgroundColor = UIColor.flatOrange //orange Flat UI
+        button.setTitle("+", for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 45)
+        button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 7, right: 0)
+        button.setTitleColor(.white, for: .normal)
+//        button.addTarget(target, action: action, for: UIControl.Event.touchUpInside)
+        button.layer.applyShadow(color: .flatOrange, alpha: 0.5, x: 1, y: 2, blur: 4)
+        button.layer.cornerRadius = 16
+        button.layer.transform = CATransform3DMakeRotation(0, 1, 0, 0)
+        buttonAnimations.startAnimatingPressActions(for: button)
+        
+        return button
+    }()
     
     
     
     
+    // MARK: - Lifecycle
     override init(frame: CGRect) {
         super.init(frame: CGRect())
-        
-        configureAddButton()
         configureView()
     }
     
@@ -28,23 +42,7 @@ class AddButtonView: UIView {
     }
     
     
-    
-    private func configureAddButton() {
-        addButton = UIButton(type: .system)
-        addButton.backgroundColor = UIColor.flatOrange //orange Flat UI
-        addButton.setTitle("+", for: .normal)
-        addButton.titleLabel?.font = UIFont.systemFont(ofSize: 45)
-        addButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 7, right: 0)
-        addButton.setTitleColor(.white, for: .normal)
-//        addButton.addTarget(target, action: action, for: UIControl.Event.touchUpInside)
-        addButton.layer.applyShadow(color: .flatOrange, alpha: 0.5, x: 1, y: 2, blur: 4)
-        addButton.layer.cornerRadius = 16
-        addButton.layer.transform = CATransform3DMakeRotation(0, 1, 0, 0)
-        buttonAnimations.startAnimatingPressActions(for: addButton)
-    }
-    
-    
-    
+    // MARK: - Configure UI
     private func configureView() {
         /* Adding Transform Layer to enable 3D animation*/
         var perspective = CATransform3DIdentity
@@ -57,7 +55,6 @@ class AddButtonView: UIView {
         
         /* Add Button to button view and adjust corner radius*/
         addSubview(addButton)
-        
         addButton.translatesAutoresizingMaskIntoConstraints = false
         addButton.topAnchor.constraint(equalTo: topAnchor).isActive = true
         addButton.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
@@ -65,4 +62,17 @@ class AddButtonView: UIView {
         addButton.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
     }
 
+}
+
+
+// MARK: - TraitCollection
+extension AddButtonView {
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        if #available(iOS 13.0, *) {
+            if (traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection)) {
+                let flatOrangeCgColor = UIColor.flatOrange.cgColor
+                addButton.layer.shadowColor = flatOrangeCgColor
+            }
+        }
+    }
 }

@@ -18,19 +18,12 @@ class TopGraphicsView: UIView {
     private var amountSumLabel: UILabel!
     private var currencyLabel: UILabel!
     private var daysLeftLabel: UILabel!
+//    private let indicatorColour = UIColor.flatOrange.resolvedColor(with: self.traitCollection).cgColor
     
     private let settings = SettingsUserDefaults.shared
     
     var amountAnimation: AmountAnimation!
     var dateAnimation: DateAnimation!
-    
-//    let warningButton: UIButton = {
-//        let button = UIButton(type: .system)
-//        button.tintColor = .systemYellow
-//        button.setBackgroundImage(UIImage(systemName: "exclamationmark.triangle"), for: .normal)
-//        button.addTarget(self, action: #selector(warningButtonPressed), for: .touchUpInside)
-//        return button
-//    }()
     
     
 
@@ -76,8 +69,8 @@ class TopGraphicsView: UIView {
     private func configureUI() {
         /* Create circles; region is [-pi/2 ; pi*3/2] */
         let mainGraphics = TopGraphicsShapes(frameWidth: viewWidth, frameHeight: viewHeight)
-        let contourCircle = mainGraphics.createCircleLine(from: -CGFloat.pi/2, to: CGFloat.pi*3/2, ofColour: UIColor.contourFlatColour.cgColor)
-        indicatorCircle = mainGraphics.createCircleLine(from: -CGFloat.pi/2, to: CGFloat.pi*3/2, ofColour: UIColor.flatOrange.cgColor)
+        let contourCircle = mainGraphics.createCircleLine(from: -CGFloat.pi/2, to: CGFloat.pi*3/2, ofColour: UIColor.indicatorContourFlatColour.cgColor)
+        indicatorCircle = mainGraphics.createCircleLine(from: -CGFloat.pi/2, to: CGFloat.pi*3/2, ofColour: UIColor.flatOrange.resolvedColor(with: self.traitCollection).cgColor)
         
         layer.addSublayer(contourCircle)
         layer.addSublayer(indicatorCircle)
@@ -120,7 +113,7 @@ class TopGraphicsView: UIView {
         
         
         /* Creating days bar */
-        let contourBar = mainGraphics.createHorizontalBar(colour: .contourFlatColour, offset: offsetRight)
+        let contourBar = mainGraphics.createHorizontalBar(colour: .indicatorContourFlatColour, offset: offsetRight)
         dayBar = mainGraphics.createHorizontalBar(percentage: 1, colour: .flatOrange, offset: offsetRight)
         layer.addSublayer(contourBar)
         layer.addSublayer(dayBar)
@@ -138,28 +131,34 @@ class TopGraphicsView: UIView {
         daysLeftLabel.textAlignment = .center
 
         addSubview(daysLeftLabel)
-        
-        
-//        /* Configure multiple currency warning */
-//        addSubview(warningButton)
-//        warningButton.translatesAutoresizingMaskIntoConstraints = false
-//        warningButton.topAnchor.constraint(equalTo: topAnchor).isActive = true
-//        warningButton.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
-//        warningButton.heightAnchor.constraint(equalToConstant: 25).isActive = true
-//        warningButton.widthAnchor.constraint(equalToConstant: 25).isActive = true
-        
+
     }
 }
 
 
 // MARK: - CurrencyChangedProtocol
 extension TopGraphicsView {
-//    func currencySettingChanged(to currencySymbol: String, name currencyName: String) {
-//        setCurrencyLabelText(with: currencySymbol)
-//    }
-    
+
     func setCurrencyLabelText(with currencySymbol: String) {
         currencyLabel.font = (currencySymbol.count > 2) ? UIFont.arial(ofSize: 30) : UIFont.arial(ofSize: 46)
         currencyLabel.text = currencySymbol
+    }
+}
+
+
+// MARK: - TraitCollection
+extension TopGraphicsView {
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        if #available(iOS 13.0, *) {
+            if (traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection)) {
+                
+                let flatOrangeCgColor = UIColor.flatOrange.cgColor
+                indicatorCircle.strokeColor = flatOrangeCgColor
+                indicatorCircle.shadowColor = flatOrangeCgColor
+                
+                dayBar.backgroundColor = flatOrangeCgColor
+                dayBar.shadowColor = flatOrangeCgColor
+            }
+        }
     }
 }

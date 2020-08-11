@@ -32,7 +32,7 @@ extension UITextField {
         
         let currencyLabel = UILabel()
         currencyLabel.text = currencySymbol + "  "
-        currencyLabel.textColor = .wetAsphalt
+        currencyLabel.textColor = .formTextColour
         currencyLabel.font = UIFont(name: "Arial", size: 20)
         currencyLabel.textAlignment = .center
         leftView = currencyLabel

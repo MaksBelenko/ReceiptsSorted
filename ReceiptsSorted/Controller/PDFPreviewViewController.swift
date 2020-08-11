@@ -62,7 +62,7 @@ class PDFPreviewViewController: UIViewController {
         if #available(iOS 13.0, *) {
             let appearance = UINavigationBarAppearance()
             appearance.configureWithOpaqueBackground()
-            appearance.backgroundColor = UIColor.wetAsphalt
+            appearance.backgroundColor = UIColor.navigationColour
             appearance.titleTextAttributes = [.foregroundColor: UIColor.white]
             topNavigationBar.standardAppearance = appearance
             topNavigationBar.scrollEdgeAppearance = appearance
@@ -77,7 +77,7 @@ class PDFPreviewViewController: UIViewController {
     
     
     private func setupPDFView() {
-        pdfView.backgroundColor = .white
+        pdfView.backgroundColor = .whiteGrayDynColour
         
         previewView.addSubview(pdfView)
 
@@ -105,12 +105,14 @@ class PDFPreviewViewController: UIViewController {
     }
     
     private func createPDF() -> Data {
+        let pdfColour = UIColor.flatBlue
+        
         let pdf = PDFBuilder()
         pdf.withMetaTitle("Receipts")
         pdf.withMetaAuthor("WorkReceipts")
         pdf.withMetaCreator("WorkReceipts")
         
-        pdf.addFooter(pagingEnabled: true, text: "", colour: .wetAsphalt)
+        pdf.addFooter(pagingEnabled: true, text: "", colour: pdfColour)
         
         pdf.addImage(image: #imageLiteral(resourceName: "app-noBG-tight"), maxWidth: 60, alignment: .right)
         pdf.addSpace(inches: -0.6)
@@ -135,7 +137,7 @@ class PDFPreviewViewController: UIViewController {
                              rows: rows,
                              tableStyle: .Modern,
                              font: .systemFont(ofSize: 11),
-                             tableColour: .wetAsphalt)
+                             tableColour: pdfColour)
         } catch {
             Log.exception(message: "Error creating PDF table, Error: \(error.localizedDescription)")
         }
