@@ -21,6 +21,7 @@ class CardViewController: UIViewController {
     @IBOutlet weak var selectionHelperView: UIView!
     @IBOutlet weak var bottomSHViewConstraint: NSLayoutConstraint!
     @IBOutlet weak var nextButton: UIButton!
+    @IBOutlet weak var cancelButton: UIButton!
     
     
     fileprivate let paymentCellIdentifier = "paymentCell"
@@ -344,7 +345,10 @@ class CardViewController: UIViewController {
     func selectingPayments(mode: Mode) {
         setEmailTip(to: mode) // show email tip
         
-        cardGesturesViewModel.animateTransitionIfNeeded(with: nextState, for: 0.6, withDampingRatio: 1)
+        cancelButton.isEnabled = false
+        cardGesturesViewModel.animateTransitionIfNeeded(with: nextState, for: 0.5, withDampingRatio: 1) {
+            self.cancelButton.isEnabled = true // reanable the button once the animation finished
+        }
     
         cardViewModel.firstVisibleCells = tblView.visibleCells.map { $0 as! PaymentTableViewCell }
         cardViewModel.isSelectionEnabled.value = (mode == .Enable) ? true : false

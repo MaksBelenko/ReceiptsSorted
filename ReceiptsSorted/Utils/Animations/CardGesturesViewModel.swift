@@ -107,7 +107,7 @@ class CardGesturesViewModel: NSObject {
     - Parameter state: The card state which is either ".Expanded" or ".Collapsed".
     - Parameter duration: Duration of the animation.
     */
-    func animateTransitionIfNeeded (with state: CardState, for duration: TimeInterval, withDampingRatio dumpingRatio: CGFloat) {
+    func animateTransitionIfNeeded (with state: CardState, for duration: TimeInterval, withDampingRatio dumpingRatio: CGFloat, completion: (() -> ())? = nil) {
 
 //        print("next state = \(nextState)")
         
@@ -128,6 +128,7 @@ class CardGesturesViewModel: NSObject {
         frameAnimator.addCompletion { _ in
             cardVisible = !cardVisible
             self.runningAnimations.removeAll()
+            completion?()
         }
 
         
