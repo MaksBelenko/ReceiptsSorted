@@ -82,7 +82,7 @@ class ViewController: UIViewController  {
         settings.addCurrencyChangedListener(self)
         setupWarningButton()
         
-        cardViewController.cardViewModel.showCurrencyWarningText.onValueChanged { [weak self] showWarning in
+        cardViewController.cardViewModel.showCurrencyWarningSign.onValueChanged { [weak self] showWarning in
             UIView.animate(withDuration: 0.15) {
                 self?.warningButton.alpha = (showWarning) ? 1 : 0
             }

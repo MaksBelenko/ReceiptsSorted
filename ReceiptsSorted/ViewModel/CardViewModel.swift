@@ -16,7 +16,7 @@ class CardViewModel {
     // Selection enabled
     var selectAllButtonText: Observable<String> = Observable("Select All")
     var isSelectionEnabled: Observable<Bool> = Observable(false)
-    var showCurrencyWarningText: Observable<Bool> = Observable(false)
+    var showCurrencyWarningSign: Observable<Bool> = Observable(false)
     var firstVisibleCells: [PaymentTableViewCell] = []
     var selectedPaymentsUIDs = SelectedUIDs()
     
@@ -477,7 +477,7 @@ extension CardViewModel: CurrencyChangedProtocol {
     func checkCurrenciesFromDB() {
         database.countDifferentCurrencies(for: .Pending) { [unowned self] currencies in
             Log.debug(message: "Following currencies retrieved: \(currencies)")
-            self.showCurrencyWarningText.value = (currencies.count > 1
+            self.showCurrencyWarningSign.value = (currencies.count > 1
                 || (!currencies.contains(self.settings.getCurrency().name!) && currencies.count != 0)) ? true : false
         }
     }

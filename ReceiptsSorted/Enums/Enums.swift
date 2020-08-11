@@ -31,7 +31,7 @@ enum ShareImagesType {
     case RawImages, Zip
 }
 
-enum SelectionMode {
+enum Mode {
     case Enable, Disable
 }
 

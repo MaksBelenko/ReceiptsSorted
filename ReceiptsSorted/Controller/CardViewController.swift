@@ -20,6 +20,7 @@ class CardViewController: UIViewController {
     @IBOutlet weak var selectAllButton: UIButton!
     @IBOutlet weak var selectionHelperView: UIView!
     @IBOutlet weak var bottomSHViewConstraint: NSLayoutConstraint!
+    @IBOutlet weak var nextButton: UIButton!
     
     
     fileprivate let paymentCellIdentifier = "paymentCell"
@@ -43,6 +44,24 @@ class CardViewController: UIViewController {
         return imageView
     }()
     
+    
+    private var emailTipWidthConstraint: NSLayoutConstraint!
+    private let emailTipView: UIView = {
+        let view = UIView()
+        view.alpha = 0
+        view.clipsToBounds = true
+        view.backgroundColor = .systemBlue
+        view.layer.cornerRadius = 15
+        return view
+    }()
+    
+    private let emailTipLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Select receipts to export and press Next"
+        label.font = .arial(ofSize: 13)
+        label.textColor = .white
+        return label
+    }()
     
     
     //MARK: - Lifecycle
@@ -127,6 +146,8 @@ class CardViewController: UIViewController {
     }
     
     private func setupSelectionHelperView() {
+        configureEmailSelectionTipView() // configures helper view
+        
         selectionHelperView.backgroundColor = .whiteGrayDynColour
         selectionHelperView.layer.cornerRadius = 25
         selectionHelperView.layer.applyShadow(color: .blackWhiteShadowColour, alpha: 0.1, x: 0, y: -3, blur: 3)
@@ -208,6 +229,68 @@ class CardViewController: UIViewController {
     }
     
     
+    // MARK: - Email selection helper view
+    
+    private func configureEmailSelectionTipView() {
+        emailTipView.addSubview(emailTipLabel)
+        emailTipLabel.translatesAutoresizingMaskIntoConstraints = false
+        emailTipLabel.centerXAnchor.constraint(equalTo: emailTipView.centerXAnchor).isActive = true
+        emailTipLabel.centerYAnchor.constraint(equalTo: emailTipView.centerYAnchor).isActive = true
+        
+        view.addSubview(emailTipView)
+        emailTipView.translatesAutoresizingMaskIntoConstraints = false
+        emailTipView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
+        emailTipView.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        emailTipView.bottomAnchor.constraint(equalTo: selectionHelperView.topAnchor, constant: 5).isActive = true
+        
+        emailTipWidthConstraint = emailTipView.widthAnchor.constraint(equalToConstant: 0)
+        emailTipWidthConstraint.isActive = true
+    }
+    
+    
+    private func setEmailTip(to mode: Mode){
+        switch mode {
+        case .Enable:
+            let alphaAppear = setEmailTipContraints(to: .Enable)
+            
+            UIView.animate(withDuration: 0.5, animations: {
+                self.view.layoutIfNeeded()
+                self.emailTipView.alpha = alphaAppear
+            }) { _ in
+                let alphaDissapear = self.setEmailTipContraints(to: .Disable)
+                UIView.animate(withDuration: 0.5, delay: 5, options: .curveLinear, animations: {
+                    self.view.layoutIfNeeded()
+                    self.emailTipView.alpha = alphaDissapear
+                }, completion: nil)
+            }
+            
+        case .Disable:
+            emailTipView.layer.removeAllAnimations()
+            emailTipView.subviews.forEach { $0.layer.removeAllAnimations() }
+        }
+    
+    }
+    
+    
+    /// Sets constraints for email tip view and returns alpha for the view
+    private func setEmailTipContraints(to mode: Mode) -> CGFloat {
+        let alpha: CGFloat
+        emailTipWidthConstraint.isActive = false
+        switch mode {
+        case .Enable:
+            alpha = 1
+            emailTipWidthConstraint = emailTipView.widthAnchor.constraint(equalTo: emailTipLabel.widthAnchor, constant: 30)
+        case .Disable:
+            alpha = 0
+            emailTipWidthConstraint = emailTipView.widthAnchor.constraint(equalToConstant: 0)
+        }
+        emailTipWidthConstraint.isActive = true
+        
+        return alpha
+    }
+    
+    
+    
     //MARK: - TableVew Scrolling
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -258,10 +341,12 @@ class CardViewController: UIViewController {
     
     // MARK: - Selecting payments
     
-    func selectingPayments(mode: SelectionMode) {
+    func selectingPayments(mode: Mode) {
+        setEmailTip(to: mode) // show email tip
+        
         cardGesturesViewModel.animateTransitionIfNeeded(with: nextState, for: 0.6, withDampingRatio: 1)
     
-        cardViewModel.firstVisibleCells = tblView.visibleCells.map{ $0 as! PaymentTableViewCell }
+        cardViewModel.firstVisibleCells = tblView.visibleCells.map { $0 as! PaymentTableViewCell }
         cardViewModel.isSelectionEnabled.value = (mode == .Enable) ? true : false
         
         bottomSHViewConstraint.isActive = false
@@ -272,7 +357,7 @@ class CardViewController: UIViewController {
         }
         bottomSHViewConstraint.isActive = true
     }
-    
+
 }
 
 
