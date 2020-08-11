@@ -295,6 +295,13 @@ class CardViewController: UIViewController {
     //MARK: - TableVew Scrolling
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if cardViewModel.isSelectionEnabled.value && tblView.contentOffset.y < -5 {
+            Alert.shared.showDismissSelectionAlert(for: self) { [unowned self] in
+                self.selectingPayments(mode: .Disable)
+            }
+            return
+        }
+        
         if (fractionComplete > 0 && fractionComplete < 1) ||
                (nextState == .Expanded && fractionComplete < 1) ||
                (nextState == .Collapsed && fractionComplete < 0) {

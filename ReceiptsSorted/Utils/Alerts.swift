@@ -49,6 +49,20 @@ class Alert {
     }
     
     
+    /**
+     */
+    func showDismissSelectionAlert(for controller: UIViewController, onDismissClicked: @escaping () -> ()) {
+        Vibration.light.vibrate()
+        let dismissAction = UIAlertAction(title: "Dismiss", style: .destructive, handler: { _ in
+            onDismissClicked()
+        })
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        
+        let alert = AlertHelper(alertController: UIAlertController(title: "Do you want to cancel the operation?", message: nil , preferredStyle: .actionSheet),
+                                actions: [dismissAction, cancelAction])
+        alert.show(for: controller)
+    }
+    
     
     // MARK: - PDF Alerts
     
