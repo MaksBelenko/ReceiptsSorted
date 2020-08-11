@@ -214,17 +214,10 @@ class PaymentViewController: UIViewController, UITextFieldDelegate {
     
     //MARK: - Fields actions
     
-    @IBAction func startedEditingAmountPaid(_ sender: UITextField) {
+    @IBAction func onEndEditingTextField(_ sender: UITextField) {
+        let trimmedString = sender.text?.trimmingCharacters(in: .whitespaces)
+        sender.text = trimmedString
     }
-    
-    
-    @IBAction func startedEditingPlace(_ sender: UITextField) {
-    }
-    
-    
-    @IBAction func startedEditingDate(_ sender: Any) {
-    }
-    
     
     @objc func pressedDoneDatePicker() {
         if let datePicker = self.dateTextField.inputView as? UIDatePicker {
@@ -292,7 +285,7 @@ class PaymentViewController: UIViewController, UITextFieldDelegate {
     
     private func priceOverflow() -> Bool {
         if amountPaidTextField.text!.floatValue < 0
-            || amountPaidTextField.text!.floatValue > 1_000_000 {
+            || amountPaidTextField.text!.floatValue > 100_000 {
             return true
         }
         

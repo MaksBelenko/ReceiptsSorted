@@ -62,9 +62,9 @@ class ShareImagesViewModel {
     func startPhotosZipOperations() {
         guard let nameImagePair = createNameImageDataPair(for: passedPayments) else { return }
         
-        let createDirecoryOp = DirectoryCreatorOperation(directoryName: "test", in: .documentDirectory)
+        let createDirecoryOp = DirectoryCreatorOperation(directoryName: "Receipts", in: .documentDirectory)
         let addPhotosOp = AddPhotosOperation(for: nameImagePair)
-        let zipDirectoryOp = ZipDirectoryOperation(zipName: "testcheck")
+        let zipDirectoryOp = ZipDirectoryOperation(zipName: "Receipts(\(Date().toString(as: .medium)))")
         
         addPhotosOp.addDependency(createDirecoryOp)
         zipDirectoryOp.addDependency(addPhotosOp)

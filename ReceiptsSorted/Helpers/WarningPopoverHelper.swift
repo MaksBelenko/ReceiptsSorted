@@ -12,7 +12,7 @@ class WarningPopoverHelper {
     
     
     func createWarningPopover(for button: UIButton, ofSize size: CGSize) -> UIViewController {
-        let popController = WarningViewController()  //tableViewController.popoverPresentationController
+        let popController = WarningViewController()
         
         popController.preferredContentSize = size
         

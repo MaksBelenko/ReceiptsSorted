@@ -298,7 +298,7 @@
                                         <fontDescription key="fontDescription" name="ArialMT" family="Arial" pointSize="18"/>
                                         <textInputTraits key="textInputTraits"/>
                                         <connections>
-                                            <action selector="startedEditingPlace:" destination="gk0-yM-Syz" eventType="editingDidBegin" id="g0G-mD-Nth"/>
+                                            <action selector="onEndEditingTextField:" destination="gk0-yM-Syz" eventType="editingDidEnd" id="tds-Go-x0h"/>
                                         </connections>
                                     </textField>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ixh-la-Ku8">
@@ -334,9 +334,6 @@
                                                         <color key="textColor" red="0.24313725489999999" green="0.32156862749999998" blue="0.41176470590000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <fontDescription key="fontDescription" name="ArialMT" family="Arial" pointSize="17"/>
                                                         <textInputTraits key="textInputTraits"/>
-                                                        <connections>
-                                                            <action selector="startedEditingAmountPaid:" destination="gk0-yM-Syz" eventType="editingDidBegin" id="Bql-1v-ctP"/>
-                                                        </connections>
                                                     </textField>
                                                 </subviews>
                                                 <constraints>
@@ -358,9 +355,6 @@
                                                         <color key="textColor" red="0.24313725489999999" green="0.32156862749999998" blue="0.41176470590000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <fontDescription key="fontDescription" name="ArialMT" family="Arial" pointSize="17"/>
                                                         <textInputTraits key="textInputTraits"/>
-                                                        <connections>
-                                                            <action selector="startedEditingDate:" destination="gk0-yM-Syz" eventType="editingDidEnd" id="eqK-dt-Ohp"/>
-                                                        </connections>
                                                     </textField>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tlh-dv-kfP">
                                                         <rect key="frame" x="0.0" y="0.0" width="167" height="22.666666666666668"/>

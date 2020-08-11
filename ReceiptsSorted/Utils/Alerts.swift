@@ -167,7 +167,7 @@ class Alert {
     
     func showPriceOverflow(for controller: UIViewController, currencySymbol: String) {
         Vibration.error.vibrate()
-        let alert = AlertHelper(alertController: UIAlertController(title: "Price too large", message: "Price in \(currencySymbol) should less than a million", preferredStyle: .alert),
+        let alert = AlertHelper(alertController: UIAlertController(title: "Price too large", message: "Price in \(currencySymbol) should less than a 100k", preferredStyle: .alert),
                                  actions: [UIAlertAction(title: "OK", style: .default, handler: nil)])
         alert.show(for: controller)
     }

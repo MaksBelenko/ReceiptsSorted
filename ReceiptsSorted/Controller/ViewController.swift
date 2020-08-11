@@ -34,23 +34,13 @@ class ViewController: UIViewController  {
     
     
     let warningButton: UIButton = {
-         let button = UIButton(type: .system)
-         button.tintColor = .systemYellow
-         button.setBackgroundImage(UIImage(systemName: "exclamationmark.triangle"), for: .normal)
-         button.addTarget(self, action: #selector(warningButtonPressed), for: .touchUpInside)
-         return button
-     }()
-    
-    
-//    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-//       if #available(iOS 13.0, *) {
-//           if (traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection)) {
-//               // ColorUtils.loadCGColorFromAsset returns cgcolor for color name
-//            let t = 5
-////               layer.borderColor = ColorUtils.loadCGColorFromAsset(colorName: "CellBorderColor")
-//           }
-//       }
-//    }
+        let button = UIButton(type: .system)
+        button.alpha = 0
+        button.tintColor = .systemYellow
+        button.setBackgroundImage(UIImage(systemName: "exclamationmark.triangle"), for: .normal)
+        button.addTarget(self, action: #selector(warningButtonPressed), for: .touchUpInside)
+        return button
+    }()
     
     //MARK: - Status Bar
     
@@ -63,10 +53,9 @@ class ViewController: UIViewController  {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .wetAsphalt
         
         print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
-        
-        view.backgroundColor = .wetAsphalt
         
         DispatchQueue.global(qos: .background).async {
             FileManager.default.cleanTmpDirectory()
@@ -94,12 +83,16 @@ class ViewController: UIViewController  {
         setupWarningButton()
         
         cardViewController.cardViewModel.showCurrencyWarningText.onValueChanged { [weak self] showWarning in
-            self?.warningButton.alpha = (showWarning) ? 1 : 0
+            UIView.animate(withDuration: 0.15) {
+                self?.warningButton.alpha = (showWarning) ? 1 : 0
+            }
         }
         
         DispatchQueue.main.async { [unowned self] in
             self.presentOnboardingIfNeeded(animated: false)
-            
+
+            // Needs to layout first to assign nav transitions to buttonView
+            // after it is put into view hiearchy (in queue to be executed once)
             self.view.layoutIfNeeded()
             self.navControllerTransitions = NavControllerTransitions(animationCentre: self.buttonView.center)
             self.navigationController?.delegate = self.navControllerTransitions // for custom animation
@@ -275,7 +268,7 @@ class ViewController: UIViewController  {
     
     
     
-    //MARK: - Email button
+    //MARK: - @IBAction Email button
     
     @IBAction func emailButtonPressed(_ sender: UIButton) {
         fractionComplete = 0
