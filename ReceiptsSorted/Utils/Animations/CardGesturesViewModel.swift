@@ -169,11 +169,11 @@ class CardGesturesViewModel: NSObject {
         switch state {
         case .Expanded:
             searchTopAnchor = self.cardViewController.searchAndSortView.topAnchor.constraint(equalTo: self.cardViewController.view.topAnchor, constant: 15)
-            searchBottomAnchor = self.cardViewController.searchAndSortView.bottomAnchor.constraint(equalTo: self.cardViewController.SortSegmentedControl.topAnchor, constant: -15)
+            searchBottomAnchor = self.cardViewController.searchAndSortView.bottomAnchor.constraint(equalTo: self.cardViewController.paymentTypeSegControl.topAnchor, constant: -15)
             noReceiptImageCenterYAnchor = self.cardViewController.noReceiptsImage.centerYAnchor.constraint(equalTo: self.cardViewController.tblView.centerYAnchor)
         case .Collapsed:
             searchTopAnchor = self.cardViewController.searchAndSortView.topAnchor.constraint(equalTo: self.cardViewController.view.topAnchor, constant: -(self.cardViewController.searchAndSortView.frame.size.height))
-            searchBottomAnchor = self.cardViewController.searchAndSortView.bottomAnchor.constraint(equalTo: self.cardViewController.SortSegmentedControl.topAnchor, constant: -25)
+            searchBottomAnchor = self.cardViewController.searchAndSortView.bottomAnchor.constraint(equalTo: self.cardViewController.paymentTypeSegControl.topAnchor, constant: -25)
             noReceiptImageCenterYAnchor = self.cardViewController.noReceiptsImage.centerYAnchor.constraint(equalTo: self.cardViewController.tblView.centerYAnchor, constant: -cardStartPointY/2)
         }
         NSLayoutConstraint.activate([searchTopAnchor!, searchBottomAnchor!, noReceiptImageCenterYAnchor!])

@@ -11,7 +11,7 @@ import CoreData
 
 class CardViewController: UIViewController {
     
-    @IBOutlet weak var SortSegmentedControl: UISegmentedControl!
+    @IBOutlet weak var paymentTypeSegControl: UISegmentedControl!
     @IBOutlet weak var searchAndSortView: UIView!
     @IBOutlet weak var sortButton: UIButton!
     @IBOutlet weak var searchBar: UISearchBar!
@@ -89,6 +89,12 @@ class CardViewController: UIViewController {
             self?.selectAllButton.setTitle(buttonText, for: .normal)
         }
         
+        cardViewModel.segmentedControlValue.onValueChanged { [weak self] segControlValue in
+            guard let self = self else { return }
+            self.paymentTypeSegControl.selectedSegmentIndex = segControlValue
+            self.segmentedControlValueChanged(self.paymentTypeSegControl)
+        }
+        
 //        testAddNewPayments()
     }
     
@@ -130,7 +136,7 @@ class CardViewController: UIViewController {
         
         searchAndSortView.translatesAutoresizingMaskIntoConstraints = false
         searchTopAnchor = searchAndSortView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: -(searchAndSortView.frame.size.height))
-        searchBottomAnchor = searchAndSortView.bottomAnchor.constraint(equalTo: self.SortSegmentedControl.topAnchor, constant: -25)
+        searchBottomAnchor = searchAndSortView.bottomAnchor.constraint(equalTo: self.paymentTypeSegControl.topAnchor, constant: -25)
         NSLayoutConstraint.activate([searchTopAnchor!, searchBottomAnchor!])
     }
     
@@ -170,7 +176,7 @@ class CardViewController: UIViewController {
         text.append(textHelper.create(text: "Claimed ", bold: true, fontSize: 18))
         text.append(textHelper.create(text: " or to Remove it completely", bold: false, fontSize: 18))
         
-        let yOrigin = cell.frame.origin.y + cardStartPointY + SortSegmentedControl.frame.origin.y + SortSegmentedControl.frame.height
+        let yOrigin = cell.frame.origin.y + cardStartPointY + paymentTypeSegControl.frame.origin.y + paymentTypeSegControl.frame.height
         let showFrame = CGRect(x: cell.frame.origin.x,
                                y: yOrigin,
                                width: cell.frame.width,

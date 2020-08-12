@@ -144,7 +144,7 @@ class ViewController: UIViewController  {
         let onboardingVC = OnboardingViewController()
         var onboardTexts = OnboardingText() // texts
         
-        var segmentedViewFrame = cardViewController.SortSegmentedControl.frame
+        var segmentedViewFrame = cardViewController.paymentTypeSegControl.frame
         segmentedViewFrame.origin.y += cardStartPointY
         
         let indicatorsYOffset = emailButton.frame.origin.y + emailButton.frame.height

@@ -9,10 +9,10 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CardViewController" customModule="WorkReceipts" customModuleProvider="target">
             <connections>
-                <outlet property="SortSegmentedControl" destination="cOg-BH-ggV" id="hHR-aR-6zV"/>
                 <outlet property="bottomSHViewConstraint" destination="kpo-Cl-pxK" id="qvL-j7-gzA"/>
                 <outlet property="cancelButton" destination="gLK-Ik-FBt" id="h1r-c7-P1y"/>
                 <outlet property="nextButton" destination="pXG-7W-59M" id="bye-w2-Ljj"/>
+                <outlet property="paymentTypeSegControl" destination="cOg-BH-ggV" id="hHR-aR-6zV"/>
                 <outlet property="searchAndSortView" destination="CUx-DJ-xt5" id="gmU-se-PpO"/>
                 <outlet property="searchBar" destination="6Hk-WJ-MAr" id="pkn-08-oYk"/>
                 <outlet property="selectAllButton" destination="A1B-4a-56p" id="DJJ-dC-L3A"/>

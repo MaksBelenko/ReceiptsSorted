@@ -14,6 +14,7 @@ class CardViewModel {
     let database = DatabaseAsync()
     
     // Selection enabled
+    var segmentedControlValue: Observable<Int> = Observable(0)
     var selectAllButtonText: Observable<String> = Observable("Select All")
     var isSelectionEnabled: Observable<Bool> = Observable(false)
     var showCurrencyWarningSign: Observable<Bool> = Observable(false)
@@ -317,6 +318,7 @@ extension CardViewModel {
         {
         case .AddPayment:
             self.addNewPayment(paymentInfo: paymentInfo)
+            segmentedControlValue.value = 0 // set to Pending
         case .UpdatePayment:
             self.updatePayment(paymentInfo: paymentInfo)
         }
