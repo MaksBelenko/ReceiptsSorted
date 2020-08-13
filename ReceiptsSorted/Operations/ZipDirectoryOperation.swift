@@ -10,7 +10,9 @@ import Foundation
 
 final class ZipDirectoryOperation: AsyncOperation {
     
+    /// URL of the zip file
     var zipURL: URL?
+    /// Closure that runs on the main thread after Zip file is created
     var onZipCreated: ((URL?) -> ())?
     
     private let passedPath: String?
@@ -23,9 +25,9 @@ final class ZipDirectoryOperation: AsyncOperation {
         passedPath = directoryPath
     }
     
-    //    override func cancel() {
-    //        super.cancel()
-    //    }
+//    override func cancel() {
+//        super.cancel()
+//    }
     
     
     override func main() {

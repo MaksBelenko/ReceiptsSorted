@@ -25,7 +25,7 @@ class DateAnimation {
     
     private let dateIndicator: CALayer
     private var animationDuration: Double = 0.7
-    private var currentDay: Int = 1
+    private var currentDay: Int = 0
     private let maxLength: CGFloat
     private var animationStartTime = Date()
     private var overallDays: Int = 0 {
@@ -33,8 +33,6 @@ class DateAnimation {
             daysLeft.value = maxDays - Int(overallDays)
         }
     }
-    
-//    private let settings = SettingsUserDefaults.shared
     
     
     // MARK: - Initialisation
@@ -52,17 +50,12 @@ class DateAnimation {
      Initialises DatHelper with the closure to listen for day changes notifications
      */
     private func initialiseDateHelper() {
-        dateHelper = DateHelper(onDayChanged: { [unowned self] currentDay in
+        dateHelper = DateHelper(onDayChanged: { [unowned self] (currentDay, daysInPeriod) in
+            self.maxDays = daysInPeriod
             self.animateDate(to: currentDay)
-//            self.switchToNextDay()
         })
     }
      
-    
-//    private func switchToNextDay() {
-//        let animateTo = (currentDay % maxDays) + 1
-//        self.animateDate(to: animateTo)
-//    }
     
     
     // MARK: - Animation methods
@@ -71,7 +64,7 @@ class DateAnimation {
      Animates the date indicator from 0 to current day in a month
      */
     func animateToCurrentDate() {
-        maxDays = dateHelper.daysInCurrentMonth
+        maxDays = dateHelper.daysInCurrentPeriod
         animateDate(to: dateHelper.currentDay)
     }
     

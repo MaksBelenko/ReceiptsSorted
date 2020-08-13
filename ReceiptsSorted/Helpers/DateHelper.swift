@@ -10,23 +10,25 @@ import Foundation
 
 class DateHelper {
 
-    let settings = SettingsUserDefaults.shared
-    
     var currentDay: Int = 0
-    var daysInCurrentMonth: Int = 0
+    var daysInCurrentPeriod: Int = 0
     
-//    private let indicatorPeriod: IndicatorPeriod
-    private let currentDate = Date()
-    private var onDayChanged: ((Int) -> ())?
+    private let settings = SettingsUserDefaults.shared
+    private var indicatorPeriod: IndicatorPeriod
+    private var currentDate = Date()
+    /// Passes day and maxDays in current period
+    private var onDayChanged: ((Int, Int) -> ())?
     private enum NotificationMode {
         case Enable, Disable
     }
     
     
     // MARK: - Lifecycle
-    init(/*mode indicatorPeriod: IndicatorPeriod,*/ onDayChanged: ((Int) -> ())? = nil ) {
-//        self.indicatorPeriod = indicatorPeriod
+    init( onDayChanged: ((Int, Int) -> ())? = nil ) {
         self.onDayChanged = onDayChanged
+        self.indicatorPeriod = settings.getIndicatorPeriod()
+        
+        settings.addDateChangedListener(self)
         
         setDateValues()
         dayChangedNotification(.Enable)
@@ -45,12 +47,22 @@ class DateHelper {
      */
     private func setDateValues() {
         let calendar = Calendar.current
-        let calendarDate = calendar.dateComponents([.day, .month], from: currentDate)
-        currentDay = calendarDate.day!
         
-        // Gets number of days in a given month
-        let range = calendar.range(of: .day, in: .month, for: currentDate)!
-        daysInCurrentMonth = range.count
+        switch indicatorPeriod
+        {
+        case .Month:
+            let calendarDate = calendar.dateComponents([.day, .month], from: currentDate)
+            currentDay = calendarDate.day!
+            
+            // Gets number of days in a given month
+            let range = calendar.range(of: .day, in: .month, for: currentDate)!
+            daysInCurrentPeriod = range.count
+            
+        case .Week:
+            daysInCurrentPeriod = 7
+            let calendarDate = calendar.dateComponents([.weekday], from: currentDate)
+            currentDay = (calendarDate.weekday! + 1) % 7 //Sunday == 1, Saturday == 7
+        }
     }
     
     
@@ -75,14 +87,27 @@ class DateHelper {
     /**
      Executed when day changes (eg. midnight)
      */
-    @objc private func dayDidChange(notification: NSNotification) {
+    @objc private func dayDidChange() {
         guard let onDayChanged = onDayChanged else { return }
-        let newDate = Date()
-        let calendarDate = Calendar.current.dateComponents([.day], from: newDate)
         
-        DispatchQueue.main.async {
-            onDayChanged(calendarDate.day!)
+        currentDate = Date()
+        setDateValues()
+        
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            onDayChanged(self.currentDay, self.daysInCurrentPeriod)
         }
     }
     
+}
+
+
+
+// MARK: - DateSettingChangedProtocol
+extension DateHelper: DateSettingChangedProtocol {
+    
+    func dateIndicatorSettingChanged(to period: IndicatorPeriod) {
+        self.indicatorPeriod = period
+        dayDidChange()
+    }
 }

@@ -16,6 +16,8 @@ class SettingsViewController: UITableViewController {
     @IBOutlet weak var currencyPicker: UIPickerView!
     @IBOutlet weak var currencyLabel: UILabel!
     @IBOutlet weak var currencyArrowImage: UIImageView!
+    
+    @IBOutlet weak var dateIndicatorSC: UISegmentedControl!
     @IBOutlet weak var receiptsRemovalPicker: UIPickerView!
     @IBOutlet weak var receiptRemovalArrowImage: UIImageView!
     
@@ -27,12 +29,14 @@ class SettingsViewController: UITableViewController {
     private enum SettingsTableRow {
         case Currency, CurrencyPicker
         case ImageCompression
+        case IndicatorTimePeriod
         case ReceiptRemoval, ReceiptRemovalPicker
     }
     
     private let tableRow: [SettingsTableRow : IndexPath] = [ .Currency             : IndexPath(row: 0, section: 0),
                                                              .CurrencyPicker       : IndexPath(row: 1, section: 0),
                                                              .ImageCompression     : IndexPath(row: 2, section: 0),
+                                                             .IndicatorTimePeriod  : IndexPath(row: 3, section: 0),
                                                              .ReceiptRemoval       : IndexPath(row: 0, section: 1),
                                                              .ReceiptRemovalPicker : IndexPath(row: 1, section: 1)]
     
@@ -46,6 +50,8 @@ class SettingsViewController: UITableViewController {
         setup(picker: currencyPicker, to: currencyPickerHelper)
         receiptRemovalPickerHelper.delegate = self
         setup(picker: receiptsRemovalPicker, to: receiptRemovalPickerHelper)
+        
+        dateIndicatorSC.selectedSegmentIndex = SettingsUserDefaults.shared.getIndicatorPeriod().rawValue
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -84,6 +90,8 @@ class SettingsViewController: UITableViewController {
         case tableRow[.ReceiptRemovalPicker]:
             return receiptsRemovalPicker.isHidden ? 0.0 : 130.0
         case tableRow[.ImageCompression]:
+            return 97.0
+        case tableRow[.IndicatorTimePeriod]:
             return 97.0
         default:
             return 44
@@ -135,6 +143,10 @@ class SettingsViewController: UITableViewController {
         print(sender.selectedSegmentIndex)
     }
     
+    @IBAction func timePeriodChanged(_ sender: UISegmentedControl) {
+        let indicatorPeriod = sender.getIndicatorPeriod()
+        SettingsUserDefaults.shared.setIndicatorPeriod(to: indicatorPeriod)
+    }
 }
 
 

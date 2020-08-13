@@ -10,12 +10,15 @@ import UIKit.UIImage
 
 extension AddPhotosOperation: UrlPathProvider {}
 
+// Operation that adds photos to a directory using array of tuples
 final class AddPhotosOperation: AsyncOperation {
     
-    
+    /// Directory path where the photos are written to
     var directoryPath: String?
+    /// URLs of all the photos
     var photosURLs: [URL] = []
-    
+    /// Closure that runs on the main thread when all
+    /// the photos are written to a directory
     var onPhotosAdded: (([URL]?) -> ())?
     
     /// Image dictionary should contain name of the file

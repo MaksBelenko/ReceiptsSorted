@@ -24,4 +24,17 @@ extension UISegmentedControl {
             return .All
         }
     }
+    
+    
+    
+    func getIndicatorPeriod() -> IndicatorPeriod {
+        switch self.selectedSegmentIndex {
+        case 0:
+            return .Week
+        case 1:
+            return .Month
+        default:
+            return .Month
+        }
+    }
 }

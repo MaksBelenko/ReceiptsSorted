@@ -55,6 +55,15 @@ extension SettingsUserDefaults {
     }
     
     /**
+     Removes listener from date changed delegates
+     - Parameter object: Object to be removed
+     */
+    func removeDateListener(_ object: DateSettingChangedProtocol) {
+        multicastDelegate.removeDelegate(object)
+    }
+    
+    
+    /**
      Invokes all the delegates with changes
      - Parameter period: New period that is being saved to UserDefaults
      */
@@ -62,13 +71,5 @@ extension SettingsUserDefaults {
         multicastDelegate.invokeDelegates {
             $0.dateIndicatorSettingChanged(to: period)
         }
-    }
-    
-    /**
-     Removes listener from date changed delegates
-     - Parameter object: Object to be removed
-     */
-    func removeDateListener(_ object: DateSettingChangedProtocol) {
-        multicastDelegate.removeDelegate(object)
     }
 }

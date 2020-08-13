@@ -76,7 +76,6 @@
 		B59EB41524D9E57D00AB16FC /* SettingsUserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59EB41424D9E57D00AB16FC /* SettingsUserDefaults.swift */; };
 		B59EB41E24D9F59500AB16FC /* MulticastDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59EB41D24D9F59500AB16FC /* MulticastDelegate.swift */; };
 		B5A4357D24DE03EC00559908 /* AsyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A4357C24DE03EC00559908 /* AsyncOperation.swift */; };
-		B5A4357F24DE059900559908 /* DirectoryCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A4357E24DE059900559908 /* DirectoryCreator.swift */; };
 		B5A4358124DE08B700559908 /* DirectoryCreatorOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A4358024DE08B700559908 /* DirectoryCreatorOperation.swift */; };
 		B5A4358324DE10EF00559908 /* DirectoryHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A4358224DE10EF00559908 /* DirectoryHelper.swift */; };
 		B5A4358524DE1BF900559908 /* AddPhotosOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A4358424DE1BF900559908 /* AddPhotosOperation.swift */; };
@@ -211,7 +210,6 @@
 		B59EB41424D9E57D00AB16FC /* SettingsUserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsUserDefaults.swift; sourceTree = "<group>"; };
 		B59EB41D24D9F59500AB16FC /* MulticastDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MulticastDelegate.swift; sourceTree = "<group>"; };
 		B5A4357C24DE03EC00559908 /* AsyncOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncOperation.swift; sourceTree = "<group>"; };
-		B5A4357E24DE059900559908 /* DirectoryCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectoryCreator.swift; sourceTree = "<group>"; };
 		B5A4358024DE08B700559908 /* DirectoryCreatorOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectoryCreatorOperation.swift; sourceTree = "<group>"; };
 		B5A4358224DE10EF00559908 /* DirectoryHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectoryHelper.swift; sourceTree = "<group>"; };
 		B5A4358424DE1BF900559908 /* AddPhotosOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPhotosOperation.swift; sourceTree = "<group>"; };
@@ -302,7 +300,6 @@
 				B514A36A24BB91990078E9A9 /* WorldCurrencies.swift */,
 				B5BA5F472489130500AC026A /* UserChecker.swift */,
 				B59EB41424D9E57D00AB16FC /* SettingsUserDefaults.swift */,
-				B5A4357E24DE059900559908 /* DirectoryCreator.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -737,7 +734,6 @@
 				B57419BE245F1BAB001228A1 /* DetailsViewController.swift in Sources */,
 				B5ED9A3E2485A21300FA7A7B /* TextHelper.swift in Sources */,
 				B5377C0023A82E280010B144 /* AppDelegate.swift in Sources */,
-				B5A4357F24DE059900559908 /* DirectoryCreator.swift in Sources */,
 				B5BA5F482489130500AC026A /* UserChecker.swift in Sources */,
 				B56939D024CA474B00806953 /* Notification.NameExtension.swift in Sources */,
 				B57ECC572454A6BA003E9598 /* UITextFieldExtensions.swift in Sources */,
