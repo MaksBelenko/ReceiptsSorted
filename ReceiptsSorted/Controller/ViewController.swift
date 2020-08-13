@@ -86,7 +86,14 @@ class ViewController: UIViewController  {
             }
             
             topGraphicsView.dateAnimation.animateToCurrentDate()
+            
+            PushNotificationScheduler().center.requestAuthorization(options: [.alert,.sound,.badge]) { [weak self] (granted, error) in
+                print("Granted? \(granted)")
+            }
         }
+        
+        
+        
     }
     
     

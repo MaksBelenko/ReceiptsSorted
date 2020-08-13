@@ -13,7 +13,7 @@ class DateAnimation {
     // MARK: - Public properties
     
     /// Observer for the days that are currently showing
-    var daysLeft: Observable<Int> = Observable(0)
+    var daysLeftAnimField: Observable<Int> = Observable(0)
     /// Maximum number of days (eg 7, 30, 31) for the period
     var maxDays: Int = 0
     
@@ -30,7 +30,7 @@ class DateAnimation {
     private var animationStartTime = Date()
     private var overallDays: Int = 0 {
         didSet {
-            daysLeft.value = maxDays - Int(overallDays)
+            daysLeftAnimField.value = maxDays - Int(overallDays)
         }
     }
     

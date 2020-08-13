@@ -46,7 +46,7 @@ class TopGraphicsView: UIView {
         }
         
         dateAnimation = DateAnimation(dateIndicator: dayBar)
-        dateAnimation.daysLeft.onValueChanged { [unowned self] in
+        dateAnimation.daysLeftAnimField.onValueChanged { [unowned self] in
             let maxDays = Int(self.dateAnimation.maxDays)
             self.daysLeftLabel.text = "\($0) of \(maxDays) days left"
         }
