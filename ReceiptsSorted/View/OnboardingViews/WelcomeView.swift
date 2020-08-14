@@ -22,12 +22,30 @@ class WelcomeView: UIView, IPresentationView {
     
     private let nextButton: UIButton = {
         let button = UIButton()
+        button.accessibilityIdentifier = "WelcomeOboardingNextButton"
         button.setTitle("Next →", for: .normal)
         button.titleLabel?.font = UIFont.arialBold(ofSize: 19)
         button.backgroundColor = .flatOrange
         button.layer.cornerRadius = 10
         button.layer.applyShadow(color: .flatOrange, alpha: 0.5, x: 1, y: 4, blur: 6)
         return button
+    }()
+    
+    private lazy var welcomeLabel: UILabel = {
+        let welcomePageText = textHelper.create(text: titleText, bold: true, fontSize: 40)
+        welcomePageText.append(textHelper.create(text: sloganText, bold: true, fontSize: 18))
+        let label = UILabel()
+        label.accessibilityIdentifier = "WelcomeText"
+        label.attributedText = welcomePageText
+        label.numberOfLines = 0
+        return label
+    }()
+    
+    private lazy var bottomLabel: UILabel = {
+        let label = UILabel()
+        label.attributedText = textHelper.create(text: hypeText, bold: true, fontSize: 20)
+        label.textAlignment = .center
+        return label
     }()
     
     
@@ -54,12 +72,6 @@ class WelcomeView: UIView, IPresentationView {
     }
     
     private func setupText() {
-        let welcomePageText = textHelper.create(text: titleText, bold: true, fontSize: 40)
-        welcomePageText.append(textHelper.create(text: sloganText, bold: true, fontSize: 18))
-        let welcomeLabel = UILabel()
-        welcomeLabel.attributedText = welcomePageText
-        welcomeLabel.numberOfLines = 0
-        
         self.addSubview(welcomeLabel)
         welcomeLabel.translatesAutoresizingMaskIntoConstraints = false
         welcomeLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
@@ -82,9 +94,6 @@ class WelcomeView: UIView, IPresentationView {
     
     
     private func setupBottomText() {
-        let bottomLabel = UILabel()
-        bottomLabel.attributedText = textHelper.create(text: hypeText, bold: true, fontSize: 20)
-        bottomLabel.textAlignment = .center
         
         self.addSubview(bottomLabel)
         bottomLabel.translatesAutoresizingMaskIntoConstraints = false

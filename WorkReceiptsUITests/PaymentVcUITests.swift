@@ -8,7 +8,7 @@
 
 import XCTest
 
-class WorkReceiptsUITests: XCTestCase {
+class PaymentVcUITests: XCTestCase {
     
     var app: XCUIApplication!
     
@@ -18,15 +18,12 @@ class WorkReceiptsUITests: XCTestCase {
         // In UI tests it is usually best to stop immediately when a failure occurs.
         continueAfterFailure = false
         
-        let defaultsName = Bundle.main.bundleIdentifier!
-        UserDefaults.standard.removePersistentDomain(forName: defaultsName)
-        
         app = XCUIApplication()
-//        app.launchArguments += ["-keepScreenOnKey", "NO"]
+        app.setSeenOnboarding(to: true)
         app.launch()
         
         openPaymentVcWithPhotoLibraryImage()
-        sleep(1)
+//        sleep(3) // Sleeps is needed to be able to register taps or double tap
     }
     
     override func tearDownWithError() throws {
@@ -34,10 +31,32 @@ class WorkReceiptsUITests: XCTestCase {
     }
     
     
-    
     // MARK: - Tests
     
-//    func test_PaymentVC_() {
+    func testAddReceipt() {
+        
+        // Fill Place TextField
+        let placeTextField = app.textFields["placeTextField"]
+        placeTextField.tap()
+        placeTextField.tap()
+        placeTextField.typeText("TestPlace")
+        
+        // Fill Amount TextField
+        let amountField = app.textFields.containing(.staticText, identifier:"£  ").element
+        amountField.tap()
+        amountField.typeText("100")
+        app.toolbars["Toolbar"].buttons["Done"].tap()
+        
+        // Press add button to add receipts
+        let addButton = app.buttons["Add"]
+        addButton.tap()
+        
+        let newCell = app.tables.cells.staticTexts["£100.00"]
+        XCTAssert(newCell.exists, "The cell should have been added to the Card's tableView")
+        
+    }
+    
+//    func test_PaymentVC_SaveToPhotos() {
 //        
 //        app.navigationBars["Payment Details"].buttons["save to photos"].tap()
 //        app.sheets["Do you want to save the receipt image to your photos?"].scrollViews.otherElements.buttons["Yes, save"].tap()
@@ -49,14 +68,20 @@ class WorkReceiptsUITests: XCTestCase {
     /**
      Tests date picker for PaymentVC
      */
-    func test_PaymentVC_CheckDatePicker() {
-        let datetextfieldTextField = app.textFields["dateTextField"]
+    func testCheckDatePicker() {
         
+        
+        let datetextfieldTextField = app.textFields["dateTextField"]
+        datetextfieldTextField.tap()
         datetextfieldTextField.tap()
         
         var dateTextBefore = datetextfieldTextField.value as! String
-        app.datePickers.pickerWheels["August"].swipeDown()
         
+        // Get the left wheel of DatePicker and swipe
+        let datePicker = app.datePickers["PaymentVcDatePicker"]
+        let wheel = datePicker.pickerWheels.element(boundBy: 0)
+        wheel.swipeDown()
+
         let toolbar = app.toolbars["Toolbar"]
         toolbar.buttons["Done"].tap()
         var dateTextNew = datetextfieldTextField.value as! String
@@ -80,13 +105,14 @@ class WorkReceiptsUITests: XCTestCase {
     /**
      Tests Payment View Controller "Fill all data" alert
      */
-    func test_PaymentVC_fillAlert() throws {
+    func testFillAlert() throws {
         
         /* --------- Fill all data alert test (All empty) --------- */
         let addButton = app.buttons["Add"]
         // In order for for button to be tapped in PaymentVC it should
         // be either double tap or a sleep(1) before thethe tap (XCTest bug)
         //        addButton.tap()
+        addButton.tap()
         addButton.tap()
         
         fillDataAlertCheckAndClose()
@@ -120,14 +146,14 @@ class WorkReceiptsUITests: XCTestCase {
     
     
     
-    //    func testLaunchPerformance() throws {
-    //        if #available(macOS 10.15, iOS 13.0, tvOS 13.0, *) {
-    //            // This measures how long it takes to launch your application.
-    //            measure(metrics: [XCTOSSignpostMetric.applicationLaunch]) {
-    //                XCUIApplication().launch()
-    //            }
-    //        }
-    //    }
+//    func testLaunchPerformance() throws {
+//        if #available(macOS 10.15, iOS 13.0, tvOS 13.0, *) {
+//            // This measures how long it takes to launch your application.
+//            measure(metrics: [XCTOSSignpostMetric.applicationLaunch]) {
+//                XCUIApplication().launch()
+//            }
+//        }
+//    }
     
     
     // MARK: - Helper methods
@@ -161,24 +187,3 @@ class WorkReceiptsUITests: XCTestCase {
     
 }
 
-
-// MARK: - XCUIElement Extension
-extension XCUIElement {
-    /**
-     Removes any current text in the field before typing in the new value
-     - Parameter text: the text to enter into the field
-     */
-    func clearAndEnterText(text: String) {
-        guard let stringValue = self.value as? String else {
-            XCTFail("Tried to clear and enter text into a non string value")
-            return
-        }
-        
-        self.tap()
-        
-        let deleteString = String(repeating: XCUIKeyboardKey.delete.rawValue, count: stringValue.count)
-        
-        self.typeText(deleteString)
-        self.typeText(text)
-    }
-}

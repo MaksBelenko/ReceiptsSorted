@@ -14,6 +14,7 @@ extension UITextField {
         let screenWidth = UIScreen.main.bounds.width
         let datePicker = UIDatePicker(frame: CGRect(x: 0, y: 0, width: screenWidth, height: 216))
         datePicker.datePickerMode = .date
+        datePicker.accessibilityIdentifier = "PaymentVcDatePicker"
         self.inputView = datePicker
         
         // Create a toolbar and assign it to inputAccessoryView

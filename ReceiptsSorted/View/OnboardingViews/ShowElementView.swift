@@ -20,6 +20,7 @@ class ShowElementView: UIView, IPresentationView {
     
     private let infoLabel: UILabel = {
         let label = UILabel()
+        label.accessibilityIdentifier = "OboardingInfoText"
         label.numberOfLines = 0
         return label
     }()
@@ -27,6 +28,7 @@ class ShowElementView: UIView, IPresentationView {
     
     let nextButton: UIButton = {
         let button = UIButton()
+        button.accessibilityIdentifier = "OnboardingNextButton"
         button.setTitle("Next →", for: .normal)
         button.titleLabel?.font = UIFont.arialBold(ofSize: 19)
         button.backgroundColor = .flatOrange
@@ -37,6 +39,7 @@ class ShowElementView: UIView, IPresentationView {
     
     private let backButton: UIButton = {
         let button = UIButton()
+        button.accessibilityIdentifier = "OnboardingBackButton"
         button.setTitle("Back", for: .normal)
         button.titleLabel?.font = UIFont.arial(ofSize: 19)
         return button
