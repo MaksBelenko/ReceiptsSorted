@@ -1,17 +1,21 @@
 //
-//  WRUnitTests.swift
-//  WRUnitTests
+//  WorkReceiptsTests.swift
+//  WorkReceiptsTests
 //
-//  Created by Maksim on 13/08/2020.
+//  Created by Maksim on 14/08/2020.
 //  Copyright © 2020 Maksim. All rights reserved.
 //
 
 import XCTest
+@testable import WorkReceipts
 
-class WRUnitTests: XCTestCase {
+class WorkReceiptsTests: XCTestCase {
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
+        
+        let s = UserChecker()
+        
     }
 
     override func tearDownWithError() throws {

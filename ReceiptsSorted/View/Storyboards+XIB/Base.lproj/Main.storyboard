@@ -353,6 +353,7 @@
                                                 <subviews>
                                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="20/08/2019" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="4L5-nO-PLR">
                                                         <rect key="frame" x="0.0" y="22.666666666666746" width="167" height="34.333333333333343"/>
+                                                        <accessibility key="accessibilityConfiguration" identifier="dateTextField"/>
                                                         <color key="textColor" red="0.24313725489999999" green="0.32156862749999998" blue="0.41176470590000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <fontDescription key="fontDescription" name="ArialMT" family="Arial" pointSize="17"/>
                                                         <textInputTraits key="textInputTraits"/>
