@@ -18,4 +18,8 @@ extension XCUIApplication {
         launchArguments += ["-isOldUser", seenOnboarding ? "true" : "false"]
         launchArguments += ["-swipeDemoShown", seenOnboarding ? "true" : "false"]
     }
+    
+    func resetDatabase() {
+        launchArguments.append("IS_RUNNING_UITEST")
+    }
 }

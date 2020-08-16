@@ -16,7 +16,7 @@ class DatabaseAsync {
     
     typealias CompletionHandler = ([Payment]) -> ()
     
-    private let coreDataStack = (UIApplication.shared.delegate as! AppDelegate).coreDataStack    // CoreDataStack(modelName: "PaymentsData")
+    private let coreDataStack = (UIApplication.shared.delegate as! AppDelegate).coreDataStack!    // CoreDataStack(modelName: "PaymentsData")
     private lazy var context = coreDataStack.managedContext
     private lazy var persistentContainer = coreDataStack.persistentContainer
     
@@ -391,9 +391,10 @@ class DatabaseAsync {
             do {
                 let results = try context.fetch(fetchRequest)
                 
-                let resultDict = results.first!
-                if let value = resultDict[dictSumName] as? NSNumber {
-                    totalAmount = value.floatValue
+                if let resultDict = results.first {
+                    if let value = resultDict[dictSumName] as? NSNumber {
+                        totalAmount = value.floatValue
+                    }
                 }
             } catch {
                 Log.exception(message: "Error retrieving total amount. Error: \(error.localizedDescription)")

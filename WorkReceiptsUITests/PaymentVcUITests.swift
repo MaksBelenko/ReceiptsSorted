@@ -20,6 +20,7 @@ class PaymentVcUITests: XCTestCase {
         
         app = XCUIApplication()
         app.setSeenOnboarding(to: true)
+        app.resetDatabase()
         app.launch()
         
         openPaymentVcWithPhotoLibraryImage()

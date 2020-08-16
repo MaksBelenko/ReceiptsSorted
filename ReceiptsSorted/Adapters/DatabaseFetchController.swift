@@ -12,7 +12,7 @@ import CoreData
 class DtabaseFetchController: NSObject {
     
     private let paymentsEntityName: String = "Payment"
-    private let coreDataStack = CoreDataStack(modelName: "PaymentsData")
+    private let coreDataStack = CoreDataStack()
     private lazy var context = coreDataStack.managedContext
     private lazy var persistentContainer = coreDataStack.persistentContainer
     

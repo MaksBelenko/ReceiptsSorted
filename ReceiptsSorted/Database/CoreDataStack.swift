@@ -10,7 +10,7 @@ import Foundation
 import CoreData
 
 class CoreDataStack {
-    private let modelName: String
+    public static let modelName = "PaymentsData"
 
     lazy var managedContext: NSManagedObjectContext = {
 //        self.persistentContainer.viewContext.automaticallyMergesChangesFromParent = true
@@ -18,24 +18,24 @@ class CoreDataStack {
     }()
 
     
-    // MARK: - Initialisation
-    init(modelName: String) {
-      self.modelName = modelName
-    }
+//    // MARK: - Initialisation
+//    init(modelName: String) {
+//      self.modelName = modelName
+//    }
     
     
 
    // MARK: - Core Data stack
 
     lazy var persistentContainer: NSPersistentContainer = {
-        let container = NSPersistentContainer(name: self.modelName)
+        let container = NSPersistentContainer(name: CoreDataStack.modelName)
         container.loadPersistentStores(completionHandler: { (storeDescription, error) in
             if let error = error as NSError? {
-
-
                 fatalError("Unresolved error \(error), \(error.userInfo)")
             }
         })
+        
+        
         return container
     }()
 

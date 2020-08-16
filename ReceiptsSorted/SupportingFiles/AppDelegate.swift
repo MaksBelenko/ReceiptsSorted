@@ -13,11 +13,11 @@ import CoreData
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-    let coreDataStack = CoreDataStack(modelName: "PaymentsData")
+    var coreDataStack: CoreDataStack!
     
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        setStateForUITesting()
+        setStateForUITestingIfNeeded()
         
         // Override point for customization after application launch.
         return true
@@ -39,16 +39,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     
     
+    // MARK: - Setup for UI tests
     static var isUITestingEnabled: Bool {
-           get {
-               return ProcessInfo.processInfo.arguments.contains("UI-Testing")
-           }
-       }
+        get {
+            return ProcessInfo.processInfo.arguments.contains("IS_RUNNING_UITEST")
+        }
+    }
     
-       private func setStateForUITesting() {
-           if AppDelegate.isUITestingEnabled {
-               UserDefaults.standard.removePersistentDomain(forName: Bundle.main.bundleIdentifier!)
-           }
-       }
+    private func setStateForUITestingIfNeeded() {
+        if AppDelegate.isUITestingEnabled {
+            FileManager.default.cleanDatabaseFilesForTests()
+        }
+        
+        coreDataStack = CoreDataStack()
+    }
 }
 

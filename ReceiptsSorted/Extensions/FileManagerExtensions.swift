@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CoreData
 
 extension FileManager {
     /**
@@ -20,6 +21,28 @@ extension FileManager {
 //                print("Removing file: \(path)")
                 try self.removeItem(atPath: path)
             }
+        } catch {
+            print(error)
+        }
+    }
+    
+    
+    func cleanDatabaseFilesForTests() {
+        let dbPath = NSPersistentContainer.defaultDirectoryURL().path
+        let dbURL = NSPersistentContainer.defaultDirectoryURL()
+        do {
+            
+            let dir = try contentsOfDirectory(at: dbURL, includingPropertiesForKeys: nil, options: .skipsHiddenFiles)
+            try dir.forEach { [unowned self] fileURL in
+                try self.removeItem(at: fileURL)
+            }
+            
+//            let dbDirectory = try contentsOfDirectory(atPath: dbPath)
+//            try dbDirectory.forEach {[unowned self] file in
+//                let path = String.init(format: "%@%@", dbPath, file)
+//                print("Removing file: \(path)")
+//                try self.removeItem(atPath: path)
+//            }
         } catch {
             print(error)
         }

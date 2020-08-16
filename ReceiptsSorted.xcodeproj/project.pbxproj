@@ -22,7 +22,7 @@
 		B5217ECE246C870B00CC31AB /* FileManagerExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5217ECD246C870B00CC31AB /* FileManagerExtensions.swift */; };
 		B526B4E2241B09A10031F629 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B526B4E1241B09A10031F629 /* Observable.swift */; };
 		B528B73C24E69D8A00DC33E5 /* OnboardingUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B528B73B24E69D8A00DC33E5 /* OnboardingUITests.swift */; };
-		B528B73F24E6BD0100DC33E5 /* PDFShareUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B528B73E24E6BD0100DC33E5 /* PDFShareUITests.swift */; };
+		B528B73F24E6BD0100DC33E5 /* ShareUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B528B73E24E6BD0100DC33E5 /* ShareUITests.swift */; };
 		B52FA7D924E6116F0008F6F1 /* PaymentVcUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52FA7D824E6116F0008F6F1 /* PaymentVcUITests.swift */; };
 		B535A1C0244BC320005585F0 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = B535A1BF244BC320005585F0 /* Log.swift */; };
 		B5377C0023A82E280010B144 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5377BFF23A82E280010B144 /* AppDelegate.swift */; };
@@ -58,6 +58,7 @@
 		B573FAAC23B98285005473D2 /* CameraViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B573FAAA23B98285005473D2 /* CameraViewController.xib */; };
 		B573FAAE23BA815F005473D2 /* CameraSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = B573FAAD23BA815F005473D2 /* CameraSession.swift */; };
 		B57419BE245F1BAB001228A1 /* DetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57419BD245F1BAB001228A1 /* DetailsViewController.swift */; };
+		B574A39D24E8325A00FDB5B1 /* TestCoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = B574A39B24E82C7D00FDB5B1 /* TestCoreDataStack.swift */; };
 		B575FD7224C8DA53007034D4 /* DBRequestBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B575FD7124C8DA53007034D4 /* DBRequestBuilder.swift */; };
 		B57BCD1224C63EA50019D85A /* DatabaseFetchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57BCD1124C63EA50019D85A /* DatabaseFetchController.swift */; };
 		B57BCD1424C64F1F0019D85A /* NSPredicateExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57BCD1324C64F1F0019D85A /* NSPredicateExtensions.swift */; };
@@ -175,7 +176,7 @@
 		B5217ECD246C870B00CC31AB /* FileManagerExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManagerExtensions.swift; sourceTree = "<group>"; };
 		B526B4E1241B09A10031F629 /* Observable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
 		B528B73B24E69D8A00DC33E5 /* OnboardingUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingUITests.swift; sourceTree = "<group>"; };
-		B528B73E24E6BD0100DC33E5 /* PDFShareUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFShareUITests.swift; sourceTree = "<group>"; };
+		B528B73E24E6BD0100DC33E5 /* ShareUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareUITests.swift; sourceTree = "<group>"; };
 		B52FA7CF24E6112E0008F6F1 /* CropViewController.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CropViewController.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B52FA7D624E6116F0008F6F1 /* WorkReceiptsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WorkReceiptsUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B52FA7D824E6116F0008F6F1 /* PaymentVcUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentVcUITests.swift; sourceTree = "<group>"; };
@@ -221,6 +222,7 @@
 		B573FAAD23BA815F005473D2 /* CameraSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraSession.swift; sourceTree = "<group>"; };
 		B57419BD245F1BAB001228A1 /* DetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsViewController.swift; sourceTree = "<group>"; };
 		B5743AC224D223D100930030 /* SimplePDFBuilder.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SimplePDFBuilder.xcodeproj; path = ../SimplePDFBuilder/SimplePDFBuilder.xcodeproj; sourceTree = "<group>"; };
+		B574A39B24E82C7D00FDB5B1 /* TestCoreDataStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestCoreDataStack.swift; sourceTree = "<group>"; };
 		B575FD7124C8DA53007034D4 /* DBRequestBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBRequestBuilder.swift; sourceTree = "<group>"; };
 		B57BCD1124C63EA50019D85A /* DatabaseFetchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseFetchController.swift; sourceTree = "<group>"; };
 		B57BCD1324C64F1F0019D85A /* NSPredicateExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSPredicateExtensions.swift; sourceTree = "<group>"; };
@@ -387,7 +389,7 @@
 			isa = PBXGroup;
 			children = (
 				B52FA7D824E6116F0008F6F1 /* PaymentVcUITests.swift */,
-				B528B73E24E6BD0100DC33E5 /* PDFShareUITests.swift */,
+				B528B73E24E6BD0100DC33E5 /* ShareUITests.swift */,
 				B528B73B24E69D8A00DC33E5 /* OnboardingUITests.swift */,
 				B594125624E6889A0077BC7B /* XCUIApplication+Ext.swift */,
 				B594125924E688D00077BC7B /* XCUIElement+Ext.swift */,
@@ -609,6 +611,7 @@
 		B5AD17E4240482CA00BB3069 /* Database */ = {
 			isa = PBXGroup;
 			children = (
+				B574A39B24E82C7D00FDB5B1 /* TestCoreDataStack.swift */,
 				B5977E7D24C47F0400F3E589 /* CoreDataStack.swift */,
 				B575FD7124C8DA53007034D4 /* DBRequestBuilder.swift */,
 				B5DB922123BE929F0081E8D7 /* PaymentsData.xcdatamodeld */,
@@ -859,7 +862,7 @@
 				B52FA7D924E6116F0008F6F1 /* PaymentVcUITests.swift in Sources */,
 				B594125A24E688D00077BC7B /* XCUIElement+Ext.swift in Sources */,
 				B528B73C24E69D8A00DC33E5 /* OnboardingUITests.swift in Sources */,
-				B528B73F24E6BD0100DC33E5 /* PDFShareUITests.swift in Sources */,
+				B528B73F24E6BD0100DC33E5 /* ShareUITests.swift in Sources */,
 				B594125724E6889A0077BC7B /* XCUIApplication+Ext.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -879,6 +882,7 @@
 				B5E3086824BE532E003D5860 /* NavControllerTransitions.swift in Sources */,
 				B5F54E8B241E78C70016DCED /* DateExtensions.swift in Sources */,
 				B59E3E2723B50D9F0017D474 /* PaymentTableViewCell.swift in Sources */,
+				B574A39D24E8325A00FDB5B1 /* TestCoreDataStack.swift in Sources */,
 				B5D70A6B245338530080BF81 /* TopGraphicsView.swift in Sources */,
 				B5B3378924E0A10800116183 /* WarningPopoverHelper.swift in Sources */,
 				B5A4358D24DEC2FA00559908 /* IndicatorAnimation.swift in Sources */,
@@ -1097,7 +1101,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1151,7 +1155,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -1209,7 +1213,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = KELPFZXFAP;
 				INFOPLIST_FILE = WorkReceiptsTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1230,7 +1234,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = KELPFZXFAP;
 				INFOPLIST_FILE = WorkReceiptsTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
