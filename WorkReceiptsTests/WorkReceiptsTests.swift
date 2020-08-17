@@ -11,27 +11,56 @@ import XCTest
 
 class WorkReceiptsTests: XCTestCase {
 
+    // MARK: Properties
+    var coreDataStack: CoreDataStack!
+    
+    
+    
+    // MARK: - Setup & Teardown
     override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-        
-        let s = UserChecker()
-        
+        continueAfterFailure = false
+    
+        coreDataStack = DevNullCoreDataStack()
     }
-
+    
     override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+        coreDataStack = nil
     }
-
+    
+    
+    
+    // MARK: - Tests
+    
     func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-    }
-
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        measure {
-            // Put the code you want to measure the time of here.
+        let database = DatabaseAsync(coreDataStack: coreDataStack)
+        
+        let expectation = self.expectation(description: "CountCurrencies")
+        let paymentInfo = PaymentInformation(amountPaid: 12, place: "TestPlace", date: Date(), receiptImage: #imageLiteral(resourceName: "Receipt-Test"), currencySymbol: "£", currencyName: "British Pound Sterling")
+        var payments: [Payment]?
+        
+        database.addAsync(paymentInfo: paymentInfo) { returnedInfo in
+            database.fetchDataAsync(by: .NewestDateAdded, and: .All) { retPayments in
+                payments = retPayments
+                expectation.fulfill()
+            }
         }
+        
+        waitForExpectations(timeout: 4, handler: nil)
+        
+        XCTAssert(payments?.count == 1)
+        
+        
+        let expectation2 = self.expectation(description: "asd")
+        var totalAmount: Float?
+        
+        database.getTotalAmountAsync(of: .Pending, for: "British Pound Sterling") { total in
+            totalAmount = total
+            expectation2.fulfill()
+        }
+        
+        waitForExpectations(timeout: 4, handler: nil)
+        
+        XCTAssert(totalAmount == 12)
     }
 
 }

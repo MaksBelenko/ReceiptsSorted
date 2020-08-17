@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class SceneDelegate: UIResponder, UIWindowSceneDelegate {
+class TestingSceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
 
@@ -20,10 +20,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let scene = (scene as? UIWindowScene) else { return }
         
-//        let storyboard = UIStoryboard(name: "LaunchScreen", bundle: nil) // Main is the name of storyboard
-//        window = UIWindow(windowScene: scene)
-//        window?.rootViewController = storyboard.instantiateInitialViewController()
-//        window?.makeKeyAndVisible()
+        let bundle = Bundle(for: type(of: self))
+        let storyboard = UIStoryboard(name: "TestingMode", bundle: bundle) // Main is the name of storyboard
+        window = UIWindow(windowScene: scene)
+        window?.rootViewController = storyboard.instantiateInitialViewController()
+        window?.makeKeyAndVisible()
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

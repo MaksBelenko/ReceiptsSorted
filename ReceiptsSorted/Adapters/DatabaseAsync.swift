@@ -16,7 +16,7 @@ class DatabaseAsync {
     
     typealias CompletionHandler = ([Payment]) -> ()
     
-    private let coreDataStack = (UIApplication.shared.delegate as! AppDelegate).coreDataStack!    // CoreDataStack(modelName: "PaymentsData")
+    private let coreDataStack: CoreDataStack// = (UIApplication.shared.delegate as! AppDelegate).coreDataStack!
     private lazy var context = coreDataStack.managedContext
     private lazy var persistentContainer = coreDataStack.persistentContainer
     
@@ -33,6 +33,15 @@ class DatabaseAsync {
     }()
     
     
+    
+    
+    init(coreDataStack: CoreDataStack? = nil) {
+        if coreDataStack == nil {
+            self.coreDataStack = (UIApplication.shared.delegate as! AppDelegate).coreDataStack!
+        } else {
+            self.coreDataStack = coreDataStack!
+        }
+    }
     
     
     // MARK: - Basic saving
