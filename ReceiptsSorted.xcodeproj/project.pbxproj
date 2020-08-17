@@ -44,7 +44,7 @@
 		B561B391243BFBBA00F7B29B /* SimpleShapes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B561B390243BFBBA00F7B29B /* SimpleShapes.swift */; };
 		B564470B241027EB00B08AD3 /* AddButtonAnimations.swift in Sources */ = {isa = PBXBuildFile; fileRef = B564470A241027EB00B08AD3 /* AddButtonAnimations.swift */; };
 		B565674024831619000A6639 /* ZipAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B565673F24831619000A6639 /* ZipAdapter.swift */; };
-		B565E7CC24E60EFB00EFE703 /* WorkReceiptsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B565E7CB24E60EFB00EFE703 /* WorkReceiptsTests.swift */; };
+		B565E7CC24E60EFB00EFE703 /* DatabaseAsyncTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B565E7CB24E60EFB00EFE703 /* DatabaseAsyncTests.swift */; };
 		B566604E242FA955003DD15B /* PaymentTableSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = B566604D242FA955003DD15B /* PaymentTableSection.swift */; };
 		B5666050242FB65F003DD15B /* IntExtensins.swift in Sources */ = {isa = PBXBuildFile; fileRef = B566604F242FB65F003DD15B /* IntExtensins.swift */; };
 		B5683DFA24D759DF00828AFA /* DateHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5683DF924D759DF00828AFA /* DateHelper.swift */; };
@@ -209,7 +209,7 @@
 		B564470A241027EB00B08AD3 /* AddButtonAnimations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddButtonAnimations.swift; sourceTree = "<group>"; };
 		B565673F24831619000A6639 /* ZipAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZipAdapter.swift; sourceTree = "<group>"; };
 		B565E7C924E60EFB00EFE703 /* WorkReceiptsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WorkReceiptsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		B565E7CB24E60EFB00EFE703 /* WorkReceiptsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkReceiptsTests.swift; sourceTree = "<group>"; };
+		B565E7CB24E60EFB00EFE703 /* DatabaseAsyncTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseAsyncTests.swift; sourceTree = "<group>"; };
 		B565E7CD24E60EFB00EFE703 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B565E7D324E60FDE00EFE703 /* libCropViewController.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libCropViewController.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		B565E7D524E60FE200EFE703 /* libZip.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libZip.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -463,8 +463,8 @@
 				B59E3E1423B3BF5F0017D474 /* View */,
 				B59E3E1523B3BF670017D474 /* Controller */,
 				B50355692457968B000C09DC /* Utils */,
-				B535A1BE244BC2D7005585F0 /* Helpers */,
 				B550E14E245B230E000294B1 /* Enums */,
+				B535A1BE244BC2D7005585F0 /* Helpers */,
 				B5F54E83241E78220016DCED /* Extensions */,
 			);
 			path = ReceiptsSorted;
@@ -516,7 +516,7 @@
 		B565E7CA24E60EFB00EFE703 /* WorkReceiptsTests */ = {
 			isa = PBXGroup;
 			children = (
-				B565E7CB24E60EFB00EFE703 /* WorkReceiptsTests.swift */,
+				B565E7CB24E60EFB00EFE703 /* DatabaseAsyncTests.swift */,
 				B574A3B924EACE2D00FDB5B1 /* DifferentCoreDataStacks */,
 				B574A3BA24EACECC00FDB5B1 /* TestAppDelegate */,
 				B574A3BC24EAD06300FDB5B1 /* TestingMode.storyboard */,
@@ -1010,7 +1010,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B574A3B224E9E9C800FDB5B1 /* TestingAppDelegate.swift in Sources */,
-				B565E7CC24E60EFB00EFE703 /* WorkReceiptsTests.swift in Sources */,
+				B565E7CC24E60EFB00EFE703 /* DatabaseAsyncTests.swift in Sources */,
 				B574A3B624EAB3AC00FDB5B1 /* DevNullCoreDataStack.swift in Sources */,
 				B574A3AE24E9E58B00FDB5B1 /* TestingSceneDelegate.swift in Sources */,
 				B574A3B824EAC96D00FDB5B1 /* TmpDirCoreDataStack.swift in Sources */,

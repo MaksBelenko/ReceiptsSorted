@@ -35,6 +35,8 @@ class DatabaseAsync {
     
     
     
+    // MARK: - Initialisation
+    
     init(coreDataStack: CoreDataStack? = nil) {
         if coreDataStack == nil {
             self.coreDataStack = (UIApplication.shared.delegate as! AppDelegate).coreDataStack!
