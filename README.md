@@ -1,5 +1,5 @@
 # WorkReceipts App
-An app that allows to you to painlessly track and send your receipts.
+An app that allows to you to painlessly track and send your receipts. [TestFlight Beta link](https://testflight.apple.com/join/YSCmMJhe)
 
 
 ## Table of Contents
