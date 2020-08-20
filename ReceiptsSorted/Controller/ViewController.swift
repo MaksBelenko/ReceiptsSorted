@@ -109,24 +109,7 @@ class ViewController: UIViewController  {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        if onStartup {
-            onStartup = false
-            cardViewController.cardViewModel.database.getTotalAmountAsync(of: .Pending,
-                                                                          for: SettingsUserDefaults.shared.getCurrency().name!)
-            { totalAmount in
-                self.topGraphicsView.amountAnimation.animateCircle(to: totalAmount)
-            }
-            
-            topGraphicsView.dateAnimation.animateToCurrentDate()
-            
-            pushNotifications.requestAuthorization()
-            pushNotifications.getPendingNotificationRequests { [weak self] requests in
-                if requests.count == 0 {
-                    self?.pushNotifications.schedule(for: SettingsUserDefaults.shared.getIndicatorPeriod())
-                }
-            }
-        }
-        
+        onStartupActions()
         pushNotifications.removeIconBadge()
     }
     
@@ -283,6 +266,48 @@ extension ViewController: CurrencyChangedProtocol {
 
     func currencySettingChanged(to currencySymbol: String, name currencyName: String) {
         topGraphicsView.setCurrencyLabelText(with: currencySymbol)
+    }
+}
+
+// MARK: - Startup Actions
+extension ViewController {
+    /// actions to be executed once on startup
+    func onStartupActions() {
+        if onStartup {
+            onStartup = false
+            
+            // get totalAmount and udate circle indicator graphics
+            cardViewController.cardViewModel.database.getTotalAmountAsync(of: .Pending,
+                                                                          for: SettingsUserDefaults.shared.getCurrency().name!)
+            { totalAmount in
+                self.topGraphicsView.amountAnimation.animateCircle(to: totalAmount)
+            }
+            
+            // animate date indicator
+            topGraphicsView.dateAnimation.animateToCurrentDate()
+            
+            // Set push notifications
+            pushNotifications.requestAuthorization()
+            pushNotifications.getPendingNotificationRequests { [weak self] requests in
+                if requests.count == 0 {
+                    self?.pushNotifications.schedule(for: SettingsUserDefaults.shared.getIndicatorPeriod())
+                }
+            }
+            
+            // Remove receipts older than date
+            let removeBeforeMonth = settings.getReceiptRemovalPeriod()
+            // If remove receipts settings is enabled (not -1) run command to remove older receipts
+            if (removeBeforeMonth > 0) {
+                let date = Calendar.current.date(byAdding: .month, value: -removeBeforeMonth, to: Date())!
+                cardViewController.cardViewModel.database.removeAllReceipts(olderThan: date) { [unowned self] in
+                    self.cardViewController.cardViewModel.refreshPayments()
+                }
+            }
+            // If its a fresh app userdefaults will have 0, change to 6 month
+            if removeBeforeMonth == 0 {
+                settings.setReceiptRemoval(after: 6)
+            }
+        }
     }
 }
 

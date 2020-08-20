@@ -100,8 +100,11 @@ class CardViewController: UIViewController {
     
     
 //    private func testAddNewPayments() {
+//        let eightMonthOldDate = Calendar.current.date(byAdding: .month, value: -8, to: Date())!
+//        
 //        for i in 0...10000 {
-//            cardViewModel.addNewPayment(paymentInfo: PaymentInformation(amountPaid: Float(i), place: "test\(i)", date: Date(), receiptImage: #imageLiteral(resourceName: "NoReceipts")))
+//            cardViewModel.addNewPayment(paymentInfo: PaymentInformation(amountPaid: Float(i), place: "test\(i)", date: eightMonthOldDate, receiptImage: #imageLiteral(resourceName: "NoReceipts"), currencySymbol: "£", currencyName: "br"))
+////            cardViewModel.addNewPayment(paymentInfo: PaymentInformation(amountPaid: Float(i), place: "test\(i)", date: eightMonthOldDate, receiptImage: #imageLiteral(resourceName: "NoReceipts")), )
 //            print("Loop at \(i)")
 //        }
 //    }

@@ -77,11 +77,11 @@ class DatabaseAsync {
      Deletes an item in the database
      - Parameter item: Item to delete from database
      - Parameter completion: Completion handler to be executed after the item
-                             is deleted asynchrnously on the main thread async
+                             is deleted asynchrnously on a background thread
      */
     func deleteAsync<T: NSManagedObject>(item: T, completion: (() -> ())? = nil) {
         let objectID = item.objectID  // Cannot remove NSManagedObject on a different
-                                      // thread therefore it needs an object id of it
+        // thread therefore it needs an object id of it
         
         persistentContainer.performBackgroundTask { [unowned self] privateContext in
             let object = privateContext.object(with: objectID)
@@ -89,12 +89,38 @@ class DatabaseAsync {
             self.save(privateContext)
             
             guard let completion = completion else { return }
-//            DispatchQueue.main.async {
-                completion()
-//            }
+            //            DispatchQueue.main.async {
+            completion()
+            //            }
         }
+        
+        
     }
     
+    /**
+     Removes all receipts with Batch request older than a provided date
+     - Parameter date: Date older than which the receipts will be removed
+     - Parameter completion: Completion block which will run after NSBatchDeleteRequest
+                             is executed on a background thread
+     */
+    func removeAllReceipts(olderThan date: Date, completion: (() -> ())? = nil) {
+        let fetchRequest = Payment.createFetchRequest() as! NSFetchRequest<NSFetchRequestResult>
+        fetchRequest.predicate = NSPredicate(format: "%K < %@", #keyPath(Payment.date), date as NSDate)
+        
+        let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+        
+        persistentContainer.performBackgroundTask { newContext in
+            do {
+                try newContext.execute(deleteRequest)
+            } catch {
+                Log.exception(message: "Error executing asynchronous fetch: \(error.localizedDescription)")
+            }
+            
+            DispatchQueue.main.async {
+                completion?()
+            }
+        }
+    }
     
     
     // MARK: - Asynchronous fetching

@@ -48,10 +48,11 @@ class ShareUITests: XCTestCase {
         app.buttons["emailNextButton"].tap()
         app.sheets["Send receipts as:"].scrollViews.otherElements.buttons["PDF (Table & photos)"].tap()
         
+        sleep(1)
         // press share button
         let shareButton = app.navigationBars["PDF Preview"].buttons["send"]
         shareButton.tap()
-        shareButton.tap()
+//        shareButton.tap()
         
         // Close UIActivityViewController to test if it appeared
         app.otherElements["ActivityListView"].navigationBars["UIActivityContentView"].buttons["Close"].tap()
@@ -75,11 +76,11 @@ class ShareUITests: XCTestCase {
         
         app.sheets["Send receipts as:"].scrollViews.otherElements.buttons["Photos only"].tap()
     
-        
+        sleep(1)
         // press share button
         let shareButton = app.navigationBars["Images Viewer"].buttons["Share"]
         shareButton.tap()
-        shareButton.tap()
+//        shareButton.tap()
         
         /* ---------------- Test Zip ---------------- */
         app.sheets["How do you want to send images?"].scrollViews.otherElements.buttons["Zip Archive"].tap()

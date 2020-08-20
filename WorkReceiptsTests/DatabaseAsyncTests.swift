@@ -34,6 +34,45 @@ class DatabaseAsyncTests: XCTestCase {
     
     // MARK: - Tests
     
+    
+    func test_removeAllReceiptsOlderThanDate() {
+        
+        /* ----- Adding receipts with older date ----- */
+        let sevenMonthOldDate = Calendar.current.date(byAdding: .month, value: -7, to: Date())!
+        let eightMonthOldDate = Calendar.current.date(byAdding: .month, value: -8, to: Date())!
+        
+        let info1 = PaymentInformation(amountPaid: 12, place: "TestPlace", date: sevenMonthOldDate, receiptImage: #imageLiteral(resourceName: "Receipt-Test"), currencySymbol: "£", currencyName: "British Pound Sterling")
+        let info2 = PaymentInformation(amountPaid: 12, place: "TestPlace", date: eightMonthOldDate, receiptImage: #imageLiteral(resourceName: "Receipt-Test"), currencySymbol: "£", currencyName: "British Pound Sterling")
+        
+        let _ = addSinglePayment(with: info1)
+        let _ = addSinglePayment(with: info2)
+        
+        
+        /* ----- Removing receipts older than a date ----- */
+        let sixMonthOldDate = Calendar.current.date(byAdding: .month, value: -6, to: Date())!
+        let removeExp = self.expectation(description: "RemoveExpectation")
+        database.removeAllReceipts(olderThan: sixMonthOldDate) {
+            removeExp.fulfill()
+        }
+        wait(for: [removeExp], timeout: 3)
+        
+        
+        /* ----- Check the count (should be 0 as all should be removed) ----- */
+        let expectation = self.expectation(description: "CheckRemoved")
+        var count: Int?
+        database.countPayments(for: .All) { returnedCount in
+            count = returnedCount
+            expectation.fulfill()
+        }
+        
+        wait(for: [expectation], timeout: 2)
+        
+        XCTAssert(count == 0, "Count should be 0")
+    }
+    
+    
+    
+    
     func test_fetchSinglePaymentAsync() {
         let info = PaymentInformation(amountPaid: 12, place: "TestPlace", date: Date(), receiptImage: #imageLiteral(resourceName: "Receipt-Test"), currencySymbol: "£", currencyName: "British Pound Sterling")
         let uid = addSinglePayment(with: info)
