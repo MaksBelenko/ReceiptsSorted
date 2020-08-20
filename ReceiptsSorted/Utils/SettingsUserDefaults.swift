@@ -25,6 +25,8 @@ class SettingsUserDefaults {
     
     private let periodKey = "period"
     private let dateMulticastDelegate = MulticastDelegate<DateSettingChangedProtocol>()
+    
+    private let removalNumberKey = "receiptRemovalKey"
 
     
     
@@ -63,7 +65,29 @@ class SettingsUserDefaults {
         let value = UserDefaults.standard.integer(forKey: periodKey)
         return (value == IndicatorPeriod.Week.rawValue) ? .Week : .Month
     }
+    
+    
+    // MARK: - Date indicator
+    /**
+     Sets period after which receipts will be removed in months (-1 indicates to do not remove)
+     - Parameter value: Value in months (which will be saved to userdefaults) after which receipts should be removed
+     */
+    func setReceiptRemoval(after value: Int) {
+        UserDefaults.standard.set(value, forKey: removalNumberKey)
+    }
+    
+    
+    /**
+      Gets period after which receipts will be removed in months (-1 indicates to do not remove)
+     - Returns: Value in months (which will be saved to userdefaults) after which receipts should be removed
+     */
+    func getReceiptRemovalPeriod() -> Int {
+        let value = UserDefaults.standard.integer(forKey: removalNumberKey)
+        return value
+    }
 }
+
+
 
 
 

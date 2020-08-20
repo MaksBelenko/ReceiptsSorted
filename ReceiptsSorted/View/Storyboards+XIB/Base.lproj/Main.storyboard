@@ -175,8 +175,8 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.666667938232422"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Remove receipts after:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CYo-8P-pq5">
-                                                    <rect key="frame" x="16" y="11.666666666666664" width="173" height="21"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Remove receipts:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CYo-8P-pq5">
+                                                    <rect key="frame" x="16" y="11.666666666666664" width="132" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -236,6 +236,7 @@
                         <outlet property="currencyPicker" destination="vpM-Pb-MBM" id="BbZ-TM-9Vq"/>
                         <outlet property="dateIndicatorSC" destination="ioe-Yj-53Z" id="HMH-hr-Cqf"/>
                         <outlet property="receiptRemovalArrowImage" destination="mVc-1m-l6R" id="qlr-Nb-vPK"/>
+                        <outlet property="receiptRemovalLabel" destination="N4n-Gr-OEn" id="Ddi-jg-mFO"/>
                         <outlet property="receiptsRemovalPicker" destination="66l-kM-gbS" id="YoG-P1-lvu"/>
                         <outlet property="tblView" destination="r3g-dd-7YN" id="FVR-AT-13y"/>
                     </connections>

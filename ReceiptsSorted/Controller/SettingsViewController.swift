@@ -20,6 +20,7 @@ class SettingsViewController: UITableViewController {
     @IBOutlet weak var dateIndicatorSC: UISegmentedControl!
     @IBOutlet weak var receiptsRemovalPicker: UIPickerView!
     @IBOutlet weak var receiptRemovalArrowImage: UIImageView!
+    @IBOutlet weak var receiptRemovalLabel: UILabel!
     
     private let settings = SettingsUserDefaults.shared
     
@@ -42,14 +43,16 @@ class SettingsViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        currencyLabel.text = settings.getCurrency().symbol
-
+        // Setup pickers with helpers
         currencyPickerHelper.delegate = self
         setup(picker: currencyPicker, to: currencyPickerHelper)
         receiptRemovalPickerHelper.delegate = self
         setup(picker: receiptsRemovalPicker, to: receiptRemovalPickerHelper)
         
+        // set from userdefaults
+        currencyLabel.text = settings.getCurrency().symbol
         dateIndicatorSC.selectedSegmentIndex = SettingsUserDefaults.shared.getIndicatorPeriod().rawValue
+        receiptRemovalLabel.text = getName(forMonths: settings.getReceiptRemovalPeriod())
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -79,7 +82,10 @@ class SettingsViewController: UITableViewController {
             Alert.shared.showDateIndicator(for: self)
             
         case tableRow[.ReceiptRemoval]:
-            animate(picker: receiptsRemovalPicker, arrow: receiptRemovalArrowImage, executeOnShow: nil)
+            animate(picker: receiptsRemovalPicker, arrow: receiptRemovalArrowImage) {
+                let index = self.receiptRemovalPickerHelper.removeOptions.firstIndex(where: { $0.value == self.settings.getReceiptRemovalPeriod()})
+                self.receiptsRemovalPicker.selectRow(index!, inComponent: 0, animated: false)
+            }
             
         default:
             break
@@ -141,10 +147,6 @@ class SettingsViewController: UITableViewController {
     
     // MARK: - @IBActions
     
-    @IBAction func imageCompChanged(_ sender: UISegmentedControl) {
-        print(sender.selectedSegmentIndex)
-    }
-    
     @IBAction func timePeriodChanged(_ sender: UISegmentedControl) {
         let indicatorPeriod = sender.getIndicatorPeriod()
         settings.setIndicatorPeriod(to: indicatorPeriod)
@@ -164,16 +166,20 @@ extension SettingsViewController: CurrencyPickerDelegate {
 // MARK: - ReceiptRemovalPickerDelegate
 extension SettingsViewController: ReceiptRemovalPickerDelegate {
     func onRemoveOptionSelected(afterMonths monthsNumber: Int) {
-        print("Selected option: \(monthsNumber) months")
+        receiptRemovalLabel.text = getName(forMonths: monthsNumber)
+        settings.setReceiptRemoval(after: monthsNumber)
+    }
+    
+    
+    // MARK: - Name helper
+    func getName(forMonths number: Int) -> String {
+        if number < 0 {
+            return "Disable"
+        }
+        
+        var removeText = "after \(number) "
+        removeText += (number == 1) ? "month" : "months"
+        return removeText
     }
 }
 
-
-//// MARK: - CurrencyChangedProtocol
-//extension SettingsViewController: CurrencyChangedProtocol {
-//
-//    func currencySettingChanged(to currencyLabel: String) {
-//        currencyLabel.text = symbol
-//    }
-//
-//}
