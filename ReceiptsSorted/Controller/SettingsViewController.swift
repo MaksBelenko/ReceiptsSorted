@@ -31,13 +31,15 @@ class SettingsViewController: UITableViewController {
         case Currency, CurrencyPicker
         case IndicatorTimePeriod
         case ReceiptRemoval, ReceiptRemovalPicker
+        case ShowTutorial
     }
     
     private let tableRow: [SettingsTableRow : IndexPath] = [ .Currency             : IndexPath(row: 0, section: 0),
                                                              .CurrencyPicker       : IndexPath(row: 1, section: 0),
                                                              .IndicatorTimePeriod  : IndexPath(row: 2, section: 0),
                                                              .ReceiptRemoval       : IndexPath(row: 0, section: 1),
-                                                             .ReceiptRemovalPicker : IndexPath(row: 1, section: 1)]
+                                                             .ReceiptRemovalPicker : IndexPath(row: 1, section: 1),
+                                                             .ShowTutorial         : IndexPath(row: 0, section: 2)]
     
     // MARK: - Lifeycle
     override func viewDidLoad() {
@@ -78,14 +80,25 @@ class SettingsViewController: UITableViewController {
                 self.currencyPicker.selectRow(index, inComponent: 0, animated: false)
             }
             
+            
         case tableRow[.IndicatorTimePeriod]:
             Alert.shared.showDateIndicator(for: self)
             
+            
         case tableRow[.ReceiptRemoval]:
+            if receiptsRemovalPicker.isHidden {
+                Alert.shared.showReceiptRemovalAlert(for: self)
+            }
             animate(picker: receiptsRemovalPicker, arrow: receiptRemovalArrowImage) {
                 let index = self.receiptRemovalPickerHelper.removeOptions.firstIndex(where: { $0.value == self.settings.getReceiptRemovalPeriod()})
                 self.receiptsRemovalPicker.selectRow(index!, inComponent: 0, animated: false)
             }
+            
+            
+        case tableRow[.ShowTutorial]:
+            //sets userdefault for onboarding as "not shown"
+            UserChecker().setIsOldUser(value: false)
+            navigationController?.popViewController(animated: true)
             
         default:
             break

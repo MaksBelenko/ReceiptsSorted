@@ -127,3 +127,17 @@ class ShowElementView: UIView, IPresentationView {
     }
 
 }
+
+
+// MARK: - TraitCollection
+extension ShowElementView {
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        if #available(iOS 13.0, *) {
+            if (traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection)) {
+                
+                // update border color on dark/light mode change
+                shapeView.layer.borderColor = UIColor.wetAsphalt.withAlphaComponent(0.8).cgColor
+            }
+        }
+    }
+}

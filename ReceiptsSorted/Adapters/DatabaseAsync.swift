@@ -100,12 +100,14 @@ class DatabaseAsync {
     /**
      Removes all receipts with Batch request older than a provided date
      - Parameter date: Date older than which the receipts will be removed
+     - Parameter paymentStatus: Status of the payments to be removed (default is .Recieved)
      - Parameter completion: Completion block which will run after NSBatchDeleteRequest
                              is executed on a background thread
      */
-    func removeAllReceipts(olderThan date: Date, completion: (() -> ())? = nil) {
+    func removeAllReceipts(olderThan date: Date, paymentStatus: PaymentStatusType = .Received, completion: (() -> ())? = nil) {
         let fetchRequest = Payment.createFetchRequest() as! NSFetchRequest<NSFetchRequestResult>
         fetchRequest.predicate = NSPredicate(format: "%K < %@", #keyPath(Payment.date), date as NSDate)
+        fetchRequest.predicate! += paymentStatus.getPredicate()
         
         let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
         

@@ -88,11 +88,9 @@ class ViewController: UIViewController  {
             }
         }
         
+        // Needs to layout first to assign nav transitions to buttonView
+        // after it is put into view hiearchy (in queue to be executed once)
         DispatchQueue.main.async { [unowned self] in
-            self.presentOnboardingIfNeeded(animated: false)
-
-            // Needs to layout first to assign nav transitions to buttonView
-            // after it is put into view hiearchy (in queue to be executed once)
             self.view.layoutIfNeeded()
             self.navControllerTransitions = NavControllerTransitions(animationCentre: self.buttonView.center)
             self.navigationController?.delegate = self.navControllerTransitions // for custom animation
@@ -109,6 +107,7 @@ class ViewController: UIViewController  {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
+        presentOnboardingIfNeeded(animated: false)
         onStartupActions()
         pushNotifications.removeIconBadge()
     }

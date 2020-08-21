@@ -132,6 +132,9 @@ class TopGraphicsView: UIView {
 
         addSubview(daysLeftLabel)
 
+//        daysLeftLabel.alpha = 0
+//        dayBar.backgroundColor = UIColor.clear.cgColor
+//        contourBar.backgroundColor = UIColor.clear.cgColor
     }
 }
 

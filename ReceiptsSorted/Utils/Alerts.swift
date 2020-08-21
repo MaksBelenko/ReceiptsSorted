@@ -212,6 +212,15 @@ class Alert {
     }
     
     
+    func showReceiptRemovalAlert(for controller: UIViewController) {
+        let ac = UIAlertController(title: "Automatic receipt removal",
+                                   message: "Receipts will be autmatically removed if they are older than a selected oprion. This feature saves the memory on your device as you probably do not need receipts which are quite old and have been claimed.",
+                                   preferredStyle: .alert)
+        ac.addAction(UIAlertAction(title: "OK", style: .default))
+        controller.present(ac, animated: true)
+    }
+    
+    
     // MARK: - Camera alerts
     
     func showCameraNotEnabledAlert(for controller: UIViewController) {

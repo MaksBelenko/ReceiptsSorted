@@ -51,7 +51,7 @@ class DatabaseAsyncTests: XCTestCase {
         /* ----- Removing receipts older than a date ----- */
         let sixMonthOldDate = Calendar.current.date(byAdding: .month, value: -6, to: Date())!
         let removeExp = self.expectation(description: "RemoveExpectation")
-        database.removeAllReceipts(olderThan: sixMonthOldDate) {
+        database.removeAllReceipts(olderThan: sixMonthOldDate, paymentStatus: .Pending) {
             removeExp.fulfill()
         }
         wait(for: [removeExp], timeout: 3)

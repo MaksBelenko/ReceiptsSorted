@@ -23,13 +23,13 @@ class UserChecker {
     }
     
     /**
-     Sets user key to "true" meaning that onboarding already happened.
+     Sets user key to "true" as a default meaning that onboarding already happened.
      
      Keep in mind that this does not affect Swipe Demo that will
      be shown after first receipt is added.
      */
-    func setIsOldUser() {
-        UserDefaults.standard.set(true, forKey: oldUserKey)
+    func setIsOldUser(value: Bool = true) {
+        UserDefaults.standard.set(value, forKey: oldUserKey)
     }
     
     
