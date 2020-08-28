@@ -18,7 +18,14 @@ class PaymentViewController: UIViewController, UITextFieldDelegate {
     var paymentUID: UUID!
     var amountPaid: Float = 0.0
     var place: String = ""
-    var date: Date = Date()
+    private lazy var savedDate = date
+    var date: Date = Date() {
+        didSet {
+            // setup of labels is in viewDidLoad
+            guard let _ = dateTextField else { return }
+            dateTextField.text = date.toString(as: .medium)
+        }
+    }
     var currencySymbol: String = ""
     var currencyName: String = ""
     
@@ -37,6 +44,11 @@ class PaymentViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var dateTextField: UITextField!
     @IBOutlet weak var addButton: UIButton!
     
+    private var dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        return formatter
+    }()
     
     //set Status Bar icons to black
     override var preferredStatusBarStyle: UIStatusBarStyle { return .lightContent }
@@ -72,7 +84,10 @@ class PaymentViewController: UIViewController, UITextFieldDelegate {
         amountPaidTextField.delegate = self
         placeOfPurchaseTextField.delegate = self
     
-        dateTextField.setInputViewDatePicker(target: self, selector: #selector(pressedDoneDatePicker))
+        dateTextField.setInputViewDatePicker(target: self,
+                                             dateChangedSelector: #selector(onDatePickerDateChanged),
+                                             onCancelSelector: #selector(onDatePickerCancelled),
+                                             onDoneSelector: #selector(onDatePickerDonePressed))
         
         if paymentAction == .AddPayment {
             let tuple = settings.getCurrency()
@@ -81,6 +96,7 @@ class PaymentViewController: UIViewController, UITextFieldDelegate {
         }
         amountPaidTextField.setInputAmountPaid(with: currencySymbol)
     }
+    
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
@@ -175,7 +191,9 @@ class PaymentViewController: UIViewController, UITextFieldDelegate {
     
     func setTextFields() {
         placeOfPurchaseTextField.text = place
-        dateTextField.text = date.toString(as: .long)
+        
+        dateTextField.text = date.toString(as: .medium)
+        dateTextField.tintColor = .clear
         
         if (paymentAction == .UpdatePayment) {
             amountPaidTextField.text = amountPaid.ToString(decimals: 2)
@@ -214,19 +232,35 @@ class PaymentViewController: UIViewController, UITextFieldDelegate {
     
     //MARK: - Fields actions
     
+    /// applicable to place text field
     @IBAction func onEndEditingTextField(_ sender: UITextField) {
         let trimmedString = sender.text?.trimmingCharacters(in: .whitespaces)
         sender.text = trimmedString
     }
     
-    @objc func pressedDoneDatePicker() {
+    /// executed on date text field pressed
+    @IBAction func pressedDateTextField(_ sender: UITextField) {
+        savedDate = date
+    }
+    
+    /// Executed on "Cancel" button in toolbar
+    @objc private func onDatePickerCancelled() {
+        date = savedDate
+        dateTextField.resignFirstResponder()
+    }
+    
+    /// Executed on "Done" button in toolbar
+    @objc private func onDatePickerDonePressed() {
+        savedDate = date
+        dateTextField.resignFirstResponder()
+    }
+    
+    /// executed when date picker scrolls (value changes)
+    @objc private func onDatePickerDateChanged() {
+        print("changed")
         if let datePicker = self.dateTextField.inputView as? UIDatePicker {
-            let dateformatter = DateFormatter()
-            dateformatter.dateStyle = .medium
-            self.dateTextField.text = dateformatter.string(from: datePicker.date)
             date = datePicker.date
         }
-        self.dateTextField.resignFirstResponder()
     }
   
     
