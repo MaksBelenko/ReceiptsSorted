@@ -42,6 +42,13 @@ class ViewController: UIViewController  {
         return button
     }()
     
+    /// Grab area for the handle to be used with pan gesture
+    let grabBackgroundHandleView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .clear
+        return view
+    }()
+    
     //MARK: - Status Bar
     
     //set Status Bar icons to white
@@ -194,6 +201,7 @@ class ViewController: UIViewController  {
         
         // Add gestures for TableView in the CardViewController.xib
         cardViewController.tblView.addGestureRecognizer(setPanGestureRecognizer())
+        grabBackgroundHandleView.addGestureRecognizer(setPanGestureRecognizer())
     }
     
     
@@ -209,15 +217,25 @@ class ViewController: UIViewController  {
     
     
     private func setupCardHandle() {
-        let handleView = UIView(frame: CGRect(x: 0, y: 0, width: 50, height: 3))
+        // larger view for grabbing using pan gesture
+        self.view.addSubview(grabBackgroundHandleView)
+        grabBackgroundHandleView.translatesAutoresizingMaskIntoConstraints = false
+        grabBackgroundHandleView.centerXAnchor.constraint(equalTo: cardViewController.view.centerXAnchor).isActive = true
+        grabBackgroundHandleView.bottomAnchor.constraint(equalTo: cardViewController.view.topAnchor).isActive = true
+        grabBackgroundHandleView.widthAnchor.constraint(equalToConstant: 100).isActive = true
+        grabBackgroundHandleView.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        
+        let handleView = UIView()
         handleView.backgroundColor = .white
         
-        self.view.addSubview(handleView)
+        grabBackgroundHandleView.addSubview(handleView)
         handleView.translatesAutoresizingMaskIntoConstraints = false
-        handleView.centerXAnchor.constraint(equalTo: cardViewController.view.centerXAnchor).isActive = true
-        handleView.bottomAnchor.constraint(equalTo: cardViewController.view.topAnchor, constant: -10).isActive = true
+        handleView.centerXAnchor.constraint(equalTo: grabBackgroundHandleView.centerXAnchor).isActive = true
+        handleView.bottomAnchor.constraint(equalTo: grabBackgroundHandleView.bottomAnchor, constant: -10).isActive = true
         handleView.widthAnchor.constraint(equalToConstant: 50).isActive = true
         handleView.heightAnchor.constraint(equalToConstant: 3).isActive = true
+        
+        grabBackgroundHandleView.layoutIfNeeded()
       
         handleView.layer.cornerRadius = handleView.frame.height
     }
