@@ -47,7 +47,7 @@
 		B565E7CC24E60EFB00EFE703 /* DatabaseAsyncTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B565E7CB24E60EFB00EFE703 /* DatabaseAsyncTests.swift */; };
 		B566604E242FA955003DD15B /* PaymentTableSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = B566604D242FA955003DD15B /* PaymentTableSection.swift */; };
 		B5666050242FB65F003DD15B /* IntExtensins.swift in Sources */ = {isa = PBXBuildFile; fileRef = B566604F242FB65F003DD15B /* IntExtensins.swift */; };
-		B5683DFA24D759DF00828AFA /* DateHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5683DF924D759DF00828AFA /* DateHelper.swift */; };
+		B5683DFA24D759DF00828AFA /* IndicatorDateResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5683DF924D759DF00828AFA /* IndicatorDateResolver.swift */; };
 		B5689D7224BB61D5005C46C5 /* ShareImagesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5689D7124BB61D5005C46C5 /* ShareImagesViewModel.swift */; };
 		B56939D024CA474B00806953 /* Notification.NameExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56939CF24CA474B00806953 /* Notification.NameExtension.swift */; };
 		B56EDE7624F9B138009F06E8 /* TestingMode.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B56EDE7524F9B138009F06E8 /* TestingMode.storyboard */; };
@@ -66,6 +66,8 @@
 		B574A3B624EAB3AC00FDB5B1 /* DevNullCoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = B574A3B524EAB3AC00FDB5B1 /* DevNullCoreDataStack.swift */; };
 		B574A3B824EAC96D00FDB5B1 /* TmpDirCoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = B574A3B724EAC96D00FDB5B1 /* TmpDirCoreDataStack.swift */; };
 		B575FD7224C8DA53007034D4 /* DBRequestBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B575FD7124C8DA53007034D4 /* DBRequestBuilder.swift */; };
+		B57BBD8F250427ED0021FB8F /* PDFPreviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57BBD8E250427ED0021FB8F /* PDFPreviewViewModel.swift */; };
+		B57BBD9225042A990021FB8F /* DateHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57BBD9125042A990021FB8F /* DateHelper.swift */; };
 		B57BCD1224C63EA50019D85A /* DatabaseFetchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57BCD1124C63EA50019D85A /* DatabaseFetchController.swift */; };
 		B57BCD1424C64F1F0019D85A /* NSPredicateExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57BCD1324C64F1F0019D85A /* NSPredicateExtensions.swift */; };
 		B57ECC572454A6BA003E9598 /* UITextFieldExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57ECC562454A6BA003E9598 /* UITextFieldExtensions.swift */; };
@@ -216,7 +218,7 @@
 		B565E7D724E60FE600EFE703 /* TOCropViewControllerBundle.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = TOCropViewControllerBundle.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		B566604D242FA955003DD15B /* PaymentTableSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentTableSection.swift; sourceTree = "<group>"; };
 		B566604F242FB65F003DD15B /* IntExtensins.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntExtensins.swift; sourceTree = "<group>"; };
-		B5683DF924D759DF00828AFA /* DateHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateHelper.swift; sourceTree = "<group>"; };
+		B5683DF924D759DF00828AFA /* IndicatorDateResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndicatorDateResolver.swift; sourceTree = "<group>"; };
 		B5689D7124BB61D5005C46C5 /* ShareImagesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareImagesViewModel.swift; sourceTree = "<group>"; };
 		B56939CF24CA474B00806953 /* Notification.NameExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.NameExtension.swift; sourceTree = "<group>"; };
 		B56EDE7524F9B138009F06E8 /* TestingMode.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = TestingMode.storyboard; sourceTree = "<group>"; };
@@ -236,6 +238,8 @@
 		B574A3B524EAB3AC00FDB5B1 /* DevNullCoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevNullCoreDataStack.swift; sourceTree = "<group>"; };
 		B574A3B724EAC96D00FDB5B1 /* TmpDirCoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TmpDirCoreDataStack.swift; sourceTree = "<group>"; };
 		B575FD7124C8DA53007034D4 /* DBRequestBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBRequestBuilder.swift; sourceTree = "<group>"; };
+		B57BBD8E250427ED0021FB8F /* PDFPreviewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFPreviewViewModel.swift; sourceTree = "<group>"; };
+		B57BBD9125042A990021FB8F /* DateHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateHelper.swift; sourceTree = "<group>"; };
 		B57BCD1124C63EA50019D85A /* DatabaseFetchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseFetchController.swift; sourceTree = "<group>"; };
 		B57BCD1324C64F1F0019D85A /* NSPredicateExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSPredicateExtensions.swift; sourceTree = "<group>"; };
 		B57ECC562454A6BA003E9598 /* UITextFieldExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextFieldExtensions.swift; sourceTree = "<group>"; };
@@ -363,6 +367,7 @@
 		B50355692457968B000C09DC /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				B5683DF924D759DF00828AFA /* IndicatorDateResolver.swift */,
 				B5076BCE2457A28400C2BE34 /* Alerts.swift */,
 				B57145172474100800E0720C /* Navigation.swift */,
 				B573FAA323B95F57005473D2 /* Delegates.swift */,
@@ -415,13 +420,13 @@
 			children = (
 				B549C0B224BF0A1D003F148E /* AlertHelper.swift */,
 				B561B390243BFBBA00F7B29B /* SimpleShapes.swift */,
-				B5683DF924D759DF00828AFA /* DateHelper.swift */,
 				B5ED9A3D2485A21300FA7A7B /* TextHelper.swift */,
 				B5B3378824E0A10800116183 /* WarningPopoverHelper.swift */,
 				B598D8E624CDB80D00158766 /* CurrencyPickerHelper.swift */,
 				B598D8E824CDBD6500158766 /* ReceiptRemovalPickerHelper.swift */,
 				B514A36A24BB91990078E9A9 /* WorldCurrencies.swift */,
 				B5A4358224DE10EF00559908 /* DirectoryHelper.swift */,
+				B57BBD9125042A990021FB8F /* DateHelper.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -637,6 +642,7 @@
 				B5FDDC02241443950037BA7E /* SwipeActionsViewModel.swift */,
 				B54967AC241167C000684A2F /* SortingDropDownMenu.swift */,
 				B58CC931246DB9B5006FEF00 /* CollectionViewFlowLayout.swift */,
+				B57BBD8E250427ED0021FB8F /* PDFPreviewViewModel.swift */,
 				B5689D7124BB61D5005C46C5 /* ShareImagesViewModel.swift */,
 				B5E3086724BE532E003D5860 /* NavControllerTransitions.swift */,
 			);
@@ -906,6 +912,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B57BBD8F250427ED0021FB8F /* PDFPreviewViewModel.swift in Sources */,
 				B54967A824104E3500684A2F /* ImageCompression.swift in Sources */,
 				B5377C0423A82E280010B144 /* ViewController.swift in Sources */,
 				B573FAA823B98061005473D2 /* CircularTransition.swift in Sources */,
@@ -946,7 +953,7 @@
 				B50BAADB242B7DC200EAFECA /* AmountAnimation.swift in Sources */,
 				B5977E7E24C47F0400F3E589 /* CoreDataStack.swift in Sources */,
 				B5A4358724DE1CB500559908 /* OperationProtocols.swift in Sources */,
-				B5683DFA24D759DF00828AFA /* DateHelper.swift in Sources */,
+				B5683DFA24D759DF00828AFA /* IndicatorDateResolver.swift in Sources */,
 				B593962F2483D50600B1E895 /* Payment+CoreDataProperties.swift in Sources */,
 				B564470B241027EB00B08AD3 /* AddButtonAnimations.swift in Sources */,
 				B554F963247718BA007C486A /* CardViewModel.swift in Sources */,
@@ -980,6 +987,7 @@
 				B57BCD1424C64F1F0019D85A /* NSPredicateExtensions.swift in Sources */,
 				B504902424731A60009B4DA5 /* PaymentSelectionButtonView.swift in Sources */,
 				B516CF14243BF1F0003D09E1 /* PDFPreviewViewController.swift in Sources */,
+				B57BBD9225042A990021FB8F /* DateHelper.swift in Sources */,
 				B574A3AA24E9DB4F00FDB5B1 /* main.swift in Sources */,
 				B5F54E87241E78750016DCED /* UIColorExtensions.swift in Sources */,
 				B5A4357D24DE03EC00559908 /* AsyncOperation.swift in Sources */,
@@ -1219,7 +1227,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.2;
+				MARKETING_VERSION = 1.0.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.belenko.ReceiptsSorted;
 				PRODUCT_NAME = WorkReceipts;
 				SWIFT_VERSION = 5.0;
@@ -1242,7 +1250,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.2;
+				MARKETING_VERSION = 1.0.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.belenko.ReceiptsSorted;
 				PRODUCT_NAME = WorkReceipts;
 				SWIFT_VERSION = 5.0;

@@ -21,7 +21,7 @@ class DateAnimation {
     
     // MARK: - Private properties
     
-    private var dateHelper: DateHelper!
+    private var dateHelper: IndicatorDateResolver!
     
     private let dateIndicator: CALayer
     private var animationDuration: Double = 0.7
@@ -50,7 +50,7 @@ class DateAnimation {
      Initialises DatHelper with the closure to listen for day changes notifications
      */
     private func initialiseDateHelper() {
-        dateHelper = DateHelper(onDayChanged: { [unowned self] (currentDay, daysInPeriod) in
+        dateHelper = IndicatorDateResolver(onDayChanged: { [unowned self] (currentDay, daysInPeriod) in
             self.maxDays = daysInPeriod
             self.animateDate(to: currentDay)
         })

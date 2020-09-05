@@ -89,19 +89,9 @@ class ViewController: UIViewController  {
         settings.addCurrencyChangedListener(self)
         setupWarningButton()
         
-        cardViewController.cardViewModel.showCurrencyWarningSign.onValueChanged { [weak self] showWarning in
-            UIView.animate(withDuration: 0.15) {
-                self?.warningButton.alpha = (showWarning) ? 1 : 0
-            }
-        }
+        createElementsDataBindings()
         
-        // Needs to layout first to assign nav transitions to buttonView
-        // after it is put into view hiearchy (in queue to be executed once)
-        DispatchQueue.main.async { [unowned self] in
-            self.view.layoutIfNeeded()
-            self.navControllerTransitions = NavControllerTransitions(animationCentre: self.buttonView.center)
-            self.navigationController?.delegate = self.navControllerTransitions // for custom animation
-        }
+        setupNavigationTransitions()
     }
 
     
@@ -264,6 +254,30 @@ class ViewController: UIViewController  {
         warningButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
         warningButton.heightAnchor.constraint(equalToConstant: 25).isActive = true
         warningButton.widthAnchor.constraint(equalToConstant: 25).isActive = true
+    }
+    
+    
+    // MARK: - Bindings
+    
+    private func createElementsDataBindings() {
+        cardViewController.cardViewModel.showCurrencyWarningSign.onValueChanged { [weak self] showWarning in
+            UIView.animate(withDuration: 0.15) {
+                self?.warningButton.alpha = (showWarning) ? 1 : 0
+            }
+        }
+    }
+    
+    
+    // MARK: - Navigation transitions
+    
+    private func setupNavigationTransitions() {
+        // Needs to layout first to assign nav transitions to buttonView
+        // after it is put into view hiearchy (in queue to be executed once)
+        DispatchQueue.main.async { [unowned self] in
+            self.view.layoutIfNeeded()
+            self.navControllerTransitions = NavControllerTransitions(animationCentre: self.buttonView.center)
+            self.navigationController?.delegate = self.navControllerTransitions // for custom animation
+        }
     }
     
     

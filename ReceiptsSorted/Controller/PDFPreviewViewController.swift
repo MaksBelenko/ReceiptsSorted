@@ -17,14 +17,8 @@ class PDFPreviewViewController: UIViewController {
     @IBOutlet weak var topNavigationBar: UINavigationBar!
     @IBOutlet weak var previewView: UIView!
     private let pdfView = PDFView()
-    private var pdfData: Data!
-    private let buttonAnimations = AddButtonAnimations()
-
-    var dateToday: String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "dd-MM-yyyy"
-        return dateFormatter.string(from: Date())
-    }
+    private let viewModel = PDFPreviewViewModel()
+    
     
     // MARK: - Deinit
     deinit {
@@ -52,7 +46,8 @@ class PDFPreviewViewController: UIViewController {
         
         setupNavigationBar()
         setupPDFView()
-        createPDFPreviewDocument()
+        
+        pdfView.document = viewModel.createPDFPreviewDocument(for: passedPayments)
     }
 
     
@@ -95,77 +90,6 @@ class PDFPreviewViewController: UIViewController {
     
     
     
-    
-    // MARK: - PDF Creation
-    
-    private func createPDFPreviewDocument() {
-        pdfData = createPDF()
-        pdfView.document = PDFDocument(data: pdfData)
-//        pdfView.interpolationQuality = .low // for images
-    }
-    
-    private func createPDF() -> Data {
-        let pdfColour = UIColor.flatBlue
-        
-        let pdf = PDFBuilder()
-        pdf.withMetaTitle("Receipts")
-        pdf.withMetaAuthor("WorkReceipts")
-        pdf.withMetaCreator("WorkReceipts")
-        
-        pdf.addFooter(pagingEnabled: true, text: "", colour: pdfColour)
-        
-        pdf.addImage(image: #imageLiteral(resourceName: "app-noBG-tight"), maxWidth: 60, alignment: .right)
-        pdf.addSpace(inches: -0.6)
-        pdf.addText(text: "Date: \(dateToday)", alignment: .left, font: .arial(ofSize: 17))
-        
-        pdf.addSpace(inches: 0.5)
-        
-        // ----- Table creation -----
-        let headers = [PDFColumnHeader(name: "DATE", alignment: .left, weight: 1),
-                       PDFColumnHeader(name: "PLACE", alignment: .left, weight: 3),
-                       PDFColumnHeader(name: "PRICE", alignment: .right, weight: 1)]
-        
-        var rows: [PDFTableRow] = []
-        for p in passedPayments {
-            rows.append(PDFTableRow([p.date?.toString(as: .long) ?? "",
-                                     p.place ?? "",
-                                     "\(p.currencySymbol!)\(p.amountPaid.ToString(decimals: 2))"]))
-        }
-        
-        do {
-            try pdf.addTable(headers: headers,
-                             rows: rows,
-                             tableStyle: .Modern,
-                             font: .systemFont(ofSize: 11),
-                             tableColour: pdfColour)
-        } catch {
-            Log.exception(message: "Error creating PDF table, Error: \(error.localizedDescription)")
-        }
-        
-        
-        // ----- Add images -----
-        for p in passedPayments {
-            pdf.newPage()
-            guard let rp = p.receiptPhoto,
-                let imageData = rp.imageData,
-                let photo = UIImage(data: imageData) else
-            {
-                    pdf.addText(text: "Couldn't retrieve image for \(p.place ?? "")",
-                                alignment: .centre, font: .arial(ofSize: 20), colour: .black)
-                    continue
-            }
-            
-            pdf.addImage(image: photo, maxWidth: 200, alignment: .centre)
-        }
-        
-        
-        return pdf.build()
-    }
-    
-    
-    
-    
-    
     // MARK: - IBActions
     @IBAction func closeButtonPressed(_ sender: UIBarButtonItem) {
         Alert.shared.showDismissPdfAlert(for: self)
@@ -173,18 +97,9 @@ class PDFPreviewViewController: UIViewController {
        
     
     @IBAction func sendEmailButtonPressed(_ sender: UIBarButtonItem) {
-        let temporaryFolder = FileManager.default.temporaryDirectory
-        let fileName = "Receipts \(dateToday).pdf"
-        
-        let temporaryFileURL = temporaryFolder.appendingPathComponent(fileName)
-        Log.debug(message: "Files are saved to: \(temporaryFileURL.path)")
-
-
         do {
-            guard let data = pdfData else { return }
-            try data.write(to: temporaryFileURL) //Write document to defaults storage
-
-            let activityViewController = UIActivityViewController(activityItems: [temporaryFileURL], applicationActivities: nil)
+            let pdfFileURL = try viewModel.savePdfToFile()
+            let activityViewController = UIActivityViewController(activityItems: [pdfFileURL], applicationActivities: nil)
             present(activityViewController, animated: true, completion: nil)
         } catch {
             print(error)
