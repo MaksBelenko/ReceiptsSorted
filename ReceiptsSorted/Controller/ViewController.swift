@@ -29,6 +29,7 @@ class ViewController: UIViewController  {
     private var onStartup = true
     
     private let pushNotifications = PushNotificationManager()
+    private let receiptRemovalService = ReceiptRemovalService()
     
     private let settings = SettingsUserDefaults.shared
     
@@ -66,10 +67,6 @@ class ViewController: UIViewController  {
         
         DispatchQueue.global(qos: .background).async {
             FileManager.default.cleanTmpDirectory()
-        }
-        
-        if settings.getCurrency().name == nil {
-            settings.setDefaultCurrency(to: "£", currencyName: "British Pound Sterling")
         }
         
         setupCard()
@@ -118,7 +115,7 @@ class ViewController: UIViewController  {
     // MARK: - Onboarding
     
     private func presentOnboardingIfNeeded(animated: Bool) {        
-        if userChecker.isOldUser() { return }
+        if userChecker.isIntroOnboardingShown() { return }
         
         let onboardingVC = OnboardingViewController()
         var onboardTexts = OnboardingText() // texts
@@ -304,40 +301,32 @@ extension ViewController: CurrencyChangedProtocol {
 extension ViewController {
     /// actions to be executed once on startup
     func onStartupActions() {
-        if onStartup {
-            onStartup = false
-            
-            // get totalAmount and udate circle indicator graphics
-            cardViewController.cardViewModel.database.getTotalAmountAsync(of: .Pending,
-                                                                          for: SettingsUserDefaults.shared.getCurrency().name!)
-            { totalAmount in
-                self.topGraphicsView.amountAnimation.animateCircle(to: totalAmount)
-            }
-            
-            // animate date indicator
-            topGraphicsView.dateAnimation.animateToCurrentDate()
-            
-            // Set push notifications
-            pushNotifications.requestAuthorization()
-            pushNotifications.getPendingNotificationRequests { [weak self] requests in
-                if requests.count == 0 {
-                    self?.pushNotifications.schedule(for: SettingsUserDefaults.shared.getIndicatorPeriod())
-                }
-            }
-            
-            // Remove receipts older than date
-            let removeBeforeMonth = settings.getReceiptRemovalPeriod()
-            // If remove receipts settings is enabled (not -1) run command to remove older receipts
-            if (removeBeforeMonth > 0) {
-                let date = Calendar.current.date(byAdding: .month, value: -removeBeforeMonth, to: Date())!
-                cardViewController.cardViewModel.database.removeAllReceipts(olderThan: date) { [unowned self] in
-                    self.cardViewController.cardViewModel.refreshPayments()
-                }
-            }
-            // If its a fresh app userdefaults will have 0, change to 6 month
-            if removeBeforeMonth == 0 {
-                settings.setReceiptRemoval(after: 6)
-            }
+        if onStartup == false {
+            return
+        }
+        onStartup = false
+        
+        animateIndicatorToCurrentAmount()
+        topGraphicsView.dateAnimation.animateToCurrentDate() // animate date indicator
+        
+        if (userChecker.isIntroOnboardingShown()) {
+            pushNotifications.setupPushNotifications()
+        }
+        
+        receiptRemovalService.database = cardViewController.cardViewModel.database
+        receiptRemovalService.refreshPayments = { self.cardViewController.cardViewModel.refreshPayments() }
+        receiptRemovalService.removeOldReceiptsIfNeeded()
+    }
+    
+    
+    
+    
+    /// get totalAmount and udate circle indicator graphics
+    private func animateIndicatorToCurrentAmount() {
+        cardViewController.cardViewModel.database.getTotalAmountAsync(of: .Pending,
+                                                                      for: SettingsUserDefaults.shared.getCurrency().name!)
+        { totalAmount in
+            self.topGraphicsView.amountAnimation.animateCircle(to: totalAmount)
         }
     }
 }

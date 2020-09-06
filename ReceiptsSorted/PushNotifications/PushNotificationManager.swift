@@ -57,9 +57,18 @@ class PushNotificationManager: NSObject {
     
     
     // MARK: - Authorisation and appearance
-    /**
-     Request authorization
-     */
+   
+    func setupPushNotifications() {
+        requestAuthorization()
+        getPendingNotificationRequests { [weak self] requests in
+            if requests.count == 0 {
+                let repeatPeriod = SettingsUserDefaults.shared.getDateIndicatorPeriod()
+                self?.schedule(for: repeatPeriod)
+            }
+        }
+    }
+    
+    
     func requestAuthorization() {
         center.requestAuthorization(options: [.alert,.sound,.badge]) { [weak self] (granted, error) in
             Log.debug(message: "Push notifications access Granted? \(granted)")

@@ -92,7 +92,8 @@ class PDFPreviewViewController: UIViewController {
     
     // MARK: - IBActions
     @IBAction func closeButtonPressed(_ sender: UIBarButtonItem) {
-        Alert.shared.showDismissPdfAlert(for: self)
+        dismiss(animated: true, completion: nil)
+//        Alert.shared.showDismissPdfAlert(for: self)
     }
        
     

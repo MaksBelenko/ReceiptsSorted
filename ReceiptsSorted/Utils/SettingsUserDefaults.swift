@@ -29,6 +29,14 @@ class SettingsUserDefaults {
     private let removalNumberKey = "receiptRemovalKey"
 
     
+    // MARK: - Initialisation
+    init() {
+        if getCurrency().name == nil {
+            setDefaultCurrency(to: "£", currencyName: "British Pound Sterling")
+        }
+        
+        setReceiptRemoval(after: 6)
+    }
     
     // MARK: - Currency
     
@@ -61,7 +69,7 @@ class SettingsUserDefaults {
      Gets date indicator period
      - Returns: Either a week or a month depending on what was saved in UserDefaults
      */
-    func getIndicatorPeriod() -> IndicatorPeriod {
+    func getDateIndicatorPeriod() -> IndicatorPeriod {
         let value = UserDefaults.standard.integer(forKey: periodKey)
         return (value == IndicatorPeriod.Week.rawValue) ? .Week : .Month
     }

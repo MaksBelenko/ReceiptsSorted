@@ -38,7 +38,7 @@ class DatabaseAsyncTests: XCTestCase {
     func test_removeAllReceiptsOlderThanDate() {
         
         /* ----- Adding receipts with older date ----- */
-        let sevenMonthOldDate = Calendar.current.date(byAdding: .month, value: -7, to: Date())!
+        let sevenMonthOldDate = Calendar.current.date(byAdding: .month, value: -5, to: Date())!
         let eightMonthOldDate = Calendar.current.date(byAdding: .month, value: -8, to: Date())!
         
         let info1 = PaymentInformation(amountPaid: 12, place: "TestPlace", date: sevenMonthOldDate, receiptImage: #imageLiteral(resourceName: "Receipt-Test"), currencySymbol: "£", currencyName: "British Pound Sterling")
@@ -67,7 +67,7 @@ class DatabaseAsyncTests: XCTestCase {
         
         wait(for: [expectation], timeout: 2)
         
-        XCTAssert(count == 0, "Count should be 0")
+        XCTAssert(count == 1, "Count should be 1")
     }
     
     

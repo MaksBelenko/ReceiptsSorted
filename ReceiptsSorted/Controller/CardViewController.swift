@@ -80,6 +80,25 @@ class CardViewController: UIViewController {
         sortButton.setTitle(dropDownMenu.getButtonTitle(for: cardViewModel.sortType), for: .normal)
         
         cardViewModel.delegate = self
+        setupViewModelBindings()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        if  userChecker.wasSwipeDemoShown() == false {
+            guard let cell = tblView.cellForRow(at: IndexPath(row: 0, section: 0)) as? PaymentTableViewCell else { return }
+            presentSwipeDemo(forCell: cell, animated: false)
+            previewSwipeActions(for: cell)
+            
+            userChecker.setSwipeDemoAsShown() // set UserDefaults as shown
+        }
+    }
+    
+    
+    // MARK: - ViewModel Bindings
+    
+    private func setupViewModelBindings() {
         cardViewModel.isSelectionEnabled.onValueChanged { [weak self] selectionEnabled in
             self?.cardViewModel.allSelected = false
             self?.tblView.reloadData()
@@ -93,31 +112,6 @@ class CardViewController: UIViewController {
             guard let self = self else { return }
             self.paymentTypeSegControl.selectedSegmentIndex = segControlValue
             self.segmentedControlValueChanged(self.paymentTypeSegControl)
-        }
-        
-//        testAddNewPayments()
-    }
-    
-    
-//    private func testAddNewPayments() {
-//        let eightMonthOldDate = Calendar.current.date(byAdding: .month, value: -8, to: Date())!
-//        
-//        for i in 0...10000 {
-//            cardViewModel.addNewPayment(paymentInfo: PaymentInformation(amountPaid: Float(i), place: "test\(i)", date: eightMonthOldDate, receiptImage: #imageLiteral(resourceName: "NoReceipts"), currencySymbol: "£", currencyName: "br"))
-////            cardViewModel.addNewPayment(paymentInfo: PaymentInformation(amountPaid: Float(i), place: "test\(i)", date: eightMonthOldDate, receiptImage: #imageLiteral(resourceName: "NoReceipts")), )
-//            print("Loop at \(i)")
-//        }
-//    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        if  !userChecker.wasSwipeDemoShown() {
-            guard let cell = tblView.cellForRow(at: IndexPath(row: 0, section: 0)) as? PaymentTableViewCell else { return }
-            presentSwipeDemo(forCell: cell, animated: false)
-            previewSwipeActions(for: cell)
-            
-            userChecker.setSwipeDemoAsShown() // set UserDefaults as shown
         }
     }
     

@@ -25,7 +25,7 @@ class IndicatorDateResolver {
     // MARK: - Lifecycle
     init( onDayChanged: ((Int, Int) -> ())? = nil ) {
         self.onDayChanged = onDayChanged
-        self.indicatorPeriod = settings.getIndicatorPeriod()
+        self.indicatorPeriod = settings.getDateIndicatorPeriod()
         
         settings.addDateChangedListener(self)
         

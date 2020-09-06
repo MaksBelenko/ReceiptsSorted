@@ -149,7 +149,8 @@ class ShareImagesViewController: UIViewController {
     // MARK: - Buttons actions
     
     @objc private func cancelButtonPressed() {
-        Alert.shared.showDismissPdfAlert(for: self)
+        dismiss(animated: true, completion: nil)
+//        Alert.shared.showDismissPdfAlert(for: self)
     }
     
     @objc private func shareButtonPressed() {

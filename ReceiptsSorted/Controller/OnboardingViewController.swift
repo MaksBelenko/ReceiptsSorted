@@ -91,7 +91,7 @@ extension OnboardingViewController: OnboardingProtocol {
         pageNumber += 1
         
         if pageNumber == allViews.count {
-            userChecker.setIsOldUser()
+            userChecker.setIntroOnboardingAsShown()
             self.dismiss(animated: true, completion: nil)
             return
         }

@@ -53,7 +53,7 @@ class SettingsViewController: UITableViewController {
         
         // set from userdefaults
         currencyLabel.text = settings.getCurrency().symbol
-        dateIndicatorSC.selectedSegmentIndex = SettingsUserDefaults.shared.getIndicatorPeriod().rawValue
+        dateIndicatorSC.selectedSegmentIndex = SettingsUserDefaults.shared.getDateIndicatorPeriod().rawValue
         receiptRemovalLabel.text = getName(forMonths: settings.getReceiptRemovalPeriod())
     }
 
@@ -97,7 +97,7 @@ class SettingsViewController: UITableViewController {
             
         case tableRow[.ShowTutorial]:
             //sets userdefault for onboarding as "not shown"
-            UserChecker().setIsOldUser(value: false)
+            UserChecker().setIntroOnboardingAsShown(value: false)
             navigationController?.popViewController(animated: true)
             
         default:

@@ -339,9 +339,10 @@ class PaymentViewController: UIViewController, UITextFieldDelegate {
     }
     
     @IBAction func saveToLibraryBarButtonPressed(_ sender: UIBarButtonItem) {
-        Alert.shared.showSaveToLibAlert(for: self,
-                                        image: receiptImageView.image!,
-                                        savePhotoSelector: #selector(self.image(_:didFinishSavingWithError:contextInfo:)))
+        UIImageWriteToSavedPhotosAlbum(receiptImageView.image!,
+                                       self,
+                                       #selector(self.image(_:didFinishSavingWithError:contextInfo:)),
+                                       nil)
     }
     
     @objc func image(_ image: UIImage, didFinishSavingWithError error: Error?, contextInfo: UnsafeRawPointer) {

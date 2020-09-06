@@ -18,7 +18,7 @@ class UserChecker {
      Checks weather the application is first time openned.
      - Returns: Boolean showing it is a new user or the app was used before.
      */
-    func isOldUser() -> Bool {
+    func isIntroOnboardingShown() -> Bool {
         return UserDefaults.standard.bool(forKey: oldUserKey)
     }
     
@@ -28,7 +28,7 @@ class UserChecker {
      Keep in mind that this does not affect Swipe Demo that will
      be shown after first receipt is added.
      */
-    func setIsOldUser(value: Bool = true) {
+    func setIntroOnboardingAsShown(value: Bool = true) {
         UserDefaults.standard.set(value, forKey: oldUserKey)
     }
     
