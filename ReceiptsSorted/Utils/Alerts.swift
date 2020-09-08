@@ -10,7 +10,7 @@ import UIKit
 
 class Alert {
     
-    ///let constatnt in order to share alert
+    ///let constant in order to share alert
     static let shared = Alert()
     
     
@@ -144,7 +144,7 @@ class Alert {
     func showSaveSuccessStatusAlert(for controller: UIViewController, error: Error?) {
         let ac: UIAlertController
         if let err = error {
-            ac = UIAlertController(title: "Error saving an image", message: "Go to Settings -> WorkReceipts -> Photos -> Enable \"Add Photos Only\" in order to use this function", preferredStyle: .alert)
+            ac = UIAlertController(title: "Unable to save the image", message: "Go to Settings -> WorkReceipts -> Photos -> Enable \"Add Photos Only\" in order to use this function.", preferredStyle: .alert)
             Log.exception(message: "Failed to save the photo to Library. Error: \(err.localizedDescription)")
         } else {
             ac = UIAlertController(title: "Receipt image saved", message: "Your receipt image has been saved to your photos.", preferredStyle: .alert)
@@ -159,7 +159,7 @@ class Alert {
      */
     func showEmptyFieldsAlert(for controller: UIViewController) {
         Vibration.error.vibrate()
-        let alert = AlertHelper(alertController: UIAlertController(title: "Fill all data", message: "Some of the information is not filled", preferredStyle: .alert),
+        let alert = AlertHelper(alertController: UIAlertController(title: "Information missing", message: "Please input data for all fields.", preferredStyle: .alert),
                                  actions: [UIAlertAction(title: "OK", style: .default, handler: nil)])
         alert.show(for: controller)
     }
@@ -179,9 +179,9 @@ class Alert {
     func showImageCompressionInfo(for controller: UIViewController) {
         let text = """
                     It's necessary to save your device memory and send receipts faster.
-                    Best - readable and minimal space required.
+                    \nBest - readable and minimal space required.
                     Decent – more clear pictures.
-                    None – takes a lot of device’s memory.
+                    None – takes a lot of the device’s memory.
                    """
         
         let ac = UIAlertController(title: "Image Compression", message: text, preferredStyle: .alert)
@@ -192,9 +192,9 @@ class Alert {
     
     func showDateIndicator(for controller: UIViewController) {
         let text = """
-                    Indicator presents either a week, with last day being friday, or a month,
-                    with last day being last day of the month. Also, it sets notifications to
-                    be sent on a last day of the period.
+                    Indicator presents either a week, with the last day being friday, or a month,
+                    with the last day being last day of the month. Notifications are sent on
+                    the last day of the period.
                    """
         
         let ac = UIAlertController(title: "Date Indicator", message: text, preferredStyle: .alert)
@@ -205,7 +205,7 @@ class Alert {
     
     func showCurrencyChangeWarning(for controller: UIViewController) {
         let ac = UIAlertController(title: "Warning: currency change",
-                                   message: "If you have receipts paid with different currency they will no longer be shown in the indicators. Only main currency payments sum are shown.",
+                                   message: "If you have receipts paid with a different currency they will no longer be shown in the indicators. Only the main sum of payments' currency is shown.",
                                    preferredStyle: .alert)
         ac.addAction(UIAlertAction(title: "OK", style: .default))
         controller.present(ac, animated: true)
@@ -214,7 +214,7 @@ class Alert {
     
     func showReceiptRemovalAlert(for controller: UIViewController) {
         let ac = UIAlertController(title: "Automatic receipt removal",
-                                   message: "Receipts will be autmatically removed if they are older than a selected oprion. This feature saves the memory on your device as you probably do not need receipts which are quite old and have been claimed.",
+                                   message: "Receipts are automatically removed if they are older than your selected option. This feature saves the memory on your device as you probably do not need receipts which are old and have been claimed.",
                                    preferredStyle: .alert)
         ac.addAction(UIAlertAction(title: "OK", style: .default))
         controller.present(ac, animated: true)
@@ -225,7 +225,7 @@ class Alert {
     
     func showCameraNotEnabledAlert(for controller: UIViewController) {
         let ac = UIAlertController(title: "Camera is not enabled",
-                                   message: "You need to enable access to the camera in your device's settings if you want to it.",
+                                   message: "You need to enable camera access in your device's settings if you want to use it.",
                                    preferredStyle: .alert)
         ac.addAction(UIAlertAction(title: "OK", style: .default))
         controller.present(ac, animated: true)

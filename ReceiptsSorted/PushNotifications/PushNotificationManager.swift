@@ -110,7 +110,7 @@ class PushNotificationManager: NSObject {
         let request = PushNotificationRequestBuilder()
                                 .withTrigger(trigger)
                                 .withTitle("Reminder:")
-                                .withBody("Don't forget to send back your receipts! 🧾")
+                                .withBody("Don't forget to claim your expenses! 🧾")
                                 .withSoundEnabled(true)
                                 .withBadge(1)
                                 .build()
