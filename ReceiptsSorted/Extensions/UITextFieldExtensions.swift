@@ -15,6 +15,7 @@ extension UITextField {
         let datePicker = UIDatePicker(frame: CGRect(x: 0, y: 0, width: screenWidth, height: 216))
         datePicker.datePickerMode = .date
         datePicker.accessibilityIdentifier = "PaymentVcDatePicker"
+        
         self.inputView = datePicker
         datePicker.addTarget(target, action: dateChangedSelector, for: .valueChanged)
         

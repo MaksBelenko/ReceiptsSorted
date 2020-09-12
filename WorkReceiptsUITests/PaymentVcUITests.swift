@@ -180,7 +180,7 @@ class PaymentVcUITests: XCTestCase {
      Checks that alert appeared and closes it by pressing "OK"
      */
     func fillDataAlertCheckAndClose() {
-        let fillAlert = app.alerts["Fill all data"]
+        let fillAlert = app.alerts["Information missing"]
         XCTAssert(fillAlert.exists == true, "Fill alert should appear if the fields not filled")
         // Tap OK on the Alert asking to fill the data
         fillAlert.scrollViews.otherElements.buttons["OK"].tap()

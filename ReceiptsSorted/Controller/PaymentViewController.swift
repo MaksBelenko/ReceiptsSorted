@@ -241,6 +241,9 @@ class PaymentViewController: UIViewController, UITextFieldDelegate {
     /// executed on date text field pressed
     @IBAction func pressedDateTextField(_ sender: UITextField) {
         savedDate = date
+        if let datePicker = self.dateTextField.inputView as? UIDatePicker {
+            datePicker.date = date
+        }
     }
     
     /// Executed on "Cancel" button in toolbar
@@ -257,7 +260,6 @@ class PaymentViewController: UIViewController, UITextFieldDelegate {
     
     /// executed when date picker scrolls (value changes)
     @objc private func onDatePickerDateChanged() {
-        print("changed")
         if let datePicker = self.dateTextField.inputView as? UIDatePicker {
             date = datePicker.date
         }
